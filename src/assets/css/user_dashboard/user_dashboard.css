@@ -1,0 +1,268 @@
+.user_dashboard_container{
+    height :96vh;
+    padding-left: 5%;
+    padding-right:3%;
+}
+
+.user_dashboard_munidex_logo{
+    width : 10%;
+}
+
+.user_dashboard_profile_icon{
+    width : 2.8%;
+    margin-left:80%;
+}
+
+.user_dashboard_username{
+    margin: 6% 0 6% 0 ;
+    font-weight: 600;
+    font-size : 48px;
+}
+.user_dashboard_text_booking_details{
+    color:#888888;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 0 0 5% 0;
+}
+
+.user_dashboard_booking_details_card{
+    padding: 3% 10% 3% 1%;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 18px rgba(169, 169, 169, 0.15);
+}
+
+.user_dashboard_text_booking_card_title{
+    color: #888888;
+    font-weight: 500;
+    font-size:18px;
+    margin-bottom: 23%;
+}
+
+.user_dashboard_slot_text,.user_dashboard_start_date_text,.user_dashboard_end_date_text{
+    font-weight: 500;
+    font-size:16px;
+    margin-bottom: 23%;
+}
+
+.user_dashboard_payment_text_pending{
+    font-weight: 500;
+    font-size:16px;
+     color: #FE9923;
+     margin-bottom: 23%;
+}
+
+.user_dashboard_payment_text_completed{
+    font-weight: 500;
+    font-size:16px;
+     color: #258E00;
+     margin-bottom: 23%;
+}
+
+.user_dashboard_active{
+    margin-bottom: 23%;
+}
+
+.user_dashboard_active_green{
+    height:.5rem;
+    width:.5rem;
+    background-color: #33A86D;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.user_dashboard_active_red{
+    height:.5rem;
+    width:.5rem;
+    background-color: #EA234F;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.user_dashboard_right_container{
+    padding-left: 3%;
+}
+
+.user_dashboard_balance_card{
+    padding: 6% 0 6% 10%;
+    background: #FFFFFF;
+    box-shadow: 0px 3.60512px 34.2486px rgba(150, 150, 150, 0.15);
+    width:70%;
+    border-radius: 15.32px;
+    margin: 10% 0 5% 0;
+}
+
+.user_dashboard_balance_card_text{
+    color: #888888;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.user_dashboard_balance_card_amount{
+    font-weight: 600;
+    font-size: 64px;
+}
+
+.user_dashboard_transaction_card{
+    background: #FFFFFF;
+    box-shadow: 0px 3.16522px 31.6522px rgba(166, 166, 166, 0.15);
+    border-radius: 12.66px;
+    width:80%;
+    padding: 5% 8% 4% 6%;
+}
+
+.user_dashboard_transaction_card_title{
+    color: #888888;
+    font-weight: 600;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 8%;
+}
+
+.user_dashboard_transaction_card_transaction_id{
+    color :#B8B8B8;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.user_dashboard_transaction_card_transaction_id span{
+    color: #03B7DF;
+}
+
+.user_dashboard_transaction_card_datetime_text{
+    display: flex;
+    justify-content: space-between;
+    padding: 2% 17% 2% 7%;
+}
+
+.user_dashboard_transaction_card_date_text,.user_dashboard_transaction_card_time_text{
+    color:#B8B8B8;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.user_dashboard_transaction_card_datetime{
+    display: flex;
+    justify-content: space-between;
+    padding: 2% 13% 5% 7%;
+}
+
+.user_dashboard_transaction_card_date,.user_dashboard_transaction_card_time{
+    font-weight: 500;
+}
+
+.user_dashboard_transaction_card_amount_section{
+    background: #FAFAFA;
+    padding: 2% 0 3% 5%;
+    width:80%;
+    margin:auto;
+}
+
+.user_dashboard_transaction_card_amount_text{
+    color:#888888;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.user_dashboard_transaction_card_amount_number{
+    color:#03B7DF;    ;
+    font-weight: 600;
+    font-size: 51.3px;
+    text-align: center;
+}
+
+.user_dashboard_transaction_card_seemore{
+    color:#B8B8B8;
+    font-size: 14px;
+    text-decoration-line: underline;
+}
+
+.user_dashboard_pay{
+    color:#fff;
+    font-size: 14px;
+    font-weight: bold;
+    background: #63E9F7;
+    border-radius: 5.29px;
+    display: inline-block;
+    padding: 2% 7%;
+}
+
+.user_dashboard_pay_container{
+    padding-left: 3%;
+    width:80%;
+}
+
+.user_dashboard_popup_section{
+    position:absolute;
+    height: 70vh;
+    width:60vw;
+    left : 17%;
+    top : 15%;
+    background: #fff;
+    margin : auto;
+}
+
+.user_dashboard_popup_leftside{
+    background: #08B6DB;
+}
+
+.user_dashboard_handshake_image{
+    position: relative;
+    top:18vh;
+}
+
+.user_dashboard_popup_leftside_text{
+    color:#fff;
+    font-size: 30.31px;
+    font-weight: 600;
+    position: relative;
+    top: 18vh;
+}
+
+.user_dashboard_leftside_text span{
+    font-weight: 300;
+}
+
+.user_dashboard_popup_history_container{
+    padding: 3% 3% 12% 4%
+}
+
+.user_dashboard_popup_transaction_history_flex{
+     display:flex;
+     justify-content: space-between;
+}
+
+.user_dashboard_popup_transaction_history{
+    color: #646262;
+    font-size: 32px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.user_dashboard-popup_close{
+    display: inline-block;
+}
+
+.user_dashboard_popup_title{
+    color: #B8B8B8;
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 18%;
+}
+
+.user_dashboard_popup_tid_text,.user_dashboard_popup_dop_text,.user_dashboard_popup_payment_text,
+.user_dashboard_popup_status_yellow,.user_dashboard_popup_status_green
+{
+    color: #030303;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 18%;
+}
+
+.user_dashboard_popup_status_yellow{
+     color: #FE9923;
+}
+
+.user_dashboard_popup_status_green{
+    color: #258E00;
+}
