@@ -1,0 +1,158 @@
+.booking_container{
+    padding-top: 10vh;
+}
+
+.booking_reserved_progress{
+    height:.7rem ;
+    border-radius:5.36px ;
+    width: 80%;
+}
+
+.booking_unreserved_progress{
+    height:.7rem ;
+    border-radius:5.36px ;
+    width: 80%;
+}
+
+.booking_reserved_text,.booking_unreserved_text{
+    color:#838383;
+    font-weight: 500;
+    font-size: 11.18px;
+    margin-bottom: 2%;
+}
+
+.booking_reserved_percentage_text{
+     color:#FF6767;
+     font-weight: 500;
+     font-size: 10.24px;
+     margin-bottom: 1%;
+}
+
+.booking_unreserved_percentage_text{
+    color:#2AB0FF;
+    font-weight: 500;
+    font-size: 10.24px;
+    margin-bottom: 1%;
+}
+
+.booking_form_title{
+    color:#494949;
+    font-weight: 500;
+    font-size: 18.73px;
+    letter-spacing: .23px;
+    margin: 8% 0 4% 0;
+}
+
+.booking_form_name_input, .booking_form_email_input, .booking_form_date_input, .booking_form_ptype_input, .booking_form_pid_input{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20%;
+    margin-bottom: 4%;
+}
+
+.booking_form_name_input label, .booking_form_email_input label, .booking_form_date_input label, .booking_form_ptype_input label, .booking_form_pid_input label, .booking_form_plan_input_text{
+    color: #777777;
+    font-size: 14px;
+    letter-spacing: 0.23px;
+}
+
+.booking_form_name_input input, .booking_form_email_input input, .booking_form_date_input input, .booking_form_ptype_input input, .booking_form_pid_input input{
+    width:70%;
+    border-width: 0 0 0.44px 0;
+    border-style: solid;
+    border-color: #828282
+}   
+
+.booking_form_plan_input{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20%;
+    margin-top: 6%;
+}
+
+.booking_form_plan_input_buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.booking_form_input_button_weekly, .booking_form_input_button_monthly , .booking_form_input_button_quarterly , .booking_form_input_button_yearly{
+    font-style: bold;
+    font-size: .6rem;
+    padding : 1.6% 4%;
+    border-radius: 2.84px;
+}
+
+.booking_form_input_button_weekly:hover{
+    color: #fff;
+    background-color: #0CB0E2;
+}
+
+.booking_form_input_button_weekly{
+    color : #0CB0E2;
+    border : solid 1px #0CB0E2;
+    background-color: #fff;
+}
+
+.booking_form_input_button_monthly:hover{
+    color: #fff;
+    background-color: #FFE632;
+}
+
+.booking_form_input_button_monthly{
+    color: #FFE632;
+    border:solid 1px #FFE632;
+    background-color: #fff;
+}
+
+.booking_form_input_button_quarterly:hover{
+    color: #fff;
+    background-color: #36A900;
+}
+
+.booking_form_input_button_quarterly{
+    color: #36A900;
+    border : solid 1px #36A900;
+    background-color: #fff;
+}
+
+.booking_form_input_button_yearly:hover{
+    color: #fff;
+    background-color: #FF6767;
+}
+
+.booking_form_input_button_yearly{
+    color: #FF6767;
+    border: solid 1px #FF6767;
+    background-color: #fff;
+}
+
+.booking_form_submit_clear{
+    display: flex;
+    justify-content: end;
+    padding-right: 20%;
+}
+
+.booking_form_submit{
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.6rem;
+    background-color: #63E9F7;
+    padding:1.3% 4.2%;
+    border-radius: 3.4px;
+    margin-top: 10%;
+    margin-right: 10%;
+}
+
+.booking_form_clear{
+    color:#6D6D6D;
+    font-weight: bold;
+    font-size: 0.6rem;
+    background-color: #F9F9F9;
+    border: 1px solid #DBDBDB;
+    padding:1.3% 4.2%;
+    border-radius: 3.4px;
+    margin-top: 10%;
+}

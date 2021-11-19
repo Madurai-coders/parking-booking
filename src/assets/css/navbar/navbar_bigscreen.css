@@ -1,0 +1,52 @@
+.Navbigscreen_container{
+    height :100vh;
+    background-color: #28A8E0;
+    position: absolute;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Navbigscreen_container ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.Navbigscreen_menu{
+    margin: .6rem 1rem 5rem 1rem;
+}
+
+.Navbigscreen_menu_img , .Navbigscreen_listitem_booking_img, .Navbigscreen_listitem_bookingreport_img, .Navbigscreen_listitem_accountreport_img, .Navbigscreen_listitem_parkingsetup_img, .Navbigscreen_listitem_logout_img{
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.Navbigscreen_listitem_booking ,.Navbigscreen_listitem_accountreport , .Navbigscreen_listitem_parkingsetup , .Navbigscreen_listitem_bookingreport{
+    margin: 0 1rem 4.45rem 1rem;
+}
+
+.Navbigscreen_listitem_logout{
+   margin: 0 1rem 1.5rem 1rem;
+}
+
+.Navbigscreen_listitem_booking_text, .Navbigscreen_listitem_bookingreport_text , .Navbigscreen_listitem_accountreport_text, .Navbigscreen_listitem_parkingsetup_text, .Navbigscreen_listitem_logout_text{
+    color:#fff;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .2px;
+    vertical-align:middle;
+    padding: 0 10% 0 6%;
+}
+
+.Navbigscreen_menu_noexpand{
+    margin: .6rem 1rem 5rem 1rem;
+}
+
+.Navbigscreen_listitem_booking_noexpand , .Navbigscreen_listitem_bookingreport_noexpand , .Navbigscreen_listitem_accountreport_noexpand ,.Navbigscreen_listitem_parkingsetup_noexpand{
+    margin: 0 1rem 4.45rem 1rem;
+}
+
+.Navbigscreen_listitem_logout_noexpand{
+    margin: 0 1rem 1.5rem 1rem;
+}
