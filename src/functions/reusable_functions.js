@@ -1,5 +1,7 @@
 import { db,firebase } from "../core/firebase/firebase";
 import { toast } from "react-toastify";
+
+
 export function isAuthenticated() {
 	return new Promise(function (resolve, reject) {
 		if (firebase.auth().isSignInWithEmailLink(window.location.href)) {

@@ -14,15 +14,15 @@
 }
 
 .user_dashboard_username{
-    margin: 6% 0 6% 0 ;
+    margin: 6% 0 3% 0 ;
     font-weight: 600;
-    font-size : 48px;
+    font-size : 28px;
 }
 .user_dashboard_text_booking_details{
     color:#888888;
     font-weight: 600;
-    font-size: 24px;
-    margin: 0 0 5% 0;
+    font-size: 16px;
+    margin: 0 0 2% 0;
 }
 
 .user_dashboard_booking_details_card{
@@ -34,32 +34,32 @@
 .user_dashboard_text_booking_card_title{
     color: #888888;
     font-weight: 500;
-    font-size:18px;
+    font-size:14px;
     margin-bottom: 23%;
 }
 
 .user_dashboard_slot_text,.user_dashboard_start_date_text,.user_dashboard_end_date_text{
     font-weight: 500;
-    font-size:16px;
+    font-size:12px;
     margin-bottom: 23%;
 }
 
 .user_dashboard_payment_text_pending{
     font-weight: 500;
-    font-size:16px;
+    font-size:12px;
      color: #FE9923;
      margin-bottom: 23%;
 }
 
 .user_dashboard_payment_text_completed{
     font-weight: 500;
-    font-size:16px;
+    font-size:12px;
      color: #258E00;
      margin-bottom: 23%;
 }
 
 .user_dashboard_active{
-    margin-bottom: 23%;
+    margin-bottom: 17%;
 }
 
 .user_dashboard_active_green{
@@ -94,12 +94,12 @@
 .user_dashboard_balance_card_text{
     color: #888888;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 18px;
 }
 
 .user_dashboard_balance_card_amount{
     font-weight: 600;
-    font-size: 64px;
+    font-size: 42px;
 }
 
 .user_dashboard_transaction_card{
@@ -113,14 +113,14 @@
 .user_dashboard_transaction_card_title{
     color: #888888;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 16px;
     text-align: center;
-    margin-bottom: 8%;
+    margin-bottom: 4%;
 }
 
 .user_dashboard_transaction_card_transaction_id{
     color :#B8B8B8;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 500;
     text-align: center;
 }
@@ -132,12 +132,12 @@
 .user_dashboard_transaction_card_datetime_text{
     display: flex;
     justify-content: space-between;
-    padding: 2% 17% 2% 7%;
+    padding: 1% 17% 1% 7%;
+    font-size: 10px;
 }
 
 .user_dashboard_transaction_card_date_text,.user_dashboard_transaction_card_time_text{
     color:#B8B8B8;
-    font-size: 18px;
     font-weight: 500;
 }
 
@@ -145,6 +145,7 @@
     display: flex;
     justify-content: space-between;
     padding: 2% 13% 5% 7%;
+    font-size: 12px;
 }
 
 .user_dashboard_transaction_card_date,.user_dashboard_transaction_card_time{
@@ -153,7 +154,7 @@
 
 .user_dashboard_transaction_card_amount_section{
     background: #FAFAFA;
-    padding: 2% 0 3% 5%;
+    padding: 2% 0 2% 5%;
     width:80%;
     margin:auto;
 }
@@ -161,25 +162,27 @@
 .user_dashboard_transaction_card_amount_text{
     color:#888888;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 16px;
 }
 
 .user_dashboard_transaction_card_amount_number{
     color:#03B7DF;    ;
     font-weight: 600;
-    font-size: 51.3px;
+    font-size: 28px;
     text-align: center;
 }
 
 .user_dashboard_transaction_card_seemore{
     color:#B8B8B8;
-    font-size: 14px;
+    font-size: 10px;
     text-decoration-line: underline;
+    cursor: pointer;
+
 }
 
 .user_dashboard_pay{
     color:#fff;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     background: #63E9F7;
     border-radius: 5.29px;
@@ -188,13 +191,16 @@
 }
 
 .user_dashboard_pay_container{
-    padding-left: 3%;
-    width:80%;
+    padding-left: 50%;
+    width:100%;
+    margin-top: -30px;
+    cursor: pointer;
+
 }
 
 .user_dashboard_popup_section{
     position:absolute;
-    height: 70vh;
+    height: 80vh;
     width:60vw;
     left : 17%;
     top : 15%;
@@ -234,19 +240,20 @@
 
 .user_dashboard_popup_transaction_history{
     color: #646262;
-    font-size: 32px;
+    font-size: 16px;
     font-weight: 600;
     display: inline-block;
 }
 
 .user_dashboard-popup_close{
     display: inline-block;
+    cursor: pointer;
 }
 
 .user_dashboard_popup_title{
     color: #B8B8B8;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 12px;
     margin-bottom: 18%;
 }
 
@@ -255,7 +262,7 @@
 {
     color: #030303;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 10px;
     margin-bottom: 18%;
 }
 

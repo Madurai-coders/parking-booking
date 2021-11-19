@@ -6,19 +6,19 @@ import Booking from "./core/booking";
 import Menu from "./core/Menu";
 import "../src/assets/css/general.css";
 
-const Navigation = () => {
-  const location = useLocation();
-  if (location.pathname === "/" || location.pathname == "/dashboard")
-    return null;
-  return <Menu />;
-};
+// const Navigation = () => {
+//   const location = useLocation();
+//   if (location.pathname === "/" || location.pathname == "/dashboard")
+//     return null;
+//   return <Menu />;
+// };
 
 const Routes = () => {
   return (
     <>
       <BrowserRouter>
         <div style={{ overflow: "hidden" }}>
-          <Navigation />
+          {/* <Navigation /> */}
           <Switch>
             <Route path="/" exact component={User_login} />
             <Route path="/dashboard" exact component={User_dashboard} />
