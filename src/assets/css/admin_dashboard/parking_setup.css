@@ -1,0 +1,211 @@
+.parking_setup_container {
+  padding-top: 12vh;
+}
+
+.parking_setup_active_progress {
+  height: 0.7rem;
+  border-radius: 5.36px;
+  width: 80%;
+}
+
+.parking_setup_inactive_progress {
+  height: 0.7rem;
+  border-radius: 5.36px;
+  width: 80%;
+}
+
+.parking_setup_active_text,
+.parking_setup_inactive_text {
+  color: #838383;
+  font-weight: 500;
+  font-size: 11.18px;
+  margin-bottom: 2%;
+}
+
+.parking_setup_active_percentage_text {
+  color: #ff6767;
+  font-weight: 500;
+  font-size: 10.24px;
+  margin-bottom: 1%;
+}
+
+.parking_setup_inactive_percentage_text {
+  color: #2ab0ff;
+  font-weight: 500;
+  font-size: 10.24px;
+  margin-bottom: 1%;
+}
+
+.parking_setup_text_slot_type,
+.parking_setup_text_count,
+.parking_setup_text_plan {
+  color: #838383;
+  font-weight: 500;
+  font-size: 11.3px;
+  line-height: 14px;
+}
+
+.parking_setup_text_weekly,
+.parking_setup_text_monthly,
+.parking_setup_text_quarterly,
+.parking_setup_text_yearly {
+  color: #a8a8a8;
+  font-weight: 500;
+  font-size: 6.82px;
+  line-height: 8px;
+  margin: 6% 0;
+}
+
+.parking_setup_input_weekly,
+.parking_setup_input_monthly,
+.parking_setup_input_quarterly,
+.parking_setup_input_yearly {
+  max-width: 80%;
+  background: rgba(248, 248, 248, 0.61);
+  border: 0;
+}
+
+.parking_setup_input_weekly::placeholder,
+.parking_setup_input_monthly::placeholder,
+.parking_setup_input_quarterly::placeholder,
+.parking_setup_input_yearly::placeholder {
+  color: #bbbbbb;
+  font-weight: 500;
+  font-size: 6.82px;
+  line-height: 0.5rem;
+  padding-left: 3%;
+}
+.parking_setup_input_count,
+.parking_setup_input_slot_type {
+  background: rgba(248, 248, 248, 0.61);
+  border: 0;
+  width: 80%;
+  min-height: 35%;
+  margin-top: 3%;
+  margin-bottom: 13%;
+}
+
+.parking_setup_input_count::placeholder,
+.parking_setup_input_slot_type::placeholder {
+  color: #bbbbbb;
+  font-weight: 500;
+  font-size: 11.3px;
+  line-height: 14px;
+  padding-left: 3%;
+}
+
+.parking_setup_slot_container {
+  padding-left: 5%;
+}
+
+.parking_setup_button_container {
+  display: flex;
+}
+
+.parking_setup_submit_button,
+.parking_setup_clear_button {
+  font-weight: 500;
+  font-size: 10.1px;
+  line-height: 12px;
+  border-radius: 3.44px;
+  padding: 3% 6%;
+}
+
+.parking_setup_submit_button {
+  color: #ffffff;
+  background-color: #258e00;
+  margin-right: 6%;
+}
+
+.parking_setup_clear_button {
+  color: #1d1d1d;
+  background-color: #e8e8e8;
+}
+
+.parking_setup_inactive_slot_container_title {
+  color: #838383;
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 2.5rem;
+  margin: 6% 0 1% 0;
+  text-align: center;
+}
+
+.parking_setup_inactive_slot_container {
+  position: relative;
+  right: 6%;
+}
+
+.parking_setup_inactive_slot_table {
+  width: 100%;
+  background: #fffefe;
+  box-shadow: 0px 4.19px 16.75px rgba(179, 179, 179, 0.15);
+  border-radius: 6.28px;
+  text-align: center;
+}
+
+.parking_setup_table_headers th {
+  color: #000000;
+  background-color: #F1F1F1;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 1.5% 0 1.5% 0;
+  position: sticky;
+  z-index: 2;
+  top: 0;
+}
+
+.parking_setup_table_dummy_data td {
+  line-height: 18px;
+  padding-top:2%;
+  padding-bottom: 2%;
+}
+
+.parking_setup_table_data td {
+  color: #000000;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  padding-top:1.5%;
+  padding-bottom: 1.5%;
+}
+
+.parking_setup_inactive_slot_table tr:nth-child(odd){
+    background-color: #EBF9FE;
+  }
+  
+
+.parking_setup_table_activate_button {
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.5rem;
+  line-height: 9px;
+  background-color: #258e00;
+  border-radius: 1.86px;
+  padding: 3% 6%;
+  vertical-align: middle;
+}
+
+.parking_setup_inactive_slot_table_container {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 55vh;
+}
+
+.parking_setup_inactive_slot_table_container::-webkit-scrollbar{
+    width: 2px;
+}
+
+.parking_setup_inactive_slot_table_container::-webkit-scrollbar-track{
+    background: #f1f1f1; 
+}
+
+.parking_setup_inactive_slot_table_container::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+
+.parking_setup_inactive_slot_table_container::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+

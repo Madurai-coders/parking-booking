@@ -29,9 +29,9 @@
     height: 100vh;
   } */
   
-  ::-webkit-scrollbar {
+  /* ::-webkit-scrollbar {
     display:none;
-  }
+  } */
 
 
 /* ----------------------------------------------------------------------------------- */
@@ -90,4 +90,13 @@ body{
 .warn:focus{
     border-color: #ed9e9e!important;
     border-width: 0 0 2px 0;
+}
+
+.admin_logo_placer{
+  margin-top: .4rem;
+  
+}
+
+input:focus{
+  outline: none;
 }

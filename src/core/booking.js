@@ -1,24 +1,16 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import "../assets/css/admin_dashboard/booking.css";
-import Menu from "../core/Menu";
-import Navbarbigscreen from "../components/navbar/navbar_bigscreen.js";
 
-export default function User_dashboard() {
+export default function Booking() {
   return (
     <>
       <Helmet>
          <title>Munidex Parking - Booking </title>
       </Helmet>
-      <div className="d-flex flex-row">
-      <div>
-          {/* <div className='bg-primary' style={{height:'100vh',width:'10vh' }}></div> */}
-          <Navbarbigscreen/>
-          </div>
-
-        <div className='flex-grow-1'>
-        <div className="row mt-5">
-          <div className="col-7"> coll111111111111</div>
+      <div className='flex-grow-1'>
+        <div className="row booking_container">
+          <div className="col-7"> </div>
           <div className="col-5">
             <div className="row">
               <div className="col-6">
@@ -100,7 +92,6 @@ export default function User_dashboard() {
             </div>
           </div>
         </div>
-      </div>
       </div>
     </>
   );

@@ -1,7 +1,6 @@
 .Navbigscreen_container{
     height :100vh;
     background-color: #28A8E0;
-    position: absolute;
     display:flex;
     flex-direction: column;
     justify-content: space-between;

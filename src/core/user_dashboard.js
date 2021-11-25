@@ -8,6 +8,134 @@ import { IoClose } from "react-icons/io5";
 
 export default function User_dashboard() {
   const [popup, setPopup] = useState(false);
+  const [userdashboard, setUserdashboard] = useState([
+    {
+      slot: 5,
+      sdate: "13/11/21",
+      edate: "20/11/21",
+      status: "pending",
+      active: "green",
+    },
+    {
+      slot: 7,
+      sdate: "9/10/21",
+      edate: "10/10/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 3,
+      sdate: "5/09/21",
+      edate: "10/08/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 7,
+      sdate: "9/10/21",
+      edate: "10/10/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 3,
+      sdate: "5/09/21",
+      edate: "10/08/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 7,
+      sdate: "9/10/21",
+      edate: "10/10/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 3,
+      sdate: "5/09/21",
+      edate: "10/08/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 5,
+      sdate: "13/11/21",
+      edate: "20/11/21",
+      status: "pending",
+      active: "green",
+    },
+    {
+      slot: 7,
+      sdate: "9/10/21",
+      edate: "10/10/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 3,
+      sdate: "5/09/21",
+      edate: "10/08/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 7,
+      sdate: "9/10/21",
+      edate: "10/10/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 3,
+      sdate: "5/09/21",
+      edate: "10/08/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 7,
+      sdate: "9/10/21",
+      edate: "10/10/21",
+      status: "completed",
+      active: "red",
+    },
+    {
+      slot: 3,
+      sdate: "5/09/21",
+      edate: "10/08/21",
+      status: "completed",
+      active: "red",
+    },
+  ]);
+
+  const [transactionhistory, setTransactionhistoty] = useState([
+    { tid: 567362925, dop: "20/11/21", payment: "$1,000", status: "Pending" },
+    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
+    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
+    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
+    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
+    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
+    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
+    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
+    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
+    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
+    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
+    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
+    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
+    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
+    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
+    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
+    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
+    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
+    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
+    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
+    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
+    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
+    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
+    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
+    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
+  ]);
 
   return (
     <>
@@ -43,169 +171,26 @@ export default function User_dashboard() {
                     <IoClose style={{ color: "#646262" }} size={30} />
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-3">
-                    <div className="user_dashboard_popup_title">
-                      {" "}
-                      Transaction id
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                    <div className="user_dashboard_popup_tid_text">
-                      {" "}
-                      567362925{" "}
-                    </div>
-                  </div>
-                  <div className="col-3 text-center">
-                    <div className="user_dashboard_popup_title">
-                      {" "}
-                      Date of Payment{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      20/11/21{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      10/10/21{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      10/08/21{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      12/09/21{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      09/07/21{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      18/12/20{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      15/10/20{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      17/02/19{" "}
-                    </div>
-                    <div className="user_dashboard_popup_dop_text">
-                      {" "}
-                      22/07/18{" "}
-                    </div>
-                  </div>
-                  <div className="col-3 text-center">
-                    <div className="user_dashboard_popup_title"> Payment </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $1000{" "}
-                    </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $1043{" "}
-                    </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $2095{" "}
-                    </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $1043{" "}
-                    </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $1246{" "}
-                    </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $1043{" "}
-                    </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $1043{" "}
-                    </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $1043{" "}
-                    </div>
-                    <div className="user_dashboard_popup_payment_text">
-                      {" "}
-                      $1043{" "}
-                    </div>
-                  </div>
-                  <div className="col-3">
-                    <div className="user_dashboard_popup_title"> Status </div>
-                    <div className="user_dashboard_popup_status_yellow">
-                      {" "}
-                      Pending{" "}
-                    </div>
-                    <div className="user_dashboard_popup_status_green">
-                      {" "}
-                      Successful{" "}
-                    </div>
-                    <div className="user_dashboard_popup_status_green">
-                      {" "}
-                      Successful{" "}
-                    </div>
-                    <div className="user_dashboard_popup_status_green">
-                      {" "}
-                      Successful{" "}
-                    </div>
-                    <div className="user_dashboard_popup_status_green">
-                      {" "}
-                      Successful{" "}
-                    </div>
-                    <div className="user_dashboard_popup_status_green">
-                      {" "}
-                      Successful{" "}
-                    </div>
-                    <div className="user_dashboard_popup_status_green">
-                      {" "}
-                      Successful{" "}
-                    </div>
-                    <div className="user_dashboard_popup_status_green">
-                      {" "}
-                      Successful{" "}
-                    </div>
-                    <div className="user_dashboard_popup_status_green">
-                      {" "}
-                      Successful{" "}
-                    </div>
-                  </div>
+                <div className="user_dashboard_popup_table_container">
+                <table className="user_dashboard_popup_table">
+                  <tr className="user_dashboard_popup_table_header">
+                    <th>Transaction id</th>
+                    <th>Date of Payment</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                  </tr>
+                  {transactionhistory.map((transaction)=>{
+                    return(
+                      <tr className="user_dashboard_popup_table_content">
+                        <td>{transaction.tid}</td>
+                        <td>{transaction.dop}</td>
+                        <td>{transaction.payment}</td>
+                        <td><span className={"user_dashboard_popup_status_" + (transaction.status.toLowerCase())}>{transaction.status}</span></td>
+                      </tr>
+                    );
+                  }
+                  )}
+                </table>
                 </div>
               </div>
             </div>
@@ -230,102 +215,40 @@ export default function User_dashboard() {
               {" "}
               Booking Details
             </div>
+            <div className="user_dashboard_down_arrow"></div>
             <div className="user_dashboard_booking_details_card">
-              <div className="row">
-                <div className="col text-center">
-                  <div className="user_dashboard_text_booking_card_title">
-                    {" "}
-                    Slot{" "}
-                  </div>
-                  <div className="user_dashboard_slot_text">5</div>
-                  <div className="user_dashboard_slot_text">7</div>
-                  <div className="user_dashboard_slot_text">3</div>
-                  <div className="user_dashboard_slot_text">6</div>
-                  <div className="user_dashboard_slot_text">8</div>
-                  <div className="user_dashboard_slot_text">5</div>
-                  <div className="user_dashboard_slot_text">9</div>
-                </div>
-                <div className="col text-center">
-                  <div className="user_dashboard_text_booking_card_title">
-                    {" "}
-                    Start date{" "}
-                  </div>
-                  <div className="user_dashboard_start_date_text">13/11/21</div>
-                  <div className="user_dashboard_start_date_text">9/10/21</div>
-                  <div className="user_dashboard_start_date_text">5/09/21</div>
-                  <div className="user_dashboard_start_date_text">8/08/21</div>
-                  <div className="user_dashboard_start_date_text">3/07/21</div>
-                  <div className="user_dashboard_start_date_text">9/12/20</div>
-                  <div className="user_dashboard_start_date_text">11/10/20</div>
-                </div>
-                <div className="col text-center">
-                  <div className="user_dashboard_text_booking_card_title">
-                    {" "}
-                    End date{" "}
-                  </div>
-                  <div className="user_dashboard_end_date_text">20/11/21</div>
-                  <div className="user_dashboard_end_date_text">10/10/21</div>
-                  <div className="user_dashboard_end_date_text">10/08/21</div>
-                  <div className="user_dashboard_end_date_text">12/09/21</div>
-                  <div className="user_dashboard_end_date_text">5/08/21</div>
-                  <div className="user_dashboard_end_date_text">8/11/20</div>
-                  <div className="user_dashboard_end_date_text">19/11/20</div>
-                </div>
-                <div className="col text-center">
-                  <div className="user_dashboard_text_booking_card_title">
-                    {" "}
-                    Payment{" "}
-                  </div>
-                  <div className="user_dashboard_payment_text_pending">
-                    pending
-                  </div>
-                  <div className="user_dashboard_payment_text_completed">
-                    Completed
-                  </div>
-                  <div className="user_dashboard_payment_text_completed">
-                    Completed
-                  </div>
-                  <div className="user_dashboard_payment_text_completed">
-                    Completed
-                  </div>
-                  <div className="user_dashboard_payment_text_completed">
-                    Completed
-                  </div>
-                  <div className="user_dashboard_payment_text_completed">
-                    Completed
-                  </div>
-                  <div className="user_dashboard_payment_text_completed">
-                    Completed
-                  </div>
-                </div>
-                <div className="col text-center">
-                  <div className="user_dashboard_text_booking_card_title">
-                    {" "}
-                    Active{" "}
-                  </div>
-                  <div className="user_dashboard_active">
-                    <div className="user_dashboard_active_green"></div>
-                  </div>
-                  <div className="user_dashboard_active">
-                    <div className="user_dashboard_active_red"></div>
-                  </div>
-                  <div className="user_dashboard_active">
-                    <div className="user_dashboard_active_red"></div>
-                  </div>
-                  <div className="user_dashboard_active">
-                    <div className="user_dashboard_active_red"></div>
-                  </div>
-                  <div className="user_dashboard_active">
-                    <div className="user_dashboard_active_red"></div>
-                  </div>
-                  <div className="user_dashboard_active">
-                    <div className="user_dashboard_active_red"></div>
-                  </div>
-                  <div className="user_dashboard_active">
-                    <div className="user_dashboard_active_red"></div>
-                  </div>
-                </div>
-              </div>
+              <table className="user_dashboard_booking_details_table">
+                <tr className="user_dashboard_booking_details_table_heading">
+                  <th>Slot</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Status</th>
+                  <th>Active</th>
+                </tr>
+                {userdashboard.map((userdata) => {
+                  return (
+                    <tr className="user_dashboard_booking_details_table_data">
+                      <td>{userdata.slot}</td>
+                      <td>{userdata.sdate}</td>
+                      <td>{userdata.edate}</td>
+                      <td>
+                        <span
+                          className={
+                            "user_dashboard_payment_text_" + userdata.status
+                          }
+                        >
+                          {userdata.status}
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          className={"user_dashboard_active_" + userdata.active}
+                        ></span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </table>
             </div>
           </div>
           <div className="col-5">
@@ -334,10 +257,9 @@ export default function User_dashboard() {
                 <div className="user_dashboard_balance_card_text mb-3">
                   {" "}
                   Balance{" "}
-
                   <div className="user_dashboard_pay_container text-center">
-              <div className="user_dashboard_pay"> Pay </div>
-            </div>
+                    <div className="user_dashboard_pay"> Pay </div>
+                  </div>
                 </div>
                 <div className="user_dashboard_balance_card_amount d-flex">
                   $ 650{" "}
