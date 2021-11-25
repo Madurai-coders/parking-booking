@@ -93,8 +93,11 @@ body{
 }
 
 .admin_logo_placer{
-  margin-top: .4rem;
-  
+  width: calc(13vw - 4.5rem);
+  background-color: #fff;
+  padding-top: .6rem;
+  height: 3rem;
+  padding-bottom: .6rem;
 }
 
 input:focus{

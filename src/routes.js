@@ -4,11 +4,12 @@ import User_login from "./core/user_login";
 import User_dashboard from "./core/user_dashboard";
 import Booking from "./core/booking";
 import Parkingsetup from "./core/parking_setup";
+import Booking_report from "./core/booking_report";
 import Payment from "./core/payment.js"
 import Menu from "./core/Menu";
 import User_report from "./core/user_report.js"
 import "../src/assets/css/general.css";
-import logo from "../src/assets/images/absolutelogo.png";
+import logo from "../src/assets/images/navlogo.svg";
 
 const Navigation = () => {
   const location = useLocation();
@@ -53,6 +54,7 @@ const Routes = () => {
               />
               <Route path="/Admindashboardpayment" exact component={Payment} />
               <Route path="/AdmindashboardUserreport" exact component={User_report} />
+              <Route path="/AdmindashboardBookingreport" exact component={Booking_report} />
             </Switch>
           </div>
         </div>

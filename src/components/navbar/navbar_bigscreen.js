@@ -33,7 +33,7 @@ export default function Navbarbigscreen() {
                   alt="Munidex_Parking_Menu"
                 />
               </li>
-              <Link to='/Admindashboardbooking'>
+              <Link to='Admindashboardbooking'>
               <li className="Navbigscreen_listitem_booking_noexpand">
                 <img
                   src={Booking}
@@ -42,7 +42,7 @@ export default function Navbarbigscreen() {
                 />
               </li>
               </Link>
-              <Link>
+              <Link to = "AdmindashboardBookingreport">
               <li className="Navbigscreen_listitem_bookingreport_noexpand">
                 <img
                   src={Bookingreport}
@@ -114,7 +114,7 @@ export default function Navbarbigscreen() {
                 </span>
               </li>
               </Link>
-              <Link>
+              <Link to = "AdmindashboardBookingreport">
               <li className="Navbigscreen_listitem_bookingreport">
                 <img
                   src={Bookingreport}
