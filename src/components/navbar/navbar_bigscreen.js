@@ -42,7 +42,7 @@ export default function Navbarbigscreen(props) {
                 />
               </li>
               </Link>
-              <Link to = "AdmindashboardBookingreport">
+              <Link to = "Admin">
               <li className="Navbigscreen_listitem_bookingreport_noexpand">
                 <img
                   src={Bookingreport}
