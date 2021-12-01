@@ -404,8 +404,8 @@ export default function Parkingsetup() {
         <div className="row">
           <div className="col-7">
             <div className="parking_setup_wing_container"> 
-            <Slider {...settings}>
-
+          <Slider {...settings}>
+                  
 					</Slider>
               {booksection[0].wingA.map((slot) => {
                 count++;
