@@ -11,6 +11,9 @@ import {
   axios_call_auto,
   validation_count,
 } from "../functions/reusable_functions";
+import Car from "../assets/images/Car.svg";
+import Slider from "react-slick";
+
 export default function Parkingsetup() {
   const [parkingsetup, setParkingsetup] = useState([
     { stype: "A", sid: 73143, date: "18/09/21" },
@@ -137,6 +140,51 @@ export default function Parkingsetup() {
   useEffect(() => {
     GetWingDetails();
   }, []);
+
+  const [booksection, setBooksection] = useState([
+    {
+      wingA: [
+        { slotname: "was1" , status:"" },
+        { slotname: "was2" , status:"booked" },
+        { slotname: "was3" , status:"" },
+        { slotname: "was4" , status:"" },
+        { slotname: "was5" , status:"" },
+        { slotname: "was6" , status:"booked" },
+        { slotname: "was7" , status:"" },
+        { slotname: "was8" , status:"" },
+        { slotname: "was9" , status:"" },
+        { slotname: "was10" , status:"" },
+        { slotname: "was11" , status:"booked" },
+        { slotname: "was12" , status:"" },
+        { slotname: "was13" , status:"" },
+        { slotname: "was14" , status:"" },
+        { slotname: "was1" , status:"" },
+        { slotname: "was2" , status:"booked" },
+        { slotname: "was3" , status:"" },
+        { slotname: "was4" , status:"" },
+        { slotname: "was5" , status:"booked" },
+        { slotname: "was6" , status:"" },
+        { slotname: "was7" , status:"" },
+        { slotname: "was8" , status:"" },
+        { slotname: "was9" , status:"" },
+        { slotname: "was10" , status:"" },
+        { slotname: "was11" , status:"booked" },
+        { slotname: "was12" , status:"" },
+        { slotname: "was13" , status:"" },
+        { slotname: "was14" , status:"" }
+      ],
+    },
+    { wingB: [{ slotname: "wbs1" }, { slotname: "wbs2" }] },
+  ]);
+
+ const settings = {
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+  };
+
+  let count = 0;
+  let space;
 
   return (
     <>
@@ -355,16 +403,26 @@ export default function Parkingsetup() {
         </div>
         <div className="row">
           <div className="col-7">
-          {wing_data &&
-              wing_data.map((wing) => {
-                return <div>{wing.wingName}
-              
-                
-                </div>;
-              })}
-          </div>
+            <div className="parking_setup_wing_container"> 
+            <Slider {...settings}>
 
-          <div className="col-5 " style={{ marginTop: "-40px" }}>
+					</Slider>
+              {booksection[0].wingA.map((slot) => {
+                count++;
+                return (
+                  <span>
+                    <img
+                      key={slot.slotname}
+                      src={Car}
+                      className={"ps-3 pe-3 mb-3 parking_setup_car_img" + slot.status}
+                      alt="Munidex_parking_Booking_slots"
+                    />
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+          <div className="col-5">
             <div className="parking_setup_inactive_slot_container">
               <div className="parking_setup_inactive_slot_container_title">
                 {" "}

@@ -169,8 +169,8 @@ export default function User_report() {
               </div>
             )}
           </div>
+        <div className="User_report_text_recent">+
         </div>
-        <div className="User_report_text_recent">
           <VscHistory size={14.5} style={{ color: "#666666" }} /> Recent{" "}
         </div>
         <div className="User_report_recent_container">
