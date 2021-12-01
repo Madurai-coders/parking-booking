@@ -9,7 +9,7 @@ import Logout from "../../assets/images/Logout.svg";
 import User_report from "../../assets/images/userreport.svg"
 import { Link } from "react-router-dom";
 
-export default function Navbarbigscreen() {
+export default function Navbarbigscreen(props) {
   const [expand, setExpand] = useState(false);
 
   function handleExpand() {
@@ -33,7 +33,7 @@ export default function Navbarbigscreen() {
                   alt="Munidex_Parking_Menu"
                 />
               </li>
-              <Link to='Admindashboardbooking'>
+              <Link to='/admin'>
               <li className="Navbigscreen_listitem_booking_noexpand">
                 <img
                   src={Booking}
@@ -69,7 +69,7 @@ export default function Navbarbigscreen() {
                 />
               </li>
               </Link>
-              <Link to = 'AdmindashboardUserreport'>
+              <Link to = 'AdmindashboardUserreport' >
               <li className="Navbigscreen_listitem_parkingsetup_noexpand">
                 <img
                   src={User_report}
@@ -81,7 +81,7 @@ export default function Navbarbigscreen() {
             </ul>
           </div>
 
-          <div className="Navbigscreen_listitem_logout_noexpand">
+          <div onClick={props.logout} className="Navbigscreen_listitem_logout_noexpand">
             <img
               src={Logout}
               className="Navbigscreen_listitem_logout_img"
@@ -164,7 +164,7 @@ export default function Navbarbigscreen() {
               </Link>
             </ul>
           </div>
-          <div className="Navbigscreen_listitem_logout">
+          <div className="Navbigscreen_listitem_logout" onClick={props.logout}>
             <img
               src={Logout}
               className="Navbigscreen_listitem_logout_img"

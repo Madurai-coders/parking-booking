@@ -1,161 +1,160 @@
 import { db,firebase } from "../core/firebase/firebase";
 import { toast } from "react-toastify";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-
-export function isAuthenticated() {
+export function axios_call(method, url, data) {
 	return new Promise(function (resolve, reject) {
-		if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-			// Additional state parameters can also be passed via URL.
-			// This can be used to continue the user's intended action before triggering
-			// the sign-in operation.
-			// Get the email if available. This should be available if the user completes
-			// the flow on the same device where they started it.
-			var email = window.localStorage.getItem("emailForSignIn");
-			if (!email) {
-				// User opened the link on a different device. To prevent session fixation
-				// attacks, ask the user to provide the associated email again. For example:
-				email = window.prompt("Please provide your email for confirmation");
-			}
-			// The client SDK will parse the code from the link for you.
-			firebase
-				.auth()
-				.signInWithEmailLink(email, window.location.href)
-				.then((result) => {
-					// Clear email from storage.
-					var user = firebase.auth().currentUser;
-					resolve(user);
-					// You can access the new user via result.user
-					// Additional user info profile not available via:
-					// result.additionalUserInfo.profile == null
-					// You can check if the user is new or existing:
-					// result.additionalUserInfo.isNewUser
-				})
-				.catch((error) => {
-					// Some error occurred, you can inspect the code: error.code
-					// Common errors could be invalid email and invalid or expired OTPs.
-				});
-		}
-		var user = firebase.auth().currentUser;
-
-		if (user) {
-			db.collection("user")
-				.doc(user.uid)
-				.get()
-				.then((response) => {
-					var data = { ...response.data() };
-					const myArr = user.email.split("@");
-					var userdata = {};
-					if (!user.displayName) {
-						userdata = {
-							...data,
-							email: user.email,
-							name: myArr[0],
-							userid: user.uid,
-						};
-					} else {
-						userdata = {
-							...data,
-							email: user.email,
-							name: user.displayName,
-							userid: user.uid,
-						};
-					}
-					db.collection("user").doc(user.uid).set(userdata);
-					if (myArr[1] == "munidexparking.com") {
-						db.collection("Admin_user_data")
-							.doc("TvAQlQdZEcdoI7V0jHLN")
-							.update({
-								user_val: firebase.firestore.FieldValue.arrayUnion(user.uid),
-							});
-					}
-
-					resolve(user);
-				});
-		}
-	});
-}
-
-export function isAdmin() {
-	return new Promise(function (resolve, reject) {
-		var user = firebase.auth().currentUser;
-		db.collection("Admin")
-			.doc("4ESMOgHfdctZaKaenYqC")
-			.get()
+		var access_token = Cookies.get("access_token");
+		axios({
+			method: method,
+			url: "http://127.0.0.1:8000/" + url,
+			data: data,
+			headers: { Authorization: `Bearer ${access_token}` },
+		})
 			.then((response) => {
-				var admins = { ...response.data() };
-				admins = admins.admins;
-				var n = admins.includes(user.uid);
-                console.log(n)
-				if (n) {
-					resolve(user);
-				}
-				resolve(false);
+				resolve(response.data);
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch((response) => {
+				var refresh=Cookies.get("refresh_token");
+					axios({
+						method: "POST",
+						url: "http://127.0.0.1:8000/api/token/refresh/",
+						data: { refresh:  refresh},
+                        withCredentials: true
+					})
+						.then((response) => {
+                            Cookies.set("refresh_token", response.data.refresh);
+							Cookies.set("access_token", response.data.access);
+							axios({
+								method: method,
+								url: "http://127.0.0.1:8000/" + url,
+								data: data,
+								headers: { Authorization: `Bearer ${response.data.access}` },
+                                withCredentials: true
+							}).then((response) => {
+								resolve(response.data);
+							});
+						})
+						.catch((response) => {
+                            logout()
+						});
+				
 			});
 	});
 }
 
-export function login() {
+export function axios_call_auto(method, url, data) {
+	return new Promise(function (resolve, reject) {
+		var access_token = Cookies.get("access_token");
+		axios({
+			method: method,
+			url: url,
+			data: data,
+			headers: { Authorization: `Bearer ${access_token}` },
+		})
+			.then((response) => {
+				resolve(response.data);
+			})
+			.catch((response) => {
+                var refresh=Cookies.get("refresh_token")
 
-	return new Promise(function (resolve) {
+					axios({
+						method: "POST",
+						url: "http://127.0.0.1:8000/api/token/refresh/",
+						data: { refresh: refresh },
+                        withCredentials: true
+					})
+						.then((response) => {
+                            Cookies.set("refresh_token", response.data.refresh);
+							Cookies.set("access_token", response.data.access);
+							axios({
+								method: method,
+								url:  url,
+								data: data,
+								headers: { Authorization: `Bearer ${response.data.access}` },
+							}).then((response) => {
+								resolve(response.data);
+							});
+						})
+						.catch((response) => {
+							logout();
+						});
+				
+			});
+	});
+}
+
+export function login(checkadmin) {
+	return new Promise(function (resolve, reject) {
 		const provider = new firebase.auth.GoogleAuthProvider();
-		const data = firebase.auth().signInWithPopup(provider);
-		if (data.email !== null) {
-			resolve(data);
-        
-		}
+		firebase
+			.auth()
+			.signInWithPopup(provider)
+			.then((data) => {
+                var access_token = ''
+				if (data.additionalUserInfo.isNewUser) {
+					axios({
+						method: "POST",
+						url: "http://127.0.0.1:8000/register/",
+						data: {
+							username: data.user.email,
+							password: data.user.uid,
+						},
+                        withCredentials: true
+					}).then((response) => {
+						axios({
+							method: "POST",
+							url: "http://127.0.0.1:8000/api/jwt_token/",
+							data: {
+								username: data.user.email,
+								password: data.user.uid,
+							},
+                            withCredentials: true
+						}).then((response) => {
+                            Cookies.set("refresh_token", response.data.refresh);
+							Cookies.set("access_token", response.data.access);
+                            if(!checkadmin){
+                                resolve(data)}
+                
+                                else{
+                                     resolve({data,access:response.data.access})
+                                }						});
+					});
+				} else {
+					axios({
+						method: "POST",
+						url: "http://127.0.0.1:8000/api/jwt_token/",
+						data: {
+							username: data.user.email,
+							password: data.user.uid,
+						},
+                        withCredentials: true
+					}).then((response) => {
+                        Cookies.set("refresh_token", response.data.refresh);
+						Cookies.set("access_token", response.data.access);
+                        if(!checkadmin){
+                            resolve(data)}
+            
+                            else{
+                                 resolve({data,access:response.data.access})
+                            }					});
+				}
+               
+
+			});
 	});
 }
 
 export function logout() {
-	const toastifylogout = () => {
-		toast.error("logout Sucessfull!", {
-			position: "bottom-right",
-			autoClose: 2000,
-			hideProgressBar: true,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: false,
-			className: "submit-feedback danger",
-			toastId: "notifyToast",
-		});
-	};
-	return new Promise(function (resolve) {
+	return new Promise(function (resolve, reject) {
 		const data = firebase.auth().signOut();
-		window.localStorage.removeItem("emailForSignIn");
-		resolve(true);
-        setTimeout(() => {
-            toastifylogout();
-        }, 2000);
-	});
-}
-
-export function emaillogin(email) {
-	return new Promise(function (resolve) {
-		console.log(email);
-		var actionCodeSettings = {
-			url: "http://localhost:3000",
-			// This must be true.
-			handleCodeInApp: true,
-		};
-
-		console.log(actionCodeSettings);
-
-		firebase
-			.auth()
-			.sendSignInLinkToEmail(email, actionCodeSettings)
-			.then(() => {
-				console.log("emaillogin sent");
-				window.localStorage.setItem("emailForSignIn", email);
-				resolve(true);
-			})
-			.catch((error) => {
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				resolve(false);
-			});
+        if (data){
+		resolve(true);}
+		setTimeout(() => {
+			Cookies.remove("access_token");
+            Cookies.remove("refresh_token");
+		}, 1000);
 	});
 }
 
@@ -166,7 +165,7 @@ export function emaillogin(email) {
 export function validation_name(value) {
 	var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9]+/;
 	if (value == "" || value != "not_selected") {
-		console.log(value);
+		// console.log(value);
 		if (value) {
 			if (!value.startsWith(" ")) {
 				if (value.length >= 1) {
@@ -610,6 +609,103 @@ export function validation_comment(value) {
 	if (value == "not_selected") return "";
 }
 
+
+export function validation_payment_id(value) {
+    if (value == "" || value != "not_selected") {
+        var payment_id = /^[a-zA-Z0-9]+$/
+        if (value) {
+            if (value.match(payment_id) && (value.length>=8 && value.length <=22)) {
+                return {
+                    class: "pass",
+                };
+            } else {
+                return {
+                    class: "warn",
+                    msg: (
+                        <>
+                            <small class="text-danger">
+                                Payment id is invalid
+                            </small>
+                        </>
+                    ),
+                };
+            }
+        } else
+            return {
+                class: "warn",
+                msg: (
+                    <>
+                        <small class="text-danger">Payment id is a required field</small>
+                    </>
+                ),
+            };
+    }
+    if (value == "not_selected") return "";
+}
+
+export function validation_amount(value) {
+    if (value == "" || value != "not_selected") {
+        if (value) {
+            if (value>=0 && value.length<4) {
+                return {
+                    class: "pass",
+                };
+            } else {
+                return {
+                    class: "warn",
+                    msg: (
+                        <>
+                            <small class="text-danger">
+                                Please Enter A Valid Amount
+                            </small>
+                        </>
+                    ),
+                };
+            }
+        } else
+            return {
+                class: "warn",
+                msg: (
+                    <>
+                        <small class="text-danger">Please fill in the amount</small>
+                    </>
+                ),
+            };
+    }
+    if (value == "not_selected") return "";
+}
+
+export function validation_count(value) {
+    if (value == "" || value != "not_selected") {
+        if (value) {
+            if (value>0 && value.length<=3) {
+                return {
+                    class: "pass",
+                };
+            } else {
+                return {
+                    class: "warn",
+                    msg: (
+                        <>
+                            <small class="text-danger">
+                                Please Enter A Valid Count
+                            </small>
+                        </>
+                    ),
+                };
+            }
+        } else
+            return {
+                class: "warn",
+                msg: (
+                    <>
+                        <small class="text-danger">Please fill in the number of parking slots</small>
+                    </>
+                ),
+            };
+    }
+    if (value == "not_selected") return "";
+}
 
 export function debounce(func, wait, immediate) {
 	var timeout;

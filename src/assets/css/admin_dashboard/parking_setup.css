@@ -1,5 +1,5 @@
 .parking_setup_container {
-  padding-top: 12vh;
+  padding-top: 9vh;
 }
 
 .parking_setup_active_progress {
@@ -62,7 +62,7 @@
 .parking_setup_input_yearly {
   max-width: 80%;
   background: rgba(248, 248, 248, 0.61);
-  border: 0;
+  border-width: 0;
 }
 
 .parking_setup_input_weekly::placeholder,
@@ -78,11 +78,10 @@
 .parking_setup_input_count,
 .parking_setup_input_slot_type {
   background: rgba(248, 248, 248, 0.61);
-  border: 0;
+  border-width: 0;
   width: 80%;
   min-height: 35%;
   margin-top: 3%;
-  margin-bottom: 13%;
 }
 
 .parking_setup_input_count::placeholder,
