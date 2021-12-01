@@ -9,7 +9,7 @@ import Payment from "./core/payment.js";
 import Menu from "./core/Menu";
 import User_report from "./core/user_report.js";
 import "../src/assets/css/general.css";
-import logo from "../src/assets/images/absolutelogo.png";
+import logo from "../src/assets/images/navlogo.svg";
 import {
   axios_call,
   axios_call_auto,
