@@ -89,7 +89,7 @@ const Routes = () => {
       <BrowserRouter>
         <div style={{ overflow: "hidden" }}>
           <Switch>
-            {!is_admin && (
+            {is_admin && (
               <>
                 <Route path="/" exact component={User_login} />
                 <Route
@@ -105,7 +105,7 @@ const Routes = () => {
               </>
             )}
           </Switch>
-          {is_admin && (
+          {!is_admin && (
             <div className="d-flex flex-row">
               <div>
                 <Navigation  />

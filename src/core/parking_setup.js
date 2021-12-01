@@ -144,47 +144,39 @@ export default function Parkingsetup() {
   const [booksection, setBooksection] = useState([
     {
       wingA: [
-        { slotname: "was1" , status:"" },
-        { slotname: "was2" , status:"booked" },
-        { slotname: "was3" , status:"" },
-        { slotname: "was4" , status:"" },
-        { slotname: "was5" , status:"" },
-        { slotname: "was6" , status:"booked" },
-        { slotname: "was7" , status:"" },
-        { slotname: "was8" , status:"" },
-        { slotname: "was9" , status:"" },
-        { slotname: "was10" , status:"" },
-        { slotname: "was11" , status:"booked" },
-        { slotname: "was12" , status:"" },
-        { slotname: "was13" , status:"" },
-        { slotname: "was14" , status:"" },
-        { slotname: "was1" , status:"" },
-        { slotname: "was2" , status:"booked" },
-        { slotname: "was3" , status:"" },
-        { slotname: "was4" , status:"" },
-        { slotname: "was5" , status:"booked" },
-        { slotname: "was6" , status:"" },
-        { slotname: "was7" , status:"" },
-        { slotname: "was8" , status:"" },
-        { slotname: "was9" , status:"" },
-        { slotname: "was10" , status:"" },
-        { slotname: "was11" , status:"booked" },
-        { slotname: "was12" , status:"" },
-        { slotname: "was13" , status:"" },
-        { slotname: "was14" , status:"" }
+        { slotname: "was1", status: "" },
+        { slotname: "was2", status: "undercons" },
+        { slotname: "was3", status: "" },
+        { slotname: "was4", status: "" },
+        { slotname: "was5", status: "" },
+        { slotname: "was6", status: "undercons" },
+        { slotname: "was7", status: "" },
+        { slotname: "was8", status: "" },
+        { slotname: "was9", status: "" },
+        { slotname: "was10", status: "" },
+        { slotname: "was11", status: "undercons" },
+        { slotname: "was12", status: "" },
+        { slotname: "was13", status: "" },
+        { slotname: "was14", status: "" },
+        { slotname: "was1", status: "" },
+        { slotname: "was2", status: "undercons" },
+        { slotname: "was3", status: "" },
+        { slotname: "was4", status: "" },
+        { slotname: "was5", status: "undercons" },
+        { slotname: "was6", status: "" },
+        { slotname: "was7", status: "" },
+        { slotname: "was8", status: "" },
+        { slotname: "was9", status: "" },
+        { slotname: "was10", status: "" },
+        { slotname: "was11", status: "undercons" },
+        { slotname: "was12", status: "" },
+        { slotname: "was13", status: "" },
+        { slotname: "was14", status: "" },
       ],
     },
     { wingB: [{ slotname: "wbs1" }, { slotname: "wbs2" }] },
   ]);
 
- const settings = {
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
-
-  let count = 0;
-  let space;
 
   return (
     <>
@@ -403,18 +395,22 @@ export default function Parkingsetup() {
         </div>
         <div className="row">
           <div className="col-7">
-            <div className="parking_setup_wing_container"> 
-          <Slider {...settings}>
-                  
-					</Slider>
+          <div className="parking_setup_wing_title_section">
+          <div style={{display:"flex"}}>
+      <div className="parking_setup_wingA me-1">Wing A</div>
+      <div className="parking_setup_wingB">Wing B</div>
+      </div>
+    </div>
+            <div className="parking_setup_wing_container">
               {booksection[0].wingA.map((slot) => {
-                count++;
                 return (
                   <span>
                     <img
                       key={slot.slotname}
                       src={Car}
-                      className={"ps-3 pe-3 mb-3 parking_setup_car_img" + slot.status}
+                      className={
+                        "ps-3 pe-3 mb-3 parking_setup_car_img" + slot.status
+                      }
                       alt="Munidex_parking_Booking_slots"
                     />
                   </span>
