@@ -9,7 +9,7 @@ export default function Booking_report() {
               <title>Munidex Parking - Booking Report</title>
           </Helmet>
           <div className="sample">
-              Hello
+          Booking Report Coming Soon...
           </div>
        </>
    );

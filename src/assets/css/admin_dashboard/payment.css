@@ -107,7 +107,7 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
-  padding: 0.5% 6% 0.5% 0%;
+  padding:10px;
   position: sticky;
   top: 0;
 }
@@ -117,7 +117,7 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
-  padding: 1% 6% 1% 0%;
+  padding:10px;
 }
 
 .payment_table tr:nth-child(even) td {

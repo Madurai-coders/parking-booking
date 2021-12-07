@@ -490,6 +490,7 @@ export default function Payment() {
                 <th>UserId</th>
                 <th>Payment type</th>
                 <th>Payment id</th>
+                <th>Amount</th>
                 <th>Date/Time</th>
                 <th>Controls</th>
               </tr>
@@ -502,6 +503,7 @@ export default function Payment() {
                       <td>{payment.User.accountNumber}</td>
                       <td>{payment.paymentType}</td>
                       <td>{payment.paymentId}</td>
+                      <td>{payment.amount}$</td>
                       <td>
                         {moment(payment.paymentDate).format(
                           "dd, MM Do YY, h:mm a"

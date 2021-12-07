@@ -12,67 +12,248 @@ import {
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import { set } from "js-cookie";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Car from "../assets/images/Car.svg";
+import moment from "moment";
 export default function Booking() {
   const [booking, setbooking] = useState({
-    userId: "not_selected",
+    userId: "",
     bookingId: "not_selected",
     date: new Date(),
     startFrom: "not_selected",
     endTo: "not_selected",
-    slotid: "not_selected",
+    slotid: "",
     plan: "not_selected",
     name: "not_selected",
+    charge: "",
   });
   const [userdata, setuserdata] = useState();
   const [usr_suggestion, set_usr_suggestion] = useState([]);
+  const [booking_details, SetBookingdetails] = useState([]);
   const [wing_data, SetWing_data] = useState();
-  const [bookind_details, SetBookingdetails] = useState();
-  
+  const [wing, SetWing] = useState();
+  const [slot, SetSlot] = useState();
+  const [bookinghover, setBookinghover] = useState();
 
   const checkuser = async (val) => {
     if (validation_name(val).class === "pass") {
       axios_call("GET", "Check_BusinessPartner?search=" + val).then(
         (response) => {
           set_usr_suggestion(response);
-        
-        if(response[0]==val){
-setbooking({...booking,userId:response[0].id})
-        }}
+          console.log(response[0]);
+          console.log(val);
+          if (response[0].userName == val) {
+            setbooking({
+              ...booking,
+              name: response[0].userName,
+              userId: response[0].id,
+            });
+          }
+        }
       );
     }
   };
 
-  
-  
-  function GetWingDetails(val) {
+  function GetWingDetails(id) {
     axios_call("GET", "CreateWing/").then((response) => {
       SetWing_data(response);
       console.log(response);
+      if (response[0]) {
+        if (id) {
+          SetSlot(response[response.length - 1].slots);
+          SetWing(response.length - 1);
+        } else {
+          SetSlot(response[0].slots);
+          SetWing(response[0]);
+        }
+      }
     });
   }
 
-  function GetBookingDetails() {
-    axios_call("GET", "CreateBooking/").then((response) => {
-      SetBookingdetails(response);
-      console.log(response);
-    });
+  function GetBooking() {
+    var start = moment(new Date()).format("YYYY-MM-DD");
+    var end = moment(new Date())
+      .add(366, "days")
+      .format("YYYY-MM-DD");
+
+    axios_call("GET", "GetBooking/?from=" + start + "&to=" + end).then(
+      (response) => {
+        SetBookingdetails(response);
+        console.log(response);
+      }
+    );
   }
 
+  function checkslots(slot, id, booking_details) {
+    if (slot.slotStatus) {
+      if (booking_details[0]) {
+        var val = booking_details.filter((item) => item.slotid == slot.slotId);
+      }
+      if (val ? val[0] : false) {
+        var b = moment(val[0].endTo, "YYYY-MM-DD");
+        var a = moment(new Date(), "YYYY-MM-DD");
+        var day = b.diff(a, "days");
+        if (day < 10) {
+          var indicate = "closes_soon";
+        } else indicate = "booked";
+        return (
+          <>
+            <img
+              onMouseEnter={() =>
+                setBookinghover({
+                  name: val[0].User.userName,
+                  day: day,
+                  slotid:slot.slotId,
+                  plan:val[0].plan
+                })
+              }
+              onMouseLeave={() => setBookinghover()}
+              key={id}
+              src={Car}
+              className={"ps-3 pe-3 mb-3 parking_setup_car_img " + indicate}
+              alt="Munidex_parking_Booking_slots"
+            />
+          </>
+        );
+      } else {
+        return (
+          <img
+            key={id}
+            src={Car}
+            onClick={() =>
+              booking.slotid == slot.slotId
+                ? setbooking({ ...booking, slotid: "" })
+                : setbooking({
+                    ...booking,
+                    slotid: slot.slotId,
+                  })
+            }
+            className={
+              "ps-3 pe-3 mb-3 parking_setup_car_img " +
+              (booking.slotid == slot.slotId && "Selected")
+            }
+            alt="Munidex_parking_Booking_slots"
+          />
+        );
+      }
+    } else {
+      return (
+        <img
+          key={id}
+          src={Car}
+          onClick={() =>
+            booking.slotid == slot.slotId
+              ? setbooking({ ...booking, slotid: "" })
+              : setbooking({
+                  ...booking,
+                  slotid: slot.slotId,
+                })
+          }
+          className={"ps-3 pe-3 mb-3 parking_setup_car_img parking_undercons"}
+          alt="Munidex_parking_Booking_slots"
+        />
+      );
+    }
+  }
+
+  function FormSumbit() {
+    var startFrom = moment(booking.date, "YYYY-MM-DD").format("YYYY-MM-DD");
+    var endTo = "";
+    if (booking.plan == "Monthly") {
+      endTo = moment(booking.date, "YYYY-MM-DD")
+        .add(31, "days")
+        .format("YYYY-MM-DD");
+    }
+
+    if (booking.plan == "Quarterly") {
+      endTo = moment(booking.date, "YYYY-MM-DD")
+        .add(180, "days")
+        .format("YYYY-MM-DD");
+    }
+
+    if (booking.plan == "Weekly") {
+      endTo = moment(booking.date, "YYYY-MM-DD")
+        .add(7, "days")
+        .format("YYYY-MM-DD");
+    }
+
+    if (booking.plan == "Yearly") {
+      endTo = moment(booking.date, "YYYY-MM-DD")
+        .add(366, "days")
+        .format("YYYY-MM-DD");
+    }
+
+    var booking_finalized = {
+      ...booking,
+      startFrom: startFrom,
+      endTo: endTo,
+      bookingId: Date.now().toString(36) + Math.random().toString(36).substr(2),
+    };
+    console.log(booking_finalized);
+
+    if (
+      booking_finalized.slotid &&
+      booking_finalized.name &&
+      booking_finalized.userId &&
+      booking_finalized.plan &&
+      booking_finalized.endTo &&
+      booking_finalized.startFrom &&
+      booking_finalized.charge
+    ) {
+      console.log("check");
+      axios_call("POST", "CreateBooking/", booking_finalized).then(
+        (response) => {
+          console.log(response);
+          reset();
+        }
+      );
+    }
+  }
+
+  function reset() {
+    setbooking({
+      userId: "",
+      bookingId: "not_selected",
+      date: new Date(),
+      startFrom: "not_selected",
+      endTo: "not_selected",
+      slotid: "",
+      plan: "not_selected",
+      name: "not_selected",
+    });
+    GetWingDetails();
+    GetBooking();
+  }
   useEffect(() => {
     var booking_data = window.localStorage.getItem("bookingdata");
     var booking_data = JSON.parse(booking_data);
-    console.log(booking_data)
+    console.log(booking_data);
 
     if (booking_data) {
       setuserdata(booking_data);
-      console.log(booking_data)
-      setbooking({...booking,userId:booking_data.id,name:booking_data.User.userName})      
+      console.log(booking_data);
+      setbooking({
+        ...booking,
+        userId: booking_data.id,
+        name: booking_data.User.userName,
+      });
+      window.localStorage.removeItem("bookingdata");
     }
-    GetWingDetails()
+    GetWingDetails();
+    GetBooking();
   }, []);
 
-  
+  //   useEffect(() => {
+  //     var value = usr_suggestion.filter((item) => (item.userName = booking.name));
+
+  //     setbooking({
+  //       ...booking,
+  //       userId: value.userName
+  //     });
+  //     console.log(users)
+  //   }, [booking.name]);
 
   return (
     <>
@@ -81,7 +262,103 @@ setbooking({...booking,userId:response[0].id})
       </Helmet>
       <div className="flex-grow-1">
         <div className="row booking_container">
-          <div className="col-7"> </div>
+          <div className="col-7">
+            {" "}
+            <div className="px-4 pt-1">
+              <div className="shadow-sm p-3">
+                {!bookinghover ? (
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="row">
+                        <small className="col-7">Name: {booking.name}</small>
+                        <small className="col-5">plan: {booking.plan}</small>
+                      </div>
+                    </div>
+                    <div className="mt-2 col-12 ">
+                      <div className="row">
+                        <small className="col-7">
+                          SlotId: {booking.slotid}
+                        </small>
+                        <small className="col-5"> $: {booking.charge}</small>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="row">
+                        <small className="col-7">Name: {bookinghover.name}</small>
+                        <small className="col-5">plan: {bookinghover.plan}</small>
+                      </div>
+                    </div>
+                    <div className="mt-2 col-12 ">
+                      <div className="row">
+                        <small className="col-7">
+                          SlotId: {bookinghover.slotid}
+                        </small>
+                        <small className="col-5"> Days left: {bookinghover.day}</small>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="">
+              {wing_data && wing_data.length > 5 && (
+                <div className="parking_setup_wing_title_section">
+                  <Slider>
+                    {wing_data.map((wing) => {
+                      return (
+                        <div
+                          className={
+                            wing.id != (slot && slot[0].wingId)
+                              ? "btn-light btn btn-sm m-1"
+                              : "btn-outline-primary btn btn-sm m-1"
+                          }
+                          onClick={() => (SetWing(wing),setbooking({...booking,plan:'',charge:''}), SetSlot(wing.slots))}
+                        >
+                          {wing.wingName}
+                        </div>
+                      );
+                    })}
+                  </Slider>
+                </div>
+              )}
+
+              {wing_data && wing_data.length < 5 && (
+                <div className="parking_setup_wing_title_section">
+                  <div className="d-flex">
+                    {wing_data.map((wing) => {
+                      return (
+                        <div
+                          className={
+                            wing.id != (slot && slot[0].wingId)
+                              ? "btn-light btn btn-sm m-1"
+                              : "btn-outline-primary btn btn-sm m-1"
+                          }
+                          onClick={() => (SetWing(wing),setbooking({...booking,plan:'',charge:''}),SetSlot(wing.slots))}
+                        >
+                          {wing.wingName}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="parking_setup_wing_container">
+                {slot && (
+                  <>
+                    {slot.map((slot, id) => {
+                      return (
+                        <span>{checkslots(slot, id, booking_details)}</span>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
           <div className="col-5">
             <div className="row">
               <div className="col-6">
@@ -115,6 +392,7 @@ setbooking({...booking,userId:response[0].id})
             </div>
             <div className="booking_form_container">
               <div className="booking_form_title"> Booking </div>
+
               <div className="booking_form_name_input">
                 <label for="name">Name</label>
                 <div className="d-flex flex-column booking_form_name_input">
@@ -167,7 +445,13 @@ setbooking({...booking,userId:response[0].id})
                         ? "booking_form_input_button_weekly_selected"
                         : "booking_form_input_button_weekly"
                     }
-                    onClick={() => setbooking({ ...booking, plan: "Weekly" })}
+                    onClick={() =>
+                      setbooking({
+                        ...booking,
+                        plan: "Weekly",
+                        charge: wing && wing.planWeekly,
+                      })
+                    }
                   >
                     {" "}
                     Weekly{" "}
@@ -178,7 +462,13 @@ setbooking({...booking,userId:response[0].id})
                         ? "booking_form_input_button_monthly_selected"
                         : "booking_form_input_button_monthly"
                     }
-                    onClick={() => setbooking({ ...booking, plan: "Monthly" })}
+                    onClick={() =>
+                      setbooking({
+                        ...booking,
+                        plan: "Monthly",
+                        charge: wing && wing.planMonthly,
+                      })
+                    }
                   >
                     {" "}
                     Monthly{" "}
@@ -190,7 +480,11 @@ setbooking({...booking,userId:response[0].id})
                         : "booking_form_input_button_quarterly"
                     }
                     onClick={() =>
-                      setbooking({ ...booking, plan: "Quarterly" })
+                      setbooking({
+                        ...booking,
+                        plan: "Quarterly",
+                        charge: wing && wing.planQuarterly,
+                      })
                     }
                   >
                     {" "}
@@ -202,7 +496,13 @@ setbooking({...booking,userId:response[0].id})
                         ? "booking_form_input_button_yearly_selected"
                         : "booking_form_input_button_yearly"
                     }
-                    onClick={() => setbooking({ ...booking, plan: "Yearly" })}
+                    onClick={() =>
+                      setbooking({
+                        ...booking,
+                        plan: "Yearly",
+                        charge: wing && wing.planYearly,
+                      })
+                    }
                   >
                     {" "}
                     Yearly{" "}
@@ -211,7 +511,10 @@ setbooking({...booking,userId:response[0].id})
               </div>
             </div>
             <div className="booking_form_submit_clear">
-              <div className="booking_form_submit"> Submit </div>
+              <div className="booking_form_submit" onClick={FormSumbit}>
+                {" "}
+                Submit{" "}
+              </div>
               <div className="booking_form_clear"> Clear </div>
             </div>
           </div>

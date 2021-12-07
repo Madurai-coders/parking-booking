@@ -13,6 +13,8 @@ import {
 } from "../functions/reusable_functions";
 import Car from "../assets/images/Car.svg";
 import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function Parkingsetup() {
   const [parkingsetup, setParkingsetup] = useState([
@@ -37,8 +39,43 @@ export default function Parkingsetup() {
     { stype: "A", sid: 73143, date: "18/09/21" },
     { stype: "C", sid: 85486, date: "16/08/21" },
   ]);
-  const [data_fail, setData_fail] = useState(false);
-  const [wing_data, SetWing_data] = useState();
+
+  const [booksection, setBooksection] = useState([
+    {
+      wingA: [
+        { slotname: "was1", status: "" },
+        { slotname: "was2", status: "undercons" },
+        { slotname: "was3", status: "" },
+        { slotname: "was4", status: "" },
+        { slotname: "was5", status: "" },
+        { slotname: "was6", status: "undercons" },
+        { slotname: "was7", status: "" },
+        { slotname: "was8", status: "" },
+        { slotname: "was9", status: "" },
+        { slotname: "was10", status: "" },
+        { slotname: "was11", status: "undercons" },
+        { slotname: "was12", status: "" },
+        { slotname: "was13", status: "" },
+        { slotname: "was14", status: "" },
+        { slotname: "was1", status: "" },
+        { slotname: "was2", status: "undercons" },
+        { slotname: "was3", status: "" },
+        { slotname: "was4", status: "" },
+        { slotname: "was5", status: "undercons" },
+        { slotname: "was6", status: "" },
+        { slotname: "was7", status: "" },
+        { slotname: "was8", status: "" },
+        { slotname: "was9", status: "" },
+        { slotname: "was10", status: "" },
+        { slotname: "was11", status: "undercons" },
+        { slotname: "was12", status: "" },
+        { slotname: "was13", status: "" },
+        { slotname: "was14", status: "" },
+      ],
+    },
+    { wingB: [{ slotname: "wbs1" }, { slotname: "wbs2" }] },
+  ]);
+
   const [wing, setWing] = useState({
     wingName: "not_selected",
     wingCount: "not_selected",
@@ -47,7 +84,21 @@ export default function Parkingsetup() {
     planMonthly: "not_selected",
     planQuarterly: "not_selected",
     planYearly: "not_selected",
+    wingId: "",
   });
+
+  const [data_fail, setData_fail] = useState(false);
+
+  const [wing_data, SetWing_data] = useState();
+  const [slot, SetSlot] = useState();
+  const [inactiveslot, SetInactivelot] = useState();
+
+  const settings = {
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+  };
+
   function form_validate() {
     let val = false;
     var value = { ...wing };
@@ -86,9 +137,7 @@ export default function Parkingsetup() {
 
   const form_submit = async () => {
     const result = await form_validate();
-
-    if (result && data_fail) {
-      console.log(result);
+    if (result && !data_fail) {
       var wingId =
         Date.now().toString(36) + Math.random().toString(36).substr(2);
       var wingdata = { ...wing, wingId: wingId };
@@ -97,19 +146,167 @@ export default function Parkingsetup() {
         console.log(response);
 
         if (parseInt(wing.wingCount) > 0) {
-          for (let i = 0; i < wing.wingCount; i++) {
+          for (let i = 1; i <= wing.wingCount; i++) {
             var slots = {
               slotId:
                 Date.now().toString(36) + Math.random().toString(36).substr(2),
               slotStatus: true,
               wingId: response.id,
             };
-            axios_call("POST", "CreateSlots/", slots).then((response) => {
-              console.log(response);
-            });
+            axios_call("POST", "CreateSlots/", slots);
+            if (i == wing.wingCount) {
+              reset();
+              GetWingDetails(true);
+            }
           }
         }
       });
+    }
+  };
+
+  function AddSlot(id) {
+    var slots = {
+      slotId: Date.now().toString(36) + Math.random().toString(36).substr(2),
+      slotStatus: true,
+      wingId: id,
+    };
+    axios_call("POST", "CreateSlots/", slots).then((response) => {
+      var PresentSlot = [...slot, response];
+      SetSlot([...PresentSlot]);
+      var index = wing_data.findIndex((wing_data) => wing_data.id == id);
+
+
+      var Wingdata = wing_data;
+
+      Wingdata[index] = { ...wing_data[index], slots: [...PresentSlot] };
+      SetWing_data([...Wingdata]);
+      setWing({ ...wing, wingCount: PresentSlot.length });
+    });
+  }
+
+  function RemoveSlot(value) {
+    if (value) {
+      axios_call("DELETE", "CreateSlots/" + value.id + "/").then((response) => {
+        SetSlot(slot.filter((item) => item.id !== value.id));
+
+        let index = wing_data.findIndex(
+          (wing_data) => wing_data.wingId == value.wing.wingId
+        );
+
+        var Wingdata = wing_data;
+        if(index>-1){
+            console.log(value.wingId)
+            console.log(value)
+            console.log(Wingdata)
+        var slotsOfWing = [...Wingdata[index].slots];
+        slotsOfWing = slotsOfWing.filter((item) => item.id !== value.id);
+        Wingdata[index] = { ...wing_data[index], slots: [...slotsOfWing] };
+        SetWing_data([...Wingdata]);
+        setWing({ ...wing, wingCount: slotsOfWing.length });}
+      });
+    }
+  }
+
+  const Wingupdate = async () => {
+    const result = await form_validate();
+    if (wing.wingId && result) {
+      axios_call("PUT", "CreateWing/" + wing.wingId + "/", wing).then(
+        (response) => {
+          GetWingDetails(true);
+          reset();
+        }
+      );
+    }
+  };
+
+  const Slotupdate = async (value, id) => {
+    if (value.id) {
+      value = { ...value, slotStatus: !value.slotStatus };
+      axios_call("PUT", "CreateSlots/" + value.id + "/", value).then(
+        (response) => {
+          var updated_slot = slot;
+          updated_slot[id] = { ...slot[id], slotStatus: !slot[id].slotStatus };
+          SetSlot([...updated_slot]);
+
+          var index = wing_data.findIndex(
+            (wing_data) => wing_data.id == value.wingId
+          );
+
+          var Wingdata = wing_data;
+
+          Wingdata[index] = { ...wing_data[index], slots: [...updated_slot] };
+          SetWing_data([...Wingdata]);
+          console.log(Wingdata);
+
+          reset();
+          if (value.slotStatus == false) {
+            SetInactivelot((inactiveslot) => [...inactiveslot, value]);
+          } else {
+            SetInactivelot(inactiveslot.filter((item) => item.id !== value.id));
+          }
+        }
+      );
+    }
+  };
+
+  const TotalInactiveSlotupdate = async (value) => {
+    if (value.id) {
+      value = { ...value, slotStatus: !value.slotStatus };
+      axios_call("PUT", "Inactiveslots/" + value.id + "/", value).then(
+        (response) => {
+          var inactive_updated_slot = inactiveslot;
+          inactive_updated_slot = inactive_updated_slot.filter(
+            (item) => item.id !== value.id
+          );
+          SetInactivelot([...inactive_updated_slot]);
+
+          var updated_slot = slot;
+          var id = updated_slot.findIndex(
+            (slot) => slot.slotId == value.slotId
+          );
+
+
+          updated_slot[id] = { ...value };
+          console.log(updated_slot);
+          SetSlot([...updated_slot]);
+
+          var Wingdata = wing_data;
+          var index = Wingdata.findIndex(
+            (wing_data) => wing_data.id == value.wingId
+          );
+          var slotsdata = Wingdata[index] && Wingdata[index].slots;
+
+          var solt_id = slotsdata.findIndex(
+            (slot) => slot.slotId == value.slotId
+          );
+          slotsdata[solt_id] = {
+            ...slotsdata[solt_id],
+            slotStatus: value.slotStatus,
+          };
+
+          Wingdata[index] = { ...wing_data[index], slots: [...slotsdata] };
+          SetWing_data([...Wingdata]);
+        }
+      );
+    }
+  };
+
+  function Inactiveslots() {
+    axios_call("GET", "Inactiveslots/").then((response) => {
+      SetInactivelot(response);
+    });
+  }
+
+  const removeWing = async () => {
+    if (wing.wingId) {
+      axios_call("DELETE", "CreateWing/" + wing.wingId + "/").then(
+        (response) => {
+          GetWingDetails(true);
+          reset();
+          Inactiveslots()
+          SetSlot()
+        }
+      );
     }
   };
 
@@ -125,58 +322,36 @@ export default function Parkingsetup() {
     });
   }
 
-  function GetWingDetails(val) {
+  function GetWingDetails(id) {
     axios_call("GET", "CreateWing/").then((response) => {
       SetWing_data(response);
-
-      console.log(response);
-    });
+      if(response[0]){
+      if (id) {
+        SetSlot(response[response.length - 1].slots);
+      } else {
+        SetSlot(response[0].slots);
+      }
+}    });
   }
 
   function reset() {
     setData_fail(false);
+    setWing({
+      wingName: "not_selected",
+      wingCount: "not_selected",
+      wingStatus: true,
+      planWeekly: "not_selected",
+      planMonthly: "not_selected",
+      planQuarterly: "not_selected",
+      planYearly: "not_selected",
+      wingId: "",
+    });
   }
 
   useEffect(() => {
     GetWingDetails();
+    Inactiveslots();
   }, []);
-
-  const [booksection, setBooksection] = useState([
-    {
-      wingA: [
-        { slotname: "was1", status: "" },
-        { slotname: "was2", status: "undercons" },
-        { slotname: "was3", status: "" },
-        { slotname: "was4", status: "" },
-        { slotname: "was5", status: "" },
-        { slotname: "was6", status: "undercons" },
-        { slotname: "was7", status: "" },
-        { slotname: "was8", status: "" },
-        { slotname: "was9", status: "" },
-        { slotname: "was10", status: "" },
-        { slotname: "was11", status: "undercons" },
-        { slotname: "was12", status: "" },
-        { slotname: "was13", status: "" },
-        { slotname: "was14", status: "" },
-        { slotname: "was1", status: "" },
-        { slotname: "was2", status: "undercons" },
-        { slotname: "was3", status: "" },
-        { slotname: "was4", status: "" },
-        { slotname: "was5", status: "undercons" },
-        { slotname: "was6", status: "" },
-        { slotname: "was7", status: "" },
-        { slotname: "was8", status: "" },
-        { slotname: "was9", status: "" },
-        { slotname: "was10", status: "" },
-        { slotname: "was11", status: "undercons" },
-        { slotname: "was12", status: "" },
-        { slotname: "was13", status: "" },
-        { slotname: "was14", status: "" },
-      ],
-    },
-    { wingB: [{ slotname: "wbs1" }, { slotname: "wbs2" }] },
-  ]);
-
 
   return (
     <>
@@ -195,9 +370,10 @@ export default function Parkingsetup() {
         <div className="row">
           <div className="col-7">
             <div className="row">
-              <div className="col-4 parking_setup_slot_container">
+              <div className="col-5 parking_setup_slot_container">
                 <div className="parking_setup_text_slot_type"> Wing Name </div>
                 <input
+                autoComplete='off'
                   type="text"
                   name="slot_type"
                   className="parking_setup_input_slot_type"
@@ -216,29 +392,56 @@ export default function Parkingsetup() {
                 <div style={{ marginTop: "5px", fontSize: "10px" }}>
                   {validation_name(wing.wingName).msg}
                 </div>
-                <div className="parking_setup_button_container mt-4">
-                  <div
-                    className="parking_setup_submit_button"
-                    onClick={form_submit}
-                  >
-                    {" "}
-                    Submit{" "}
+                {!wing.wingId && (
+                  <div className="parking_setup_button_container mt-4">
+                    <div
+                      className="parking_setup_submit_button"
+                      onClick={form_submit}
+                    >
+                      {" "}
+                      Submit{" "}
+                    </div>
+                    <div className="parking_setup_clear_button" onClick={reset}>
+                      {" "}
+                      Clear{" "}
+                    </div>
                   </div>
-                  <div className="parking_setup_clear_button" onClick={reset}>
-                    {" "}
-                    Clear{" "}
+                )}
+
+                {wing.wingId && (
+                  <div className="parking_setup_button_container mt-4">
+                    <div
+                      className="parking_setup_submit_button"
+                      onClick={Wingupdate}
+                    >
+                      {" "}
+                      update{" "}
+                    </div>
+                    <div className="parking_setup_clear_button" onClick={reset}>
+                      {" "}
+                      Clear{" "}
+                    </div>
+
+                    <div
+                      className="parking_setup_clear_button"
+                      onClick={removeWing}
+                    >
+                      {" "}
+                      Remove Wing{" "}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-              <div className="col-4">
+              <div className="col-3">
                 <div className="parking_setup_text_count"> Count </div>
                 <input
                   type="number"
                   placeholder="Number of slots"
                   name="slot_count"
-                  onChange={(e) =>
-                    setWing({ ...wing, wingCount: e.target.value })
-                  }
+                  onChange={(e) => {
+                    !wing.wingId &&
+                      setWing({ ...wing, wingCount: e.target.value });
+                  }}
                   onBlur={(e) =>
                     setWing({ ...wing, wingCount: e.target.value })
                   }
@@ -280,7 +483,7 @@ export default function Parkingsetup() {
                     </div>
                     <div className="parking_setup_text_quarterly">
                       {" "}
-                      Quarterly{" "}
+                      Quarterly
                     </div>
                     <input
                       type="text"
@@ -395,27 +598,106 @@ export default function Parkingsetup() {
         </div>
         <div className="row">
           <div className="col-7">
-          <div className="parking_setup_wing_title_section">
-          <div style={{display:"flex"}}>
-      <div className="parking_setup_wingA me-1">Wing A</div>
-      <div className="parking_setup_wingB">Wing B</div>
-      </div>
-    </div>
-            <div className="parking_setup_wing_container">
-              {booksection[0].wingA.map((slot) => {
-                return (
-                  <span>
-                    <img
-                      key={slot.slotname}
-                      src={Car}
+            {wing_data && wing_data.length > 5 && (
+              <div className="parking_setup_wing_title_section">
+                <Slider>
+                  {wing_data.map((wing) => {
+                    return (
+                      <div
                       className={
-                        "ps-3 pe-3 mb-3 parking_setup_car_img" + slot.status
+                        wing.id != (slot && slot[0].wingId)
+                          ? "btn-light btn btn-sm m-1"
+                          : "btn-outline-primary btn btn-sm m-1"
                       }
-                      alt="Munidex_parking_Booking_slots"
-                    />
-                  </span>
-                );
-              })}
+                        onClick={() => (reset(), SetSlot(wing.slots))}
+                        onDoubleClick={() =>
+                          setWing({
+                            wingName: wing.wingName,
+                            wingCount: wing.slots.length,
+                            wingStatus: true,
+                            planWeekly: parseInt(wing.planWeekly),
+                            planMonthly: parseInt(wing.planMonthly),
+                            planQuarterly: parseInt(wing.planQuarterly),
+                            planYearly: parseInt(wing.planYearly),
+                            wingId: wing.id,
+                          })
+                        }
+                      >
+                        {wing.wingName}
+                      </div>
+                    );
+                  })}
+                </Slider>
+              </div>
+            )}
+
+            {wing_data && wing_data.length < 5 && (
+              <div className="parking_setup_wing_title_section">
+                <div className="d-flex">
+                  {wing_data.map((wing) => {
+                    return (
+                      <div
+                        className={
+                          wing.id != (slot && slot[0].wingId)
+                            ? "btn-light btn btn-sm m-1"
+                            : "btn-outline-primary btn btn-sm m-1"
+                        }
+                        onClick={() => (reset(), SetSlot(wing.slots))}
+                        onDoubleClick={() =>
+                          setWing({
+                            wingName: wing.wingName,
+                            wingCount: wing.slots.length,
+                            wingStatus: true,
+                            planWeekly: parseInt(wing.planWeekly),
+                            planMonthly: parseInt(wing.planMonthly),
+                            planQuarterly: parseInt(wing.planQuarterly),
+                            planYearly: parseInt(wing.planYearly),
+                            wingId: wing.id,
+                          })
+                        }
+                      >
+                        {wing.wingName}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            <div className="parking_setup_wing_container">
+              {slot && (
+                <>
+                  {slot.map((slot, id) => {
+                    return (
+                      <span>
+                        <img
+                          key={id}
+                          src={Car}
+                          onClick={() => (
+                            console.log(id),
+                            wing.wingId
+                              ? RemoveSlot(slot, id)
+                              : Slotupdate(slot, id)
+                          )}
+                          className={
+                            "ps-3 pe-3 mb-3 parking_setup_car_img " +
+                            (!slot.slotStatus && "parking_undercons")
+                          }
+                          alt="Munidex_parking_Booking_slots"
+                        />
+                      </span>
+                    );
+                  })}{" "}
+                  {wing.wingId && (
+                    <div
+                      className="btn btn-sm btn-primary"
+                      onClick={() => AddSlot(wing.wingId)}
+                    >
+                      Add
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
           <div className="col-5">
@@ -427,9 +709,9 @@ export default function Parkingsetup() {
               <div className="parking_setup_inactive_slot_table_container">
                 <table className="parking_setup_inactive_slot_table">
                   <tr className="parking_setup_table_headers">
-                    <th> Slot Type </th>
+                    <th>Wing Name</th>
                     <th> Slot id </th>
-                    <th> Date </th>
+                    {/* <th> Date </th> */}
                     <th> Activate </th>
                   </tr>
                   <tr className="parking_setup_table_dummy_data">
@@ -438,20 +720,26 @@ export default function Parkingsetup() {
                     <td></td>
                     <td></td>
                   </tr>
-                  {parkingsetup.map((parkingsetupdata) => {
-                    return (
-                      <tr className="parking_setup_table_data">
-                        <td>{parkingsetupdata.stype}</td>
-                        <td>{parkingsetupdata.sid}</td>
-                        <td>{parkingsetupdata.date}</td>
-                        <td>
-                          <span className="parking_setup_table_activate_button">
-                            Activate
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {inactiveslot &&
+                    inactiveslot.map((parkingsetupdata, id) => {
+                      return (
+                        <tr className="parking_setup_table_data">
+                          <td>{parkingsetupdata.wing.wingName}</td>
+                          <td>{parkingsetupdata.slotId}</td>
+                          {/* <td>{parkingsetupdata.date}</td> */}
+                          <td>
+                            <span
+                              className="parking_setup_table_activate_button"
+                              onClick={() =>
+                                TotalInactiveSlotupdate(parkingsetupdata, id)
+                              }
+                            >
+                              Activate
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </table>
               </div>
             </div>

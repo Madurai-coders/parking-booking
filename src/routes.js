@@ -1,26 +1,26 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, useLocation } from "react-router-dom";
 import User_login from "./core/user_login";
 import Admin_login from "./core/admin_login";
 import User_dashboard from "./core/user_dashboard";
 import Booking from "./core/booking";
+import Booking_Report from "./core/booking_report";
 import Parkingsetup from "./core/parking_setup";
 import Payment from "./core/payment.js";
 import Menu from "./core/Menu";
 import User_report from "./core/user_report.js";
+import User from "./core/user.js";
 import "../src/assets/css/general.css";
 import logo from "../src/assets/images/navlogo.svg";
 import {
   axios_call,
   axios_call_auto,
   login,
-  logout
+  logout,
 } from "./functions/reusable_functions";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-
-
 
 const Logoplacer = () => {
   const logation = useLocation();
@@ -58,7 +58,7 @@ const Routes = () => {
     logout().then(function (log) {
       console.log(log);
       if (log != null) {
-        setis_admin(false)
+        setis_admin(false);
       }
     });
   };
@@ -67,17 +67,14 @@ const Routes = () => {
     const location = useLocation();
     if (location.pathname === "/" || location.pathname == "/dashboard")
       return null;
-    return <Menu logout={call_logout}/>;
+    return <Menu logout={call_logout} />;
   };
 
   useEffect(() => {
     if (Cookies.get("access_token")) {
-        console.log('Admin_login check')
+      console.log("Admin_login check");
 
-    
-      
-      axios_call('GET','admins/').
-      then((response) => {
+      axios_call("GET", "admins/").then((response) => {
         if (response[0].is_staff) {
           setis_admin(response[0].is_staff);
         }
@@ -89,9 +86,9 @@ const Routes = () => {
       <BrowserRouter>
         <div style={{ overflow: "hidden" }}>
           <Switch>
-            {is_admin && (
+            {!is_admin && (
               <>
-                <Route path="/" exact component={User_login} />
+                {/* <Route path="/" exact component={User_login} /> */}
                 <Route
                   path="/admin"
                   exact
@@ -99,20 +96,31 @@ const Routes = () => {
                     <Admin_login login={call_login} is_admin={is_admin} />
                   )}
                 />
-                <Route path="/dashboard" exact component={User_dashboard} />
-                <Route path="*" exact component={User_login} />
-
+                <Route
+                  path="/*"
+                  exact
+                  render={() => (
+                    <Admin_login login={call_login} is_admin={is_admin} />
+                  )}
+                />
+                {/* <Route path="/dashboard" exact component={User_dashboard} />
+                <Route path="*" exact component={User_login} /> */}
               </>
             )}
           </Switch>
-          {!is_admin && (
+          {is_admin && (
             <div className="d-flex flex-row">
               <div>
-                <Navigation  />
+                <Navigation />
               </div>
               <Logoplacer />
               <Switch>
-                <Route path="/admin" exact component={Booking} />
+                <Route path="/admin" exact component={Booking} />       
+                <Route
+                  path="/AdmindashboardBookingreport"
+                  exact
+                  component={Booking_Report}
+                />
                 <Route
                   path="/AdmindashboardParkingsetup"
                   exact
@@ -128,6 +136,7 @@ const Routes = () => {
                   exact
                   component={User_report}
                 />
+                <Route path="/user" exact component={User} />
               </Switch>
             </div>
           )}

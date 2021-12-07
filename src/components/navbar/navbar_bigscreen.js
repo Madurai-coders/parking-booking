@@ -42,7 +42,7 @@ export default function Navbarbigscreen(props) {
                 />
               </li>
               </Link>
-              <Link to = "Admin">
+              <Link to = "AdmindashboardBookingreport">
               <li className="Navbigscreen_listitem_bookingreport_noexpand">
                 <img
                   src={Bookingreport}
@@ -102,7 +102,7 @@ export default function Navbarbigscreen(props) {
                   alt="Munidex_Parking_Menu"
                 />
               </li>
-              <Link to = 'Admindashboardbooking'>
+              <Link to = 'admin'>
               <li className="Navbigscreen_listitem_booking">
                 <img
                   src={Booking}
