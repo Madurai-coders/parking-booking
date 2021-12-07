@@ -202,7 +202,6 @@ export default function Booking() {
       booking_finalized.startFrom &&
       booking_finalized.charge
     ) {
-      console.log("check");
       axios_call("POST", "CreateBooking/", booking_finalized).then(
         (response) => {
           console.log(response);

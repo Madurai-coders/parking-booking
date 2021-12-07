@@ -322,7 +322,7 @@ function Dayleft(endTo){
                   <table className="user_dashboard_popup_table">
                     <tr className="user_dashboard_popup_table_header">
                       <th>Transaction id</th>
-                      <th>Date of Payment</th>
+                      <th>Date</th>
                       <th>Payment</th>
                       <th>Amount</th>
                       <th>Status</th>

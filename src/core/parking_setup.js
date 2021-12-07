@@ -674,7 +674,6 @@ export default function Parkingsetup() {
                           key={id}
                           src={Car}
                           onClick={() => (
-                            console.log(id),
                             wing.wingId
                               ? RemoveSlot(slot, id)
                               : Slotupdate(slot, id)
