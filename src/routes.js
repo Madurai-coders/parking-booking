@@ -18,7 +18,7 @@ import {
   login,
   logout,
 } from "./functions/reusable_functions";
-import { useHistory } from "react-router-dom";
+import { useHistory,Redirect } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -47,6 +47,7 @@ const Routes = () => {
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {
+              console.log(response.data[0].is_staff)
             setis_admin(response.data[0].is_staff);
           }
         });
@@ -96,26 +97,23 @@ const Routes = () => {
                     <Admin_login login={call_login} is_admin={is_admin} />
                   )}
                 />
-                <Route
-                  path="/*"
-                  exact
-                  render={() => (
-                    <Admin_login login={call_login} is_admin={is_admin} />
-                  )}
-                />
-                {/* <Route path="/dashboard" exact component={User_dashboard} />
-                <Route path="*" exact component={User_login} /> */}
+               
+                <Route path="/dashboard" exact component={User_dashboard} />
+                <Route path="/" exact component={User_login} />
               </>
             )}
           </Switch>
           {is_admin && (
-            <div className="d-flex flex-row">
+            
+              <Switch>
+                  <div className="d-flex flex-row">
               <div>
                 <Navigation />
               </div>
               <Logoplacer />
-              <Switch>
+              <Redirect from="/" to="/admin" />
                 <Route path="/admin" exact component={Booking} />       
+               
                 <Route
                   path="/AdmindashboardBookingreport"
                   exact
@@ -137,8 +135,9 @@ const Routes = () => {
                   component={User_report}
                 />
                 <Route path="/user" exact component={User} />
-              </Switch>
             </div>
+
+              </Switch>
           )}
         </div>
       </BrowserRouter>

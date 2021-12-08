@@ -44,7 +44,7 @@ export default function Booking() {
           set_usr_suggestion(response);
           console.log(response[0]);
           console.log(val);
-          if (response[0].userName == val) {
+          if (response[0]&&response[0].userName == val) {
             setbooking({
               ...booking,
               name: response[0].userName,
@@ -74,9 +74,7 @@ export default function Booking() {
 
   function GetBooking() {
     var start = moment(new Date()).format("YYYY-MM-DD");
-    var end = moment(new Date())
-      .add(366, "days")
-      .format("YYYY-MM-DD");
+    var end = moment(new Date()).add(366, "days").format("YYYY-MM-DD");
 
     axios_call("GET", "GetBooking/?from=" + start + "&to=" + end).then(
       (response) => {
@@ -105,8 +103,8 @@ export default function Booking() {
                 setBookinghover({
                   name: val[0].User.userName,
                   day: day,
-                  slotid:slot.slotId,
-                  plan:val[0].plan
+                  slotid: slot.slotId,
+                  plan: val[0].plan,
                 })
               }
               onMouseLeave={() => setBookinghover()}
@@ -161,6 +159,7 @@ export default function Booking() {
   function FormSumbit() {
     var startFrom = moment(booking.date, "YYYY-MM-DD").format("YYYY-MM-DD");
     var endTo = "";
+
     if (booking.plan == "Monthly") {
       endTo = moment(booking.date, "YYYY-MM-DD")
         .add(31, "days")
@@ -191,7 +190,6 @@ export default function Booking() {
       endTo: endTo,
       bookingId: Date.now().toString(36) + Math.random().toString(36).substr(2),
     };
-    console.log(booking_finalized);
 
     if (
       booking_finalized.slotid &&
@@ -202,12 +200,21 @@ export default function Booking() {
       booking_finalized.startFrom &&
       booking_finalized.charge
     ) {
-      axios_call("POST", "CreateBooking/", booking_finalized).then(
-        (response) => {
+      console.log(booking_finalized);
+
+      axios_call("POST", "CreateBooking/", booking_finalized)
+        .then((response) => {
           console.log(response);
           reset();
-        }
-      );
+        })
+        .catch((response) => {
+          axios_call("POST", "CreateBooking/", booking_finalized).then(
+            (response) => {
+              console.log(response);
+              reset();
+            }
+          );
+        });
     }
   }
 
@@ -286,8 +293,12 @@ export default function Booking() {
                   <div className="row">
                     <div className="col-12">
                       <div className="row">
-                        <small className="col-7">Name: {bookinghover.name}</small>
-                        <small className="col-5">plan: {bookinghover.plan}</small>
+                        <small className="col-7">
+                          Name: {bookinghover.name}
+                        </small>
+                        <small className="col-5">
+                          plan: {bookinghover.plan}
+                        </small>
                       </div>
                     </div>
                     <div className="mt-2 col-12 ">
@@ -295,7 +306,10 @@ export default function Booking() {
                         <small className="col-7">
                           SlotId: {bookinghover.slotid}
                         </small>
-                        <small className="col-5"> Days left: {bookinghover.day}</small>
+                        <small className="col-5">
+                          {" "}
+                          Days left: {bookinghover.day}
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -314,7 +328,11 @@ export default function Booking() {
                               ? "btn-light btn btn-sm m-1"
                               : "btn-outline-primary btn btn-sm m-1"
                           }
-                          onClick={() => (SetWing(wing),setbooking({...booking,plan:'',charge:''}), SetSlot(wing.slots))}
+                          onClick={() => (
+                            SetWing(wing),
+                            setbooking({ ...booking, plan: "", charge: "" }),
+                            SetSlot(wing.slots)
+                          )}
                         >
                           {wing.wingName}
                         </div>
@@ -335,7 +353,11 @@ export default function Booking() {
                               ? "btn-light btn btn-sm m-1"
                               : "btn-outline-primary btn btn-sm m-1"
                           }
-                          onClick={() => (SetWing(wing),setbooking({...booking,plan:'',charge:''}),SetSlot(wing.slots))}
+                          onClick={() => (
+                            SetWing(wing),
+                            setbooking({ ...booking, plan: "", charge: "" }),
+                            SetSlot(wing.slots)
+                          )}
                         >
                           {wing.wingName}
                         </div>
