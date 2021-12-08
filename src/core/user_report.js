@@ -236,9 +236,9 @@ const [user, setUser] = useState()
           <div className="User_report_text_recent"></div>
           <VscHistory size={14.5} style={{ color: "#666666" }} /> Recent{" "}
         </div>
-        <div className="User_report_recent_container">
-          <table className="User_report_table">
-            <tr className="User_report_table_headings">
+        <div className="payment_table_container">
+            <table className="payment_table ">
+              <tr className="payment_table_heading">
               <th>Name</th>
               <th>Account Number</th>
               <th>No of Booking</th>
@@ -248,7 +248,7 @@ const [user, setUser] = useState()
             </tr>
             {usr_suggestion.map((userdata) => {
               return (
-                <tr className="User_report_table_data">
+                <tr className="payment_table_content">
                   <td>{userdata.userName}</td>
                   <td>{userdata.accountNumber}</td>
                   <td>{userdata.booking_partner.length}</td>

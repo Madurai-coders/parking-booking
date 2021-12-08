@@ -43,11 +43,10 @@ const Routes = () => {
       if (log != null) {
         axios({
           method: "GET",
-          url: "http://127.0.0.1:8000/admins/",
+          url: "https://munidexparking.pythonanywhere.com/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {
-              console.log(response.data[0].is_staff)
             setis_admin(response.data[0].is_staff);
           }
         });
@@ -85,11 +84,10 @@ const Routes = () => {
   return (
     <>
       <BrowserRouter>
-        <div style={{ overflow: "hidden" }}>
+        <div style={{ overflow: "hidden", height:"100vh" }}>
           <Switch>
             {!is_admin && (
               <>
-                {/* <Route path="/" exact component={User_login} /> */}
                 <Route
                   path="/admin"
                   exact
@@ -99,7 +97,8 @@ const Routes = () => {
                 />
                
                 <Route path="/dashboard" exact component={User_dashboard} />
-                <Route path="/" exact component={User_login} />
+                <Route path="*" exact={true} component={User_login} />
+
               </>
             )}
           </Switch>
@@ -111,7 +110,6 @@ const Routes = () => {
                 <Navigation />
               </div>
               <Logoplacer />
-              <Redirect from="/" to="/admin" />
                 <Route path="/admin" exact component={Booking} />       
                
                 <Route
@@ -134,7 +132,7 @@ const Routes = () => {
                   exact
                   component={User_report}
                 />
-                <Route path="/user" exact component={User} />
+                <Route path="/" exact component={User_login} />
             </div>
 
               </Switch>

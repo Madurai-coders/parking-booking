@@ -485,7 +485,7 @@ export default function Payment() {
           <div className="payment_table_container">
             <table className="payment_table ">
               <tr className="payment_table_heading">
-                <th>Sno</th>
+                {/* <th>Sno</th> */}
                 <th>Name</th>
                 <th>UserId</th>
                 <th>Payment type</th>
@@ -498,7 +498,7 @@ export default function Payment() {
                 payment.map((payment, id) => {
                   return (
                     <tr className="payment_table_content" key={id}>
-                      <td>{id + 1}</td>
+                      {/* <td>{id + 1}</td> */}
                       <td>{payment.User.userName}</td>
                       <td>{payment.User.accountNumber}</td>
                       <td>{payment.paymentType}</td>
