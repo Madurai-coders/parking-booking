@@ -1,141 +1,77 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Helmet } from "react-helmet";
 import logo from "../assets/images/munidex_logo.jpeg";
 import userprof from "../assets/images/userprofile.png";
 import handshake from "../assets/images/handshake.png";
 import "../assets/css/user_dashboard/user_dashboard.css";
 import { IoClose } from "react-icons/io5";
+import moment from "moment";
+import {
+  axios_call,
+  axios_call_auto,
+  validation_count,
+  logout
+} from "../functions/reusable_functions";
+import { useLocation } from "react-router";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useHistory,Redirect } from "react-router-dom";
 
 export default function User_dashboard() {
   const [popup, setPopup] = useState(false);
-  const [userdashboard, setUserdashboard] = useState([
-    {
-      slot: 5,
-      sdate: "13/11/21",
-      edate: "20/11/21",
-      status: "pending",
-      active: "green",
-    },
-    {
-      slot: 7,
-      sdate: "9/10/21",
-      edate: "10/10/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 3,
-      sdate: "5/09/21",
-      edate: "10/08/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 7,
-      sdate: "9/10/21",
-      edate: "10/10/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 3,
-      sdate: "5/09/21",
-      edate: "10/08/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 7,
-      sdate: "9/10/21",
-      edate: "10/10/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 3,
-      sdate: "5/09/21",
-      edate: "10/08/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 5,
-      sdate: "13/11/21",
-      edate: "20/11/21",
-      status: "pending",
-      active: "green",
-    },
-    {
-      slot: 7,
-      sdate: "9/10/21",
-      edate: "10/10/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 3,
-      sdate: "5/09/21",
-      edate: "10/08/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 7,
-      sdate: "9/10/21",
-      edate: "10/10/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 3,
-      sdate: "5/09/21",
-      edate: "10/08/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 7,
-      sdate: "9/10/21",
-      edate: "10/10/21",
-      status: "completed",
-      active: "red",
-    },
-    {
-      slot: 3,
-      sdate: "5/09/21",
-      edate: "10/08/21",
-      status: "completed",
-      active: "red",
-    },
-  ]);
+  const [user, setuser] = useState(false);
+const [props, setprops] = useState()
+let history = useHistory();
 
-  const [transactionhistory, setTransactionhistoty] = useState([
-    { tid: 567362925, dop: "20/11/21", payment: "$1,000", status: "Pending" },
-    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
-    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
-    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
-    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
-    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
-    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
-    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
-    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
-    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
-    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
-    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
-    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
-    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
-    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
-    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
-    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
-    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
-    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
-    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
-    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
-    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
-    { tid: 567362925, dop: "10/10/21", payment: "$1,043", status: "Successful" },
-    { tid: 567362925, dop: "10/08/21", payment: "$2,095", status: "Successful" },
-    { tid: 567362925, dop: "12/09/21", payment: "$1,246", status: "Successful" },
-  ]);
+
+  function Balance(payment, booking) {
+    var payment_total = 0;
+    var booking_total = 0;
+    payment.forEach((element) => {
+      payment_total = payment_total + element.amount;
+    });
+    booking.forEach((element) => {
+      booking_total = booking_total + parseInt(element.charge);
+    });
+    return payment_total - booking_total;
+  }
+
+function Dayleft(endTo){
+    var b = moment(endTo, "YYYY-MM-DD");
+    var a = moment(new Date(), "YYYY-MM-DD");
+   var day = b.diff(a, "days");
+    return day
+}
+
+useEffect(() => {
+    var accountnumber = Cookies.get("accountnumber");
+    var lastname = Cookies.get("lastname");
+    if(accountnumber&&lastname){
+    axios({
+        method: "GET",
+        url: "http://127.0.0.1:8000/UserLogin?username=" +
+        lastname +
+        "&accountnumber=" +
+        accountnumber,
+      }).then((response) => {
+        console.log(response.data[0])
+        if(response.data[0]){
+            setuser(response.data[0])
+    }
+      });}
+      else{
+        axios_call("GET", "GetUserAccount").then((response) => {
+            setuser(response.data[0])
+        })
+      }
+}, [])
+
+function logoutuser(){
+logout()
+Cookies.remove('accountnumber')
+Cookies.remove('lastname')
+history.push('/')
+}
 
   return (
     <>
@@ -144,7 +80,8 @@ export default function User_dashboard() {
       <Helmet>
         <title>Munidex Parking - User Dashboard</title>
       </Helmet>
-      <div className="user_dashboard_container">
+
+      {user && <div className="user_dashboard_container">
         {popup && (
           <div className="row user_dashboard_popup_section shadow">
             <div className="col-4 user_dashboard_popup_leftside text-center">
@@ -172,37 +109,44 @@ export default function User_dashboard() {
                   </div>
                 </div>
                 <div className="user_dashboard_popup_table_container">
-                <table className="user_dashboard_popup_table">
-                  <tr className="user_dashboard_popup_table_header">
-                    <th>Transaction id</th>
-                    <th>Date of Payment</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                  </tr>
-                  {transactionhistory.map((transaction)=>{
-                    return(
-                      <tr className="user_dashboard_popup_table_content">
-                        <td>{transaction.tid}</td>
-                        <td>{transaction.dop}</td>
-                        <td>{transaction.payment}</td>
-                        <td><span className={"user_dashboard_popup_status_" + (transaction.status.toLowerCase())}>{transaction.status}</span></td>
-                      </tr>
-                    );
-                  }
-                  )}
-                </table>
+                  <table className="user_dashboard_popup_table">
+                    <tr className="user_dashboard_popup_table_header">
+                      <th>Transaction id</th>
+                      <th>Date</th>
+                      <th>Payment</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                    </tr>
+                    {user.payment_partner.map((transaction) => {
+                      return (
+                        <tr className="user_dashboard_popup_table_content">
+                          <td>{transaction.paymentId}</td>
+                          <td>
+                            {moment(transaction.paymentDate).format(
+                              "DD-MM-YYYY"
+                            )}
+                          </td>
+                          <td>{transaction.paymentType}</td>
+                          <td>{transaction.amount}</td>
+
+                          <td><span className={"user_dashboard_popup_status_" + ('Successful'.toLowerCase())}>Successful</span></td>
+                        </tr>
+                      );
+                    })}
+                  </table>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        <img
+<img
           src={logo}
           alt="munidex_logo"
           className="user_dashboard_munidex_logo"
         />
         <img
+        onClick={logoutuser}
           src={userprof}
           alt="Customer_profile"
           className="user_dashboard_profile_icon"
@@ -210,7 +154,10 @@ export default function User_dashboard() {
 
         <div className="row">
           <div className="col-7">
-            <div className="user_dashboard_username"> Hello Albert!</div>
+            <div className="user_dashboard_username">
+              {" "}
+              Hello {user.userName} !!
+            </div>
             <div className="user_dashboard_text_booking_details">
               {" "}
               Booking Details
@@ -219,30 +166,36 @@ export default function User_dashboard() {
             <div className="user_dashboard_booking_details_card">
               <table className="user_dashboard_booking_details_table">
                 <tr className="user_dashboard_booking_details_table_heading">
-                  <th>Slot</th>
+                  <th>Wing</th>
                   <th>Start date</th>
                   <th>End date</th>
-                  <th>Status</th>
-                  <th>Active</th>
+                  <th>plan</th>
+                  <th>Amount</th>
+                  <th>Active for</th>
                 </tr>
-                {userdashboard.map((userdata) => {
+                {user.booking_partner.map((userdata) => {
                   return (
                     <tr className="user_dashboard_booking_details_table_data">
-                      <td>{userdata.slot}</td>
-                      <td>{userdata.sdate}</td>
-                      <td>{userdata.edate}</td>
+                      {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
+                      <td>{userdata.Slots.wing.wingName}</td>
+                      <td>{moment(userdata.startFrom).format("DD-MM-YYYY")}</td>
+                      <td>{moment(userdata.endTo).format("DD-MM-YYYY")}</td>
+                      <td>{userdata.plan}</td>
                       <td>
-                        <span
+                        {/* <span
                           className={
                             "user_dashboard_payment_text_" + userdata.status
                           }
                         >
                           {userdata.status}
-                        </span>
+                        </span> */}
+                        
+                        {userdata.charge}$
                       </td>
                       <td>
+                     { Dayleft(userdata.endTo)} days
                         <span
-                          className={"user_dashboard_active_" + userdata.active}
+                          className={"mx-1 user_dashboard_active_" + (( Dayleft(userdata.endTo)>0)? 'green':'red')}
                         ></span>
                       </td>
                     </tr>
@@ -257,22 +210,31 @@ export default function User_dashboard() {
                 <div className="user_dashboard_balance_card_text mb-3">
                   {" "}
                   Balance{" "}
-                  <div className="user_dashboard_pay_container text-center">
+                  {/* <div className="user_dashboard_pay_container text-center">
                     <div className="user_dashboard_pay"> Pay </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="user_dashboard_balance_card_amount d-flex">
-                  $ 650{" "}
+                  {Balance(
+                    user.payment_partner,
+                    user.booking_partner
+                  )}{" "}
+                  $
+
+                  
                 </div>
+                <div className="user_dashboard_pay_container text-center">
+                    <div className="user_dashboard_pay"> Pay </div>
+                  </div>
               </div>
               <div className="user_dashboard_transaction_card">
                 <div className="user_dashboard_transaction_card_title">
                   {" "}
-                  Transaction{" "}
+                  Last Transaction{" "}
                 </div>
                 <div className="user_dashboard_transaction_card_transaction_id mb-3">
                   {" "}
-                  Transaction id : <span> 567362925 </span>
+                  Transaction id : <span>{user.payment_partner[user.payment_partner.length-1].paymentId} </span>
                 </div>
                 <div className="user_dashboard_transaction_card_datetime_text">
                   {" "}
@@ -285,9 +247,9 @@ export default function User_dashboard() {
                     Time{" "}
                   </div>
                 </div>
-                <div className="user_dashboard_transaction_card_datetime">
-                  {" "}
-                  <div> 05 September 2021 </div> <div> 12:28:30 </div>
+                <div className=" user_dashboard_transaction_card_datetime">
+                  {" "}{moment(user.payment_partner[user.payment_partner.length-1].paymentDate).format("DD-MM-YYYY")}
+                  <div> </div>{moment(user.payment_partner[user.payment_partner.length-1].paymentDate).format("hh:mm a")} <div>  </div>
                 </div>
                 <div className="user_dashboard_transaction_card_amount_section">
                   <div className="user_dashboard_transaction_card_amount_text mb-3">
@@ -295,8 +257,7 @@ export default function User_dashboard() {
                     Amount{" "}
                   </div>
                   <div className="user_dashboard_transaction_card_amount_number mb-3">
-                    {" "}
-                    $1050{" "}
+                {user.payment_partner[user.payment_partner.length-1].amount} $
                   </div>
                 </div>
                 <div
@@ -315,7 +276,7 @@ export default function User_dashboard() {
             <div style={{ display: "none" }}>Munidex Parking</div>
           </div>
         </div>
-      </div>
+      </div>}
     </>
   );
 }

@@ -233,8 +233,7 @@ export default function Payment() {
   }, [form.name]);
 
   function checkpaymentid() {
-    console.log("checkpaymentid");
-    axios_call("GET", "GetPayment?search=" + form.payment_id).then(
+if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id).then(
       (response) => {
         console.log(form.payment_id);
         console.log(response);
@@ -245,7 +244,7 @@ export default function Payment() {
         }
       }
     );
-  }
+  }}
 
   function reset() {
     setForm({

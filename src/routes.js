@@ -97,7 +97,7 @@ const Routes = () => {
                 />
                
                 <Route path="/dashboard" exact component={User_dashboard} />
-                <Route path="*" exact={true} component={User_login} />
+                <Route path="/" exact={true} component={User_login} />
 
               </>
             )}

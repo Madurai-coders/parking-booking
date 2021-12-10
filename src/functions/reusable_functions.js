@@ -8,7 +8,7 @@ export function axios_call(method, url, data) {
 		var access_token = Cookies.get("access_token");
 		axios({
 			method: method,
-			url: "https://munidexparking.pythonanywhere.com/" + url,
+			url: "http://127.0.0.1:8000/" + url,
 			data: data,
 			headers: { Authorization: `Bearer ${access_token}` },
 		})
@@ -19,7 +19,7 @@ export function axios_call(method, url, data) {
 				var refresh=Cookies.get("refresh_token");
 					axios({
 						method: "POST",
-						url: "https://munidexparking.pythonanywhere.com/api/token/refresh/",
+						url: "http://127.0.0.1:8000/api/token/refresh/",
 						data: { refresh:  refresh},
                         withCredentials: true
 					})
@@ -28,7 +28,7 @@ export function axios_call(method, url, data) {
 							Cookies.set("access_token", response.data.access);
 							axios({
 								method: method,
-								url: "https://munidexparking.pythonanywhere.com/" + url,
+								url: "http://127.0.0.1:8000/" + url,
 								data: data,
 								headers: { Authorization: `Bearer ${response.data.access}` },
                                 withCredentials: true
@@ -61,7 +61,7 @@ export function axios_call_auto(method, url, data) {
 
 					axios({
 						method: "POST",
-						url: "https://munidexparking.pythonanywhere.com/api/token/refresh/",
+						url: "http://127.0.0.1:8000/api/token/refresh/",
 						data: { refresh: refresh },
                         withCredentials: true
 					})
@@ -96,7 +96,7 @@ export function login(checkadmin) {
 				if (data.additionalUserInfo.isNewUser) {
 					axios({
 						method: "POST",
-						url: "https://munidexparking.pythonanywhere.com/register/",
+						url: "http://127.0.0.1:8000/register/",
 						data: {
 							username: data.user.email,
 							password: data.user.uid,
@@ -105,7 +105,7 @@ export function login(checkadmin) {
 					}).then((response) => {
 						axios({
 							method: "POST",
-							url: "https://munidexparking.pythonanywhere.com/api/jwt_token/",
+							url: "http://127.0.0.1:8000/api/jwt_token/",
 							data: {
 								username: data.user.email,
 								password: data.user.uid,
@@ -124,7 +124,7 @@ export function login(checkadmin) {
 				} else {
 					axios({
 						method: "POST",
-						url: "https://munidexparking.pythonanywhere.com/api/jwt_token/",
+						url: "http://127.0.0.1:8000/api/jwt_token/",
 						data: {
 							username: data.user.email,
 							password: data.user.uid,
@@ -297,7 +297,7 @@ export function validation_title(value) {
 export function validation_mobile_number(value) {
 	if (value == "" || value != "not_selected") {
 		console.log(value);
-		var phoneno = /^\d{10}$/;
+		var phoneno = /^\d{3}$/;
 		if (value) {
 			if (phoneno.test(value)) {
 				return {
@@ -394,7 +394,7 @@ export function validation_company(value) {
 // Email validation
 export function validation_email(value) {
 	if (value == "" || value != "not_selected") {
-		console.log(value);
+		// console.log(value);
 		var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{3,4})+$/; //{3,4}is used to change the count of word after .com or net
 		if (value) {
 			if (regex.test(value)) {

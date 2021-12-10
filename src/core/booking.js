@@ -317,7 +317,7 @@ export default function Booking() {
               </div>
             </div>
             <div className="">
-              {wing_data && wing_data.length > 5 && (
+              {wing_data && wing_data.length > 10 && (
                 <div className="parking_setup_wing_title_section">
                   <Slider>
                     {wing_data.map((wing) => {
@@ -342,7 +342,7 @@ export default function Booking() {
                 </div>
               )}
 
-              {wing_data && wing_data.length < 5 && (
+              {wing_data && wing_data.length < 10 && (
                 <div className="parking_setup_wing_title_section">
                   <div className="d-flex">
                     {wing_data.map((wing) => {
