@@ -35,7 +35,9 @@ export default function Booking() {
   const [wing_data, SetWing_data] = useState();
   const [wing, SetWing] = useState();
   const [slot, SetSlot] = useState();
+  const [success, setSuccess] = useState();
   const [bookinghover, setBookinghover] = useState();
+  const [percent, setPercent] = useState();
 
   const checkuser = async (val) => {
     if (validation_name(val).class === "pass") {
@@ -44,7 +46,7 @@ export default function Booking() {
           set_usr_suggestion(response);
           console.log(response[0]);
           console.log(val);
-          if (response[0]&&response[0].userName == val) {
+          if (response[0] && response[0].userName == val) {
             setbooking({
               ...booking,
               name: response[0].userName,
@@ -75,11 +77,18 @@ export default function Booking() {
   function GetBooking() {
     var start = moment(new Date()).format("YYYY-MM-DD");
     var end = moment(new Date()).add(366, "days").format("YYYY-MM-DD");
-
     axios_call("GET", "GetBooking/?from=" + start + "&to=" + end).then(
       (response) => {
         SetBookingdetails(response);
-        console.log(response);
+        console.log(response.length);
+        axios_call("GET", "SlotCount/").then((response1) => {
+          var tot = response1.total - response1.inactive;
+          var val = ((tot - response.length) / tot) * 100;
+          setPercent({
+            reserved: 100 - Math.round(val),
+            unreserved: Math.round(val),
+          });
+        });
       }
     );
   }
@@ -141,14 +150,6 @@ export default function Booking() {
         <img
           key={id}
           src={Car}
-          onClick={() =>
-            booking.slotid == slot.slotId
-              ? setbooking({ ...booking, slotid: "" })
-              : setbooking({
-                  ...booking,
-                  slotid: slot.slotId,
-                })
-          }
           className={"ps-3 pe-3 mb-3 parking_setup_car_img parking_undercons"}
           alt="Munidex_parking_Booking_slots"
         />
@@ -206,6 +207,7 @@ export default function Booking() {
         .then((response) => {
           console.log(response);
           reset();
+          setSuccess(response)
         })
         .catch((response) => {
           axios_call("POST", "CreateBooking/", booking_finalized).then(
@@ -384,7 +386,9 @@ export default function Booking() {
             <div className="row">
               <div className="col-6">
                 <div className="booking_reserved_text">Reserved</div>
-                <div className="booking_reserved_percentage_text">80%</div>
+                <div className="booking_reserved_percentage_text">
+                  {percent && percent.reserved}%
+                </div>
                 <div class="progress booking_reserved_progress">
                   <div
                     class="progress-bar"
@@ -392,13 +396,18 @@ export default function Booking() {
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    style={{ width: "80%", backgroundColor: "#FF6767" }}
+                    style={{
+                      width: percent && percent.reserved + "%",
+                      backgroundColor: "#FF6767",
+                    }}
                   ></div>
                 </div>
               </div>
               <div className="col-6">
                 <div className="booking_unreserved_text">Unreserved</div>
-                <div className="booking_unreserved_percentage_text">50%</div>
+                <div className="booking_unreserved_percentage_text">
+                  {percent && percent.unreserved}%
+                </div>
                 <div class="progress booking_unreserved_progress">
                   <div
                     class="progress-bar"
@@ -406,7 +415,10 @@ export default function Booking() {
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    style={{ width: "50%", backgroundColor: "#2AB0FF" }}
+                    style={{
+                      width: percent && percent.unreserved + "%",
+                      backgroundColor: "#2AB0FF",
+                    }}
                   ></div>
                 </div>
               </div>
@@ -538,6 +550,11 @@ export default function Booking() {
               </div>
               <div className="booking_form_clear"> Clear </div>
             </div>
+
+            <div class="alert alert-success mt-2 mx-2" role="alert">
+                
+            </div>
+
           </div>
         </div>
       </div>

@@ -214,7 +214,7 @@ export default function Payment() {
     if (form.name == "not_selected" || !form.name) {
       axios_call("GET", "CreatePayment/").then((response) => {
         console.log(response);
-        setPayment(response);
+        setPayment(response.results);
       });
     } else {
       axios_call("GET", "GetPayment?search=" + form.name).then((response) => {
@@ -484,7 +484,6 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
           <div className="payment_table_container">
             <table className="payment_table ">
               <tr className="payment_table_heading">
-                {/* <th>Sno</th> */}
                 <th>Name</th>
                 <th>UserId</th>
                 <th>Payment type</th>
@@ -497,7 +496,6 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                 payment.map((payment, id) => {
                   return (
                     <tr className="payment_table_content" key={id}>
-                      {/* <td>{id + 1}</td> */}
                       <td>{payment.User.userName}</td>
                       <td>{payment.User.accountNumber}</td>
                       <td>{payment.paymentType}</td>
@@ -535,7 +533,7 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                     </tr>
                   );
                 })}
-            </table>
+            </table> 
           </div>
         </div>
       </div>

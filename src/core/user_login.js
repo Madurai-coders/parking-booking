@@ -107,11 +107,7 @@ export default function User_login() {
     login(true).then(function (log) {
       console.log(log);
       if (log != null) {
-        axios({
-            method: "GET",
-            url: "http://127.0.0.1:8000/GetBusinessPartner/"+log.access,
-            headers: { Authorization: `Bearer ${log.access}` },
-          }).then((response) => {
+        axios_call("GET", "GetUserAccount").then((response) => {
           console.log(response);
           if (response[0].useraccount) {
             history.push("/dashboard");
