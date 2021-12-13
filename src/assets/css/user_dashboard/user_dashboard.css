@@ -40,7 +40,7 @@
 .user_dashboard_booking_details_card {
   background: #ffffff;
   box-shadow: 0px 4px 18px rgba(169, 169, 169, 0.15);
-  height: 55vh;
+  max-height: 55vh;
   overflow: hidden;
   overflow-y: scroll;
 }
