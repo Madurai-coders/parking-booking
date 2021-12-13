@@ -188,7 +188,7 @@
 .parking_setup_inactive_slot_table_container {
   overflow: hidden;
   overflow-y: scroll;
-  height: 55vh;
+  max-height: 55vh;
 }
 
 .parking_setup_inactive_slot_table_container::-webkit-scrollbar {

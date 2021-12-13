@@ -5,7 +5,7 @@
 .User_report_recent_container {
   overflow: hidden;
   overflow-y: scroll;
-  height: 52vh;
+  max-height: 52vh;
 }
 
 .User_report_recent_container::-webkit-scrollbar {
