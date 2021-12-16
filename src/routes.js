@@ -8,6 +8,7 @@ import Booking_Report from "./core/booking_report";
 import Parkingsetup from "./core/parking_setup";
 import Payment from "./core/payment.js";
 import Menu from "./core/Menu";
+import test from "./core/test";
 import User_report from "./core/user_report.js";
 import User from "./core/user.js";
 import "../src/assets/css/general.css";
@@ -133,6 +134,11 @@ const Routes = () => {
                   component={User_report}
                 />
                 <Route path="/" exact component={User_login} />
+                <Route
+                path="/test"
+                exact
+                component={test}
+                />
             </div>
 
               </Switch>

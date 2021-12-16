@@ -102,7 +102,7 @@ export default function Navbarbigscreen(props) {
                   alt="Munidex_Parking_Menu"
                 />
               </li>
-              <Link to = 'admin'>
+              <Link to = 'admin' style={{textDecoration:"none"}}>
               <li className="Navbigscreen_listitem_booking">
                 <img
                   src={Booking}
@@ -114,7 +114,7 @@ export default function Navbarbigscreen(props) {
                 </span>
               </li>
               </Link>
-              <Link to = "AdmindashboardBookingreport">
+              <Link to = "AdmindashboardBookingreport" style={{textDecoration:"none"}}>
               <li className="Navbigscreen_listitem_bookingreport">
                 <img
                   src={Bookingreport}
@@ -126,7 +126,7 @@ export default function Navbarbigscreen(props) {
                 </span>
               </li>
               </Link>
-              <Link to="Admindashboardpayment">
+              <Link to="Admindashboardpayment" style={{textDecoration:"none"}}>
               <li className="Navbigscreen_listitem_accountreport">
                 <img
                   src={Accountreport}
@@ -138,7 +138,7 @@ export default function Navbarbigscreen(props) {
                 </span>
               </li>
               </Link>
-              <Link to = 'AdmindashboardParkingsetup'>
+              <Link to = 'AdmindashboardParkingsetup' style={{textDecoration:"none"}}>
               <li className="Navbigscreen_listitem_parkingsetup">
                 <img
                   src={Parkingsetup}
@@ -150,14 +150,14 @@ export default function Navbarbigscreen(props) {
                 </span>
               </li>
               </Link>
-              <Link to = 'AdmindashboardUserreport'>
-              <li className="Navbigscreen_listitem_parkingsetup">
+              <Link to = 'AdmindashboardUserreport' style={{textDecoration:"none"}}>
+              <li className="Navbigscreen_listitem_userreport">
                 <img
                   src={User_report}
-                  className="Navbigscreen_listitem_parkingsetup_img"
-                  alt="Munidex_parking_Parking_setup"
+                  className="Navbigscreen_listitem_userreport_img"
+                  alt="Munidex_parking_user_report"
                 />
-                <span className="Navbigscreen_listitem_parkingsetup_text">
+                <span className="Navbigscreen_listitem_userreport_text">
                   User Report
                 </span>
               </li>
