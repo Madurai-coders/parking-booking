@@ -135,6 +135,7 @@ export default function Booking() {
                 : setbooking({
                     ...booking,
                     slotid: slot.slotId,
+                    slot_connect: slot.id,
                   })
             }
             className={
@@ -207,7 +208,7 @@ export default function Booking() {
         .then((response) => {
           console.log(response);
           reset();
-          setSuccess(response)
+          setSuccess(response);
         })
         .catch((response) => {
           axios_call("POST", "CreateBooking/", booking_finalized).then(
@@ -551,10 +552,9 @@ export default function Booking() {
               <div className="booking_form_clear"> Clear </div>
             </div>
 
-            <div class="alert alert-success mt-2 mx-2" role="alert">
+            {/* <div class="alert alert-success mt-2 mx-2" role="alert">
                 
-            </div>
-
+            </div> */}
           </div>
         </div>
       </div>

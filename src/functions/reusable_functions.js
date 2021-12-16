@@ -646,7 +646,7 @@ export function validation_payment_id(value) {
 export function validation_amount(value) {
     if (value == "" || value != "not_selected") {
         if (value) {
-            if (value>0 && value<99999) {
+            if (value>=0 && value<99999) {
                 return {
                     class: "pass",
                 };

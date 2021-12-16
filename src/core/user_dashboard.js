@@ -191,7 +191,7 @@ export default function User_dashboard() {
                     return (
                       <tr className="user_dashboard_booking_details_table_data">
                         {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
-                        <td>{userdata.Slots.wing.wingName}</td>
+                        <td>{userdata.slots.wing.wingName}</td>
                         <td>
                           {moment(userdata.startFrom).format("DD-MM-YYYY")}
                         </td>
@@ -231,13 +231,14 @@ export default function User_dashboard() {
                     {/* <div className="user_dashboard_pay_container text-center">
                     <div className="user_dashboard_pay"> Pay </div>
                   </div> */}
+                   <div className="user_dashboard_pay_container text-center">
+                    <div className="user_dashboard_pay"> Pay </div>
+                  </div>
                   </div>
                   <div className="user_dashboard_balance_card_amount d-flex">
                     {Balance(user.payment_partner, user.booking_partner)} $
                   </div>
-                  <div className="user_dashboard_pay_container text-center">
-                    <div className="user_dashboard_pay"> Pay </div>
-                  </div>
+                 
                 </div>
                 <div className="user_dashboard_transaction_card">
                   <div className="user_dashboard_transaction_card_title">

@@ -13,10 +13,11 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useHistory, Redirect } from "react-router-dom";
-import Cookies from "js-cookie";
+import Cookies, { set } from "js-cookie";
 
 export default function User_login() {
   let history = useHistory();
+  const [data_fail, setData_fail] = useState(false);
 
   const [user, setuser] = useState();
   const [loginuser, setloginuser] = useState(false);
@@ -72,12 +73,12 @@ export default function User_login() {
           "&accountnumber=" +
           form_values.accountnumber,
       }).then((response) => {
-        reset();
-        console.log(response);
         if (response.data[0]) {
+            reset();
             if(!loginuser){
           Cookies.set("accountnumber", form_values.accountnumber);
           Cookies.set("lastname", form_values.lastname);
+          history.push("/dashboard")
             }
           if (loginuser.useraccount) {
             history.push("/dashboard");
@@ -92,7 +93,10 @@ export default function User_login() {
             });
           }
         }
-      });
+        else{
+            setData_fail('" Please check the details that you have entered !! "')
+        }
+      })
     }
   };
 
@@ -130,7 +134,7 @@ export default function User_login() {
               <img
                 src={logo}
                 alt="munidex_logo"
-                className="user_login_signin_logo m-4"
+                className="user_login_signin_logo m-3"
               />
             </div>
             <div className="user_login_signin_text text-center  mb-3">
@@ -244,13 +248,22 @@ export default function User_login() {
             )}
           </div>
           {loginuser && (
-            <div className="mb-3 mt-5">
+            <div className="mb-2 mt-4">
               <small className="alert-primary alert p-2">
                 Please enter your account info to connect with "
                 {loginuser.username}"{" "}
               </small>
             </div>
           )}
+
+{data_fail && (
+            <div className="mb-2 mt-4">
+              <small className="alert-danger alert p-2">
+                {data_fail}
+              </small>
+            </div>
+          )}
+          
         </div>
       </div>
     </>

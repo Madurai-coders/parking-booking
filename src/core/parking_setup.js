@@ -742,7 +742,7 @@ export default function Parkingsetup() {
                       return (
                         <tr className="parking_setup_table_data">
                           <td>{parkingsetupdata.wing.wingName}</td>
-                          <td>{parkingsetupdata.slotId}</td>
+                          <td>{parkingsetupdata.id}</td>
                           {/* <td>{parkingsetupdata.date}</td> */}
                           <td>
                             <span

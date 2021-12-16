@@ -1,5 +1,5 @@
 .booking_report_container {
-  padding-top: 9vh;
+  padding-top: 8vh;
   padding-left: 1vw;
   padding-right: 1vw;
   height: 92vh;
@@ -47,7 +47,7 @@
 .booking_report_table_headers th {
   color: #fff;
   font-weight: 500;
-  font-size: 7.79px;
+  font-size: 12px;
   line-height: 9px;
   background-color: #0cb0e2;
   padding: 1.5% 2%;
@@ -58,7 +58,7 @@
 
 .booking_report_table_data td {
   font-weight: 500;
-  font-size: 7px;
+  font-size: 10px;
   line-height: 9px;
   padding: 1.5% 2%;
 }
@@ -72,24 +72,24 @@
 }
 
 .booking_report_slot_number_card {
-  width: 12vw;
+  width: 18vw;
   background: #ffffff;
   box-shadow: 2px 2px 7px rgba(151, 151, 151, 0.15);
   border-radius: 3px;
   margin: 2.5% 6% 3% 0;
-  padding: 1% 2% 1.5% 1%;
+  padding: 2% 2% 2% 2%;
 }
 
 .booking_report_slot_number_text {
   font-weight: 500;
-  font-size: 8.7px;
+  font-size: 12px;
   line-height: 11px;
   color: #505255;
 }
 
 .booking_report_bottom_flex_number {
   font-weight: bold;
-  font-size: 9.8px;
+  font-size: 14px;
   line-height: 12px;
   color: #32325d;
 }
@@ -102,7 +102,7 @@
 
 .booking_report_text_date {
   font-weight: 500;
-  font-size: 9px;
+  font-size: 12px;
   line-height: 11px;
   color: #838383;
   margin: 4% 0 4% 2.5%;
@@ -125,17 +125,17 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.booking_report_wingselection_container {
+/* .booking_report_wingselection_container {
   height: 8vh;
   background: #ffffff;
   box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.15);
-}
+} */
 
 .booking_report_wingsubmit {
   background-color: #0cb0e2;
   padding: 0.8% 1.5%;
   font-weight: 500;
-  font-size: 10px;
+  font-size: 14px;
   line-height: 12px;
   color: #ffffff;
   border-radius: 3.82px;
@@ -157,4 +157,5 @@
   line-height: 128%;
   padding: 1.5% 5%;
   border-radius: 3px;
+  margin-top: 2px;
 }
