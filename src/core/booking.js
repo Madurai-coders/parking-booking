@@ -114,6 +114,8 @@ export default function Booking() {
                   day: day,
                   slotid: slot.slotId,
                   plan: val[0].plan,
+                  slot_connect:slot.id,
+                  wing_name:slot.wing.wingName
                 })
               }
               onMouseLeave={() => setBookinghover()}
@@ -136,6 +138,8 @@ export default function Booking() {
                     ...booking,
                     slotid: slot.slotId,
                     slot_connect: slot.id,
+                    wing_name:slot.wing.wingName
+
                   })
             }
             className={
@@ -286,7 +290,7 @@ export default function Booking() {
                     <div className="mt-2 col-12 ">
                       <div className="row">
                         <small className="col-7">
-                          SlotId: {booking.slotid}
+                        SlotId: {booking.wing_name&&(booking.wing_name+' ['+booking.slot_connect+']')}
                         </small>
                         <small className="col-5"> $: {booking.charge}</small>
                       </div>
@@ -307,7 +311,7 @@ export default function Booking() {
                     <div className="mt-2 col-12 ">
                       <div className="row">
                         <small className="col-7">
-                          SlotId: {bookinghover.slotid}
+                          SlotId: {bookinghover.wing_name&&(bookinghover.wing_name+' ['+bookinghover.slot_connect+']')}
                         </small>
                         <small className="col-5">
                           {" "}
