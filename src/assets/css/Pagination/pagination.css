@@ -1,0 +1,24 @@
+.pagination_container{
+    padding-top: 9vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.pagination_number{
+    color: #000;
+    background-color: #fff;
+    border: solid 1px#d3d3d3;
+    border-radius: 50%;
+    padding: 0 8px;
+    margin: 1%;
+}
+
+.pagination_number_active{
+    color: #fff;
+    background-color: #000;
+    border-radius: 50%;
+    padding: 0 8px;
+    margin: 1%;
+}

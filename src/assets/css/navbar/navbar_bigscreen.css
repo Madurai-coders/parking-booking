@@ -16,7 +16,7 @@
     margin: .6rem 1rem 5rem 1rem;
 }
 
-.Navbigscreen_menu_img , .Navbigscreen_listitem_booking_img, .Navbigscreen_listitem_bookingreport_img, .Navbigscreen_listitem_accountreport_img, .Navbigscreen_listitem_parkingsetup_img{
+.Navbigscreen_menu_img , .Navbigscreen_listitem_booking_img, .Navbigscreen_listitem_bookingreport_img, .Navbigscreen_listitem_accountreport_img, .Navbigscreen_listitem_parkingsetup_img, .Navbigscreen_listitem_userreport_img{
     height: 1.5rem;
     width: 1.5rem;
 }
@@ -26,7 +26,7 @@
     width: 1.1rem;
 }
 
-.Navbigscreen_listitem_booking ,.Navbigscreen_listitem_accountreport , .Navbigscreen_listitem_parkingsetup , .Navbigscreen_listitem_bookingreport{
+.Navbigscreen_listitem_booking ,.Navbigscreen_listitem_accountreport , .Navbigscreen_listitem_parkingsetup , .Navbigscreen_listitem_bookingreport, .Navbigscreen_listitem_userreport{
     margin: 0 1rem 4.45rem 1rem;
 }
 
@@ -34,7 +34,7 @@
    margin: 0 1rem 1.5rem 1rem;
 }
 
-.Navbigscreen_listitem_booking_text, .Navbigscreen_listitem_bookingreport_text , .Navbigscreen_listitem_accountreport_text, .Navbigscreen_listitem_parkingsetup_text, .Navbigscreen_listitem_logout_text{
+.Navbigscreen_listitem_booking_text, .Navbigscreen_listitem_bookingreport_text , .Navbigscreen_listitem_accountreport_text, .Navbigscreen_listitem_parkingsetup_text,.Navbigscreen_listitem_userreport_text,.Navbigscreen_listitem_logout_text{
     color:#fff;
     font-size: 12px;
     font-weight: 500;
@@ -53,4 +53,22 @@
 
 .Navbigscreen_listitem_logout_noexpand{
     margin: 0 1rem 1.5rem 1rem;
+}
+
+.Navbigscreen_listitem_parkingsetup_active{
+    background-color: #fff;
+    clip-path: polygon(2% 10%, 4% 0, 100% 0, 100% 74%, 100% 100%, 4% 100%, 2% 90%, 0 66%, 0 34%);    margin-left: 0px;
+    margin-right: 0px;
+    padding-left : 1rem;
+    padding-top: .4rem;
+    padding-bottom: .4rem;
+}
+
+.Navbigscreen_listitem_parkingsetup_text_active{
+    color: #28A8E0 !important;
+}
+
+.Navbigscreen_listitem_parkingsetup_img_active{
+    -webkit-filter: brightness(0) saturate(100%) invert(60%) sepia(19%) saturate(3926%) hue-rotate(166deg) brightness(94%) contrast(86%);
+    filter: brightness(0) saturate(100%) invert(60%) sepia(19%) saturate(3926%) hue-rotate(166deg) brightness(94%) contrast(86%);
 }
