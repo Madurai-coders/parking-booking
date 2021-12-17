@@ -12,16 +12,17 @@ import {
 import moment from "moment";
 import { Link } from "react-router-dom";
 import User from "./user.js";
- 
+import Pagination from "../components/Pagination/pagination";
 export default function User_report() {
   const [filter, setFilter] = useState(false);
-  const [flag, setFlag] = useState('none');
+  const [flag, setFlag] = useState("none");
   const [usr_suggestion, set_usr_suggestion] = useState([]);
   const [usr_suggestion_all, set_usr_suggestion_all] = useState([]);
   const [paymentStatus, setpaymentStatus] = useState(false);
   const [checked_pending, setChecked_pending] = useState(false);
   const [checked_completed, setChecked_completed] = useState(false);
-const [user, setUser] = useState()
+  const [user, setUser] = useState();
+  const [pagination, setPagination] = useState();
   const [data, setData] = useState([
     {
       name: "Alfreds Futterkiste",
@@ -31,6 +32,8 @@ const [user, setUser] = useState()
       ldate: "28/10/2012",
     },
   ]);
+
+
 
   function handleFilter() {
     setFilter(!filter);
@@ -59,13 +62,33 @@ const [user, setUser] = useState()
     }
   };
 
-  const Get = async (val) => {
-    axios_call("GET", "GetBusinessPartner/").then((response) => {
+  const GetPagination = async (val) => {
+    axios_call("GET", "GetBusinessPartner/?page=" + val).then((response) => {
+      "http://127.0.0.1:8000/GetBusinessPartner/?page=2";
       console.log(response);
+      setPagination(response);
       set_usr_suggestion(response.results);
       set_usr_suggestion_all(response.results);
     });
   };
+
+  const GetBusinessPartner = async (val) => {
+    axios_call("GET", "GetBusinessPartner/").then((response) => {
+      console.log(response);
+      setPagination(response);
+      set_usr_suggestion(response.results);
+      set_usr_suggestion_all(response.results);
+    });
+  };
+
+
+  useEffect(() => {
+    GetBusinessPartner();
+  }, [])
+
+
+  useEffect(() => {
+  }, []);
 
   useEffect(() => {
     var usr = usr_suggestion;
@@ -85,7 +108,7 @@ const [user, setUser] = useState()
       if (balance < 0) {
         pending.push(element);
       }
-      if (balance > 0) {
+      if (balance >=0) {
         completed.push(element);
       }
     }
@@ -104,13 +127,12 @@ const [user, setUser] = useState()
     }
   }, [checked_pending, checked_completed]);
 
-  useEffect(() => {
-    Get();
-  }, []);
 
-  function set_up_flag(){
-    setFlag('none')
+  function set_up_flag() {
+    setFlag("none");
   }
+
+
 
 
   return (
@@ -118,8 +140,11 @@ const [user, setUser] = useState()
       <Helmet>
          <title>Munidex Parking - User report </title>
       </Helmet>
-      {!flag&&
-      <div className='overlay' style={{display:flag}}><User user={user} set_up_flag={set_up_flag}></User></div>}
+      {!flag && (
+        <div className="overlay" style={{ display: flag }}>
+          <User user={user} set_up_flag={set_up_flag}></User>
+        </div>
+      )}
       <div className="User_report_container flex-grow-1">
         <div className="User_report_detail_entry">
           <div className="User_report_title_text">User Report</div>
@@ -218,7 +243,11 @@ const [user, setUser] = useState()
                   </div> */}
                   <div style={{ display: "flex" }}>
                     <div
-                      onClick={() => (setChecked_pending(false),setChecked_completed(false),handleFilter())}
+                      onClick={() => (
+                        setChecked_pending(false),
+                        setChecked_completed(false),
+                        handleFilter()
+                      )}
                       className="User_report_filter_card_segment3_text_cancel me-3"
                     >
                       {" "}
@@ -237,8 +266,8 @@ const [user, setUser] = useState()
           <VscHistory size={14.5} style={{ color: "#666666" }} /> Recent{" "}
         </div>
         <div className="payment_table_container">
-            <table className="payment_table ">
-              <tr className="payment_table_heading">
+          <table className="payment_table ">
+            <tr className="payment_table_heading">
               <th>Name</th>
               <th>Account Number</th>
               <th>No of Booking</th>
@@ -267,13 +296,23 @@ const [user, setUser] = useState()
                     ).format("dd, MM Do YY, h:mm a")}
                   </td>
                   <td>
-                  <span onClick={()=>(console.log(userdata),setUser(userdata),setFlag(false))} className="User_report_controls_view">View</span>
+                    <span
+                      onClick={() => (
+                        console.log(userdata), setUser(userdata), setFlag(false)
+                      )}
+                      className="User_report_controls_view"
+                    >
+                      View
+                    </span>
                   </td>
                 </tr>
               );
             })}
           </table>
         </div>
+        {pagination && pagination.count > 20 &&  (
+          <Pagination count={pagination.count} GetPagination={GetPagination} />
+        )}
       </div>
     </>
   );

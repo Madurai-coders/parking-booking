@@ -12,6 +12,7 @@ import Carousel from "react-elastic-carousel";
 import { axios_call, axios_call_auto } from "../functions/reusable_functions";
 import { Bar, Line } from "react-chartjs-2";
 import moment from "moment";
+import Chart from "chart.js/auto";
 
 export default function Booking_report() {
   const [data, setData] = useState();

@@ -291,8 +291,8 @@ export default function Booking() {
                   <div className="row">
                     <div className="col-12">
                       <div className="row">
-                        <small className="col-7">Name: {booking.name}</small>
-                        <small className="col-5">plan: {booking.plan}</small>
+                        <small className="col-7">Name: {booking.name=!'not_selected' && booking.name}</small>
+                        <small className="col-5">plan: {booking.plan=!'not_selected' && booking.plan}</small>
                       </div>
                     </div>
                     <div className="mt-2 col-12 ">
@@ -323,17 +323,17 @@ export default function Booking() {
                     </div>
                     <div className="mt-2 col-12 ">
                       <div className="row">
-                        <small className="col-7">
-                          SlotId:{" "}
+                        <small className="col-7 ">
+                          SlotId:{" "}<span className='badge bg-primary'>
                           {bookinghover.wing_name &&
                             bookinghover.wing_name +
                               " [" +
                               bookinghover.slot_connect +
-                              "]"}
+                              "]"}</span>
                         </small>
                         <small className="col-5">
-                          {" "}
-                          Days left: {bookinghover.day}
+                          {" "}{bookinghover.day?<>
+                          Days left: {bookinghover.day}</>: <>$:</>}
                         </small>
                       </div>
                     </div>

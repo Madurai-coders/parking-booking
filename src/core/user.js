@@ -355,7 +355,7 @@ function Dayleft(endTo){
           <div className="col-7">
             <div className="user_dashboard_username">
               {" "}
-              Hello {props.user.userName}
+             {props.user.userName}'s Report
             </div>
             <div className="user_dashboard_text_booking_details">
               {" "}

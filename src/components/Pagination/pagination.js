@@ -4,8 +4,8 @@ import "../../assets/css/Pagination/pagination.css"
 export default function Pagination(props) {
 
 const[initialpagination , setInitialPagination] = useState([1,2,3]);
-const count = 30;
-const perPagecount= 5
+const count = props.count;
+const perPagecount= 20
 const [initial,setInitial] = useState(true);
 const [end , setEnd] = useState(false);
 const numberofPages= Math.ceil(count/perPagecount);
@@ -54,6 +54,11 @@ function gotoprevpageSet(){
   }
 }
 
+
+function PassValue(number){
+    setActive(number)
+props.GetPagination(number)
+}
   return (
     <>
                <div className="pagination_container">
@@ -61,7 +66,7 @@ function gotoprevpageSet(){
                  <div className="pagination_number" onClick={gotoprevpageSet}> &lt; </div>
                  }
                  {initialpagination.map((number)=>{
-                   return (<div className={(active==number) ? 'pagination_number_active' : 'pagination_number'} onClick={()=>{setActive(number)}}> {number} </div>);
+                   return (<div className={(active==number) ? 'pagination_number_active' : 'pagination_number'} onClick={()=>PassValue(number)}> {number} </div>);
                  })}
                  {!end &&
                  <div className="pagination_number"> ... </div>}
