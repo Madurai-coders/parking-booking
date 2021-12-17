@@ -17,6 +17,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Car from "../assets/images/Car.svg";
 import moment from "moment";
+import Carousel from "react-elastic-carousel";
+
 export default function Booking() {
   const [booking, setbooking] = useState({
     userId: "",
@@ -32,7 +34,7 @@ export default function Booking() {
   const [userdata, setuserdata] = useState();
   const [usr_suggestion, set_usr_suggestion] = useState([]);
   const [booking_details, SetBookingdetails] = useState([]);
-  const [wing_data, SetWing_data] = useState();
+  const [wing_data, setWing_data] = useState();
   const [wing, SetWing] = useState();
   const [slot, SetSlot] = useState();
   const [success, setSuccess] = useState();
@@ -60,8 +62,7 @@ export default function Booking() {
 
   function GetWingDetails(id) {
     axios_call("GET", "CreateWing/").then((response) => {
-      SetWing_data(response);
-      console.log(response);
+      setWing_data(response);
       if (response[0]) {
         if (id) {
           SetSlot(response[response.length - 1].slots);
@@ -114,8 +115,8 @@ export default function Booking() {
                   day: day,
                   slotid: slot.slotId,
                   plan: val[0].plan,
-                  slot_connect:slot.id,
-                  wing_name:slot.wing.wingName
+                  slot_connect: slot.id,
+                  wing_name: slot.wing.wingName,
                 })
               }
               onMouseLeave={() => setBookinghover()}
@@ -131,6 +132,14 @@ export default function Booking() {
           <img
             key={id}
             src={Car}
+            onMouseEnter={() =>
+              setBookinghover({
+                slotid: slot.slotId,
+                slot_connect: slot.id,
+                wing_name: slot.wing.wingName,
+              })
+            }
+            onMouseLeave={() => setBookinghover()}
             onClick={() =>
               booking.slotid == slot.slotId
                 ? setbooking({ ...booking, slotid: "" })
@@ -138,8 +147,7 @@ export default function Booking() {
                     ...booking,
                     slotid: slot.slotId,
                     slot_connect: slot.id,
-                    wing_name:slot.wing.wingName
-
+                    wing_name: slot.wing.wingName,
                   })
             }
             className={
@@ -290,7 +298,12 @@ export default function Booking() {
                     <div className="mt-2 col-12 ">
                       <div className="row">
                         <small className="col-7">
-                        SlotId: {booking.wing_name&&(booking.wing_name+' ['+booking.slot_connect+']')}
+                          SlotId:{" "}
+                          {booking.wing_name &&
+                            booking.wing_name +
+                              " [" +
+                              booking.slot_connect +
+                              "]"}
                         </small>
                         <small className="col-5"> $: {booking.charge}</small>
                       </div>
@@ -311,7 +324,12 @@ export default function Booking() {
                     <div className="mt-2 col-12 ">
                       <div className="row">
                         <small className="col-7">
-                          SlotId: {bookinghover.wing_name&&(bookinghover.wing_name+' ['+bookinghover.slot_connect+']')}
+                          SlotId:{" "}
+                          {bookinghover.wing_name &&
+                            bookinghover.wing_name +
+                              " [" +
+                              bookinghover.slot_connect +
+                              "]"}
                         </small>
                         <small className="col-5">
                           {" "}
@@ -324,10 +342,12 @@ export default function Booking() {
               </div>
             </div>
             <div className="">
-              {wing_data && wing_data.length > 10 && (
+              {wing_data && wing_data.length < 10 && (
                 <div className="parking_setup_wing_title_section">
-                  <Slider>
-                    {wing_data.map((wing) => {
+                  <
+                  >
+                    {" "}
+                    { wing_data.map((wing) => {
                       return (
                         <div
                           className={
@@ -345,11 +365,12 @@ export default function Booking() {
                         </div>
                       );
                     })}
-                  </Slider>
+                  </>
                 </div>
+               
               )}
 
-              {wing_data && wing_data.length < 10 && (
+              {wing_data && wing_data.length > 10 && (
                 <div className="parking_setup_wing_title_section">
                   <div className="d-flex">
                     {wing_data.map((wing) => {
