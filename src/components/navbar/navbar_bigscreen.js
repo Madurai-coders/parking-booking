@@ -3,14 +3,16 @@ import Menu from "../../assets/images/Menu.svg";
 import "../../assets/css/navbar/navbar_bigscreen.css";
 import Booking from "../../assets/images/Booking.svg";
 import Bookingreport from "../../assets/images/Bookingreport.svg";
-import Accountreport from "../../assets/images/Accountreport.svg";
+import payment from "../../assets/images/Accountreport.svg";
 import Parkingsetup from "../../assets/images/Parkingsetup.svg";
 import Logout from "../../assets/images/Logout.svg";
 import User_report from "../../assets/images/userreport.svg"
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Navbarbigscreen(props) {
   const [expand, setExpand] = useState(false);
+  const [current_page, setCurrentpage] = useState("booking");
 
   function handleExpand() {
     setExpand(!expand);
@@ -22,8 +24,13 @@ export default function Navbarbigscreen(props) {
 
   return (
     <>
+    <AnimatePresence>
       {!expand && (
-        <div className="Navbigscreen_container">
+        <motion.div 
+        initial={{ opacity: .8 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: .8 }}
+        className="Navbigscreen_container">
           <div>
             <ul className="Navbigscreen_list">
               <li className="Navbigscreen_menu_noexpand" onClick={handleExpand}>
@@ -33,48 +40,48 @@ export default function Navbarbigscreen(props) {
                   alt="Munidex_Parking_Menu"
                 />
               </li>
-              <Link to='/admin'>
-              <li className="Navbigscreen_listitem_booking_noexpand">
+              <Link to='/admin' onClick={() => setCurrentpage("booking")}>
+              <li className={current_page=="booking" ? "Navbigscreen_listitem_booking_noexpand_active" : "Navbigscreen_listitem_booking_noexpand"}>
                 <img
                   src={Booking}
-                  className="Navbigscreen_listitem_booking_img"
+                  className={current_page=="booking" ? "Navbigscreen_listitem_booking_img_active" : "Navbigscreen_listitem_booking_img"}
                   alt="Munidex_Parking_booking"
                 />
               </li>
               </Link>
-              <Link to = "AdmindashboardBookingreport">
-              <li className="Navbigscreen_listitem_bookingreport_noexpand">
+              <Link to = "AdmindashboardBookingreport" onClick={() => setCurrentpage("bookingreport")}>
+              <li className={current_page=="bookingreport" ? "Navbigscreen_listitem_bookingreport_noexpand_active" : "Navbigscreen_listitem_bookingreport_noexpand"}>
                 <img
                   src={Bookingreport}
-                  className="Navbigscreen_listitem_bookingreport_img"
+                  className={current_page=="bookingreport" ? "Navbigscreen_listitem_bookingreport_img_active" : "Navbigscreen_listitem_bookingreport_img"}
                   alt="Munidex_parking_Booking_Report"
                 />
               </li>
               </Link>
-              <Link to="Admindashboardpayment">
-              <li className="Navbigscreen_listitem_accountreport_noexpand">
+              <Link to="Admindashboardpayment" onClick={() => setCurrentpage("payment")} >
+              <li className={current_page=="payment" ? "Navbigscreen_listitem_payment_noexpand_active" : "Navbigscreen_listitem_payment_noexpand"}>
                 <img
-                  src={Accountreport}
-                  className="Navbigscreen_listitem_accountreport_img"
-                  alt="Munidex_parking_Account_Report"
+                  src={payment}
+                  className={current_page=="payment" ? "Navbigscreen_listitem_payment_img_active" : "Navbigscreen_listitem_payment_img"}
+                  alt="Munidex_parking_payment"
                 />
               </li>
               </Link>
-              <Link to = 'AdmindashboardParkingsetup'>
-              <li className="Navbigscreen_listitem_parkingsetup_noexpand">
+              <Link to = 'AdmindashboardParkingsetup' onClick={() => setCurrentpage("parkingsetup")}>
+              <li className={current_page=="parkingsetup" ? "Navbigscreen_listitem_parkingsetup_noexpand_active" : "Navbigscreen_listitem_parkingsetup_noexpand"}>
                 <img
                   src={Parkingsetup}
-                  className="Navbigscreen_listitem_parkingsetup_img"
+                  className={current_page=="parkingsetup" ? "Navbigscreen_listitem_parkingsetup_img_active" : "Navbigscreen_listitem_parkingsetup_img"}
                   alt="Munidex_parking_Parking_setup"
                 />
               </li>
               </Link>
-              <Link to = 'AdmindashboardUserreport' >
-              <li className="Navbigscreen_listitem_parkingsetup_noexpand">
+              <Link to = 'AdmindashboardUserreport' onClick={() => setCurrentpage("userreport")} >
+              <li className={current_page=="userreport" ? "Navbigscreen_listitem_userreport_noexpand_active" : "Navbigscreen_listitem_userreport_noexpand"}>
                 <img
                   src={User_report}
-                  className="Navbigscreen_listitem_parkingsetup_img"
-                  alt="Munidex_parking_Parking_setup"
+                  className={current_page=="userreport" ? "Navbigscreen_listitem_userreport_img_active" : "Navbigscreen_listitem_userreport_img"}
+                  alt="Munidex_parking_userreport_setup"
                 />
               </li>
               </Link>
@@ -88,11 +95,17 @@ export default function Navbarbigscreen(props) {
               alt="Munidex_parking_logout"
             />
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
+     <AnimatePresence>
       {expand && (
-        <div className="Navbigscreen_container" style={{ width: "13vw" }}>
+        <motion.div 
+        initial={{ opacity: .8 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: .8 }}
+        className="Navbigscreen_container" style={{ width: "13vw" }}>
           <div>
             <ul className="Navbigscreen_list">
               <li className="Navbigscreen_menu" onClick={handleContract}>
@@ -102,62 +115,62 @@ export default function Navbarbigscreen(props) {
                   alt="Munidex_Parking_Menu"
                 />
               </li>
-              <Link to = 'admin' style={{textDecoration:"none"}}>
-              <li className="Navbigscreen_listitem_booking">
+              <Link to = 'admin' style={{textDecoration:"none"}}  onClick={() => setCurrentpage("booking")}>
+              <li className={current_page == "booking" ? "Navbigscreen_listitem_booking_active" : "Navbigscreen_listitem_booking"}>
                 <img
                   src={Booking}
-                  className="Navbigscreen_listitem_booking_img"
+                  className={current_page == "booking" ? "Navbigscreen_listitem_booking_img_active" : "Navbigscreen_listitem_booking_img"}
                   alt="Munidex_Parking_booking"
                 />
-                <span className="Navbigscreen_listitem_booking_text">
+                <span className={current_page=="booking" ? "Navbigscreen_listitem_booking_text_active" : "Navbigscreen_listitem_booking_text"}>
                   Booking
                 </span>
               </li>
               </Link>
-              <Link to = "AdmindashboardBookingreport" style={{textDecoration:"none"}}>
-              <li className="Navbigscreen_listitem_bookingreport">
+              <Link to = "AdmindashboardBookingreport" style={{textDecoration:"none"}} onClick={() => setCurrentpage("bookingreport")}>
+              <li className={current_page == "bookingreport" ? "Navbigscreen_listitem_bookingreport_active" : "Navbigscreen_listitem_bookingreport"}>
                 <img
                   src={Bookingreport}
-                  className="Navbigscreen_listitem_bookingreport_img"
+                  className={current_page == "bookingreport" ? "Navbigscreen_listitem_bookingreport_img_active" : "Navbigscreen_listitem_bookingreport_img"}
                   alt="Munidex_parking_Booking_Report"
                 />
-                <span className="Navbigscreen_listitem_bookingreport_text">
+                <span className={current_page=="bookingreport" ? "Navbigscreen_listitem_bookingreport_text_active" : "Navbigscreen_listitem_bookingreport_text"}>
                   Booking Report
                 </span>
               </li>
               </Link>
-              <Link to="Admindashboardpayment" style={{textDecoration:"none"}}>
-              <li className="Navbigscreen_listitem_accountreport">
+              <Link to="Admindashboardpayment" style={{textDecoration:"none"}} onClick={() => setCurrentpage("payment")}>
+              <li className={current_page == "payment" ? "Navbigscreen_listitem_payment_active" : "Navbigscreen_listitem_payment"}>
                 <img
-                  src={Accountreport}
-                  className="Navbigscreen_listitem_accountreport_img"
-                  alt="Munidex_parking_Account_Report"
+                  src={payment}
+                  className={current_page == "payment" ? "Navbigscreen_listitem_payment_img_active" : "Navbigscreen_listitem_payment_img"}
+                  alt="Munidex_parking_payment"
                 />
-                <span className="Navbigscreen_listitem_accountreport_text">
+                <span className={current_page=="payment" ? "Navbigscreen_listitem_payment_text_active" : "Navbigscreen_listitem_payment_text"}>
                   Payment
                 </span>
               </li>
               </Link>
-              <Link to = 'AdmindashboardParkingsetup' style={{textDecoration:"none"}}>
-              <li className="Navbigscreen_listitem_parkingsetup">
+              <Link to = 'AdmindashboardParkingsetup' style={{textDecoration:"none"}} onClick={() => setCurrentpage("parkingsetup")}>
+              <li className={current_page == "parkingsetup" ? "Navbigscreen_listitem_parkingsetup_active" : "Navbigscreen_listitem_parkingsetup"}>
                 <img
                   src={Parkingsetup}
-                  className="Navbigscreen_listitem_parkingsetup_img"
+                  className={current_page == "parkingsetup" ? "Navbigscreen_listitem_parkingsetup_img_active" : "Navbigscreen_listitem_parkingsetup_img"}
                   alt="Munidex_parking_Parking_setup"
                 />
-                <span className="Navbigscreen_listitem_parkingsetup_text">
+                <span className={current_page=="parkingsetup" ? "Navbigscreen_listitem_parkingsetup_text_active" : "Navbigscreen_listitem_parkingsetup_text"}>
                   Parking Setup
                 </span>
               </li>
               </Link>
-              <Link to = 'AdmindashboardUserreport' style={{textDecoration:"none"}}>
-              <li className="Navbigscreen_listitem_userreport">
+              <Link to = 'AdmindashboardUserreport' style={{textDecoration:"none"}} onClick={() => setCurrentpage("userreport")}>
+              <li className={current_page == "userreport" ? "Navbigscreen_listitem_userreport_active" : "Navbigscreen_listitem_userreport"}>
                 <img
                   src={User_report}
-                  className="Navbigscreen_listitem_userreport_img"
+                  className={current_page == "userreport" ? "Navbigscreen_listitem_userreport_img_active" : "Navbigscreen_listitem_userreport_img"}
                   alt="Munidex_parking_user_report"
                 />
-                <span className="Navbigscreen_listitem_userreport_text">
+                <span className={current_page=="userreport" ? "Navbigscreen_listitem_userreport_text_active" : "Navbigscreen_listitem_userreport_text"}>
                   User Report
                 </span>
               </li>
@@ -172,8 +185,9 @@ export default function Navbarbigscreen(props) {
             />
             <span className="Navbigscreen_listitem_logout_text">Logout</span>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </>
   );
 }
