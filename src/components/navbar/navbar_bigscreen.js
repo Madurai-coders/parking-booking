@@ -9,10 +9,12 @@ import Logout from "../../assets/images/Logout.svg";
 import User_report from "../../assets/images/userreport.svg"
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion"
+import { set } from "js-cookie";
 
 export default function Navbarbigscreen(props) {
   const [expand, setExpand] = useState(false);
   const [current_page, setCurrentpage] = useState("booking");
+  const [logout_popup, setlogout_popup] = useState();
 
   function handleExpand() {
     setExpand(!expand);
@@ -25,11 +27,31 @@ export default function Navbarbigscreen(props) {
   return (
     <>
     <AnimatePresence>
+    {logout_popup && 
+            <div className='overlay'>
+            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"  id="exampleModalLabel">Logout</h5>
+                  <button type="button" onClick={()=>setlogout_popup(false)}  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are your sure?
+                </div>
+                <div class="modal-footer">
+                  <button type="button"  onClick={()=>setlogout_popup(false)} class="btn btn-light btn-sm"  data-bs-dismiss="modal">Cancle</button>
+                  <button type="button" onClick={props.logout} class="btn btn-danger btn-sm">Logout</button>
+
+                </div>
+              </div>
+            {/* </div> */}
+          </div>
+          </div>
+            }
       {!expand && (
         <motion.div 
-        initial={{ opacity: .8 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: .8 }}
+       
         className="Navbigscreen_container">
           <div>
             <ul className="Navbigscreen_list">
@@ -88,7 +110,7 @@ export default function Navbarbigscreen(props) {
             </ul>
           </div>
 
-          <div onClick={props.logout} className="Navbigscreen_listitem_logout_noexpand">
+          <div  onClick={()=>setlogout_popup(true)} className="Navbigscreen_listitem_logout_noexpand">
             <img
               src={Logout}
               className="Navbigscreen_listitem_logout_img"
@@ -102,9 +124,7 @@ export default function Navbarbigscreen(props) {
      <AnimatePresence>
       {expand && (
         <motion.div 
-        initial={{ opacity: .8 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: .8 }}
+  
         className="Navbigscreen_container" style={{ width: "13vw" }}>
           <div>
             <ul className="Navbigscreen_list">
@@ -177,7 +197,7 @@ export default function Navbarbigscreen(props) {
               </Link>
             </ul>
           </div>
-          <div className="Navbigscreen_listitem_logout" onClick={props.logout}>
+          <div className="Navbigscreen_listitem_logout" onClick={()=>setlogout_popup(true)}>
             <img
               src={Logout}
               className="Navbigscreen_listitem_logout_img"

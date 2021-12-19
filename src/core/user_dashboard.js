@@ -23,6 +23,8 @@ export default function User_dashboard() {
   const [props, setprops] = useState();
   const [getAmount, setGetAmount] = useState();
   const [amount, setAmount] = useState();
+  const [logout_popup, setlogout_popup] = useState();
+
 
   let history = useHistory();
 
@@ -75,6 +77,7 @@ export default function User_dashboard() {
   }, []);
 
   function logoutuser() {
+      
     logout();
     Cookies.remove("accountnumber");
     Cookies.remove("lastname");
@@ -123,6 +126,28 @@ export default function User_dashboard() {
       <Helmet>
         <title>Munidex Parking - User Dashboard</title>
       </Helmet>
+      {logout_popup && 
+            <div className='overlay'>
+            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"  id="exampleModalLabel">Logout</h5>
+                  <button type="button" onClick={()=>setlogout_popup(false)}  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+               <div class="modal-body">
+                  Are your sure?
+                </div>
+                <div class="modal-footer">
+                  <button type="button"  onClick={()=>setlogout_popup(false)} class="btn btn-light btn-sm"  data-bs-dismiss="modal">Cancle</button>
+                  <button type="button" onClick={logoutuser} class="btn btn-danger btn-sm">Logout</button>
+
+                </div>
+              </div>
+            {/* </div> */}
+          </div>
+          </div>
+            }
       {user && (
         <div className="user_dashboard_container">
           {popup && (
@@ -198,7 +223,7 @@ export default function User_dashboard() {
             className="user_dashboard_munidex_logo"
           />
           <img
-            onClick={logoutuser}
+            onClick={()=>setlogout_popup(true)}
             src={userprof}
             alt="Customer_profile"
             className="user_dashboard_profile_icon"
@@ -294,7 +319,7 @@ export default function User_dashboard() {
                   </div>
                 </div>
 
-                {!getAmount ? (
+                {!getAmount &&  user.payment_partner.length ? (
                   <div className="user_dashboard_transaction_card">
                     <div className="user_dashboard_transaction_card_title">
                       {" "}
@@ -399,6 +424,8 @@ export default function User_dashboard() {
                 )}
               </div>
             </div>
+
+          
               
           </div>
           <div className="row">

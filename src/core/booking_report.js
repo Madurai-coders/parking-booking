@@ -373,8 +373,7 @@ var amount=0
                           <td>{bookingdata.slots.id}</td>
                           <td>{bookingdata.charge}</td>
                           <td>
-                            <IoTrashOutline
-                              onClick={() => Removebooking(bookingdata.id)}
+                            <IoTrashOutline onClick={() => Removebooking(bookingdata.id)}
                             />
                           </td>
                         </tr>

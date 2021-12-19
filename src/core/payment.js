@@ -20,6 +20,7 @@ import { useHistory } from "react-router-dom";
 
 export default function Payment() {
   const [payment, setPayment] = useState();
+  const [remove_payment, setRemove_payment] = useState();
   const [edit, setedit] = useState(false);
   let history = useHistory();
   const [form, setForm] = useState({
@@ -277,6 +278,29 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
          <title>Munidex Parking - Payments </title>
       </Helmet>
 
+      {remove_payment && 
+            <div className='overlay'>
+            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"  id="exampleModalLabel">Remove Payment</h5>
+                  <button type="button" onClick={()=>setRemove_payment(false)}  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are your sure?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" onClick={() => removePayment(payment.id)}class="btn btn-light">Remove</button>
+                  <button type="button"  onClick={()=>setRemove_payment(false)} class="btn btn-danger"  data-bs-dismiss="modal">Cancle</button>
+
+                </div>
+              </div>
+            {/* </div> */}
+          </div>
+          </div>
+            }
+
       <div className="flex-grow-1">
         <div className="payment_container">
           {data_fail && (
@@ -524,7 +548,9 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                             style={{ color: "#898989" }}
                           />
                           <HiOutlineTrash
-                            onClick={() => removePayment(payment.id)}
+                          
+                          onClick={() => setRemove_payment(true)}
+
                             size={16}
                             style={{ color: "#898989" }}
                           />

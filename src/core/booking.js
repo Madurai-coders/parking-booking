@@ -142,7 +142,12 @@ export default function Booking() {
             onMouseLeave={() => setBookinghover()}
             onClick={() =>
               booking.slotid == slot.slotId
-                ? setbooking({ ...booking, slotid: "" })
+                ? setbooking({
+                    ...booking,
+                    slotid: "",
+                    slot_connect: "",
+                    wing_name: "",
+                  })
                 : setbooking({
                     ...booking,
                     slotid: slot.slotId,
@@ -257,7 +262,7 @@ export default function Booking() {
       console.log(booking_data);
       setbooking({
         ...booking,
-        userId: booking_data.id,
+        userId: booking_data.userId,
         name: booking_data.User.userName,
       });
       window.localStorage.removeItem("bookingdata");
@@ -281,7 +286,7 @@ export default function Booking() {
       <Helmet>
          <title>Munidex Parking - Booking </title>
       </Helmet>
-      <div className="flex-grow-1">
+      <div className="">
         <div className="row booking_container">
           <div className="col-7">
             {" "}
@@ -291,19 +296,25 @@ export default function Booking() {
                   <div className="row">
                     <div className="col-12">
                       <div className="row">
-                        <small className="col-7">Name: {booking.name=!'not_selected' && booking.name}</small>
-                        <small className="col-5">plan: {booking.plan=!'not_selected' && booking.plan}</small>
+                        <small className="col-7">
+                          Name: {booking.name != "not_selected" && booking.name}
+                        </small>
+                        <small className="col-5">
+                          plan: {booking.plan != "not_selected" && booking.plan}
+                        </small>
                       </div>
                     </div>
                     <div className="mt-2 col-12 ">
                       <div className="row">
                         <small className="col-7">
                           SlotId:{" "}
-                          {booking.wing_name &&
-                            booking.wing_name +
-                              " [" +
-                              booking.slot_connect +
-                              "]"}
+                          <span className="badge bg-success">
+                            {booking.wing_name &&
+                              booking.wing_name +
+                                " [" +
+                                booking.slot_connect +
+                                "]"}
+                          </span>
                         </small>
                         <small className="col-5"> $: {booking.charge}</small>
                       </div>
@@ -324,16 +335,22 @@ export default function Booking() {
                     <div className="mt-2 col-12 ">
                       <div className="row">
                         <small className="col-7 ">
-                          SlotId:{" "}<span className='badge bg-primary'>
-                          {bookinghover.wing_name &&
-                            bookinghover.wing_name +
-                              " [" +
-                              bookinghover.slot_connect +
-                              "]"}</span>
+                          SlotId:{" "}
+                          <span className="badge bg-primary">
+                            {bookinghover.wing_name &&
+                              bookinghover.wing_name +
+                                " [" +
+                                bookinghover.slot_connect +
+                                "]"}
+                          </span>
                         </small>
                         <small className="col-5">
-                          {" "}{bookinghover.day?<>
-                          Days left: {bookinghover.day}</>: <>$:</>}
+                          {" "}
+                          {bookinghover.day ? (
+                            <>Days left: {bookinghover.day}</>
+                          ) : (
+                            <>$:</>
+                          )}
                         </small>
                       </div>
                     </div>
@@ -344,10 +361,9 @@ export default function Booking() {
             <div className="">
               {wing_data && wing_data.length < 10 && (
                 <div className="parking_setup_wing_title_section">
-                  <
-                  >
+                  <>
                     {" "}
-                    { wing_data.map((wing) => {
+                    {wing_data.map((wing) => {
                       return (
                         <div
                           className={
@@ -367,7 +383,6 @@ export default function Booking() {
                     })}
                   </>
                 </div>
-               
               )}
 
               {wing_data && wing_data.length > 10 && (

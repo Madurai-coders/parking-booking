@@ -709,6 +709,7 @@ export default function Parkingsetup() {
                     <div
                       className="btn btn-sm btn-primary"
                       onClick={() => AddSlot(wing.wingId)}
+                      style={{marginTop:'-14px'}}
                     >
                       Add
                     </div>

@@ -33,8 +33,6 @@ export default function User_report() {
     },
   ]);
 
-
-
   function handleFilter() {
     setFilter(!filter);
   }
@@ -81,14 +79,11 @@ export default function User_report() {
     });
   };
 
-
   useEffect(() => {
     GetBusinessPartner();
-  }, [])
-
-
-  useEffect(() => {
   }, []);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     var usr = usr_suggestion;
@@ -108,7 +103,7 @@ export default function User_report() {
       if (balance < 0) {
         pending.push(element);
       }
-      if (balance >=0) {
+      if (balance >= 0) {
         completed.push(element);
       }
     }
@@ -127,13 +122,9 @@ export default function User_report() {
     }
   }, [checked_pending, checked_completed]);
 
-
   function set_up_flag() {
     setFlag("none");
   }
-
-
-
 
   return (
     <>
@@ -275,42 +266,49 @@ export default function User_report() {
               <th>Last Date</th>
               <th>Controls</th>
             </tr>
-            {usr_suggestion.map((userdata) => {
-              return (
-                <tr className="payment_table_content">
-                  <td>{userdata.userName}</td>
-                  <td>{userdata.accountNumber}</td>
-                  <td>{userdata.booking_partner.length}</td>
-                  <td>
-                    {Balance(
-                      userdata.payment_partner,
-                      userdata.booking_partner
-                    )}
-                    $
-                  </td>
-                  <td>
-                    {moment(
-                      userdata.payment_partner[
-                        userdata.payment_partner.length - 1
-                      ].paymentDate
-                    ).format("dd, MM Do YY, h:mm a")}
-                  </td>
-                  <td>
-                    <span
-                      onClick={() => (
-                        console.log(userdata), setUser(userdata), setFlag(false)
+            {usr_suggestion &&
+              usr_suggestion.map((userdata) => {
+                return (
+                  <tr className="payment_table_content">
+                    <td>{userdata.userName}</td>
+                    <td>{userdata.accountNumber}</td>
+                    <td>{userdata.booking_partner.length}</td>
+                    <td>
+                      {Balance(
+                        userdata.payment_partner,
+                        userdata.booking_partner
                       )}
-                      className="User_report_controls_view"
-                    >
-                      View
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
+                      $
+                    </td>
+                    <td>
+                      {userdata.payment_partner.length ? (
+                        <>
+                          {moment(
+                            userdata.payment_partner[
+                              userdata.payment_partner.length - 1
+                            ].paymentDate
+                          ).format("dd, MM Do YY, h:mm a")}
+                        </>
+                      ):'Not yet paid'}
+                    </td>
+                    <td>
+                      <span
+                        onClick={() => (
+                          console.log(userdata),
+                          setUser(userdata),
+                          setFlag(false)
+                        )}
+                        className="User_report_controls_view"
+                      >
+                        View
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
           </table>
         </div>
-        {pagination && pagination.count > 20 &&  (
+        {pagination && pagination.count > 20 && (
           <Pagination count={pagination.count} GetPagination={GetPagination} />
         )}
       </div>

@@ -129,3 +129,23 @@ input:focus{
     z-index: 10; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
   }
+
+
+
+.container_flex {
+    flex-basis: auto;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.item {
+    flex-grow: 20;
+    flex-shrink: 1;
+    flex-basis: auto;
+    transition: all 5s;
+}
+
+.collapse {
+    flex-grow: 0.001;
+}

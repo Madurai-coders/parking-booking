@@ -93,7 +93,7 @@
   padding-left: 1rem;
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
-  margin: 0 0.6rem 4.05rem 0rem;
+  margin: 0 -0.1rem 4.5rem 0.1rem;
 }
 
 .Navbigscreen_listitem_parkingsetup_text_active,
@@ -102,7 +102,7 @@
 .Navbigscreen_listitem_payment_text_active,
 .Navbigscreen_listitem_userreport_text_active {
   color: #28a8e0 !important;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.2px;
   padding: 0 10% 0 6%;
