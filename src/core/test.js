@@ -1,10 +1,10 @@
 import React from "react";
-import Pagination from "../components/Pagination/pagination"
+import Bookingsuccesspopup from "../components/Booking/bookingsuccesspopup"
 
 export default function test(props) {
   return (
     <>
-     <Pagination/>
+     <Bookingsuccesspopup/>
     </>
   );
 }
