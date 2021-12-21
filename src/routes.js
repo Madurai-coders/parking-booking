@@ -9,6 +9,7 @@ import Parkingsetup from "./core/parking_setup";
 import Payment from "./core/payment.js";
 import Menu from "./core/Menu";
 import test from "./core/test";
+import Loader from "./core/loader";
 import User_report from "./core/user_report.js";
 import User from "./core/user.js";
 import "../src/assets/css/general.css";
@@ -37,6 +38,9 @@ const Logoplacer = () => {
 const Routes = () => {
   let history = useHistory();
   const [is_admin, setis_admin] = useState(false);
+
+  const [loader, setloader] = useState(true);
+
 
   const call_login = async () => {
     login(true).then(function (log) {
@@ -78,9 +82,15 @@ const Routes = () => {
       axios_call("GET", "admins/").then((response) => {
         if (response[0].is_staff) {
           setis_admin(response[0].is_staff);
+          
+          setTimeout(() => {
+            setloader(false)
+        }, 2500);
+
         }
       });
     }
+
   }, []);
   return (
     <>
@@ -99,6 +109,9 @@ const Routes = () => {
                
                 <Route path="/dashboard" exact component={User_dashboard} />
                 <Route path="/" exact component={User_login} />
+                <Route   render={() => (
+                    <Admin_login login={call_login} is_admin={is_admin} />
+                  )}/>       
 
               </>
             )}
@@ -114,8 +127,10 @@ const Routes = () => {
                 <Navigation />
               </div>
               <Logoplacer />
-                <Route path="/admin" exact component={Booking} />       
-               
+          {!loader ?
+          <>
+                <Route path="/admin" exact component={Booking} />  
+                  
                 <Route
                   path="/AdmindashboardBookingreport"
                   exact
@@ -142,6 +157,11 @@ const Routes = () => {
                 exact
                 component={test}
                 />
+                </>
+
+                :
+                <Route path="/*" exact component={Loader} />       
+          }
             </div>
 
               </Switch>

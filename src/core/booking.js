@@ -18,6 +18,12 @@ import "slick-carousel/slick/slick-theme.css";
 import Car from "../assets/images/Car.svg";
 import moment from "moment";
 import Carousel from "react-elastic-carousel";
+import "../assets/css/Booking/bookingsuccess.css";
+import view from "../assets/images/view.svg";
+import print from "../assets/images/print.svg";
+import send from "../assets/images/send.svg";
+import tick from "../assets/images/tick.svg";
+import close from "../assets/images/close.svg";
 
 export default function Booking() {
   const [booking, setbooking] = useState({
@@ -286,6 +292,77 @@ export default function Booking() {
       <Helmet>
          <title>Munidex Parking - Booking </title>
       </Helmet>
+      {success &&
+      <div className="overlay">
+              <div className="bookingspopup_container">
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div> </div>
+                  <div className="pt-2 pe-3">
+                    <img onClick={()=>setSuccess(false)} src={close} />
+                  </div>
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <div> </div>
+                  <div className="mt-2 ps-3">
+                    <img src={tick} />
+                  </div>
+                </div>
+                <div className="bookingspopup_title mt-3 mb-3">
+                  Booking success
+                </div>
+                <hr className="bookingspopup_hr" />
+                <div className="bookingspopup_details">
+                  <div className="bookingspopup_details_flex mb-3">
+                    <div className="bookingspopup_head">
+                      {" "}
+                      From: <span className="bookingspopup_body"> {success.startFrom}</span>
+                    </div>
+                    <div className="bookingspopup_head">
+                      To: <span className="bookingspopup_body">{success.endTo}</span>
+                    </div>
+                  </div>
+                  <div className="bookingspopup_details_flex mb-3">
+                    <div className="bookingspopup_head">
+                      Name:{" "}
+                      <span className="bookingspopup_body">{success.User.userName}</span>
+                    </div>
+                    <div className="bookingspopup_head">
+                      Plan: <span className="bookingspopup_body">{success.plan}</span>
+                    </div>
+                  </div>
+                  <div className="bookingspopup_details_flex mb-4">
+                    <div className="bookingspopup_head">
+                      Wing: <span className="bookingspopup_body">{success.slots.wing.wingName}</span>
+                    </div>
+                    <div className="bookingspopup_head">
+                      Slot: <span className="bookingspopup_body">{success.slot_connect}</span>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ textAlign: "center" }} className="mb-5">
+                  <span className="bookingspopup_text_amount"> Amount </span>{" "}
+                  <span className="bookingspopup_value_amount"> $+{success.charge}</span>
+                </div>
+                <div className="bookingspopup_amount_flex">
+                  <div className="bookingspopup_options m-3">
+                    {" "}
+                    View <img src={view} />{" "}
+                  </div>
+                  <div className="bookingspopup_options m-3">
+                    {" "}
+                    Send <img src={send} />{" "}
+                  </div>
+                  <div className="bookingspopup_options m-3">
+                    {" "}
+                    Print <img src={print} />{" "}
+                  </div>
+                </div>
+              </div>
+            </div>
+}
+            
       <div className="">
         <div className="row booking_container">
           <div className="col-7">
@@ -300,14 +377,14 @@ export default function Booking() {
                           Name: {booking.name != "not_selected" && booking.name}
                         </small>
                         <small className="col-5">
-                          plan: {booking.plan != "not_selected" && booking.plan}
+                          Plan: {booking.plan != "not_selected" && booking.plan}
                         </small>
                       </div>
                     </div>
                     <div className="mt-2 col-12 ">
                       <div className="row">
                         <small className="col-7">
-                          SlotId:{" "}
+                          Slot Id:{" "}
                           <span className="badge bg-success">
                             {booking.wing_name &&
                               booking.wing_name +
@@ -591,10 +668,7 @@ export default function Booking() {
               </div>
               <div className="booking_form_clear"> Clear </div>
             </div>
-
-            {/* <div class="alert alert-success mt-2 mx-2" role="alert">
-                
-            </div> */}
+            
           </div>
         </div>
       </div>

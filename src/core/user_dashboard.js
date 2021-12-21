@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import logo from "../assets/images/munidex_logo.jpeg";
 import userprof from "../assets/images/userprofile.png";
 import handshake from "../assets/images/handshake.png";
+import loader_video from "../assets/images/loader.mp4";
 import "../assets/css/user_dashboard/user_dashboard.css";
 import { IoClose } from "react-icons/io5";
 import moment from "moment";
@@ -24,7 +25,7 @@ export default function User_dashboard() {
   const [getAmount, setGetAmount] = useState();
   const [amount, setAmount] = useState();
   const [logout_popup, setlogout_popup] = useState();
-
+  const [loader, setloader] = useState(true);
 
   let history = useHistory();
 
@@ -74,10 +75,12 @@ export default function User_dashboard() {
         });
       });
     }
+    setTimeout(() => {
+        setloader(false)
+    }, 2500);
   }, []);
 
   function logoutuser() {
-      
     logout();
     Cookies.remove("accountnumber");
     Cookies.remove("lastname");
@@ -104,7 +107,7 @@ export default function User_dashboard() {
       axios({
         method: "POST",
         url: "https://taxdev.munidex.info/pbs2/pbsreq",
-        data:body,
+        data: body,
         port: 443,
         headers: {
           "Content-Type": "application/json",
@@ -112,9 +115,8 @@ export default function User_dashboard() {
             "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
         },
         json: true,
-        withCredentials: true
-      }).then((response) => { 
-          console.log(response)
+      }).then((response) => {
+        console.log(response);
       });
     }
   }
@@ -126,28 +128,56 @@ export default function User_dashboard() {
       <Helmet>
         <title>Munidex Parking - User Dashboard</title>
       </Helmet>
-      {logout_popup && 
-            <div className='overlay'>
-            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title"  id="exampleModalLabel">Logout</h5>
-                  <button type="button" onClick={()=>setlogout_popup(false)}  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-               <div class="modal-body">
-                  Are your sure?
-                </div>
-                <div class="modal-footer">
-                  <button type="button"  onClick={()=>setlogout_popup(false)} class="btn btn-light btn-sm"  data-bs-dismiss="modal">Cancle</button>
-                  <button type="button" onClick={logoutuser} class="btn btn-danger btn-sm">Logout</button>
+      {loader ? 
+<div style={{height:"100vh"}}>
+<video width="220" height="140" className="overlay"  autoPlay muted>
+<source src={loader_video} type="video/mp4"/>
+</video>
+</div>
 
-                </div>
+
+       : 
+      <>
+      {logout_popup && (
+        <div className="overlay">
+          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Logout
+                </h5>
+                <button
+                  type="button"
+                  onClick={() => setlogout_popup(false)}
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
+              <div class="modal-body">Are your sure?</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  onClick={() => setlogout_popup(false)}
+                  class="btn btn-light btn-sm"
+                  data-bs-dismiss="modal"
+                >
+                  Cancle
+                </button>
+                <button
+                  type="button"
+                  onClick={logoutuser}
+                  class="btn btn-danger btn-sm"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
             {/* </div> */}
           </div>
-          </div>
-            }
+        </div>
+      )}
       {user && (
         <div className="user_dashboard_container">
           {popup && (
@@ -223,7 +253,7 @@ export default function User_dashboard() {
             className="user_dashboard_munidex_logo"
           />
           <img
-            onClick={()=>setlogout_popup(true)}
+            onClick={() => setlogout_popup(true)}
             src={userprof}
             alt="Customer_profile"
             className="user_dashboard_profile_icon"
@@ -319,7 +349,7 @@ export default function User_dashboard() {
                   </div>
                 </div>
 
-                {!getAmount &&  user.payment_partner.length ? (
+                {!getAmount && user.payment_partner.length ? (
                   <div className="user_dashboard_transaction_card">
                     <div className="user_dashboard_transaction_card_title">
                       {" "}
@@ -424,8 +454,6 @@ export default function User_dashboard() {
                 )}
               </div>
             </div>
-
-          
               
           </div>
           <div className="row">
@@ -435,6 +463,8 @@ export default function User_dashboard() {
           </div>
         </div>
       )}
+      </>
+      }
     </>
   );
 }

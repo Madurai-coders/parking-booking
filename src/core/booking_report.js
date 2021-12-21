@@ -22,6 +22,7 @@ export default function Booking_report() {
   const [slotdata, setSlotdata] = useState();
   const [maingraph, setMaingraph] = useState();
   const [wing_results, setWing_result] = useState();
+  const [remove_booking, setRemove_booking] = useState();
 
   const options = {
     indexAxis: "x",
@@ -188,6 +189,7 @@ var amount=0
       "GetBookingByDate/?from=" + start + "&to=" + end
     );
     setData(booking);
+    console.log(booking)
     var amount = 0;
     booking.forEach((element) => {
       amount = amount + parseInt(element.charge);
@@ -212,6 +214,7 @@ var amount=0
     axios_call("DELETE", "CreateBooking/" + id + "/", "").then((response) => {
       var values_result = data.filter((item) => item.id !== id);
       setData(values_result);
+      setRemove_booking(false)
     });
 
     if (wing_results) {
@@ -268,6 +271,29 @@ var amount=0
       <Helmet>
         <title>Munidex Parking - Booking Report</title>
       </Helmet>
+      {remove_booking && 
+            <div className='overlay'>
+            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"  id="exampleModalLabel">Remove Booking</h5>
+                  <button type="button" onClick={()=>setRemove_booking(false)}  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are your sure?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" onClick={() => Removebooking(remove_booking)}class="btn btn-light">Remove</button>
+                  <button type="button"  onClick={()=>setRemove_booking(false)} class="btn btn-danger"  data-bs-dismiss="modal">Cancle</button>
+
+                </div>
+              </div>
+            {/* </div> */}
+          </div>
+          </div>
+            }
+
       <div className="flex-grow-1">
         <div className="booking_report_container">
           <div className="booking_report_title"> Booking Report </div>
@@ -353,7 +379,6 @@ var amount=0
                 <table className="booking_report_table">
                   <tr className="booking_report_table_headers">
                     <th>S.No</th>
-                    <th>Booking Id</th>
                     <th>Name</th>
                     <th>Plan</th>
                     <th>Slot</th>
@@ -367,13 +392,12 @@ var amount=0
                       return (
                         <tr key={id} className="booking_report_table_data">
                           <td>{count}</td>
-                          <td>{bookingdata.bookingId}</td>
                           <td>{bookingdata.User.lastName}</td>
                           <td>{bookingdata.plan}</td>
-                          <td>{bookingdata.slots.id}</td>
+                          <td>{bookingdata.slots.wing.wingName} [{bookingdata.slots.id}]</td>
                           <td>{bookingdata.charge}</td>
                           <td>
-                            <IoTrashOutline onClick={() => Removebooking(bookingdata.id)}
+                            <IoTrashOutline onClick={() =>setRemove_booking(bookingdata.id)}
                             />
                           </td>
                         </tr>
@@ -386,14 +410,12 @@ var amount=0
                       return (
                         <tr key={id} className="booking_report_table_data">
                           <td>{count}</td>
-                          <td>{bookingdata.bookingId}</td>
                           <td>{bookingdata.User.lastName}</td>
                           <td>{bookingdata.plan}</td>
-                          <td>{bookingdata.slots.id}</td>
-                          <td>{bookingdata.charge}</td>
+                          <td>{bookingdata.slots.wing.wingName} [{bookingdata.slots.id}]</td>                          <td>{bookingdata.charge}</td>
                           <td>
                             <IoTrashOutline
-                              onClick={() => Removebooking(bookingdata.id)}
+                              onClick={() => setRemove_booking(bookingdata.id)}
                             />
                           </td>
                         </tr>

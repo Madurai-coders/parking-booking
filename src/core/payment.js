@@ -85,7 +85,9 @@ export default function Payment() {
   function removePayment(id, name) {
     checkuser(name);
     axios_call("DELETE", "CreatePayment/" + id + "/", "").then(
-      (response) => {}
+      (response) => {
+        setRemove_payment(false)
+      }
     );
     var values_result = payment.filter((item) => item.id !== id);
     setPayment(values_result);
@@ -291,7 +293,7 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                   Are your sure?
                 </div>
                 <div class="modal-footer">
-                  <button type="button" onClick={() => removePayment(payment.id)}class="btn btn-light">Remove</button>
+                  <button type="button" onClick={() => removePayment(remove_payment)}class="btn btn-light">Remove</button>
                   <button type="button"  onClick={()=>setRemove_payment(false)} class="btn btn-danger"  data-bs-dismiss="modal">Cancle</button>
 
                 </div>
@@ -549,7 +551,7 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                           />
                           <HiOutlineTrash
                           
-                          onClick={() => setRemove_payment(true)}
+                          onClick={() => setRemove_payment(payment.id)}
 
                             size={16}
                             style={{ color: "#898989" }}
