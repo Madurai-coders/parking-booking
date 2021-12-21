@@ -1,0 +1,139 @@
+.bookinginvoice_container {
+  margin-top: 10vh;
+  margin-left: 20vw;
+  margin-right: 10vh;
+}
+
+.bookinginvoice_flex_col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bookinginvoice_topsection {
+  background: rgba(169, 235, 255, 0.43);
+  padding: 2.5% 0 3.5% 0;
+}
+
+.bookinginvoice_text_binv {
+  font-weight: 600;
+  font-size: 17.5px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.62);
+}
+
+.bookinginvoice_text_invno,
+.bookinginvoice_text_invdate {
+  font-size: 9.1px;
+  line-height: 11px;
+  font-weight: normal;
+  color: #5b5757;
+}
+
+.bookinginvoicebody {
+  padding: 0 6% 0 6%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 70vh;
+}
+
+.bookinginvoice_text_billto {
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 11px;
+  color: #000000;
+}
+
+.bookinginvoice_text_address {
+  font-size: 13px;
+  line-height: 13px;
+  color: #000000;
+}
+
+.bookinginvoice_table {
+  width: 100%;
+  text-align: center;
+}
+
+.bookinginvoice_table_headers th {
+  background: #6f747d;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 11px;
+  color: #ffffff;
+  padding: 0.9% 3% 0.9% 0;
+}
+
+.bookinginvoice_table tr:nth-child(even) td {
+  background: #f9f9f9;
+  font-size: 11px;
+  line-height: 11px;
+  letter-spacing: 0.18px;
+  color: #040404;
+  padding: 1.5% 3% 1.5% 0;
+}
+
+.bookinginvoice_total {
+  background-color: #0cb0e2;
+  font-weight: 600;
+  font-size: 25px;
+  letter-spacing: 0.5px;
+  line-height: 30px;
+  color: #ffffff;
+  float: right;
+  padding: 1%;
+}
+
+.bookinginvoice_text_pdetails {
+  background: #0cb0e2;
+  font-weight: bold;
+  font-size: 11px;
+  line-height: 12px;
+  color: #ffffff;
+}
+
+.bookinginvoice_text_bdate {
+  background: #0cb0e2;
+  font-weight: bold;
+  font-size: 11px;
+  line-height: 12px;
+  color: #ffffff;
+}
+
+.bookinginvoice_lorem {
+  font-size: 10px;
+  line-height: 10px;
+  color: #000000;
+}
+
+.bookinginvoice_dop {
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 11px;
+  color: #000000;
+}
+
+.bookinginvoice_dop_value {
+  font-weight: 300;
+  color: #2b2b2b;
+}
+
+.bookinginvoice_bottom {
+  background: #efefef;
+  align-items: center;
+  margin-top: 5%;
+}
+
+.bookinginvoice_bottomtext_terms {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  color: #292929;
+}
+
+.bookinginvoice_bottom_terms {
+  font-size: 9px;
+  line-height: 10px;
+  color: #000000;
+}

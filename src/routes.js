@@ -97,7 +97,7 @@ const Routes = () => {
       <BrowserRouter>
         <div style={{ overflow: "hidden", height:"100vh" }}>
           <Switch>
-            {!is_admin && (
+            {is_admin && (
               <>
                 <Route
                   path="/admin"
@@ -116,7 +116,7 @@ const Routes = () => {
               </>
             )}
           </Switch>
-          {is_admin && (
+          {!is_admin && (
 
 
             

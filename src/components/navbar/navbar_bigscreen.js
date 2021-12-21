@@ -5,7 +5,8 @@ import Booking from "../../assets/images/Booking.svg";
 import Bookingreport from "../../assets/images/Bookingreport.svg";
 import payment from "../../assets/images/Accountreport.svg";
 import Parkingsetup from "../../assets/images/Parkingsetup.svg";
-import Logout from "../../assets/images/Logout.svg";
+import Logout from "../../assets/images/Logout.svg"
+ 
 import User_report from "../../assets/images/userreport.svg"
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion"

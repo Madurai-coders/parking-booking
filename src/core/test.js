@@ -1,10 +1,10 @@
 import React from "react";
-import Bookingsuccesspopup from "../components/Booking/bookingsuccesspopup"
+import Bookinginvoice from "../components/Booking/bookinginvoice"
 
 export default function test(props) {
   return (
     <>
-     <Bookingsuccesspopup/>
+     <Bookinginvoice/>
     </>
   );
 }
