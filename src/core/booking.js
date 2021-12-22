@@ -296,11 +296,11 @@ export default function Booking() {
       setPreview(false)
   }
 
-  const componentRef = useRef();
+//   const componentRef = useRef();
 
-  const handlePrint = useReactToPrint({
-      content: () => componentRef.current,
-  });
+//   const handlePrint = useReactToPrint({
+//       content: () => componentRef.current,
+//   });
 
   
   return (
