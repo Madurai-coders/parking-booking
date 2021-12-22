@@ -24,6 +24,8 @@ import print from "../assets/images/print.svg";
 import send from "../assets/images/send.svg";
 import tick from "../assets/images/tick.svg";
 import close from "../assets/images/close.svg";
+import Bookinginvoice from "../components/Booking/bookinginvoice"
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Booking() {
   const [booking, setbooking] = useState({
@@ -44,6 +46,7 @@ export default function Booking() {
   const [wing, SetWing] = useState();
   const [slot, SetSlot] = useState();
   const [success, setSuccess] = useState();
+  const [preview, setPreview] = useState(false);
   const [bookinghover, setBookinghover] = useState();
   const [percent, setPercent] = useState();
 
@@ -213,7 +216,9 @@ export default function Booking() {
       ...booking,
       startFrom: startFrom,
       endTo: endTo,
-      bookingId: Date.now().toString(36) + Math.random().toString(36).substr(2),
+      bookingId: Date.now().toString(36) + Math.random().toString(36).substr(2,6),
+      date:moment(new Date(), "DD-MM-YYYY").format("DD-MM-YYYY")
+
     };
 
     if (
@@ -287,11 +292,27 @@ export default function Booking() {
   //     console.log(users)
   //   }, [booking.name]);
 
+  function ClosePreview(){
+      setPreview(false)
+  }
+
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+      content: () => componentRef.current,
+  });
+
+  
   return (
-    <>
+    <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.6 }}>
       <Helmet>
          <title>Munidex Parking - Booking </title>
       </Helmet>
+      {preview && <div className="overlay1">  <Bookinginvoice bookingData={success} ClosePreview={ClosePreview}/></div>}
+
       {success &&
       <div className="overlay">
               <div className="bookingspopup_container">
@@ -346,7 +367,7 @@ export default function Booking() {
                   <span className="bookingspopup_value_amount"> $+{success.charge}</span>
                 </div>
                 <div className="bookingspopup_amount_flex">
-                  <div className="bookingspopup_options m-3">
+                  <div className="bookingspopup_options m-3" onClick={()=>setPreview(true)}>
                     {" "}
                     View <img src={view} />{" "}
                   </div>
@@ -672,6 +693,6 @@ export default function Booking() {
           </div>
         </div>
       </div>
-    </>
+    </motion.div>
   );
 }

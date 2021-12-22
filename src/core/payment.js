@@ -12,6 +12,7 @@ import {
   validation_amount,
   axios_call,
   axios_call_auto,
+  generateUUID
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -171,7 +172,7 @@ export default function Payment() {
         console.log("starting newuser");
         var newbookingpartner = {
           uId: new Date().getUTCMilliseconds(),
-          accountNumber: new Date().getUTCMilliseconds(),
+          accountNumber: Math.floor((Math.random()*10000)+1),
           userName: form.name,
           lastName: form.name,
           email: form.email,
@@ -267,7 +268,7 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
       setForm({
         ...form,
         payment_id:
-          Date.now().toString(36) + Math.random().toString(36).substr(2),
+        generateUUID(),
       });
     } else {
       setForm({ ...form, payment_id: "not_selected" });

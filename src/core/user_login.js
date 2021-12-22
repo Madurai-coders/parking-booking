@@ -131,11 +131,12 @@ export default function User_login() {
         <div className="user_login_card_container text-center">
           <div className="user_login_card shadow">
             <div>
+                <Link to='/admin'>
               <img
                 src={logo}
                 alt="munidex_logo"
                 className="user_login_signin_logo m-3"
-              />
+              /></Link>
             </div>
             <div className="user_login_signin_text text-center  mb-3">
               Sign in

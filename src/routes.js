@@ -23,6 +23,7 @@ import {
 import { useHistory,Redirect } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Logoplacer = () => {
   const logation = useLocation();
@@ -53,6 +54,9 @@ const Routes = () => {
         }).then((response) => {
           if (response.data[0].is_staff) {
             setis_admin(response.data[0].is_staff);
+            setTimeout(() => {
+                setloader(false)
+            }, 2400);
           }
         });
       }
@@ -85,19 +89,25 @@ const Routes = () => {
           
           setTimeout(() => {
             setloader(false)
-        }, 2500);
+        }, 2400);
 
         }
       });
     }
 
   }, []);
+
+  
   return (
     <>
       <BrowserRouter>
-        <div style={{ overflow: "hidden", height:"100vh" }}>
+        <div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ duration: 0.6 }}
+						style={{ overflow: "hidden", height:"100vh" }}>
           <Switch>
-            {is_admin && (
+            {!is_admin && (
               <>
                 <Route
                   path="/admin"
@@ -116,7 +126,7 @@ const Routes = () => {
               </>
             )}
           </Switch>
-          {!is_admin && (
+          {is_admin && (
 
 
             
@@ -127,12 +137,13 @@ const Routes = () => {
                 <Navigation />
               </div>
               <Logoplacer />
-          {!loader ?
           <>
-                <Route path="/admin" exact component={Booking} />  
+                <Route path="/admin" exact render={() => (
+                loader ? <Loader/> :<Booking/>
+                  )}/>  
                   
                 <Route
-                  path="/AdmindashboardBookingreport"
+                  path="/AdmindashboardBookingreport"   
                   exact
                   component={Booking_Report}
                 />
@@ -159,9 +170,7 @@ const Routes = () => {
                 />
                 </>
 
-                :
-                <Route path="/*" exact component={Loader} />       
-          }
+            
             </div>
 
               </Switch>

@@ -12,6 +12,7 @@ import {
   axios_call_auto,
   validation_count,
   logout,
+  generateUUID
 } from "../functions/reusable_functions";
 import { useLocation } from "react-router";
 import Cookies from "js-cookie";
@@ -76,7 +77,7 @@ export default function User_dashboard() {
       });
     }
     setTimeout(() => {
-        setloader(false)
+      setloader(false);
     }, 2500);
   }, []);
 
@@ -87,37 +88,63 @@ export default function User_dashboard() {
     history.push("/");
   }
 
+
+
   function CallPayment(val) {
     if (amount > 10) {
       var body = {
-        fname: "Munidex",
-        lname: "Mail",
-        email: "munidexmail@gmail.com",
+        fname: user.userName,
+        lname: user.userName,
+        email: user.email,
         amount: amount,
         transfee: 1.5,
         muni_code: "1122",
         dept: "pkng",
         pbsdescr: "Parking Fees",
-        clientrefnum: "abcd-1234-123-121",
+        clientrefnum: generateUUID(),
         ptype: "CC",
         pprovider: "PROC",
         rme: false,
       };
 
+      var data = {
+        userId: user.id,
+        paymentId: generateUUID(),
+        paymentType: "online",
+        paymentDate: new Date(),
+        amount: amount,
+      };
+
+      console.log(data)
+
       axios({
         method: "POST",
-        url: "https://taxdev.munidex.info/pbs2/pbsreq",
-        data: body,
-        port: 443,
-        headers: {
-          "Content-Type": "application/json",
-          Cookie:
-            "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
-        },
-        json: true,
+        url: "http://127.0.0.1:8000/CreatePayment/",
+        data: data,
       }).then((response) => {
-        console.log(response);
+        console.log(response.data);
+ let userDate=user
+ userDate.payment_partner.push(response.data)
+ setUser(user)
+ setGetAmount(false)
+ setAmount()
       });
+
+      //   axios({
+      //     method: "POST",
+      //     url: "https://taxdev.munidex.info/pbs2/pbsreq/",
+      //     data: body,
+      //     port: 443,
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Cookie:
+      //         "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
+      //     },
+      //     json: true,
+      //     withCredentials: true
+      //   }).then((response) => {
+      //     console.log(response);
+      //   });
     }
   }
 
@@ -128,114 +155,188 @@ export default function User_dashboard() {
       <Helmet>
         <title>Munidex Parking - User Dashboard</title>
       </Helmet>
-      {loader ? 
-<div style={{height:"100vh"}}>
-<video width="220" height="140" className="overlay"  autoPlay muted>
-<source src={loader_video} type="video/mp4"/>
-</video>
-</div>
-
-
-       : 
-      <>
-      {logout_popup && (
-        <div className="overlay">
-          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Logout
-                </h5>
-                <button
-                  type="button"
-                  onClick={() => setlogout_popup(false)}
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">Are your sure?</div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  onClick={() => setlogout_popup(false)}
-                  class="btn btn-light btn-sm"
-                  data-bs-dismiss="modal"
-                >
-                  Cancle
-                </button>
-                <button
-                  type="button"
-                  onClick={logoutuser}
-                  class="btn btn-danger btn-sm"
-                >
-                  Logout
-                </button>
+      {loader ? (
+        <div style={{ height: "100vh" }}>
+          <video width="220" height="140" className="overlay" autoPlay muted>
+            <source src={loader_video} type="video/mp4" />
+          </video>
+        </div>
+      ) : (
+        <>
+          {logout_popup && (
+            <div className="overlay">
+              {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Logout
+                    </h5>
+                    <button
+                      type="button"
+                      onClick={() => setlogout_popup(false)}
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">Are your sure?</div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      onClick={() => setlogout_popup(false)}
+                      class="btn btn-light btn-sm"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancle
+                    </button>
+                    <button
+                      type="button"
+                      onClick={logoutuser}
+                      class="btn btn-danger btn-sm"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+                {/* </div> */}
               </div>
             </div>
-            {/* </div> */}
-          </div>
-        </div>
-      )}
-      {user && (
-        <div className="user_dashboard_container">
-          {popup && (
-            <div className="row user_dashboard_popup_section shadow">
-              <div className="col-4 user_dashboard_popup_leftside text-center">
-                <img
-                  src={handshake}
-                  alt="zengov"
-                  className="user_dashboard_handshake_image"
-                />
-                <div className="user_dashboard_popup_leftside_text">
-                  Zen<span>Gov</span>
-                </div>
-              </div>
-              <div className="col-8">
-                <div className="user_dashboard_popup_history_container">
-                  <div className="user_dashboard_popup_transaction_history_flex">
-                    <div className="user_dashboard_popup_transaction_history mb-5">
-                      {" "}
-                      Transaction History{" "}
-                    </div>
-                    <div
-                      className="user_dashboard-popup_close"
-                      onClick={() => setPopup(false)}
-                    >
-                      <IoClose style={{ color: "#646262" }} size={30} />
+          )}
+          {user && (
+            <div className="user_dashboard_container">
+              {popup && (
+                <div className="row user_dashboard_popup_section shadow">
+                  <div className="col-4 user_dashboard_popup_leftside text-center">
+                    <img
+                      src={handshake}
+                      alt="zengov"
+                      className="user_dashboard_handshake_image"
+                    />
+                    <div className="user_dashboard_popup_leftside_text">
+                      Zen<span>Gov</span>
                     </div>
                   </div>
-                  <div className="user_dashboard_popup_table_container">
-                    <table className="user_dashboard_popup_table">
-                      <tr className="user_dashboard_popup_table_header">
-                        <th>Transaction id</th>
-                        <th>Date</th>
-                        <th>Payment</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                      </tr>
-                      {user.payment_partner.map((transaction) => {
-                        return (
-                          <tr className="user_dashboard_popup_table_content">
-                            <td>{transaction.paymentId}</td>
-                            <td>
-                              {moment(transaction.paymentDate).format(
-                                "DD-MM-YYYY"
-                              )}
-                            </td>
-                            <td>{transaction.paymentType}</td>
-                            <td>{transaction.amount}</td>
+                  <div className="col-8">
+                    <div className="user_dashboard_popup_history_container">
+                      <div className="user_dashboard_popup_transaction_history_flex">
+                        <div className="user_dashboard_popup_transaction_history mb-5">
+                          {" "}
+                          Transaction History{" "}
+                        </div>
+                        <div
+                          className="user_dashboard-popup_close"
+                          onClick={() => setPopup(false)}
+                        >
+                          <IoClose style={{ color: "#646262" }} size={30} />
+                        </div>
+                      </div>
+                      <div className="user_dashboard_popup_table_container">
+                        <table className="user_dashboard_popup_table">
+                          <tr className="user_dashboard_popup_table_header">
+                            <th>Transaction id</th>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                          </tr>
+                          {user.payment_partner.map((transaction) => {
+                            return (
+                              <tr className="user_dashboard_popup_table_content">
+                                <td>{transaction.paymentId}</td>
+                                <td>
+                                  {moment(transaction.paymentDate).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </td>
+                                <td>{transaction.paymentType}</td>
+                                <td>{transaction.amount}</td>
 
+                                <td>
+                                  <span
+                                    className={
+                                      "user_dashboard_popup_status_" +
+                                      "Successful".toLowerCase()
+                                    }
+                                  >
+                                    Successful
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <img
+                src={logo}
+                alt="munidex_logo"
+                className="user_dashboard_munidex_logo"
+              />
+              <img
+                onClick={() => setlogout_popup(true)}
+                src={userprof}
+                alt="Customer_profile"
+                className="user_dashboard_profile_icon"
+              />
+
+              <div className="row">
+                <div className="col-7">
+                  <div className="user_dashboard_username">
+                    {" "}
+                    Hello {user.userName} !!
+                  </div>
+                  <div className="user_dashboard_text_booking_details">
+                    {" "}
+                    Booking Details
+                  </div>
+                  <div className="user_dashboard_down_arrow"></div>
+                  <div className="user_dashboard_booking_details_card">
+                    <table className="user_dashboard_booking_details_table">
+                      <tr className="user_dashboard_booking_details_table_heading">
+                        <th>Wing</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th>plan</th>
+                        <th>Amount</th>
+                        <th>Active for</th>
+                      </tr>
+                      {user.booking_partner.map((userdata) => {
+                        return (
+                          <tr className="user_dashboard_booking_details_table_data">
+                            {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
+                            <td>{userdata.slots.wing.wingName}</td>
                             <td>
+                              {moment(userdata.startFrom).format("DD-MM-YYYY")}
+                            </td>
+                            <td>
+                              {moment(userdata.endTo).format("DD-MM-YYYY")}
+                            </td>
+                            <td>{userdata.plan}</td>
+                            <td>
+                              {/* <span
+                          className={
+                            "user_dashboard_payment_text_" + userdata.status
+                          }
+                        >
+                          {userdata.status}
+                        </span> */}
+                              {userdata.charge}$
+                            </td>
+                            <td>
+                              {Dayleft(userdata.endTo)} days
                               <span
                                 className={
-                                  "user_dashboard_popup_status_" +
-                                  "Successful".toLowerCase()
+                                  "mx-1 user_dashboard_active_" +
+                                  (Dayleft(userdata.endTo) > 0
+                                    ? "green"
+                                    : "red")
                                 }
-                              >
-                                Successful
-                              </span>
+                              ></span>
                             </td>
                           </tr>
                         );
@@ -243,228 +344,160 @@ export default function User_dashboard() {
                     </table>
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
-
-          <img
-            src={logo}
-            alt="munidex_logo"
-            className="user_dashboard_munidex_logo"
-          />
-          <img
-            onClick={() => setlogout_popup(true)}
-            src={userprof}
-            alt="Customer_profile"
-            className="user_dashboard_profile_icon"
-          />
-
-          <div className="row">
-            <div className="col-7">
-              <div className="user_dashboard_username">
-                {" "}
-                Hello {user.userName} !!
-              </div>
-              <div className="user_dashboard_text_booking_details">
-                {" "}
-                Booking Details
-              </div>
-              <div className="user_dashboard_down_arrow"></div>
-              <div className="user_dashboard_booking_details_card">
-                <table className="user_dashboard_booking_details_table">
-                  <tr className="user_dashboard_booking_details_table_heading">
-                    <th>Wing</th>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>plan</th>
-                    <th>Amount</th>
-                    <th>Active for</th>
-                  </tr>
-                  {user.booking_partner.map((userdata) => {
-                    return (
-                      <tr className="user_dashboard_booking_details_table_data">
-                        {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
-                        <td>{userdata.slots.wing.wingName}</td>
-                        <td>
-                          {moment(userdata.startFrom).format("DD-MM-YYYY")}
-                        </td>
-                        <td>{moment(userdata.endTo).format("DD-MM-YYYY")}</td>
-                        <td>{userdata.plan}</td>
-                        <td>
-                          {/* <span
-                          className={
-                            "user_dashboard_payment_text_" + userdata.status
-                          }
-                        >
-                          {userdata.status}
-                        </span> */}
-                          {userdata.charge}$
-                        </td>
-                        <td>
-                          {Dayleft(userdata.endTo)} days
-                          <span
-                            className={
-                              "mx-1 user_dashboard_active_" +
-                              (Dayleft(userdata.endTo) > 0 ? "green" : "red")
-                            }
-                          ></span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </table>
-              </div>
-            </div>
-            <div className="col-5">
-              <div className="user_dashboard_right_container">
-                <div className="user_dashboard_balance_card">
-                  <div className="user_dashboard_balance_card_text mb-3">
-                    {" "}
-                    Balance{" "}
-                    {/* <div className="user_dashboard_pay_container text-center">
+                <div className="col-5">
+                  <div className="user_dashboard_right_container">
+                    <div className="user_dashboard_balance_card">
+                      <div className="user_dashboard_balance_card_text mb-3">
+                        {" "}
+                        Balance{" "}
+                        {/* <div className="user_dashboard_pay_container text-center">
                     <div className="user_dashboard_pay"> Pay </div>
                   </div> */}
-                    <div className="user_dashboard_pay_container text-center">
-                      {!getAmount ? (
-                        <div
-                          className="user_dashboard_pay"
-                          onClick={() => setGetAmount(true)}
-                        >
-                          {" "}
-                          Pay{" "}
+                        <div className="user_dashboard_pay_container text-center">
+                          {!getAmount ? (
+                            <div
+                              className="user_dashboard_pay"
+                              onClick={() => setGetAmount(true)}
+                            >
+                              {" "}
+                              Pay{" "}
+                            </div>
+                          ) : (
+                            <div
+                              className="user_dashboard_pay"
+                              onClick={() => setGetAmount(false)}
+                            >
+                              {" "}
+                              Last Transaction{" "}
+                            </div>
+                          )}
                         </div>
-                      ) : (
-                        <div
-                          className="user_dashboard_pay"
-                          onClick={() => setGetAmount(false)}
-                        >
+                      </div>
+                      <div className="user_dashboard_balance_card_amount d-flex">
+                        {Balance(user.payment_partner, user.booking_partner)} $
+                      </div>
+                    </div>
+
+                    {!getAmount && user.payment_partner.length ? (
+                      <div className="user_dashboard_transaction_card">
+                        <div className="user_dashboard_transaction_card_title">
                           {" "}
                           Last Transaction{" "}
                         </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="user_dashboard_balance_card_amount d-flex">
-                    {Balance(user.payment_partner, user.booking_partner)} $
+                        <div className="user_dashboard_transaction_card_transaction_id mb-3">
+                          {" "}
+                          Transaction id :{" "}
+                          <span>
+                            {
+                              user.payment_partner[
+                                user.payment_partner.length - 1
+                              ].paymentId
+                            }{" "}
+                          </span>
+                        </div>
+                        <div className="user_dashboard_transaction_card_datetime_text">
+                          {" "}
+                          <div className="user_dashboard_transaction_card_date_text">
+                            {" "}
+                            Date{" "}
+                          </div>{" "}
+                          <div className="user_dashboard_transaction_card_time_text">
+                            {" "}
+                            Time{" "}
+                          </div>
+                        </div>
+                        <div className=" user_dashboard_transaction_card_datetime">
+                          {" "}
+                          {moment(
+                            user.payment_partner[
+                              user.payment_partner.length - 1
+                            ].paymentDate
+                          ).format("DD-MM-YYYY")}
+                          <div> </div>
+                          {moment(
+                            user.payment_partner[
+                              user.payment_partner.length - 1
+                            ].paymentDate
+                          ).format("hh:mm a")}{" "}
+                          <div> </div>
+                        </div>
+                        <div className="user_dashboard_transaction_card_amount_section">
+                          <div className="user_dashboard_transaction_card_amount_text mb-3">
+                            {" "}
+                            Amount{" "}
+                          </div>
+                          <div className="user_dashboard_transaction_card_amount_number mb-3">
+                            {
+                              user.payment_partner[
+                                user.payment_partner.length - 1
+                              ].amount
+                            }{" "}
+                            $
+                          </div>
+                        </div>
+                        <div
+                          className="user_dashboard_transaction_card_seemore text-center mt-4"
+                          onClick={() => setPopup(true)}
+                        >
+                          See more
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="user_dashboard_transaction_card">
+                        <div className="user_dashboard_transaction_card_title">
+                          {" "}
+                        </div>
+                        <div className="user_dashboard_transaction_card_transaction_id mb-3">
+                          {" "}
+                        </div>
+
+                        <div
+                          className="user_dashboard_transaction_card_amount_section"
+                          style={{ paddingRight: "16px" }}
+                        >
+                          <div className="user_dashboard_transaction_card_amount_text mb-3">
+                            {" "}
+                            Amount{" "}
+                          </div>
+
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">$</div>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="inlineFormInputGroupUsername"
+                              value={amount}
+                              onChange={(e) => setAmount(e.target.value)}
+                            />
+                          </div>
+
+                          <div class="col-auto text-center my-1">
+                            <button
+                              type="submit"
+                              class="btn btn-primary btn-sm mt-3 mb-3"
+                              onClick={() => CallPayment()}
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-
-                {!getAmount && user.payment_partner.length ? (
-                  <div className="user_dashboard_transaction_card">
-                    <div className="user_dashboard_transaction_card_title">
-                      {" "}
-                      Last Transaction{" "}
-                    </div>
-                    <div className="user_dashboard_transaction_card_transaction_id mb-3">
-                      {" "}
-                      Transaction id :{" "}
-                      <span>
-                        {
-                          user.payment_partner[user.payment_partner.length - 1]
-                            .paymentId
-                        }{" "}
-                      </span>
-                    </div>
-                    <div className="user_dashboard_transaction_card_datetime_text">
-                      {" "}
-                      <div className="user_dashboard_transaction_card_date_text">
-                        {" "}
-                        Date{" "}
-                      </div>{" "}
-                      <div className="user_dashboard_transaction_card_time_text">
-                        {" "}
-                        Time{" "}
-                      </div>
-                    </div>
-                    <div className=" user_dashboard_transaction_card_datetime">
-                      {" "}
-                      {moment(
-                        user.payment_partner[user.payment_partner.length - 1]
-                          .paymentDate
-                      ).format("DD-MM-YYYY")}
-                      <div> </div>
-                      {moment(
-                        user.payment_partner[user.payment_partner.length - 1]
-                          .paymentDate
-                      ).format("hh:mm a")}{" "}
-                      <div> </div>
-                    </div>
-                    <div className="user_dashboard_transaction_card_amount_section">
-                      <div className="user_dashboard_transaction_card_amount_text mb-3">
-                        {" "}
-                        Amount{" "}
-                      </div>
-                      <div className="user_dashboard_transaction_card_amount_number mb-3">
-                        {
-                          user.payment_partner[user.payment_partner.length - 1]
-                            .amount
-                        }{" "}
-                        $
-                      </div>
-                    </div>
-                    <div
-                      className="user_dashboard_transaction_card_seemore text-center mt-4"
-                      onClick={() => setPopup(true)}
-                    >
-                      See more
-                    </div>
-                  </div>
-                ) : (
-                  <div className="user_dashboard_transaction_card">
-                    <div className="user_dashboard_transaction_card_title">
-                      {" "}
-                    </div>
-                    <div className="user_dashboard_transaction_card_transaction_id mb-3">
-                      {" "}
-                    </div>
-
-                    <div
-                      className="user_dashboard_transaction_card_amount_section"
-                      style={{ paddingRight: "16px" }}
-                    >
-                      <div className="user_dashboard_transaction_card_amount_text mb-3">
-                        {" "}
-                        Amount{" "}
-                      </div>
-
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text">$</div>
-                        </div>
-                        <input
-                          type="number"
-                          class="form-control"
-                          id="inlineFormInputGroupUsername"
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value)}
-                        />
-                      </div>
-
-                      <div class="col-auto text-center my-1">
-                        <button
-                          type="submit"
-                          class="btn btn-primary btn-sm mt-3 mb-3"
-                          onClick={() => CallPayment()}
-                        >
-                          Submit
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                  
+              </div>
+              <div className="row">
+                <div className="col-7">
+                  <div style={{ display: "none" }}>Munidex Parking</div>
+                </div>
               </div>
             </div>
-              
-          </div>
-          <div className="row">
-            <div className="col-7">
-              <div style={{ display: "none" }}>Munidex Parking</div>
-            </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
-      </>
-      }
     </>
   );
 }
