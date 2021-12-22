@@ -457,7 +457,7 @@ export default function Booking() {
               </div>
             </div>
             <div className="">
-              {wing_data && wing_data.length < 10 && (
+              {/* {wing_data && wing_data.length < 10 && (
                 <div className="parking_setup_wing_title_section">
                   <>
                     {" "}
@@ -481,7 +481,27 @@ export default function Booking() {
                     })}
                   </>
                 </div>
-              )}
+              )} */}
+
+         <div style={{ flexGrow: 1 }}>
+            <Carousel
+              itemsToShow={4}
+              itemsToScroll={1}
+              pagination={false}
+              showArrows={false}
+            >
+              <div>1</div>
+              <div>2</div>
+              <div>3</div>
+              <div>4</div>
+              <div>5</div>
+              <div>6</div>
+              <div>7</div>
+              <div>8</div>
+              <div>9</div>
+              <div>10</div>
+            </Carousel>
+          </div>
 
               {wing_data && wing_data.length > 10 && (
                 <div className="parking_setup_wing_title_section">
