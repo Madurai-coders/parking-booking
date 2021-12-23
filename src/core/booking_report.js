@@ -13,6 +13,7 @@ import { axios_call, axios_call_auto } from "../functions/reusable_functions";
 import { Bar, Line } from "react-chartjs-2";
 import moment from "moment";
 import Chart from "chart.js/auto";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Booking_report() {
   const [data, setData] = useState();
@@ -294,7 +295,10 @@ var amount=0
           </div>
             }
 
-      <div className="flex-grow-1">
+      <motion.div
+    initial={{ opacity: 0, x:100  }}
+    animate={{ opacity:[0.5,1], x:0 }}
+    transition={{ duration: 0.8 }} className="flex-grow-1">
         <div className="booking_report_container">
           <div className="booking_report_title"> Booking Report </div>
           <div className="row">
@@ -468,7 +472,7 @@ var amount=0
             Select All
           </span>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

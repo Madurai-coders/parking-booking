@@ -217,7 +217,7 @@ export default function Booking() {
       startFrom: startFrom,
       endTo: endTo,
       bookingId: Date.now().toString(36) + Math.random().toString(36).substr(2,6),
-      date:moment(new Date(), "DD-MM-YYYY").format("DD-MM-YYYY")
+    //   date:moment(new Date(), "DD-MM-YYYY").format("DD-MM-YYYY")
 
     };
 
@@ -305,13 +305,18 @@ export default function Booking() {
   
   return (
     <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.6 }}>
+    initial={{ opacity: 0, x:100  }}
+    animate={{ opacity:[0.5,1], x:0 }}
+    transition={{ duration: 0.8 }}>
       <Helmet>
          <title>Munidex Parking - Booking </title>
       </Helmet>
-      {preview && <div className="overlay1">  <Bookinginvoice bookingData={success} ClosePreview={ClosePreview}/></div>}
+
+
+      {preview && <div className="overlay1"> <div className='d-flex'>
+<div className='p-3 '> <div className='d-flex'>  <div className='btn-primary btn-sm btn mx-2'>share</div> <div className='btn-danger btn-sm  btn' onClick={ClosePreview}>Close</div></div></div>
+<Bookinginvoice bookingData={success} ClosePreview={ClosePreview}/></div></div>}
+      
 
       {success &&
       <div className="overlay">
@@ -364,7 +369,7 @@ export default function Booking() {
                 </div>
                 <div style={{ textAlign: "center" }} className="mb-5">
                   <span className="bookingspopup_text_amount"> Amount </span>{" "}
-                  <span className="bookingspopup_value_amount"> $+{success.charge}</span>
+                  <span className="bookingspopup_value_amount"> $ {success.charge}</span>
                 </div>
                 <div className="bookingspopup_amount_flex">
                   <div className="bookingspopup_options m-3" onClick={()=>setPreview(true)}>
@@ -375,10 +380,10 @@ export default function Booking() {
                     {" "}
                     Send <img src={send} />{" "}
                   </div>
-                  <div className="bookingspopup_options m-3">
+                  {/* <div className="bookingspopup_options m-3">
                     {" "}
                     Print <img src={print} />{" "}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -426,14 +431,14 @@ export default function Booking() {
                           Name: {bookinghover.name}
                         </small>
                         <small className="col-5">
-                          plan: {bookinghover.plan}
+                          Plan: {bookinghover.plan}
                         </small>
                       </div>
                     </div>
                     <div className="mt-2 col-12 ">
                       <div className="row">
                         <small className="col-7 ">
-                          SlotId:{" "}
+                          Slot Id:{" "}
                           <span className="badge bg-primary">
                             {bookinghover.wing_name &&
                               bookinghover.wing_name +
@@ -482,28 +487,39 @@ export default function Booking() {
                   </>
                 </div>
               )} */}
+               {wing_data && wing_data.length < 10 && (
+                <div className="parking_setup_wing_title_section">
 
          <div style={{ flexGrow: 1 }}>
             <Carousel
-              itemsToShow={4}
+              itemsToShow={6}
               itemsToScroll={1}
               pagination={false}
               showArrows={false}
             >
-              <div>1</div>
-              <div>2</div>
-              <div>3</div>
-              <div>4</div>
-              <div>5</div>
-              <div>6</div>
-              <div>7</div>
-              <div>8</div>
-              <div>9</div>
-              <div>10</div>
+            {wing_data.map((wing) => {
+                      return (
+                        <div
+                          className={
+                            wing.id != (slot && slot[0].wingId)
+                              ? "btn-light btn btn-sm m-1"
+                              : "btn-outline-primary btn btn-sm m-1"
+                          }
+                          onClick={() => (
+                            SetWing(wing),
+                            setbooking({ ...booking, plan: "", charge: "" }),
+                            SetSlot(wing.slots)
+                          )}
+                        >
+                          {wing.wingName}
+                        </div>
+                      );
+                    })}
             </Carousel>
           </div>
+          </div>)}
 
-              {wing_data && wing_data.length > 10 && (
+              {/* {wing_data && wing_data.length > 10 && (
                 <div className="parking_setup_wing_title_section">
                   <div className="d-flex">
                     {wing_data.map((wing) => {
@@ -526,7 +542,7 @@ export default function Booking() {
                     })}
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className="parking_setup_wing_container">
                 {slot && (

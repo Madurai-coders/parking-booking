@@ -13,6 +13,8 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import User from "./user.js";
 import Pagination from "../components/Pagination/pagination";
+import { motion, AnimatePresence } from "framer-motion";
+
 export default function User_report() {
   const [filter, setFilter] = useState(false);
   const [flag, setFlag] = useState("none");
@@ -136,7 +138,10 @@ export default function User_report() {
           <User user={user} set_up_flag={set_up_flag}></User>
         </div>
       )}
-      <div className="User_report_container flex-grow-1">
+   <motion.div
+    initial={{ opacity: 0, x:100  }}
+    animate={{ opacity:[0.5,1], x:0 }}
+    transition={{ duration: 0.8 }}  className="User_report_container flex-grow-1">
         <div className="User_report_detail_entry">
           <div className="User_report_title_text">User Report</div>
           <div className="User_report_filter_search_container">
@@ -311,7 +316,7 @@ export default function User_report() {
         {pagination && pagination.count > 20 && (
           <Pagination count={pagination.count} GetPagination={GetPagination} />
         )}
-      </div>
+      </motion.div>
     </>
   );
 }

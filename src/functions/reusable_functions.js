@@ -635,7 +635,7 @@ export function validation_comment(value) {
 
 export function validation_payment_id(value) {
     if (value == "" || value != "not_selected") {
-        var payment_id = /^[a-zA-Z0-9]+$/
+        var payment_id = /^[a-zA-Z0-9-]+$/
         if (value) {
             if (value.match(payment_id) && (value.length>=8 && value.length <=22)) {
                 return {
@@ -701,7 +701,7 @@ export function validation_amount(value) {
 export function validation_count(value) {
     if (value == "" || value != "not_selected") {
         if (value) {
-            if (value>0 && value<100) {
+            if (value>0 && value<120) {
                 return {
                     class: "pass",
                 };

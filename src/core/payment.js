@@ -18,9 +18,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import send from "../assets/images/send.svg";
+import Payment_invoice from "../components/Paymentinvoice/paymentinvoice"
 
 export default function Payment() {
   const [payment, setPayment] = useState();
+  const [payment_invoice, setPayment_invoice] = useState();
   const [remove_payment, setRemove_payment] = useState();
   const [edit, setedit] = useState(false);
   let history = useHistory();
@@ -275,11 +279,19 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
     }
   }, [form.payment_type]);
 
+  function Close_payment_invoice(){
+      setPayment_invoice(false)
+  }
+
   return (
     <>
       <Helmet>
          <title>Munidex Parking - Payments </title>
       </Helmet>
+{payment_invoice && <div className="overlay1"> <div className='d-flex'>
+<div className='p-3 '> <div className='d-flex'>  <div className='btn-primary btn-sm btn mx-2'>share</div> <div className='btn-danger btn-sm  btn' onClick={Close_payment_invoice}>Close</div></div></div>
+    <Payment_invoice paymentData={payment_invoice} Close_payment_invoice={Close_payment_invoice} /></div></div>}
+      
 
       {remove_payment && 
             <div className='overlay'>
@@ -304,7 +316,10 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
           </div>
             }
 
-      <div className="flex-grow-1">
+         <motion.div
+    initial={{ opacity: 0, x:100  }}
+    animate={{ opacity:[0.5,1], x:0 }}
+    transition={{ duration: 0.8 }} className="flex-grow-1">
         <div className="payment_container">
           {data_fail && (
             <div className="pr-5 pl-5">
@@ -530,7 +545,7 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                       <td>{payment.amount}$</td>
                       <td>
                         {moment(payment.paymentDate).format(
-                          "dd, MM Do YY, h:mm a"
+                          "dd, MM YY, h:mm a"
                         )}
                       </td>
                       <td>
@@ -541,10 +556,7 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                           >
                             Book
                           </span>
-                          <AiOutlinePrinter
-                            size={16}
-                            style={{ color: "#898989" }}
-                          />
+                          <img src={send} onClick={()=>setPayment_invoice(payment)}/>
                           <FaRegEdit
                             onClick={() => call_edit(payment)}
                             size={14}
@@ -565,7 +577,7 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
             </table> 
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

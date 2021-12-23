@@ -1,23 +1,26 @@
 import React, { useState } from "react";
 import "../../assets/css/Booking/bookinginvoice.css";
 import moment from "moment";
+
 export default function Bookinginvoice(props) {
   return (
     <>
       <div
-        onClick={props.ClosePreview}
+        onClick={props.Close_payment_invoice}
         className="bookinginvoice_container flex-grow-1 px-3 pt-1 mb-3 shadow"
       >
         <div className="bookinginvoice_topsection row">
           <div className="col-8"></div>
           <div className="col-4">
-            <div className="bookinginvoice_text_binv mb-3">Booking Invoice</div>
-            <div className="bookinginvoice_text_invno mb-1">
-              Invoice no: {props.bookingData.bookingId}
+            <div className="bookinginvoice_text_binv mb-3">
+              Parking Payment Invoice
             </div>
+
             <div className="bookinginvoice_text_invdate">
-              Invoice Date:
-              {moment(props.bookingData.date).format("dd, MM Do YY, h:mm a")}
+              Invoice Date:{" "}
+              {moment(props.paymentData.paymentDate).format(
+                "dd, MM Do YY, h:mm a"
+              )}
             </div>
           </div>
         </div>
@@ -27,29 +30,31 @@ export default function Bookinginvoice(props) {
               Bill To :
             </div>
             <div className="bookinginvoice_text_address mb-4 px-4">
-              {props.bookingData.User.userName}
+              {props.paymentData.User.userName}
             </div>
             <table className="bookinginvoice_table">
               <tr className="bookinginvoice_table_headers">
                 <th>Name</th>
-                <th>Booking Id</th>
-                <th>Plan</th>
-                <th>Wing</th>
-                <th>Slot</th>
+                <th>Account Number</th>
+                <th>Transaction Id</th>
+                <th>Date</th>
                 <th>Amount</th>
               </tr>
 
               <tr className="bookinginvoice_table_body">
-                <td>{props.bookingData.User.userName}</td>
-                <td>{props.bookingData.bookingId}</td>
-                <td>{props.bookingData.plan}</td>
-                <td>{props.bookingData.slots.wing.wingName}</td>
-                <td>{props.bookingData.slot_connect}</td>
-                <td>{props.bookingData.charge}</td>
+                <td>{props.paymentData.User.userName}</td>
+                <td>{props.paymentData.User.accountNumber}</td>
+                <td>{props.paymentData.paymentId}</td>
+                <td>
+                  {moment(props.paymentData.paymentDate).format(
+                    "dd, MM YY, h:mm a"
+                  )}
+                </td>
+                <td>{props.paymentData.amount} $</td>
               </tr>
             </table>
             <div className="bookinginvoice_total">
-              {props.bookingData.charge}$
+              {props.paymentData.amount}$
             </div>
           </div>
           <div>
@@ -60,7 +65,7 @@ export default function Bookinginvoice(props) {
         <div className="bookinginvoice_dop mb-2"> Date of Payment: <span className="bookinginvoice_dop_value">10/10/2021 </span></div>
         <div className="bookinginvoice_dop"> Payment Type: <span className="bookinginvoice_dop_value">Upi </span></div> */}
               </div>
-              <div className="col-6 pb-5">
+              {/* <div className="col-6 pb-5">
                 <div className="bookinginvoice_text_bdate pt-1 pb-1 ps-1 mb-2">
                   {" "}
                   Booking Date{" "}
@@ -81,7 +86,7 @@ export default function Bookinginvoice(props) {
                     </span>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="row bookinginvoice_bottom p-2 mb-1">
               {" "}

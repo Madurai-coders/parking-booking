@@ -15,6 +15,8 @@ import Car from "../assets/images/Car.svg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Carousel from "react-elastic-carousel";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Parkingsetup() {
   const [parkingsetup, setParkingsetup] = useState([
@@ -377,7 +379,10 @@ export default function Parkingsetup() {
          <title>Munidex Parking - Parking Setup </title>
       </Helmet>
 
-      <div className="flex-grow-1 parking_setup_container">
+    <motion.div
+    initial={{ opacity: 0, x:100  }}
+    animate={{ opacity:[0.5,1], x:0 }}
+    transition={{ duration: 0.8 }} className="flex-grow-1 parking_setup_container">
         {data_fail && (
           <div className="pr-5 pl-5">
             <div class="alert alert-danger" role="alert">
@@ -616,7 +621,7 @@ export default function Parkingsetup() {
         </div>
         <div className="row">
           <div className="col-7">
-            {wing_data && wing_data.length > 10 && (
+            {/* {wing_data && wing_data.length > 10 && (
               <div className="parking_setup_wing_title_section">
                 <>
                   {wing_data.map((wing) => {
@@ -647,9 +652,50 @@ export default function Parkingsetup() {
                   })}
                 </>
               </div>
-            )}
+            )} */}
 
-            {wing_data && wing_data.length < 10 && (
+
+{wing_data && wing_data.length < 10 && (
+                <div className="parking_setup_wing_title_section">
+
+         <div style={{ flexGrow: 1 }}>
+            <Carousel
+              itemsToShow={6}
+              itemsToScroll={1}
+              pagination={false}
+              showArrows={false}
+            >
+      {wing_data.map((wing) => {
+                    return (
+                      <div
+                        className={
+                          wing.id != (slot && slot[0].wingId)
+                            ? "btn-light btn btn-sm m-1"
+                            : "btn-outline-primary btn btn-sm m-1"
+                        }
+                        onClick={() => (reset(), SetSlot(wing.slots))}
+                        onDoubleClick={() =>
+                          setWing({
+                            wingName: wing.wingName,
+                            wingCount: wing.slots.length,
+                            wingStatus: true,
+                            planWeekly: parseInt(wing.planWeekly),
+                            planMonthly: parseInt(wing.planMonthly),
+                            planQuarterly: parseInt(wing.planQuarterly),
+                            planYearly: parseInt(wing.planYearly),
+                            wingId: wing.id,
+                          })
+                        }
+                      >
+                        {wing.wingName}
+                      </div>
+                    );
+                  })}
+            </Carousel>
+          </div>
+          </div>)}
+
+            {/* {wing_data && wing_data.length < 10 && (
               <div className="parking_setup_wing_title_section">
                 <div className="d-flex">
                   {wing_data.map((wing) => {
@@ -680,9 +726,9 @@ export default function Parkingsetup() {
                   })}
                 </div>
               </div>
-            )}
+            )} */}
 
-            <div className="parking_setup_wing_container">
+            <div className="parking_setup_wing_container" >
               {slot && (
                 <>
                   {slot.map((slot, id) => {
@@ -763,7 +809,7 @@ export default function Parkingsetup() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }
