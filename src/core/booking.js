@@ -598,6 +598,13 @@ export default function Booking() {
                 </div>
               </div>
             </div>
+
+            <div className='booking_colorcodes mt-5 pe-4'>
+            <span className='booking_undercons'> Under Construction</span>
+            <span className='booking_lessweek'> &lt; week remaining </span>
+            <span className='booking_moreweek'> &gt; week remaining</span>
+            </div>
+            
             <div className="booking_form_container">
               <div className="booking_form_title"> Booking </div>
 

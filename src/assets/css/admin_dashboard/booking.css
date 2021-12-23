@@ -219,3 +219,38 @@
 
   
 }
+
+
+
+.booking_colorcodes{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .booking_undercons:before {
+    content: '';
+    display: inline-block;
+    width: .5rem;
+    height: .5rem;
+    background: red;
+  }
+  .booking_lessweek:before {
+    content: '';
+    display: inline-block;
+    width: .5rem;
+    height: .5rem;
+    background: black;
+  }
+  .booking_moreweek:before {
+    content: '';
+    display: inline-block;
+    width: .5rem;
+    height: .5rem;
+    background: blue;
+  }
+  .booking_undercons,.booking_lessweek,.booking_moreweek{
+    font-size: 14px;
+    color: #777777;
+  }
+  
+  
