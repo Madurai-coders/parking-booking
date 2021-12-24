@@ -48,6 +48,10 @@
   border: 0.6px solid #dcdcdc;
 }
 
+#payment_ptype{
+  cursor: pointer;
+}
+
 .payment_submit_reset_container {
   display: flex;
   margin-bottom: 2%;
@@ -67,11 +71,13 @@
   color: #fff;
   background-color: #258e00;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .payment_reset_button {
   color: #000000;
   background-color: #e8e8e8;
+  cursor: pointer;
 }
 
 .payment_table_container {
@@ -132,6 +138,7 @@
   padding:5% 10%;
   background-color: #268E02;
   border-radius: 2.27px;
+  cursor: pointer;
 }
 
 .payment_table_controls_container{

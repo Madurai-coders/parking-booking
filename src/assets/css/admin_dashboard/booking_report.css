@@ -139,7 +139,8 @@
   line-height: 12px;
   color: #ffffff;
   border-radius: 3.82px;
-  margin-left: 5%;;
+  margin-left: 5%;
+  cursor: pointer;
 }
 
 .booking_report_wingselection_container {
@@ -158,4 +159,5 @@
   padding: 1.5% 5%;
   border-radius: 3px;
   margin-top: 2px;
+  cursor: pointer;
 }

@@ -178,9 +178,10 @@ export default function User_dashboard() {
                       class="btn-close"
                       data-bs-dismiss="modal"
                       aria-label="Close"
+                      style={{cursor:"pointer"}}
                     ></button>
                   </div>
-                  <div class="modal-body">Are your sure?</div>
+                  <div class="modal-body">Are you sure?</div>
                   <div class="modal-footer">
                     <button
                       type="button"
@@ -188,7 +189,7 @@ export default function User_dashboard() {
                       class="btn btn-light btn-sm"
                       data-bs-dismiss="modal"
                     >
-                      Cancle
+                      Cancel
                     </button>
                     <button
                       type="button"

@@ -200,7 +200,7 @@ export default function User_report() {
                       className="User_report_filter_card_segment1_input_completed"
                     />
                     <label
-                      for="pending"
+                      for="completed"
                       className="mx-1 User_report_filter_card_segment1_text_completed"
                     >
                       {" "}

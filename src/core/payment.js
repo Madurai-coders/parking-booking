@@ -556,18 +556,18 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                           >
                             Book
                           </span>
-                          <img src={send} onClick={()=>setPayment_invoice(payment)}/>
+                          <img src={send} onClick={()=>setPayment_invoice(payment)} style={{cursor:"pointer"}}/>
                           <FaRegEdit
                             onClick={() => call_edit(payment)}
                             size={14}
-                            style={{ color: "#898989" }}
+                            style={{ color: "#898989", cursor:"pointer" }}
                           />
                           <HiOutlineTrash
                           
                           onClick={() => setRemove_payment(payment.id)}
-
+                
                             size={16}
-                            style={{ color: "#898989" }}
+                            style={{ color: "#898989", cursor:"pointer" }}
                           />
                         </div>
                       </td>

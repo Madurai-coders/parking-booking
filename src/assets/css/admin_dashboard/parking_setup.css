@@ -114,11 +114,13 @@
   color: #ffffff;
   background-color: #258e00;
   margin-right: 6%;
+  cursor: pointer;
 }
 
 .parking_setup_clear_button {
   color: #1d1d1d;
   background-color: #e8e8e8;
+  cursor: pointer;
 }
 
 .parking_setup_inactive_slot_container_title {
@@ -183,6 +185,7 @@
   border-radius: 1.86px;
   padding: 3% 6%;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .parking_setup_inactive_slot_table_container {
@@ -241,24 +244,29 @@
     hue-rotate(-50deg) saturate(400%) contrast(2);
   filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg)
     saturate(600%) contrast(0.8);
+  cursor: pointer;
 }
 
 .booked {
     -webkit-filter: grayscale(100%) brightness(30%) sepia(100%) hue-rotate(-180deg) saturate(700%) contrast(0.8);
     filter: grayscale(100%) brightness(30%) sepia(100%) hue-rotate(-180deg) saturate(700%) contrast(0.8);
-
+    cursor: pointer;
 }
 
 .closes_soon {
     -webkit-filter: invert(30%) grayscale(100%) brightness(70%) contrast(4);
     filter: invert(30%) grayscale(100%) brightness(70%) contrast(4);
+    cursor: pointer;
 }
 
 .Selected {
-
     -webkit-filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(50deg)
     saturate(1000%) contrast(0.8);
   filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(50deg)
     saturate(1000%) contrast(0.8);
+    cursor: pointer;
 }
 
+.false{
+  cursor: pointer;
+}

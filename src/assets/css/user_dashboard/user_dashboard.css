@@ -11,6 +11,7 @@
 .user_dashboard_profile_icon {
   width: 2.8%;
   margin-left: 80%;
+  cursor: pointer;
 }
 
 .user_dashboard_username {
