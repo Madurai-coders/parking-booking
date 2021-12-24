@@ -283,13 +283,28 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
       setPayment_invoice(false)
   }
 
+  function SendMail(){
+
+    // var data={
+    //     to:payment_invoice.User.email,
+    //     invoiceDate:payment_invoice.paymentData.paymentDate,
+    //     user:payment_invoice.User.userName,
+    //     accountNumber:payment_invoice.User.accountNumber,
+    //     paymentId:payment_invoice.paymentId,
+    //     amount:payment_invoice.amount
+    // }
+
+
+    }
+  
+
   return (
     <>
       <Helmet>
          <title>Munidex Parking - Payments </title>
       </Helmet>
 {payment_invoice && <div className="overlay1"> <div className='d-flex'>
-<div className='p-3 '> <div className='d-flex'>  <div className='btn-primary btn-sm btn mx-2'>share</div> <div className='btn-danger btn-sm  btn' onClick={Close_payment_invoice}>Close</div></div></div>
+<div className='p-3 '> <div className='d-flex'>  <div className='btn-primary btn-sm btn mx-2' onClick={SendMail}>share</div> <div className='btn-danger btn-sm  btn' onClick={Close_payment_invoice}>Close</div></div></div>
     <Payment_invoice paymentData={payment_invoice} Close_payment_invoice={Close_payment_invoice} /></div></div>}
       
 
@@ -540,7 +555,7 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                     <tr className="payment_table_content" key={id}>
                       <td>{payment.User.userName}</td>
                       <td>{payment.User.accountNumber}</td>
-                      <td>{payment.paymentType}</td>
+                      <td><span class={payment.paymentType=='cash'?"bg-primary p-1  text-white rounded":'bg-danger p-1  text-white rounded'}>{payment.paymentType}</span></td>
                       <td>{payment.paymentId}</td>
                       <td>{payment.amount}$</td>
                       <td>

@@ -14,6 +14,8 @@ import { Bar, Line } from "react-chartjs-2";
 import moment from "moment";
 import Chart from "chart.js/auto";
 import { motion, AnimatePresence } from "framer-motion";
+import send from "../assets/images/send.svg";
+import Bookinginvoice from "../components/Booking/bookinginvoice";
 
 export default function Booking_report() {
   const [data, setData] = useState();
@@ -24,7 +26,7 @@ export default function Booking_report() {
   const [maingraph, setMaingraph] = useState();
   const [wing_results, setWing_result] = useState();
   const [remove_booking, setRemove_booking] = useState();
-
+  const [preview, setPreview] = useState(false);
   const options = {
     indexAxis: "x",
     elements: {
@@ -121,8 +123,6 @@ export default function Booking_report() {
     var dateOne = moment(start);
     var dateTwo = moment(end);
 
-
-
     var total_days = dateTwo.diff(dateOne, "days");
     var slotId = [];
     var days_of_booking = [];
@@ -131,20 +131,20 @@ export default function Booking_report() {
     var booked_slots_wing = booking.filter(
       (val) => val.slots.wing.wingName == wing.wingName
     );
-var amount=0
+    var amount = 0;
     booked_slots_wing.forEach((element) => {
-        amount = amount + parseInt(element.charge);
-      });
+      amount = amount + parseInt(element.charge);
+    });
 
-    setSlotdata({...slotdata,
-        unreserved:wing.slots.length-booked_slots_wing.length,
-        reserved:booked_slots_wing.length,
-        total:wing.slots.length,
-        amount:amount
+    setSlotdata({
+      ...slotdata,
+      unreserved: wing.slots.length - booked_slots_wing.length,
+      reserved: booked_slots_wing.length,
+      total: wing.slots.length,
+      amount: amount,
     });
 
     setWing_result(booked_slots_wing);
-
 
     wing.slots.forEach((slot) => {
       slotId.push(slot.id);
@@ -163,9 +163,6 @@ var amount=0
         days_of_booking.push(booked_period);
       }
     });
-
-    
-
 
     setSlotgraph({
       labels: slotId,
@@ -190,7 +187,7 @@ var amount=0
       "GetBookingByDate/?from=" + start + "&to=" + end
     );
     setData(booking);
-    console.log(booking)
+    console.log(booking);
     var amount = 0;
     booking.forEach((element) => {
       amount = amount + parseInt(element.charge);
@@ -215,7 +212,7 @@ var amount=0
     axios_call("DELETE", "CreateBooking/" + id + "/", "").then((response) => {
       var values_result = data.filter((item) => item.id !== id);
       setData(values_result);
-      setRemove_booking(false)
+      setRemove_booking(false);
     });
 
     if (wing_results) {
@@ -233,7 +230,7 @@ var amount=0
     console.log("selected_wing");
   };
 
-  async function SelectAll(){
+  async function SelectAll() {
     var amount = 0;
     data.forEach((element) => {
       amount = amount + parseInt(element.charge);
@@ -267,38 +264,94 @@ var amount=0
     month_report();
   }, []);
 
+  function ClosePreview() {
+    setPreview(false);
+  }
+
+  function SendMail() {
+    // var data={
+    //     to:'kaamil312@gmail.com',
+    //     invoiceDate:payment_invoice.paymentData.paymentDate,
+    //     user:payment_invoice.User.userName,
+    //     accountNumber:payment_invoice.User.accountNumber,
+    //     paymentId:payment_invoice.paymentId,
+    //     amount:payment_invoice.amount
+    // }
+  }
+
   return (
     <>
       <Helmet>
         <title>Munidex Parking - Booking Report</title>
       </Helmet>
-      {remove_booking && 
-            <div className='overlay'>
-            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title"  id="exampleModalLabel">Remove Booking</h5>
-                  <button type="button" onClick={()=>setRemove_booking(false)}  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  Are your sure?
-                </div>
-                <div class="modal-footer">
-                  <button type="button" onClick={() => Removebooking(remove_booking)}class="btn btn-light">Remove</button>
-                  <button type="button"  onClick={()=>setRemove_booking(false)} class="btn btn-danger"  data-bs-dismiss="modal">Cancle</button>
-
+      {preview && (
+        <div className="overlay1">
+          {" "}
+          <div className="d-flex">
+            <div className="p-3 ">
+              {" "}
+              <div className="d-flex">
+                {" "}
+                <div className="btn-primary btn-sm btn mx-2" onClick={SendMail}>
+                  share
+                </div>{" "}
+                <div className="btn-danger btn-sm  btn" onClick={ClosePreview}>
+                  Close
                 </div>
               </div>
+            </div>
+            <Bookinginvoice bookingData={preview} ClosePreview={ClosePreview} />
+          </div>
+        </div>
+      )}
+
+      {remove_booking && (
+        <div className="overlay">
+          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Remove Booking
+                </h5>
+                <button
+                  type="button"
+                  onClick={() => setRemove_booking(false)}
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">Are your sure?</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  onClick={() => Removebooking(remove_booking)}
+                  class="btn btn-light"
+                >
+                  Remove
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRemove_booking(false)}
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Cancle
+                </button>
+              </div>
+            </div>
             {/* </div> */}
           </div>
-          </div>
-            }
+        </div>
+      )}
 
       <motion.div
-    initial={{ opacity: 0, x:100  }}
-    animate={{ opacity:[0.5,1], x:0 }}
-    transition={{ duration: 0.8 }} className="flex-grow-1">
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: [0.5, 1], x: 0 }}
+        transition={{ duration: 0.8 }}
+        className="flex-grow-1"
+      >
         <div className="booking_report_container">
           <div className="booking_report_title"> Booking Report </div>
           <div className="row">
@@ -398,10 +451,19 @@ var amount=0
                           <td>{count}</td>
                           <td>{bookingdata.User.lastName}</td>
                           <td>{bookingdata.plan}</td>
-                          <td>{bookingdata.slots.wing.wingName} [{bookingdata.slots.id}]</td>
-                          <td>{bookingdata.charge}</td>
                           <td>
-                            <IoTrashOutline onClick={() =>setRemove_booking(bookingdata.id)}
+                            {bookingdata.slots.wing.wingName} [
+                            {bookingdata.slots.id}]
+                          </td>
+                          <td>{bookingdata.charge} $</td>
+                          <td>
+                            <IoTrashOutline
+                              onClick={() => setRemove_booking(bookingdata.id)}
+                            />
+                            <img
+                              src={send}
+                              className='px-1'
+                              onClick={() => setPreview(bookingdata)}
                             />
                           </td>
                         </tr>
@@ -416,10 +478,19 @@ var amount=0
                           <td>{count}</td>
                           <td>{bookingdata.User.lastName}</td>
                           <td>{bookingdata.plan}</td>
-                          <td>{bookingdata.slots.wing.wingName} [{bookingdata.slots.id}]</td>                          <td>{bookingdata.charge}</td>
+                          <td>
+                            {bookingdata.slots.wing.wingName} [
+                            {bookingdata.slots.id}]
+                          </td>{" "}
+                          <td>{bookingdata.charge} $</td>
                           <td>
                             <IoTrashOutline
                               onClick={() => setRemove_booking(bookingdata.id)}
+                            />
+                            <img
+                              src={send}
+                              className='px-1'
+                              onClick={() => setPreview(bookingdata)}
                             />
                           </td>
                         </tr>
@@ -464,7 +535,7 @@ var amount=0
           </div>
           <span
             onClick={() => (
-              setSlotgraph(), setSelected_wing(), setWing_result(),SelectAll()
+              setSlotgraph(), setSelected_wing(), setWing_result(), SelectAll()
             )}
             className="booking_report_wingsubmit"
           >
