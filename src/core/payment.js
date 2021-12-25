@@ -12,7 +12,7 @@ import {
   validation_amount,
   axios_call,
   axios_call_auto,
-  generateUUID
+  generateUUID,
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,12 +20,13 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import send from "../assets/images/send.svg";
-import Payment_invoice from "../components/Paymentinvoice/paymentinvoice"
+import Payment_invoice from "../components/Paymentinvoice/paymentinvoice";
 
 export default function Payment() {
   const [payment, setPayment] = useState();
   const [payment_invoice, setPayment_invoice] = useState();
   const [remove_payment, setRemove_payment] = useState();
+  const [mailStatus, setMailStatus] = useState();
   const [edit, setedit] = useState(false);
   let history = useHistory();
   const [form, setForm] = useState({
@@ -87,13 +88,10 @@ export default function Payment() {
     }
   };
 
-  function removePayment(id, name) {
-    checkuser(name);
-    axios_call("DELETE", "CreatePayment/" + id + "/", "").then(
-      (response) => {
-        setRemove_payment(false)
-      }
-    );
+  function removePayment(id) {
+    axios_call("DELETE", "CreatePayment/" + id + "/", "").then((response) => {
+      setRemove_payment(false);
+    });
     var values_result = payment.filter((item) => item.id !== id);
     setPayment(values_result);
     setedit(false);
@@ -176,7 +174,7 @@ export default function Payment() {
         console.log("starting newuser");
         var newbookingpartner = {
           uId: new Date().getUTCMilliseconds(),
-          accountNumber: Math.floor((Math.random()*10000)+1),
+          accountNumber: Math.floor(Math.random() * 10000 + 1),
           userName: form.name,
           lastName: form.name,
           email: form.email,
@@ -216,7 +214,8 @@ export default function Payment() {
 
   function intiatebooking(data) {
     window.localStorage.setItem("bookingdata", JSON.stringify(data));
-    history.push('/admin')  }
+    history.push("/admin");
+  }
 
   useEffect(() => {
     if (form.name == "not_selected" || !form.name) {
@@ -241,18 +240,20 @@ export default function Payment() {
   }, [form.name]);
 
   function checkpaymentid() {
-if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id).then(
-      (response) => {
-        console.log(form.payment_id);
-        console.log(response);
-        if (response[0]) {
-          setData_fail("payment id exist");
-        } else {
-          setData_fail(false);
+    if (form.payment_id) {
+      axios_call("GET", "GetPayment?search=" + form.payment_id).then(
+        (response) => {
+          console.log(form.payment_id);
+          console.log(response);
+          if (response[0]) {
+            setData_fail("payment id exist");
+          } else {
+            setData_fail(false);
+          }
         }
-      }
-    );
-  }}
+      );
+    }
+  }
 
   function reset() {
     setForm({
@@ -271,78 +272,176 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
     if (form.payment_type == "cash") {
       setForm({
         ...form,
-        payment_id:
-        generateUUID(),
+        payment_id: generateUUID(),
       });
     } else {
       setForm({ ...form, payment_id: "not_selected" });
     }
   }, [form.payment_type]);
 
-  function Close_payment_invoice(){
-      setPayment_invoice(false)
+  function Close_payment_invoice() {
+    setPayment_invoice(false);
+    setMailStatus()
   }
 
-  function SendMail(){
+  function SendMail() {
+    var data = {
+      to: payment_invoice.User.email,
+      invoiceDate: moment(payment_invoice.paymentDate).format("DD/MM/YYYY"),
+      user: payment_invoice.User.userName,
+      accountNumber: payment_invoice.User.accountNumber,
+      paymentId: payment_invoice.paymentId,
+      amount: payment_invoice.amount,
+    };
+    console.log(data);
+    setMailStatus({
+        status: "Sending",
+        to: payment_invoice.User.email,
+      });
 
-    // var data={
-    //     to:payment_invoice.User.email,
-    //     invoiceDate:payment_invoice.paymentData.paymentDate,
-    //     user:payment_invoice.User.userName,
-    //     accountNumber:payment_invoice.User.accountNumber,
-    //     paymentId:payment_invoice.paymentId,
-    //     amount:payment_invoice.amount
-    // }
-
-
-    }
-  
+    axios_call("POST", "send_mail/", data).then((response) => {
+      console.log(response);
+      setMailStatus({
+        status: "Successful",
+        to: payment_invoice.User.email,
+      });
+    });
+  }
 
   return (
     <>
       <Helmet>
          <title>Munidex Parking - Payments </title>
       </Helmet>
-{payment_invoice && <div className="overlay1"> <div className='d-flex'>
-<div className='p-3 '> <div className='d-flex'>  <div className='btn-primary btn-sm btn mx-2' onClick={SendMail}>share</div> <div className='btn-danger btn-sm  btn' onClick={Close_payment_invoice}>Close</div></div></div>
-    <Payment_invoice paymentData={payment_invoice} Close_payment_invoice={Close_payment_invoice} /></div></div>}
-      
+      {payment_invoice && (
+        <div className="overlay1">
+          <div className="row">
+            <div className="col-6 px-5">
+              <Payment_invoice
+                paymentData={payment_invoice}
+                Close_payment_invoice={Close_payment_invoice}
+              />
+            </div>
 
-      {remove_payment && 
-            <div className='overlay'>
-            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title"  id="exampleModalLabel">Remove Payment</h5>
-                  <button type="button" onClick={()=>setRemove_payment(false)}  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  Are your sure?
-                </div>
-                <div class="modal-footer">
-                  <button type="button" onClick={() => removePayment(remove_payment)}class="btn btn-light">Remove</button>
-                  <button type="button"  onClick={()=>setRemove_payment(false)} class="btn btn-danger"  data-bs-dismiss="modal">Cancle</button>
+            <div className="col-6">
+              <div className="p-3 ">
+              <div className='' style={{ marginTop: mailStatus ? "30vh" :"84vh" }}>
+                  {mailStatus &&
+                  <div className='' >
+                      <div className='h2 text-center'>{
+                          mailStatus.status == 'Sending' && 
+                          <div className='text-center mb-2'>
+                          <div class="spinner-grow mx-1 text-primary" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-secondary" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-success" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-danger" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-warning" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-info" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-light" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-dark" role="status">
+  <span class="sr-only"></span>
+</div>
 
+                          </div>
+                      }
+  {mailStatus.status} !! </div>
+ <div className='h2 mt-3 text-center'>
+ To : {mailStatus.to}  </div>
+                  </div>
+}
+</div>
+
+                <div className="d-flex" style={{ marginTop: "35vh" }}>
+                  <div
+                    className="btn-danger btn-sm  btn"
+                    onClick={Close_payment_invoice}
+                  >
+                    Close
+                  </div>
+                  <button
+                    className="btn-primary btn-sm btn mx-2"
+                    onClick={SendMail}
+                    disabled={mailStatus}
+                  >
+                    Send Receipt
+                  </button>
                 </div>
+
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {remove_payment && (
+        <div className="overlay">
+          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Remove Payment
+                </h5>
+                <button
+                  type="button"
+                  onClick={() => setRemove_payment(false)}
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">Are your sure?</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  onClick={() => removePayment(remove_payment)}
+                  class="btn btn-light"
+                >
+                  Remove
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRemove_payment(false)}
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Cancle
+                </button>
+              </div>
+            </div>
             {/* </div> */}
           </div>
-          </div>
-            }
+        </div>
+      )}
 
-         <motion.div
-    initial={{ opacity: 0, x:100  }}
-    animate={{ opacity:[0.5,1], x:0 }}
-    transition={{ duration: 0.8 }} className="flex-grow-1">
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: [0.5, 1], x: 0 }}
+        transition={{ duration: 1 }}
+        className="flex-grow-1"
+      >
         <div className="payment_container">
-          {data_fail && (
+          {/* {data_fail && (
             <div className="pr-5 pl-5">
               <div class="alert alert-danger" role="alert">
                 {data_fail}
               </div>
             </div>
-          )}
+          )} */}
           <div className="payment_text_booking_report"> Payment Report</div>
 
           <div className="payment_enty_container">
@@ -518,22 +617,23 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                   Update{" "}
                 </div>
 
-                <div
-                  className="payment_reset_button "
-                  style={{ cursor: "pointer" }}
-                  onClick={() => removePayment(form.id, form.name)}
-                >
-                  {" "}
-                  remove{" "}
-                </div>
+               
 
                 <div
-                  className="payment_reset_button ml-1"
+                  className="payment_reset_button "
                   style={{ cursor: "pointer" }}
                   onClick={reset}
                 >
                   {" "}
                   Close{" "}
+                </div>
+                <div
+                  className="payment_danger_button mx-2"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setRemove_payment(form.id)}
+                >
+                  {" "}
+                  remove{" "}
                 </div>
               </div>
             )}
@@ -555,41 +655,51 @@ if(form.payment_id)  {  axios_call("GET", "GetPayment?search=" + form.payment_id
                     <tr className="payment_table_content" key={id}>
                       <td>{payment.User.userName}</td>
                       <td>{payment.User.accountNumber}</td>
-                      <td><span class={payment.paymentType=='cash'?"bg-primary p-1  text-white rounded":'bg-danger p-1  text-white rounded'}>{payment.paymentType}</span></td>
+                      <td>
+                        <span
+                          class={
+                            payment.paymentType == "cash"
+                              ? "bg-primary p-1  text-white rounded"
+                              : "bg-danger p-1  text-white rounded"
+                          }
+                        >
+                          {payment.paymentType}
+                        </span>
+                      </td>
                       <td>{payment.paymentId}</td>
                       <td>{payment.amount}$</td>
                       <td>
-                        {moment(payment.paymentDate).format(
-                          "dd, MM YY, h:mm a"
-                        )}
+                        {moment(payment.paymentDate).format("DD/MM/YYYY")}
                       </td>
                       <td>
                         <div className="payment_table_controls_container">
                           <span
                             className="payment_table_button_book"
-                            onClick={()=>intiatebooking(payment)}
+                            onClick={() => intiatebooking(payment)}
                           >
                             Book
                           </span>
-                          <img src={send} onClick={()=>setPayment_invoice(payment)} style={{cursor:"pointer"}}/>
+                          <img
+                            src={send}
+                            onClick={() => setPayment_invoice(payment)}
+                            style={{ cursor: "pointer" }}
+                          />
                           <FaRegEdit
                             onClick={() => call_edit(payment)}
                             size={14}
-                            style={{ color: "#898989", cursor:"pointer" }}
+                            style={{ color: "#898989", cursor: "pointer" }}
                           />
                           <HiOutlineTrash
-                          
-                          onClick={() => setRemove_payment(payment.id)}
-                
+                            onClick={() => setRemove_payment(payment.id)}
                             size={16}
-                            style={{ color: "#898989", cursor:"pointer" }}
+                            style={{ color: "#898989", cursor: "pointer" }}
                           />
                         </div>
                       </td>
                     </tr>
                   );
                 })}
-            </table> 
+            </table>
           </div>
         </div>
       </motion.div>

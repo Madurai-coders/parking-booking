@@ -27,7 +27,10 @@ export default function Booking_report() {
   const [wing_results, setWing_result] = useState();
   const [remove_booking, setRemove_booking] = useState();
   const [preview, setPreview] = useState(false);
+  const [mailStatus, setMailStatus] = useState();
+
   const options = {
+      
     indexAxis: "x",
     elements: {
       bar: {
@@ -266,44 +269,121 @@ export default function Booking_report() {
 
   function ClosePreview() {
     setPreview(false);
+    setMailStatus()
+
   }
 
   function SendMail() {
-    // var data={
-    //     to:'kaamil312@gmail.com',
-    //     invoiceDate:payment_invoice.paymentData.paymentDate,
-    //     user:payment_invoice.User.userName,
-    //     accountNumber:payment_invoice.User.accountNumber,
-    //     paymentId:payment_invoice.paymentId,
-    //     amount:payment_invoice.amount
-    // }
+    var data = {
+      to: preview.User.email,
+      invoiceDate:moment(preview.date).format("DD/MM/YYYY"),
+      user: preview.User.userName,
+      accountNumber: preview.User.accountNumber,
+      bookingId: preview.bookingId,
+      amount: preview.charge,
+      startFrom:moment(preview.startFrom).format("DD/MM/YYYY"),
+      endTo:moment(preview.endTo).format("DD/MM/YYYY"),
+      wing:preview.slots.wing.wingName,
+      plan:preview.plan,
+      id:preview.id,
+      slot:preview.slot_connect,
+    };
+    console.log(data);
+    setMailStatus({
+        status: "Sending",
+        to: preview.User.email,
+      });
+
+    axios_call("POST", "send_mail_booking/", data).then((response) => {
+      console.log(response);
+      setMailStatus({
+        status: "Successful",
+        to: preview.User.email,
+      });
+    });
   }
+
 
   return (
     <>
       <Helmet>
         <title>Munidex Parking - Booking Report</title>
       </Helmet>
+
+
       {preview && (
         <div className="overlay1">
-          {" "}
-          <div className="d-flex">
-            <div className="p-3 ">
-              {" "}
-              <div className="d-flex">
-                {" "}
-                <div className="btn-primary btn-sm btn mx-2" onClick={SendMail}>
-                  share
-                </div>{" "}
-                <div className="btn-danger btn-sm  btn" onClick={ClosePreview}>
-                  Close
+          <div className="row">
+            <div className="col-6 px-5">
+            <Bookinginvoice bookingData={preview} ClosePreview={ClosePreview} />
+            </div>
+
+            <div className="col-6">
+              <div className="p-3 ">
+              <div className='' style={{ marginTop: mailStatus ? "36.5vh" :"84vh" }}>
+                  {mailStatus &&
+                  <div className='' >
+                      <div className='h2 text-center'>{
+                          mailStatus.status == 'Sending' && 
+                          <div className='text-center mb-2'>
+                          <div class="spinner-grow mx-1 text-primary" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-secondary" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-success" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-danger" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-warning" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-info" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-light" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-dark" role="status">
+  <span class="sr-only"></span>
+</div>
+
+                          </div>
+                      }
+  {mailStatus.status} !! </div>
+ <div className='h2 mt-3 text-center'>
+ To : {mailStatus.to}  </div>
+                  </div>
+}
+</div>
+
+                <div className="d-flex" style={{ marginTop: "35vh" }}>
+                  <div
+                    className="btn-danger btn-sm  btn"
+                    onClick={ClosePreview}
+                  >
+                    Close
+                  </div>
+                  <button
+                    className="btn-primary btn-sm btn mx-2"
+                    onClick={SendMail}
+                    disabled={mailStatus}
+                  >
+                    Send Receipt
+                  </button>
                 </div>
+
               </div>
             </div>
-            <Bookinginvoice bookingData={preview} ClosePreview={ClosePreview} />
           </div>
         </div>
       )}
+
+
+
 
       {remove_booking && (
         <div className="overlay">
@@ -347,9 +427,9 @@ export default function Booking_report() {
       )}
 
       <motion.div
-        initial={{ opacity: 0, x: 100 }}
+        initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: [0.5, 1], x: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 1 }}
         className="flex-grow-1"
       >
         <div className="booking_report_container">
@@ -458,9 +538,11 @@ export default function Booking_report() {
                           <td>{bookingdata.charge} $</td>
                           <td>
                             <IoTrashOutline
+                            style={{cursor:'pointer'}}
                               onClick={() => setRemove_booking(bookingdata.id)}
                             />
                             <img
+                            style={{cursor:'pointer'}}
                               src={send}
                               className='px-1'
                               onClick={() => setPreview(bookingdata)}
@@ -485,9 +567,11 @@ export default function Booking_report() {
                           <td>{bookingdata.charge} $</td>
                           <td>
                             <IoTrashOutline
+                            style={{cursor:'pointer'}}
                               onClick={() => setRemove_booking(bookingdata.id)}
                             />
                             <img
+                            style={{cursor:'pointer'}}
                               src={send}
                               className='px-1'
                               onClick={() => setPreview(bookingdata)}

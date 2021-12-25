@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import logo from "../assets/images/munidex_logo.jpeg";
+import logo from "../assets/images/navlogo.svg";
 import userprof from "../assets/images/userprofile.png";
 import handshake from "../assets/images/handshake.png";
 import loader_video from "../assets/images/loader.mp4";
@@ -9,10 +9,11 @@ import { IoClose } from "react-icons/io5";
 import moment from "moment";
 import {
   axios_call,
+  axios_call_unauthenticated,
   axios_call_auto,
   validation_count,
   logout,
-  generateUUID
+  generateUUID,
 } from "../functions/reusable_functions";
 import { useLocation } from "react-router";
 import Cookies from "js-cookie";
@@ -53,17 +54,13 @@ export default function User_dashboard() {
     var accountnumber = Cookies.get("accountnumber");
     var lastname = Cookies.get("lastname");
     if (accountnumber && lastname) {
-      axios({
-        method: "GET",
-        url:
-          "http://127.0.0.1:8000/UserLogin?username=" +
-          lastname +
-          "&accountnumber=" +
-          accountnumber,
-      }).then((response) => {
-        console.log(response.data[0]);
-        if (response.data[0]) {
-          setUser(response.data[0]);
+      axios_call_unauthenticated(
+        "GET",
+        "UserLogin?username=" + lastname + "&accountnumber=" + accountnumber,
+      ).then((response) => {
+        if (response) {
+            console.log(response);
+          setUser(response[0]);
         }
       });
     } else {
@@ -88,8 +85,6 @@ export default function User_dashboard() {
     history.push("/");
   }
 
-
-
   function CallPayment(val) {
     if (amount > 10) {
       var body = {
@@ -108,6 +103,7 @@ export default function User_dashboard() {
       };
 
       var data = {
+        secretKey:"9401f9e0-6596-11ec-bd15-8d09a4545895",
         userId: user.id,
         paymentId: generateUUID(),
         paymentType: "online",
@@ -115,19 +111,18 @@ export default function User_dashboard() {
         amount: amount,
       };
 
-      console.log(data)
-
-      axios({
-        method: "POST",
-        url: "http://127.0.0.1:8000/CreatePayment/",
-        data: data,
-      }).then((response) => {
-        console.log(response.data);
- let userDate=user
- userDate.payment_partner.push(response.data)
- setUser(user)
- setGetAmount(false)
- setAmount()
+      console.log(data);
+      axios_call_unauthenticated(
+        "POST",
+      "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+        data,
+      ).then((response) => {
+        console.log(response);
+        let userDate = user;
+        userDate.payment_partner.push(response);
+        setUser(user);
+        setGetAmount(false);
+        setAmount();
       });
 
       //   axios({
@@ -178,7 +173,7 @@ export default function User_dashboard() {
                       class="btn-close"
                       data-bs-dismiss="modal"
                       aria-label="Close"
-                      style={{cursor:"pointer"}}
+                      style={{ cursor: "pointer" }}
                     ></button>
                   </div>
                   <div class="modal-body">Are you sure?</div>
@@ -329,7 +324,7 @@ export default function User_dashboard() {
                               {userdata.charge}$
                             </td>
                             <td>
-                              {Dayleft(userdata.endTo)} days
+                              {Dayleft(userdata.endTo)>0 ? Dayleft(userdata.endTo) : 0} days
                               <span
                                 className={
                                   "mx-1 user_dashboard_active_" +

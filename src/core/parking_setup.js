@@ -19,66 +19,8 @@ import Carousel from "react-elastic-carousel";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Parkingsetup() {
-  const [parkingsetup, setParkingsetup] = useState([
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-    { stype: "A", sid: 73143, date: "18/09/21" },
-    { stype: "C", sid: 85486, date: "16/08/21" },
-  ]);
-
-  const [booksection, setBooksection] = useState([
-    {
-      wingA: [
-        { slotname: "was1", status: "" },
-        { slotname: "was2", status: "undercons" },
-        { slotname: "was3", status: "" },
-        { slotname: "was4", status: "" },
-        { slotname: "was5", status: "" },
-        { slotname: "was6", status: "undercons" },
-        { slotname: "was7", status: "" },
-        { slotname: "was8", status: "" },
-        { slotname: "was9", status: "" },
-        { slotname: "was10", status: "" },
-        { slotname: "was11", status: "undercons" },
-        { slotname: "was12", status: "" },
-        { slotname: "was13", status: "" },
-        { slotname: "was14", status: "" },
-        { slotname: "was1", status: "" },
-        { slotname: "was2", status: "undercons" },
-        { slotname: "was3", status: "" },
-        { slotname: "was4", status: "" },
-        { slotname: "was5", status: "undercons" },
-        { slotname: "was6", status: "" },
-        { slotname: "was7", status: "" },
-        { slotname: "was8", status: "" },
-        { slotname: "was9", status: "" },
-        { slotname: "was10", status: "" },
-        { slotname: "was11", status: "undercons" },
-        { slotname: "was12", status: "" },
-        { slotname: "was13", status: "" },
-        { slotname: "was14", status: "" },
-      ],
-    },
-    { wingB: [{ slotname: "wbs1" }, { slotname: "wbs2" }] },
-  ]);
-
-  const [percent, setPercent] = useState()
+  const [remove_wing, setRemove_wing] = useState();
+  const [percent, setPercent] = useState();
 
   const [wing, setWing] = useState({
     wingName: "not_selected",
@@ -302,11 +244,11 @@ export default function Parkingsetup() {
 
   function percentage() {
     axios_call("GET", "SlotCount/").then((response) => {
-        var val=((response.total-response.inactive)/response.total)*100
-        var val1=((response.total-response.active)/response.total)*100
-        console.log(Math.round(val))
-        console.log(response)
-        setPercent({active:Math.round(val),inactive:Math.round(val1)})
+      var val = ((response.total - response.inactive) / response.total) * 100;
+      var val1 = ((response.total - response.active) / response.total) * 100;
+      console.log(Math.round(val));
+      console.log(response);
+      setPercent({ active: Math.round(val), inactive: Math.round(val1) });
     });
   }
 
@@ -314,6 +256,7 @@ export default function Parkingsetup() {
     if (wing.wingId) {
       axios_call("DELETE", "CreateWing/" + wing.wingId + "/").then(
         (response) => {
+            setRemove_wing(false)
           GetWingDetails(true);
           reset();
           Inactiveslots();
@@ -365,12 +308,11 @@ export default function Parkingsetup() {
   useEffect(() => {
     GetWingDetails();
     Inactiveslots();
-    percentage()
+    percentage();
   }, []);
 
-
   useEffect(() => {
-    percentage()
+    percentage();
   }, [inactiveslot]);
 
   return (
@@ -379,17 +321,54 @@ export default function Parkingsetup() {
          <title>Munidex Parking - Parking Setup </title>
       </Helmet>
 
-    <motion.div
-    initial={{ opacity: 0, x:100  }}
-    animate={{ opacity:[0.5,1], x:0 }}
-    transition={{ duration: 0.8 }} className="flex-grow-1 parking_setup_container">
-        {data_fail && (
-          <div className="pr-5 pl-5">
-            <div class="alert alert-danger" role="alert">
-              {data_fail}
+      {remove_wing && (
+        <div className="overlay">
+          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Remove Wing
+                </h5>
+                <button
+                  type="button"
+                  onClick={() => setRemove_wing(false)}
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">Are your sure?</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  onClick={removeWing}
+                  class="btn btn-light"
+                >
+                  Remove
+                </button>
+                <button
+                  type="button"
+                  onClick={removeWing}
+                  onClick={() => setRemove_wing(false)}
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Cancle
+                </button>
+              </div>
             </div>
+            {/* </div> */}
           </div>
-        )}
+        </div>
+      )}
+
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: [0.5, 1], x: 0 }}
+        transition={{ duration: 1 }}
+        className="flex-grow-1 parking_setup_container"
+      >
         <div className="row">
           <div className="col-7">
             <div className="row">
@@ -446,11 +425,11 @@ export default function Parkingsetup() {
                     </div>
 
                     <div
-                      className="parking_setup_clear_button"
-                      onClick={removeWing}
+                      className="parking_setup_danger_button mx-2"
+                      onClick={()=>setRemove_wing(true)}
                     >
                       {" "}
-                      Remove Wing{" "}
+                      Remove{" "}
                     </div>
                   </div>
                 )}
@@ -588,7 +567,9 @@ export default function Parkingsetup() {
             <div className="row">
               <div className="col-6">
                 <div className="parking_setup_active_text">Active Slot</div>
-                <div className="parking_setup_inactive_percentage_text">{percent&&percent.active}%</div>
+                <div className="parking_setup_inactive_percentage_text">
+                  {percent && percent.active}%
+                </div>
                 <div class="progress parking_setup_active_progress">
                   <div
                     class="progress-bar"
@@ -596,15 +577,18 @@ export default function Parkingsetup() {
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    style={{ width: percent&&percent.active + '%', backgroundColor: "#2AB0FF" }}
+                    style={{
+                      width: percent && percent.active + "%",
+                      backgroundColor: "#2AB0FF",
+                    }}
                   ></div>
                 </div>
               </div>
               <div className="col-6">
                 <div className="parking_setup_inactive_text">Inactive Slot</div>
                 <div className="parking_setup_active_percentage_text">
-                {percent&&percent.inactive}%
-                                </div>
+                  {percent && percent.inactive}%
+                </div>
                 <div class="progress parking_setup_inactive_progress">
                   <div
                     class="progress-bar"
@@ -612,7 +596,10 @@ export default function Parkingsetup() {
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    style={{ width:percent&&percent.inactive + '%', backgroundColor: "#FF6767" }}
+                    style={{
+                      width: percent && percent.inactive + "%",
+                      backgroundColor: "#FF6767",
+                    }}
                   ></div>
                 </div>
               </div>
@@ -654,46 +641,45 @@ export default function Parkingsetup() {
               </div>
             )} */}
 
-
-{wing_data && wing_data.length < 10 && (
-                <div className="parking_setup_wing_title_section">
-
-         <div style={{ flexGrow: 1 }}>
-            <Carousel
-              itemsToShow={6}
-              itemsToScroll={1}
-              pagination={false}
-              showArrows={false}
-            >
-      {wing_data.map((wing) => {
-                    return (
-                      <div
-                        className={
-                          wing.id != (slot && slot[0].wingId)
-                            ? "btn-light btn btn-sm m-1"
-                            : "btn-outline-primary btn btn-sm m-1"
-                        }
-                        onClick={() => (reset(), SetSlot(wing.slots))}
-                        onDoubleClick={() =>
-                          setWing({
-                            wingName: wing.wingName,
-                            wingCount: wing.slots.length,
-                            wingStatus: true,
-                            planWeekly: parseInt(wing.planWeekly),
-                            planMonthly: parseInt(wing.planMonthly),
-                            planQuarterly: parseInt(wing.planQuarterly),
-                            planYearly: parseInt(wing.planYearly),
-                            wingId: wing.id,
-                          })
-                        }
-                      >
-                        {wing.wingName}
-                      </div>
-                    );
-                  })}
-            </Carousel>
-          </div>
-          </div>)}
+            {wing_data && wing_data.length < 10 && (
+              <div className="parking_setup_wing_title_section">
+                <div style={{ flexGrow: 1 }}>
+                  <Carousel
+                    itemsToShow={6}
+                    itemsToScroll={1}
+                    pagination={false}
+                    showArrows={false}
+                  >
+                    {wing_data.map((wing) => {
+                      return (
+                        <div
+                          className={
+                            wing.id != (slot && slot[0].wingId)
+                              ? "btn-light btn btn-sm m-1 text-capitalize"
+                              : "btn-outline-primary btn btn-sm m-1 text-capitalize"
+                          }
+                          onClick={() => (reset(), SetSlot(wing.slots))}
+                          onDoubleClick={() =>
+                            setWing({
+                              wingName: wing.wingName,
+                              wingCount: wing.slots.length,
+                              wingStatus: true,
+                              planWeekly: parseInt(wing.planWeekly),
+                              planMonthly: parseInt(wing.planMonthly),
+                              planQuarterly: parseInt(wing.planQuarterly),
+                              planYearly: parseInt(wing.planYearly),
+                              wingId: wing.id,
+                            })
+                          }
+                        >
+                          {wing.wingName}
+                        </div>
+                      );
+                    })}
+                  </Carousel>
+                </div>
+              </div>
+            )}
 
             {/* {wing_data && wing_data.length < 10 && (
               <div className="parking_setup_wing_title_section">
@@ -728,7 +714,7 @@ export default function Parkingsetup() {
               </div>
             )} */}
 
-            <div className="parking_setup_wing_container" >
+            <div className="parking_setup_wing_container">
               {slot && (
                 <>
                   {slot.map((slot, id) => {
@@ -755,7 +741,7 @@ export default function Parkingsetup() {
                     <div
                       className="btn btn-sm btn-primary"
                       onClick={() => AddSlot(wing.wingId)}
-                      style={{marginTop:'-14px'}}
+                      style={{ marginTop: "-14px" }}
                     >
                       Add
                     </div>

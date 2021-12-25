@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import { Helmet } from "react-helmet";
 import { Link} from "react-router-dom";
 import "../assets/css/user_login/user_login.css"
-import logo from "../assets/images/munidex_logo.jpeg"
+import logo from "../assets/images/navlogo.svg"
 import { FcGoogle } from "react-icons/fc";
 import { validation_mobile_number , validation_name } from "../functions/reusable_functions";
 import { toast } from "react-toastify";
@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 
 
 export default function Admin_login(props) {
-
 
     return (
         <>
@@ -26,7 +25,15 @@ export default function Admin_login(props) {
                     Welcome Admin
                 </div>
         
-                <div className="text-center"><div className="text-center user_login_google_button mb-4" onClick={props.login}> <FcGoogle size={20} /> Continue with Google </div><br></br><br></br><br></br> </div>          
+                <div className="text-center"><div className="text-center user_login_google_button mb-4" onClick={props.login}>
+                <div className="d-flex">
+                      <FcGoogle size={20} />
+                      <div style={{ marginTop: "1px", marginLeft: "4px" }}>
+                        {" "}
+                        Continue with Google
+                      </div>
+                      </div>
+                    </div><br></br><br></br><br></br> </div>          
               </div>
               
               </div>

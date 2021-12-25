@@ -41,8 +41,10 @@ function Dayleft(endTo){
       <Helmet>
         <title>Munidex Parking - User Dashboard</title>
       </Helmet>
-      <div className="user_dashboard-popup_close" onClick={props.set_up_flag}>
+      <div className='d-flex justify-content-lg-end pe-4 '>
+      <div className="user_dashboard-popup_close" onClick={props.set_up_flag} style={{zIndex:'10'}}>
         <IoClose style={{ color: "#646262" }} size={30} />
+      </div>
       </div>
       <div className="user_dashboard_container">
         {popup && (
@@ -103,7 +105,7 @@ function Dayleft(endTo){
           </div>
         )}
 
-        <div className="row">
+        <div className="row" style={{marginTop:'-30px'}}>
           <div className="col-7">
             <div className="user_dashboard_username">
               {" "}
@@ -144,8 +146,7 @@ function Dayleft(endTo){
                         {userdata.charge}
                       </td>
                       <td>
-                     { Dayleft(userdata.endTo)}
-                        <span
+                      {Dayleft(userdata.endTo)>0 ? Dayleft(userdata.endTo) : 0} days                        <span
                           className={"mx-1 user_dashboard_active_" + (( Dayleft(userdata.endTo)>0)? 'green':'red')}
                         ></span>
                       </td>
@@ -173,7 +174,7 @@ function Dayleft(endTo){
                   $
                 </div>
               </div>
-              {props.user.payment_partner.length && (
+              {props.user.payment_partner.length >0 && (
 
               <div className="user_dashboard_transaction_card">
                 <div className="user_dashboard_transaction_card_title">

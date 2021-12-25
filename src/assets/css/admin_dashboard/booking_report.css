@@ -18,7 +18,7 @@
 .booking_report_table_container {
   overflow: hidden;
   overflow-y: scroll;
-  max-height: 55vh;
+  max-height: 62vh;
 }
 
 .booking_report_table_container::-webkit-scrollbar {
@@ -61,6 +61,8 @@
   font-size: 10px;
   line-height: 9px;
   padding: 1.5% 2%;
+  text-transform: capitalize;
+
 }
 
 .booking_report_table tr:nth-child(even) td {
@@ -147,7 +149,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2%;
+  padding: 1% 2%;
+  margin-top: 0px;
 }
 
 .booking_report_wing_button {
@@ -156,8 +159,9 @@
   font-weight: bold;
   font-size: 13.3px;
   line-height: 128%;
-  padding: 1.5% 5%;
+  padding: 1% 4%;
   border-radius: 3px;
   margin-top: 2px;
   cursor: pointer;
+  text-transform: capitalize;
 }

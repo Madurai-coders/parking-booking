@@ -1,5 +1,5 @@
 .payment_container {
-  padding: 5% 2% 6% 0.2%;
+  padding: 5% 0% 0% 0.2%;
 }
 
 .payment_entry_fields {
@@ -32,7 +32,7 @@
 }
 
 .payment_enty_container {
-  background-color: #fafafa;
+  background-color: #ffffff;
   margin-top: 0.5%;
   padding: 2% 1% 1% 1%;
 }
@@ -54,11 +54,12 @@
 
 .payment_submit_reset_container {
   display: flex;
-  margin-bottom: 2%;
+  margin-bottom: 1%;
 }
 
 .payment_submit_button,
-.payment_reset_button {
+.payment_reset_button,
+.payment_danger_button {
   font-weight: 500;
   font-size: 7.88px;
   line-height: 10px;
@@ -74,14 +75,23 @@
   cursor: pointer;
 }
 
+.payment_danger_button {
+    color: #fff;
+    background-color: #d63737;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
 .payment_reset_button {
   color: #000000;
   background-color: #e8e8e8;
   cursor: pointer;
 }
 
+
+
 .payment_table_container {
-    max-height: 60vh;
+    max-height: 66vh;
     overflow: hidden;
     overflow-y: scroll;
 }
@@ -124,6 +134,7 @@
   font-size: 12px;
   line-height: 15px;
   padding:12px;
+  text-transform: capitalize;
 }
 
 .payment_table tr:nth-child(even) td {

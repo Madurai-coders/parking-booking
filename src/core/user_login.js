@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import "../assets/css/user_login/user_login.css";
-import logo from "../assets/images/munidex_logo.jpeg";
+import logo from "../assets/images/navlogo.svg";
 import { FcGoogle } from "react-icons/fc";
 import {
   axios_call,
   validation_mobile_number,
   validation_name,
   login,
+  axios_call_unauthenticated,
 } from "../functions/reusable_functions";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -65,38 +66,37 @@ export default function User_login() {
     const result = await form_validate();
     console.log(result);
     if (result) {
-      axios({
-        method: "GET",
-        url:
-          "http://127.0.0.1:8000/UserLogin?username=" +
+      axios_call_unauthenticated(
+        "GET",
+        "UserLogin?username=" +
           form_values.lastname +
           "&accountnumber=" +
-          form_values.accountnumber,
-      }).then((response) => {
-        if (response.data[0]) {
-            reset();
-            if(!loginuser){
-          Cookies.set("accountnumber", form_values.accountnumber);
-          Cookies.set("lastname", form_values.lastname);
-          history.push("/dashboard")
-            }
-          if (loginuser.useraccount) {
+          form_values.accountnumber
+      ).then((response) => {
+        if (response[0]) {
+          reset();
+          if (!loginuser) {
+            Cookies.set("accountnumber", form_values.accountnumber);
+            Cookies.set("lastname", form_values.lastname);
             history.push("/dashboard");
           } else {
-            axios_call(
-              "PUT",
-              "CreateBusinessPartner/" + response.data[0].id + '/',
-              {...response.data[0],accountHolder:loginuser.id}
-            ).then((response) => {
-              console.log(response);
+            if (loginuser.useraccount) {
               history.push("/dashboard");
-            });
+            } else {
+              axios_call(
+                "PUT",
+                "CreateBusinessPartner/" + response[0].id + "/",
+                { ...response[0], accountHolder: loginuser.id }
+              ).then((response) => {
+                console.log(response);
+                history.push("/dashboard");
+              });
+            }
           }
+        } else {
+          setData_fail('" Please check the details that you have entered !! "');
         }
-        else{
-            setData_fail('" Please check the details that you have entered !! "')
-        }
-      })
+      });
     }
   };
 
@@ -121,6 +121,16 @@ export default function User_login() {
     });
   };
 
+  useEffect(() => {
+    var accountnumber = Cookies.get("accountnumber");
+    var lastname = Cookies.get("lastname");
+    Cookies.remove("refresh_token");
+    Cookies.remove("access_token");
+    if (accountnumber && lastname) {
+    history.push("/dashboard");}
+
+  }, [])
+
   return (
     <>
       <Helmet>
@@ -131,12 +141,13 @@ export default function User_login() {
         <div className="user_login_card_container text-center">
           <div className="user_login_card shadow">
             <div>
-                <Link to='/admin'>
-              <img
-                src={logo}
-                alt="munidex_logo"
-                className="user_login_signin_logo m-3"
-              /></Link>
+              <Link to="/admin">
+                <img
+                  src={logo}
+                  alt="munidex_logo"
+                  className="user_login_signin_logo m-3"
+                />
+              </Link>
             </div>
             <div className="user_login_signin_text text-center  mb-3">
               Sign in
@@ -257,14 +268,11 @@ export default function User_login() {
             </div>
           )}
 
-{data_fail && (
+          {data_fail && (
             <div className="mb-2 mt-4">
-              <small className="alert-danger alert p-2">
-                {data_fail}
-              </small>
+              <small className="alert-danger alert p-2">{data_fail}</small>
             </div>
           )}
-          
         </div>
       </div>
     </>

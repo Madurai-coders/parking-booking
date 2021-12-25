@@ -6,18 +6,18 @@ export default function Bookinginvoice(props) {
     <>
       <div
         onClick={props.ClosePreview}
-        className="bookinginvoice_container flex-grow-1 px-3 pt-1 mb-3 shadow"
+        className="bookinginvoice_container flex-grow-1 px-3 pt-1 mb-3 bg-white shadow"
       >
         <div className="bookinginvoice_topsection row">
           <div className="col-8"></div>
           <div className="col-4">
             <div className="bookinginvoice_text_binv mb-3">Booking Invoice</div>
             <div className="bookinginvoice_text_invno mb-1">
-              Invoice no: {props.bookingData.bookingId}
+              Invoice no: {props.bookingData.id}
             </div>
             <div className="bookinginvoice_text_invdate">
               Invoice Date:
-              {moment(props.bookingData.date).format("dd, MM Do YY, h:mm a")}
+              {moment(props.bookingData.date).format("DD/MM/YYYY")}
             </div>
           </div>
         </div>
@@ -70,14 +70,14 @@ export default function Bookinginvoice(props) {
                     {" "}
                     From:{" "}
                     <span className="bookinginvoice_dop_value">
-                      {props.bookingData.startFrom}{" "}
+                      {moment(props.bookingData.startFrom).format("DD/MM/YYYY")}
                     </span>
                   </div>
                   <div className="col-6 bookinginvoice_dop">
                     {" "}
                     To:{" "}
                     <span className="bookinginvoice_dop_value">
-                      {props.bookingData.endTo}
+                    {moment(props.bookingData.endTo).format("DD/MM/YYYY")}
                     </span>
                   </div>
                 </div>

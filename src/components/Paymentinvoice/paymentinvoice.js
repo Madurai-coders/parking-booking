@@ -7,7 +7,7 @@ export default function Bookinginvoice(props) {
     <>
       <div
         onClick={props.Close_payment_invoice}
-        className="bookinginvoice_container flex-grow-1 px-3 pt-1 mb-3 shadow"
+        className="bookinginvoice_container flex-grow-1 px-3 pt-1 mb-3 shadow bg-white"
       >
         <div className="bookinginvoice_topsection row">
           <div className="col-8"></div>
@@ -18,9 +18,7 @@ export default function Bookinginvoice(props) {
 
             <div className="bookinginvoice_text_invdate">
               Invoice Date:{" "}
-              {moment(props.paymentData.paymentDate).format(
-                "dd, MM Do YY, h:mm a"
-              )}
+              {moment(props.paymentData.paymentDate).format("DD/MM/YYYY")}
             </div>
           </div>
         </div>
@@ -46,9 +44,7 @@ export default function Bookinginvoice(props) {
                 <td>{props.paymentData.User.accountNumber}</td>
                 <td>{props.paymentData.paymentId}</td>
                 <td>
-                  {moment(props.paymentData.paymentDate).format(
-                    "dd, MM YY, h:mm a"
-                  )}
+                  {moment(props.paymentData.paymentDate).format("DD/MM/YYYY")}
                 </td>
                 <td>{props.paymentData.amount} $</td>
               </tr>

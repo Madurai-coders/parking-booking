@@ -64,7 +64,6 @@ export default function User_report() {
 
   const GetPagination = async (val) => {
     axios_call("GET", "GetBusinessPartner/?page=" + val).then((response) => {
-      "http://127.0.0.1:8000/GetBusinessPartner/?page=2";
       console.log(response);
       setPagination(response);
       set_usr_suggestion(response.results);
@@ -139,9 +138,9 @@ export default function User_report() {
         </div>
       )}
    <motion.div
-    initial={{ opacity: 0, x:100  }}
+    initial={{ opacity: 0, x:50  }}
     animate={{ opacity:[0.5,1], x:0 }}
-    transition={{ duration: 0.8 }}  className="User_report_container flex-grow-1">
+    transition={{ duration: 1 }}  className="User_report_container flex-grow-1">
         <div className="User_report_detail_entry">
           <div className="User_report_title_text">User Report</div>
           <div className="User_report_filter_search_container">
@@ -268,7 +267,7 @@ export default function User_report() {
               <th>Account Number</th>
               <th>No of Booking</th>
               <th>Balance</th>
-              <th>Last Date</th>
+              <th>Last Paid</th>
               <th>Controls</th>
             </tr>
             {usr_suggestion &&
@@ -292,7 +291,7 @@ export default function User_report() {
                             userdata.payment_partner[
                               userdata.payment_partner.length - 1
                             ].paymentDate
-                          ).format("dd, MM Do YY, h:mm a")}
+                          ).format("DD/MM/YYYY")}
                         </>
                       ):'Not yet paid'}
                     </td>

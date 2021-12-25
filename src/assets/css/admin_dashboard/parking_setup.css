@@ -102,7 +102,8 @@
 }
 
 .parking_setup_submit_button,
-.parking_setup_clear_button {
+.parking_setup_clear_button,
+.parking_setup_danger_button {
   font-weight: 500;
   font-size: 10.1px;
   line-height: 12px;
@@ -113,9 +114,16 @@
 .parking_setup_submit_button {
   color: #ffffff;
   background-color: #258e00;
-  margin-right: 6%;
+  margin-right: 4%;
   cursor: pointer;
 }
+
+.parking_setup_danger_button {
+    color: #ffffff;
+    background-color: #d63737;
+    margin-right: 4%;
+    cursor: pointer;
+  }
 
 .parking_setup_clear_button {
   color: #1d1d1d;
@@ -228,7 +236,7 @@
 }
 
 .parking_setup_wing_title_section {
-  padding: 6% 0 2% 0%;
+  padding: 6% 8% 2% 0%;
   
 }
 

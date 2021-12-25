@@ -54,9 +54,9 @@ const Routes = () => {
         }).then((response) => {
           if (response.data[0].is_staff) {
             setis_admin(response.data[0].is_staff);
-            setTimeout(() => {
-                setloader(false)
-            }, 2400);
+              setTimeout(() => {
+            setloader(false)
+        }, 2400);
           }
         });
       }

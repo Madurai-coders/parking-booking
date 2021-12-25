@@ -9,6 +9,7 @@ import {
   validation_amount,
   axios_call,
   axios_call_auto,
+  generateUUID_334
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import { set } from "js-cookie";
@@ -40,6 +41,7 @@ export default function Booking() {
     charge: "",
   });
   const [userdata, setuserdata] = useState();
+  const [mailStatus, setMailStatus] = useState();
   const [usr_suggestion, set_usr_suggestion] = useState([]);
   const [booking_details, SetBookingdetails] = useState([]);
   const [wing_data, setWing_data] = useState();
@@ -218,7 +220,7 @@ export default function Booking() {
       startFrom: startFrom,
       endTo: endTo,
       bookingId:
-        Date.now().toString(36) + Math.random().toString(36).substr(2, 6),
+      generateUUID_334(),
       //   date:moment(new Date(), "DD-MM-YYYY").format("DD-MM-YYYY")
     };
 
@@ -248,7 +250,7 @@ export default function Booking() {
           );
         });
     } else {
-      if (booking_finalized.name) {
+      if (booking_finalized.name=='not_selected') {
         setbooking({ ...booking,name:''});
       }
       setData_fail("Please fill all the details");
@@ -301,49 +303,124 @@ export default function Booking() {
 
   function ClosePreview() {
     setPreview(false);
+    setMailStatus()
   }
 
   function SendMail() {
-    // var data={
-    //     to:'kaamil312@gmail.com',
-    //     invoiceDate:payment_invoice.paymentData.paymentDate,
-    //     user:payment_invoice.User.userName,
-    //     accountNumber:payment_invoice.User.accountNumber,
-    //     paymentId:payment_invoice.paymentId,
-    //     amount:payment_invoice.amount
-    // }
+    var data = {
+      to: success.User.email,
+      invoiceDate:moment(success.date).format("DD/MM/YYYY"),
+      user: success.User.userName,
+      accountNumber: success.User.accountNumber,
+      bookingId: success.bookingId,
+      amount: success.charge,
+      startFrom:moment(success.startFrom).format("DD/MM/YYYY"),
+      endTo:moment(success.endTo).format("DD/MM/YYYY"),
+      wing:success.slots.wing.wingName,
+      plan:success.plan,
+      id:success.id.plan,
+      slot:preview.slot_connect,
+
+    };
+    console.log(data);
+    setMailStatus({
+        status: "Sending",
+        to: success.User.email,
+      });
+
+    axios_call("POST", "send_mail_booking/", data).then((response) => {
+      console.log(response);
+      setMailStatus({
+        status: "Successful",
+        to: success.User.email,
+      });
+    });
   }
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 100 }}
+      initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: [0.5, 1], x: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 1 }}
     >
       <Helmet>
          <title>Munidex Parking - Booking </title>
       </Helmet>
 
+
       {preview && (
         <div className="overlay1">
-          {" "}
-          <div className="d-flex">
-            <div className="p-3 ">
-              {" "}
-              <div className="d-flex">
-                {" "}
-                <div className="btn-primary btn-sm btn mx-2" onClick={SendMail}>
-                  share
-                </div>{" "}
-                <div className="btn-danger btn-sm  btn" onClick={ClosePreview}>
-                  Close
+          <div className="row">
+            <div className="col-6 px-5">
+            <Bookinginvoice bookingData={success} ClosePreview={ClosePreview} />
+            </div>
+
+            <div className="col-6">
+              <div className="p-3 ">
+              <div className='' style={{ marginTop: mailStatus ? "31vh" :"84vh" }}>
+                  {mailStatus &&
+                  <div className='' >
+                      <div className='h2 text-center'>{
+                          mailStatus.status == 'Sending' && 
+                          <div className='text-center mb-2'>
+                          <div class="spinner-grow mx-1 text-primary" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-secondary" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-success" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-danger" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-warning" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-info" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-light" role="status">
+  <span class="sr-only"></span>
+</div>
+<div class="spinner-grow mx-1 text-dark" role="status">
+  <span class="sr-only"></span>
+</div>
+
+                          </div>
+                      }
+  {mailStatus.status} !! </div>
+ <div className='h2 mt-3 text-center'>
+ To : {mailStatus.to}  </div>
+                  </div>
+}
+</div>
+
+                <div className="d-flex" style={{ marginTop: "35vh" }}>
+                  <div
+                    className="btn-danger btn-sm  btn"
+                    onClick={ClosePreview}
+                  >
+                    Close
+                  </div>
+                  <button
+                    className="btn-primary btn-sm btn mx-2"
+                    onClick={SendMail}
+                    disabled={mailStatus}
+                  >
+                    Send Receipt
+                  </button>
                 </div>
+
               </div>
             </div>
-            <Bookinginvoice bookingData={success} ClosePreview={ClosePreview} />
           </div>
         </div>
       )}
+
+
+
 
       {success && (
         <div className="overlay">
@@ -369,12 +446,12 @@ export default function Booking() {
                   From:{" "}
                   <span className="bookingspopup_body">
                     {" "}
-                    {success.startFrom}
+                    {moment(success.startFrom).format("DD/MM/YYYY")}
                   </span>
                 </div>
                 <div className="bookingspopup_head">
                   To:{" "}
-                  <span className="bookingspopup_body">{success.endTo}</span>
+                  <span className="bookingspopup_body">{moment(success.endTo).format("DD/MM/YYYY")}</span>
                 </div>
               </div>
               <div className="bookingspopup_details_flex mb-3">
@@ -419,10 +496,10 @@ export default function Booking() {
                 {" "}
                 View <img src={view} />{" "}
               </div>
-              <div className="bookingspopup_options m-3">
+              {/* <div className="bookingspopup_options m-3">
                 {" "}
                 Send <img src={send} />{" "}
-              </div>
+              </div> */}
               {/* <div className="bookingspopup_options m-3">
                     {" "}
                     Print <img src={print} />{" "}
@@ -431,6 +508,7 @@ export default function Booking() {
           </div>
         </div>
       )}
+      {wing && slot &&
 
       <div className="">
         <div className="row booking_container">
@@ -542,7 +620,7 @@ export default function Booking() {
                 </div>
               )} */}
               {wing_data && wing_data.length < 10 && (
-                <div className="parking_setup_wing_title_section">
+                <div className="parking_setup_wing_title_section  ">
                   <div style={{ flexGrow: 1 }} >
                     <Carousel
                       itemsToShow={6}
@@ -555,8 +633,8 @@ export default function Booking() {
                           <div
                             className={
                               wing.id != (slot && slot[0].wingId)
-                                ? "btn-light btn btn-sm m-1"
-                                : "btn-outline-primary btn btn-sm m-1"
+                                ? "btn-light btn btn-sm m-1 text-capitalize"
+                                : "btn-outline-primary btn btn-sm m-1 text-capitalize"
                             }
                             onClick={() => (
                               SetWing(wing),
@@ -662,8 +740,8 @@ export default function Booking() {
            
 
             <div className="booking_form_container">
-              <div className="booking_form_title"> Booking </div>
-
+              <div className="booking_form_title bg-light me-5 p-2"> Booking </div>
+              <div className="mx-3 p-2">
               <div className="booking_form_name_input">
                 <label for="name">Name</label>
                 <div className="d-flex flex-column booking_form_name_input">
@@ -781,6 +859,7 @@ export default function Booking() {
                 </div>
               </div>
             </div>
+            </div>
             <div className="booking_form_submit_clear">
               <div className="booking_form_submit" onClick={FormSumbit}>
                 {" "}
@@ -791,6 +870,7 @@ export default function Booking() {
           </div>
         </div>
       </div>
+}
     </motion.div>
   );
 }

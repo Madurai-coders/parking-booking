@@ -1,7 +1,6 @@
 .bookinginvoice_container {
-  margin-top: 2vh;
-  margin-left: 30vw;
-  margin-right: 20vh;
+  margin: 3%;
+
 }
 
 .bookinginvoice_flex_col {
@@ -49,11 +48,14 @@
   font-size: 13px;
   line-height: 13px;
   color: #000000;
+  text-transform: capitalize;
 }
 
 .bookinginvoice_table {
   width: 100%;
   text-align: center;
+  text-transform: capitalize;
+
 }
 
 .bookinginvoice_table_headers th {
