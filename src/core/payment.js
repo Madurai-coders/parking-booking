@@ -98,8 +98,8 @@ export default function Payment() {
   }
 
   function call_edit(val) {
-      console.log(val)
-      console.log(val.paymentId)
+    console.log(val);
+    console.log(val.paymentId);
     setedit(true);
     setForm({
       name: val.User.userName,
@@ -281,7 +281,7 @@ export default function Payment() {
 
   function Close_payment_invoice() {
     setPayment_invoice(false);
-    setMailStatus()
+    setMailStatus();
   }
 
   function SendMail() {
@@ -295,9 +295,9 @@ export default function Payment() {
     };
     console.log(data);
     setMailStatus({
-        status: "Sending",
-        to: payment_invoice.User.email,
-      });
+      status: "Sending",
+      to: payment_invoice.User.email,
+    });
 
     axios_call("POST", "send_mail/", data).then((response) => {
       console.log(response);
@@ -325,45 +325,73 @@ export default function Payment() {
 
             <div className="col-6">
               <div className="p-3 ">
-              <div className='' style={{ marginTop: mailStatus ? "30vh" :"84vh" }}>
-                  {mailStatus &&
-                  <div className='' >
-                      <div className='h2 text-center'>{
-                          mailStatus.status == 'Sending' && 
-                          <div className='text-center mb-2'>
-                          <div class="spinner-grow mx-1 text-primary" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-secondary" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-success" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-danger" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-warning" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-info" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-light" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-dark" role="status">
-  <span class="sr-only"></span>
-</div>
-
+                <div
+                  className=""
+                  style={{ marginTop: mailStatus ? "30vh" : "84vh" }}
+                >
+                  {mailStatus && (
+                    <div className="">
+                      <div className="h2 text-center">
+                        {mailStatus.status == "Sending" && (
+                          <div className="text-center mb-2">
+                            <div
+                              class="spinner-grow mx-1 text-primary"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-secondary"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-success"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-danger"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-warning"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-info"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-light"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-dark"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
                           </div>
-                      }
-  {mailStatus.status} !! </div>
- <div className='h2 mt-3 text-center'>
- To : {mailStatus.to}  </div>
-                  </div>
-}
-</div>
+                        )}
+                        {mailStatus.status} !!{" "}
+                      </div>
+                      <div className="h2 mt-3 text-center">
+                        To : {mailStatus.to}{" "}
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 <div className="d-flex" style={{ marginTop: "35vh" }}>
                   <div
@@ -380,7 +408,6 @@ export default function Payment() {
                     Send Receipt
                   </button>
                 </div>
-
               </div>
             </div>
           </div>
@@ -513,6 +540,7 @@ export default function Payment() {
                   style={{ width: "150px", height: "30px" }}
                   id="payment_ptype"
                 >
+                  <option ></option>
                   <option value="check">check</option>
                   <option value="card">card</option>
                   <option value="cash">cash</option>
@@ -528,7 +556,7 @@ export default function Payment() {
                   Payment id
                 </label>
                 <input
-                disabled={form.payment_type == 'cash'}
+                  disabled={form.payment_type == "cash"}
                   autocomplete="off"
                   onChange={(e) =>
                     setForm({ ...form, payment_id: e.target.value })
@@ -617,8 +645,6 @@ export default function Payment() {
                   {" "}
                   Update{" "}
                 </div>
-
-               
 
                 <div
                   className="payment_reset_button "
