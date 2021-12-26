@@ -195,10 +195,10 @@ export function login(checkadmin) {
                         Cookies.set("refresh_token", response.data.refresh);
 						Cookies.set("access_token", response.data.access);
                         if(!checkadmin){
-                            resolve(data)}
+                            resolve('data')}
             
                             else{
-                                 resolve({data,access:response.data.access})
+                                 resolve({response,access:response.data.access})
                             }					});
 				
                
