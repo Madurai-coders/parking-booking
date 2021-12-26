@@ -269,7 +269,7 @@ export default function Parkingsetup() {
   function call_wingName_check(val) {
     axios_call("GET", "GetWing?search=" + val).then((response) => {
       console.log(val);
-      if (response[0] ? response[0].wingName == val : false) {
+      if (response[0] ? response[0].wingName.toUpperCase() == val.toUpperCase() : false) {
         console.log("hi");
         setData_fail("Wing name already exists");
       } else {
@@ -277,6 +277,10 @@ export default function Parkingsetup() {
       }
     });
   }
+
+  useEffect(() => {
+    call_wingName_check(wing.wingName)
+  }, [wing.wingName])
 
   function GetWingDetails(id) {
     axios_call("GET", "CreateWing/").then((response) => {
@@ -363,12 +367,17 @@ export default function Parkingsetup() {
         </div>
       )}
 
+  
+
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: [0.5, 1], x: 0 }}
         transition={{ duration: 1 }}
         className="flex-grow-1 parking_setup_container"
       >
+              {data_fail &&
+              <div className="d-flex justify-content-center" style={{marginTop:'-40px'}}>
+      <div className="small btn-sm btn mb-3 btn-outline-danger">{data_fail}</div></div>}
         <div className="row">
           <div className="col-7">
             <div className="row">
@@ -730,7 +739,7 @@ export default function Parkingsetup() {
                           }
                           className={
                             "ps-3 pe-3 mb-3 parking_setup_car_img " +
-                            (!slot.slotStatus && "parking_undercons")
+                            (!slot.slotStatus && "closes_soon")
                           }
                           alt="Munidex_parking_Booking_slots"
                         />

@@ -98,6 +98,8 @@ export default function Payment() {
   }
 
   function call_edit(val) {
+      console.log(val)
+      console.log(val.paymentId)
     setedit(true);
     setForm({
       name: val.User.userName,
@@ -274,8 +276,6 @@ export default function Payment() {
         ...form,
         payment_id: generateUUID(),
       });
-    } else {
-      setForm({ ...form, payment_id: "not_selected" });
     }
   }, [form.payment_type]);
 
@@ -528,6 +528,7 @@ export default function Payment() {
                   Payment id
                 </label>
                 <input
+                disabled={form.payment_type == 'cash'}
                   autocomplete="off"
                   onChange={(e) =>
                     setForm({ ...form, payment_id: e.target.value })

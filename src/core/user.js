@@ -122,7 +122,7 @@ function Dayleft(endTo){
                   <th>Wing</th>
                   <th>Start date</th>
                   <th>End date</th>
-                  <th>plan</th>
+                  <th>Plan</th>
                   <th>Amount</th>
                   <th>Active for</th>
                 </tr>

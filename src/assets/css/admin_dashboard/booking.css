@@ -244,7 +244,7 @@
     display: inline-block;
     width: .5rem;
     height: .5rem;
-    background: red;
+    background: black;
     border-radius: 50%;
     margin-bottom: 1px;
 
@@ -254,7 +254,7 @@
     display: inline-block;
     width: .5rem;
     height: .5rem;
-    background: black;
+    background: red;
     border-radius: 50%;
     margin-bottom: 0.5px;
 

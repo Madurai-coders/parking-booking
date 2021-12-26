@@ -18,6 +18,7 @@
   margin: 6% 0 3% 0;
   font-weight: 600;
   font-size: 28px;
+  text-transform: capitalize;
 }
 .user_dashboard_text_booking_details {
   color: #FFFFFF;

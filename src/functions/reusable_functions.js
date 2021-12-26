@@ -737,7 +737,7 @@ export function validation_amount(value) {
 export function validation_count(value) {
     if (value == "" || value != "not_selected") {
         if (value) {
-            if (value>0 && value<120) {
+            if (value>0 && value<101) {
                 return {
                     class: "pass",
                 };

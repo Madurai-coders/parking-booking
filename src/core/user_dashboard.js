@@ -24,7 +24,7 @@ export default function User_dashboard() {
   const [popup, setPopup] = useState(false);
   const [user, setUser] = useState(false);
   const [props, setprops] = useState();
-  const [getAmount, setGetAmount] = useState();
+  const [getAmount, setGetAmount] = useState(false);
   const [amount, setAmount] = useState();
   const [logout_popup, setlogout_popup] = useState();
   const [loader, setloader] = useState(true);
@@ -56,10 +56,10 @@ export default function User_dashboard() {
     if (accountnumber && lastname) {
       axios_call_unauthenticated(
         "GET",
-        "UserLogin?username=" + lastname + "&accountnumber=" + accountnumber,
+        "UserLogin?username=" + lastname + "&accountnumber=" + accountnumber
       ).then((response) => {
         if (response) {
-            console.log(response);
+          console.log(response);
           setUser(response[0]);
         }
       });
@@ -103,7 +103,7 @@ export default function User_dashboard() {
       };
 
       var data = {
-        secretKey:"9401f9e0-6596-11ec-bd15-8d09a4545895",
+        secretKey: "9401f9e0-6596-11ec-bd15-8d09a4545895",
         userId: user.id,
         paymentId: generateUUID(),
         paymentType: "online",
@@ -114,8 +114,8 @@ export default function User_dashboard() {
       console.log(data);
       axios_call_unauthenticated(
         "POST",
-      "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
-        data,
+        "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+        data
       ).then((response) => {
         console.log(response);
         let userDate = user;
@@ -297,7 +297,7 @@ export default function User_dashboard() {
                         <th>Wing</th>
                         <th>Start date</th>
                         <th>End date</th>
-                        <th>plan</th>
+                        <th>Plan</th>
                         <th>Amount</th>
                         <th>Active for</th>
                       </tr>
@@ -324,7 +324,10 @@ export default function User_dashboard() {
                               {userdata.charge}$
                             </td>
                             <td>
-                              {Dayleft(userdata.endTo)>0 ? Dayleft(userdata.endTo) : 0} days
+                              {Dayleft(userdata.endTo) > 0
+                                ? Dayleft(userdata.endTo)
+                                : 0}{" "}
+                              days
                               <span
                                 className={
                                   "mx-1 user_dashboard_active_" +
@@ -374,70 +377,74 @@ export default function User_dashboard() {
                       </div>
                     </div>
 
-                    {!getAmount && user.payment_partner.length ? (
-                      <div className="user_dashboard_transaction_card">
-                        <div className="user_dashboard_transaction_card_title">
-                          {" "}
-                          Last Transaction{" "}
-                        </div>
-                        <div className="user_dashboard_transaction_card_transaction_id mb-3">
-                          {" "}
-                          Transaction id :{" "}
-                          <span>
-                            {
-                              user.payment_partner[
-                                user.payment_partner.length - 1
-                              ].paymentId
-                            }{" "}
-                          </span>
-                        </div>
-                        <div className="user_dashboard_transaction_card_datetime_text">
-                          {" "}
-                          <div className="user_dashboard_transaction_card_date_text">
-                            {" "}
-                            Date{" "}
-                          </div>{" "}
-                          <div className="user_dashboard_transaction_card_time_text">
-                            {" "}
-                            Time{" "}
+                    {!getAmount ? (
+                      <>
+                        {user.payment_partner.length > 0 && (
+                          <div className="user_dashboard_transaction_card">
+                            <div className="user_dashboard_transaction_card_title">
+                              {" "}
+                              Last Transaction{" "}
+                            </div>
+                            <div className="user_dashboard_transaction_card_transaction_id mb-3">
+                              {" "}
+                              Transaction id :{" "}
+                              <span>
+                                {
+                                  user.payment_partner[
+                                    user.payment_partner.length - 1
+                                  ].paymentId
+                                }{" "}
+                              </span>
+                            </div>
+                            <div className="user_dashboard_transaction_card_datetime_text">
+                              {" "}
+                              <div className="user_dashboard_transaction_card_date_text">
+                                {" "}
+                                Date{" "}
+                              </div>{" "}
+                              <div className="user_dashboard_transaction_card_time_text">
+                                {" "}
+                                Time{" "}
+                              </div>
+                            </div>
+                            <div className=" user_dashboard_transaction_card_datetime">
+                              {" "}
+                              {moment(
+                                user.payment_partner[
+                                  user.payment_partner.length - 1
+                                ].paymentDate
+                              ).format("DD-MM-YYYY")}
+                              <div> </div>
+                              {moment(
+                                user.payment_partner[
+                                  user.payment_partner.length - 1
+                                ].paymentDate
+                              ).format("hh:mm a")}{" "}
+                              <div> </div>
+                            </div>
+                            <div className="user_dashboard_transaction_card_amount_section">
+                              <div className="user_dashboard_transaction_card_amount_text mb-3">
+                                {" "}
+                                Amount{" "}
+                              </div>
+                              <div className="user_dashboard_transaction_card_amount_number mb-3">
+                                {
+                                  user.payment_partner[
+                                    user.payment_partner.length - 1
+                                  ].amount
+                                }{" "}
+                                $
+                              </div>
+                            </div>
+                            <div
+                              className="user_dashboard_transaction_card_seemore text-center mt-4"
+                              onClick={() => setPopup(true)}
+                            >
+                              See more
+                            </div>
                           </div>
-                        </div>
-                        <div className=" user_dashboard_transaction_card_datetime">
-                          {" "}
-                          {moment(
-                            user.payment_partner[
-                              user.payment_partner.length - 1
-                            ].paymentDate
-                          ).format("DD-MM-YYYY")}
-                          <div> </div>
-                          {moment(
-                            user.payment_partner[
-                              user.payment_partner.length - 1
-                            ].paymentDate
-                          ).format("hh:mm a")}{" "}
-                          <div> </div>
-                        </div>
-                        <div className="user_dashboard_transaction_card_amount_section">
-                          <div className="user_dashboard_transaction_card_amount_text mb-3">
-                            {" "}
-                            Amount{" "}
-                          </div>
-                          <div className="user_dashboard_transaction_card_amount_number mb-3">
-                            {
-                              user.payment_partner[
-                                user.payment_partner.length - 1
-                              ].amount
-                            }{" "}
-                            $
-                          </div>
-                        </div>
-                        <div
-                          className="user_dashboard_transaction_card_seemore text-center mt-4"
-                          onClick={() => setPopup(true)}
-                        >
-                          See more
-                        </div>
-                      </div>
+                        )}
+                      </>
                     ) : (
                       <div className="user_dashboard_transaction_card">
                         <div className="user_dashboard_transaction_card_title">

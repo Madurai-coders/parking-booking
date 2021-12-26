@@ -87,9 +87,14 @@ export default function Booking() {
     });
   }
 
-  function GetBooking() {
+  function GetBooking(val) {
+      if(val){
+        var start = moment(val).format("YYYY-MM-DD");  
+      }
+      else{
     var start = moment(new Date()).format("YYYY-MM-DD");
     var end = moment(new Date()).add(366, "days").format("YYYY-MM-DD");
+      }
     axios_call("GET", "GetBooking/?from=" + start + "&to=" + end).then(
       (response) => {
         SetBookingdetails(response);
@@ -105,6 +110,10 @@ export default function Booking() {
       }
     );
   }
+
+  useEffect(() => {
+    GetBooking(booking.date)
+  }, [booking.date])
 
   function checkslots(slot, id, booking_details) {
     if (slot.slotStatus) {
@@ -272,6 +281,7 @@ export default function Booking() {
     GetBooking();
     setData_fail();
   }
+
   useEffect(() => {
     var booking_data = window.localStorage.getItem("bookingdata");
     var booking_data = JSON.parse(booking_data);
@@ -319,7 +329,7 @@ export default function Booking() {
       wing:success.slots.wing.wingName,
       plan:success.plan,
       id:success.id.plan,
-      slot:preview.slot_connect,
+      slot:success.slot_connect,
 
     };
     console.log(data);
@@ -865,7 +875,7 @@ export default function Booking() {
                 {" "}
                 Submit{" "}
               </div>
-              <div className="booking_form_clear"> Clear </div>
+              <div className="booking_form_clear" onClick={reset}> Clear </div>
             </div>
           </div>
         </div>
