@@ -176,7 +176,7 @@ export default function Payment() {
         console.log("starting newuser");
         var newbookingpartner = {
           uId: new Date().getUTCMilliseconds(),
-          accountNumber: Math.floor(Math.random() * 10000 + 1),
+          accountNumber: Math.floor(1000 + Math.random() * 9000),
           userName: form.name,
           lastName: form.name,
           email: form.email,
