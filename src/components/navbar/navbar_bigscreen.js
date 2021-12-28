@@ -204,7 +204,7 @@ export default function Navbarbigscreen(props) {
               className="Navbigscreen_listitem_logout_img"
               alt="Munidex_parking_logout"
             />
-            <span className="Navbigscreen_listitem_logout_text">Logout</span>
+            <span className="Navbigscreen_listitem_logout_text" style={{cursor:'pointer'}}>Logout</span>
           </div>
         </motion.div>
       )}

@@ -91,7 +91,7 @@
 
 
 .payment_table_container {
-    max-height: 66vh;
+    max-height: 63vh;
     overflow: hidden;
     overflow-y: scroll;
 }
@@ -120,8 +120,8 @@
 .payment_table_heading th {
   color: #fff;
   background-color: #0cb0e2;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: 600;
+  font-size: 14px;
   line-height: 15px;
   padding:10px;
   position: sticky;
@@ -131,9 +131,9 @@
 .payment_table_content td {
   color: #000000;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 15px;
-  padding:12px;
+  padding:10px;
   text-transform: capitalize;
 }
 

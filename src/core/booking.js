@@ -328,7 +328,7 @@ export default function Booking() {
       endTo:moment(success.endTo).format("DD/MM/YYYY"),
       wing:success.slots.wing.wingName,
       plan:success.plan,
-      id:success.id.plan,
+      id:success.id,
       slot:success.slot_connect,
 
     };

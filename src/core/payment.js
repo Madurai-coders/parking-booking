@@ -694,7 +694,7 @@ export default function Payment() {
                         </span>
                       </td>
                       <td>{payment.paymentId}</td>
-                      <td>{payment.amount}$</td>
+                      <td>{payment.amount} $</td>
                       <td>
                         {moment(payment.paymentDate).format("DD/MM/YYYY")}
                       </td>

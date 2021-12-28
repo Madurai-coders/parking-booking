@@ -146,67 +146,66 @@ export function axios_call_auto(method, url, data) {
 
 export function login(checkadmin) {
 	return new Promise(function (resolve, reject) {
-		// const provider = new firebase.auth.GoogleAuthProvider();
-		// firebase
-		// 	.auth()
-		// 	.signInWithPopup(provider)
-		// 	.then((data) => {
-        //         var access_token = ''
-		// 		if (data.additionalUserInfo.isNewUser) {
-		// 			axios({
-		// 				method: "POST",
-		// 				url: "http://127.0.0.1:8000/register/",
-		// 				data: {
-		// 					username: data.user.email,
-		// 					password: data.user.uid,
-		// 				},
-        //                 withCredentials: true
-		// 			}).then((response) => {
-		// 				axios({
-		// 					method: "POST",
-		// 					url: "http://127.0.0.1:8000/api/jwt_token/",
-		// 					data: {
-		// 						username: data.user.email,
-		// 						password: data.user.uid,
-		// 					},
-        //                     withCredentials: true
-		// 				}).then((response) => {
-        //                     Cookies.set("refresh_token", response.data.refresh);
-		// 					Cookies.set("access_token", response.data.access);
+		const provider = new firebase.auth.GoogleAuthProvider();
+		firebase
+			.auth()
+			.signInWithPopup(provider)
+			.then((data) => {
+                var access_token = ''
+				if (data.additionalUserInfo.isNewUser) {
+					axios({
+						method: "POST",
+						url: "http://127.0.0.1:8000/register/",
+						data: {
+							username: data.user.email,
+							password: data.user.uid,
+						},
+                        withCredentials: true
+					}).then((response) => {
+						axios({
+							method: "POST",
+							url: "http://127.0.0.1:8000/api/jwt_token/",
+							data: {
+								username: data.user.email,
+								password: data.user.uid,
+							},
+                            withCredentials: true
+						}).then((response) => {
+                            Cookies.set("refresh_token", response.data.refresh);
+							Cookies.set("access_token", response.data.access);
                           
-        //                     if(!checkadmin){
-        //                         resolve(data)}
+                            if(!checkadmin){
+                                resolve(data)}
                 
-        //                         else{
-        //                              resolve({data,access:response.data.access})
-        //                         }						});
-		// 			});
-		// 		} else {
+                                else{
+                                     resolve({data,access:response.data.access})
+                                }						});
+					});
+				} else {
                   
 					axios({
 						method: "POST",
 						url: "http://127.0.0.1:8000/api/jwt_token/",
 						data: {
-							username: "maduraicoders@gmail.com",
-							password: 'nTSNMkEKIhPMIpsti0HoJbOyvID3',
+							username: data.user.email,
+							password: data.user.uid,
 						},
                         withCredentials: true
 					}).then((response) => {
                         Cookies.set("refresh_token", response.data.refresh);
 						Cookies.set("access_token", response.data.access);
                         if(!checkadmin){
-                            resolve('data')}
+                            resolve(data)}
             
                             else{
-                                 resolve({response,access:response.data.access})
+                                 resolve({data,access:response.data.access})
                             }					});
-				
+				}
                
-            
+
 			});
-        }
-// 	});
-// }
+	});
+}
 
 export function logout() {
 	return new Promise(function (resolve, reject) {

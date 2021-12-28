@@ -125,9 +125,10 @@ export default function User_dashboard() {
         setAmount();
       });
 
+
       //   axios({
       //     method: "POST",
-      //     url: "https://taxdev.munidex.info/pbs2/pbsreq/",
+      //     url: "https://taxdev.munidex.info/pbs2/pbsreq",
       //     data: body,
       //     port: 443,
       //     headers: {
@@ -138,7 +139,12 @@ export default function User_dashboard() {
       //     json: true,
       //     withCredentials: true
       //   }).then((response) => {
+
+        // window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
+
+
       //     console.log(response);
+
       //   });
     }
   }

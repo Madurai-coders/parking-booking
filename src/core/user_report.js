@@ -142,7 +142,7 @@ export default function User_report() {
     animate={{ opacity:[0.5,1], x:0 }}
     transition={{ duration: 1 }}  className="User_report_container flex-grow-1">
         <div className="User_report_detail_entry">
-          <div className="User_report_title_text">User Report</div>
+          <div className="User_report_title_text">User Report </div>
           <div className="User_report_filter_search_container">
             <div className="User_report_search_container">
               <label
@@ -260,8 +260,13 @@ export default function User_report() {
           <div className="User_report_text_recent"></div>
           <VscHistory size={14.5} style={{ color: "#666666" }} /> Recent{" "}
         </div>
+        <div style={{marginTop:'-45px'}} className="justify-content-end">
+        {pagination && pagination.count > 20 && (
+          <Pagination count={pagination.count} GetPagination={GetPagination} />
+        )}</div>
         <div className="payment_table_container">
           <table className="payment_table ">
+          {usr_suggestion &&
             <tr className="payment_table_heading">
               <th>Name</th>
               <th>Account Number</th>
@@ -269,7 +274,7 @@ export default function User_report() {
               <th>Balance</th>
               <th>Last Paid</th>
               <th>Controls</th>
-            </tr>
+            </tr>}
             {usr_suggestion &&
               usr_suggestion.map((userdata) => {
                 return (
@@ -281,8 +286,8 @@ export default function User_report() {
                       {Balance(
                         userdata.payment_partner,
                         userdata.booking_partner
-                      )}
-                      $
+                      )} 
+                       {" "}$
                     </td>
                     <td>
                       {userdata.payment_partner.length ? (
@@ -312,9 +317,7 @@ export default function User_report() {
               })}
           </table>
         </div>
-        {pagination && pagination.count > 20 && (
-          <Pagination count={pagination.count} GetPagination={GetPagination} />
-        )}
+      
       </motion.div>
     </>
   );

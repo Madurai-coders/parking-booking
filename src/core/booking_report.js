@@ -45,6 +45,37 @@ export default function Booking_report() {
     },
   };
 
+
+
+  const options1 = {
+    scales: {
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Y text'
+        }
+      }],
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'X text'
+        }
+      }],
+    }  ,
+    indexAxis: "x",
+    elements: {
+      bar: {
+        borderWidth: 1,
+      },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },   
+  } 
+
   const [wingdata, setWingData] = useState();
 
   let count = 0;
@@ -171,7 +202,7 @@ export default function Booking_report() {
       labels: slotId,
       datasets: [
         {
-          label: wing.wingName,
+          label: wing.wingName + ' in days',
           data: days_of_booking,
           borderColor: "rgba(241, 80, 80, 1)",
           backgroundColor: "rgba(247, 128, 99, 0.6)",
@@ -588,7 +619,7 @@ export default function Booking_report() {
                 <Bar data={maingraph} options={options}></Bar>
               )}
               {maingraph && slotgrap && (
-                <Line data={slotgrap} options={options}></Line>
+                <Line data={slotgrap} options={options1}></Line>
               )}
             </div>
           </div>
