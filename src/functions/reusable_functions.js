@@ -224,7 +224,7 @@ export function logout() {
 
 //validation for first name lastname
 export function validation_name(value) {
-	var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?0-9]+/;
+	var format = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?0-9]+/;
 	if (value == "" || value != "not_selected") {
 		// console.log(value);
 		if (value) {

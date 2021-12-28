@@ -127,9 +127,6 @@ const Routes = () => {
             )}
           </Switch>
           {is_admin && (
-
-
-            
               <Switch>
                    <Route path="/" exact component={User_login} />
                   <div className="d-flex flex-row">
