@@ -68,8 +68,7 @@ props.GetPagination(number)
                  {initialpagination.map((number)=>{
                    return (<div className={(active==number) ? 'pagination_number_active' : 'pagination_number'} onClick={()=>PassValue(number)}> {number} </div>);
                  })}
-                 {!end &&
-                 <div className="pagination_number"> ... </div>}
+           
                  {!end &&
                  <div className="pagination_number" onClick={gotonextpageSet}> &gt; </div>}
                </div>

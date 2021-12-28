@@ -257,13 +257,14 @@ export default function User_report() {
               </div>
             )}
           </div>
-          <div className="User_report_text_recent"></div>
-          <VscHistory size={14.5} style={{ color: "#666666" }} /> Recent{" "}
-        </div>
-        <div style={{marginTop:'-45px'}} className="justify-content-end">
+         
+         
+          <div style={{marginTop:'0px'}} className="justify-content-end">
         {pagination && pagination.count > 20 && (
           <Pagination count={pagination.count} GetPagination={GetPagination} />
         )}</div>
+        </div>
+       
         <div className="payment_table_container">
           <table className="payment_table ">
           {usr_suggestion &&

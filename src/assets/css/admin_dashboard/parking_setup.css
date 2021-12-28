@@ -1,5 +1,5 @@
 .parking_setup_container {
-  padding-top: 9vh;
+  padding-top: 8vh;
 }
 
 .parking_setup_active_progress {
@@ -236,7 +236,10 @@
 }
 
 .parking_setup_wing_title_section {
-  padding: 6% 8% 2% 0%;
+  padding:5px;
+  margin: 5% 5% 2% 1%;
+  background-color:rgb(223, 234, 245);
+  border-radius:16px ;
   
 }
 

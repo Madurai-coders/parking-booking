@@ -665,7 +665,7 @@ export default function Parkingsetup() {
                           className={
                             wing.id != (slot && slot[0].wingId)
                               ? "btn-light btn btn-sm m-1 text-capitalize"
-                              : "btn-outline-primary btn btn-sm m-1 text-capitalize"
+                              : "btn-primary btn btn-sm m-1 text-capitalize"
                           }
                           onClick={() => (reset(), SetSlot(wing.slots))}
                           onDoubleClick={() =>

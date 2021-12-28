@@ -75,6 +75,7 @@ export default function Booking() {
   function GetWingDetails(id) {
     axios_call("GET", "CreateWing/").then((response) => {
       setWing_data(response);
+      console.log(response)
       if (response[0]) {
         if (id) {
           SetSlot(response[response.length - 1].slots);
@@ -283,10 +284,10 @@ export default function Booking() {
   }
 
   useEffect(() => {
+    GetWingDetails();
+    GetBooking();
     var booking_data = window.localStorage.getItem("bookingdata");
     var booking_data = JSON.parse(booking_data);
-    console.log(booking_data);
-
     if (booking_data) {
       setuserdata(booking_data);
       console.log(booking_data);
@@ -297,8 +298,7 @@ export default function Booking() {
       });
       window.localStorage.removeItem("bookingdata");
     }
-    GetWingDetails();
-    GetBooking();
+   
   }, []);
 
   //   useEffect(() => {
@@ -518,7 +518,9 @@ export default function Booking() {
           </div>
         </div>
       )}
-      {wing && slot &&
+
+      
+      {wing &&
 
       <div className="">
         <div className="row booking_container">
@@ -629,7 +631,7 @@ export default function Booking() {
                   </>
                 </div>
               )} */}
-              {wing_data && wing_data.length < 10 && (
+              {wing_data && wing_data.length && (
                 <div className="parking_setup_wing_title_section  ">
                   <div style={{ flexGrow: 1 }} >
                     <Carousel
@@ -644,7 +646,7 @@ export default function Booking() {
                             className={
                               wing.id != (slot && slot[0].wingId)
                                 ? "btn-light btn btn-sm m-1 text-capitalize"
-                                : "btn-outline-primary btn btn-sm m-1 text-capitalize"
+                                : "btn-primary btn btn-sm m-1 text-capitalize"
                             }
                             onClick={() => (
                               SetWing(wing),
