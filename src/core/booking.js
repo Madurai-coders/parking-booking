@@ -283,7 +283,10 @@ export default function Booking() {
 
   useEffect(() => {
     GetWingDetails();
+    setTimeout(() => {
     GetBooking();
+        
+    }, 1000);
     var booking_data = window.localStorage.getItem("bookingdata");
     var booking_data = JSON.parse(booking_data);
     if (booking_data) {
