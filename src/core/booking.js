@@ -112,9 +112,7 @@ export default function Booking() {
     );
   }
 
-  useEffect(() => {
-    GetBooking(booking.date)
-  }, [booking.date])
+
 
   function checkslots(slot, id, booking_details) {
     if (slot.slotStatus) {
@@ -792,7 +790,7 @@ export default function Booking() {
                     className="payment_date"
                     selected={booking.date}
                     onClickOutside
-                    onSelect={(date) => setbooking({ ...booking, date: date })}
+                    onSelect={(date) =>(GetBooking(date),setbooking({ ...booking, date: date }))}
                   />
                 </div>
               </div>
