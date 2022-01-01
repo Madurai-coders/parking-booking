@@ -639,7 +639,7 @@ export default function Booking() {
                       itemsToShow={6}
                       itemsToScroll={1}
                       pagination={false}
-                      showArrows={false}
+                      showArrows={true}
                     >
                       {wing_data.map((wing) => {
                         return (

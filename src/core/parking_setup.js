@@ -650,14 +650,14 @@ export default function Parkingsetup() {
               </div>
             )} */}
 
-            {wing_data && wing_data.length < 10 && (
+            {wing_data  && (
               <div className="parking_setup_wing_title_section">
                 <div style={{ flexGrow: 1 }}>
                   <Carousel
                     itemsToShow={6}
                     itemsToScroll={1}
                     pagination={false}
-                    showArrows={false}
+                    showArrows={true}
                   >
                     {wing_data.map((wing) => {
                       return (

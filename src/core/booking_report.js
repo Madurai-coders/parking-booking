@@ -630,7 +630,7 @@ export default function Booking_report() {
               itemsToShow={7}
               itemsToScroll={1}
               pagination={false}
-              showArrows={false}
+              showArrows={true}
             >
               {wingdata &&
                 wingdata.map((wing) => {

@@ -164,3 +164,29 @@ input:focus{
 .collapse {
     flex-grow: 0.001;
 }
+
+.rec.rec-arrow:disabled {
+  display: none;
+}
+
+.rec.rec-arrow.rec-arrow-right,.rec.rec-arrow.rec-arrow-left{
+  border-radius: 50%;
+  background-color: #fff;
+  color: #000;
+  height: 35px;
+  width: 35px;
+  min-width: 35px;
+  line-height: 20px;
+}
+
+.rec.rec-arrow.rec-arrow-right:hover,.rec.rec-arrow.rec-arrow-left:hover{
+  border-radius: 50%;
+  background-color: #000;
+  color: #fff;
+}
+
+.rec.rec-arrow.rec-arrow-right:focus,.rec.rec-arrow.rec-arrow-left:focus{
+  border-radius: 50%;
+  background-color: #fff;
+  color: #000;
+}
