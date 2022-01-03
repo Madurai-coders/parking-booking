@@ -177,6 +177,7 @@ input:focus{
   width: 0px;
   min-width: 25px;
   line-height: 5px;
+  margin-top: -5px;
 }
 
 .rec.rec-arrow.rec-arrow-right:hover,.rec.rec-arrow.rec-arrow-left:hover{

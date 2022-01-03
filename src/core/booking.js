@@ -9,7 +9,7 @@ import {
   validation_amount,
   axios_call,
   axios_call_auto,
-  generateUUID_334
+  generateUUID_334,
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import { set } from "js-cookie";
@@ -30,7 +30,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Booking() {
   const [booking, setbooking] = useState({
-    userId: "",
+    userId: "not_selected",
     bookingId: "not_selected",
     date: new Date(),
     startFrom: "not_selected",
@@ -75,7 +75,7 @@ export default function Booking() {
   function GetWingDetails(id) {
     axios_call("GET", "CreateWing/").then((response) => {
       setWing_data(response);
-      console.log(response)
+      console.log(response);
       if (response[0]) {
         if (id) {
           SetSlot(response[response.length - 1].slots);
@@ -89,13 +89,12 @@ export default function Booking() {
   }
 
   function GetBooking(val) {
-      if(val){
-        var start = moment(val).format("YYYY-MM-DD");  
-      }
-      else{
-    var start = moment(new Date()).format("YYYY-MM-DD");
-    var end = moment(new Date()).add(366, "days").format("YYYY-MM-DD");
-      }
+    if (val) {
+      var start = moment(val).format("YYYY-MM-DD");
+    } else {
+      var start = moment(new Date()).format("YYYY-MM-DD");
+      var end = moment(new Date()).add(366, "days").format("YYYY-MM-DD");
+    }
     axios_call("GET", "GetBooking/?from=" + start + "&to=" + end).then(
       (response) => {
         SetBookingdetails(response);
@@ -111,8 +110,6 @@ export default function Booking() {
       }
     );
   }
-
-
 
   function checkslots(slot, id, booking_details) {
     if (slot.slotStatus) {
@@ -227,8 +224,7 @@ export default function Booking() {
       ...booking,
       startFrom: startFrom,
       endTo: endTo,
-      bookingId:
-      generateUUID_334(),
+      bookingId: generateUUID_334(),
       //   date:moment(new Date(), "DD-MM-YYYY").format("DD-MM-YYYY")
     };
 
@@ -239,7 +235,8 @@ export default function Booking() {
       booking_finalized.plan &&
       booking_finalized.endTo &&
       booking_finalized.startFrom &&
-      booking_finalized.charge
+      booking_finalized.charge &&
+      booking_finalized.bookingId
     ) {
       console.log(booking_finalized);
 
@@ -258,16 +255,20 @@ export default function Booking() {
           );
         });
     } else {
-      if (booking_finalized.name=='not_selected') {
-        setbooking({ ...booking,name:''});
+      if (booking_finalized.name == "not_selected" || booking_finalized.userId == 'not_selected') {
+        setbooking({ ...booking, name: "",userId:"" });
+        setData_fail('Invalid user name');
       }
-      setData_fail("Please fill all the details");
+      else{
+        setData_fail(true);
+      }
+      
     }
   }
 
   function reset() {
     setbooking({
-      userId: "",
+      userId: "not_selected",
       bookingId: "not_selected",
       date: new Date(),
       startFrom: "not_selected",
@@ -284,8 +285,7 @@ export default function Booking() {
   useEffect(() => {
     GetWingDetails();
     setTimeout(() => {
-    GetBooking();
-        
+      GetBooking();
     }, 1000);
     var booking_data = window.localStorage.getItem("bookingdata");
     var booking_data = JSON.parse(booking_data);
@@ -299,7 +299,6 @@ export default function Booking() {
       });
       window.localStorage.removeItem("bookingdata");
     }
-   
   }, []);
 
   //   useEffect(() => {
@@ -314,30 +313,29 @@ export default function Booking() {
 
   function ClosePreview() {
     setPreview(false);
-    setMailStatus()
+    setMailStatus();
   }
 
   function SendMail() {
     var data = {
       to: success.User.email,
-      invoiceDate:moment(success.date).format("DD/MM/YYYY"),
+      invoiceDate: moment(success.date).format("DD/MM/YYYY"),
       user: success.User.userName,
       accountNumber: success.User.accountNumber,
       bookingId: success.bookingId,
       amount: success.charge,
-      startFrom:moment(success.startFrom).format("DD/MM/YYYY"),
-      endTo:moment(success.endTo).format("DD/MM/YYYY"),
-      wing:success.slots.wing.wingName,
-      plan:success.plan,
-      id:success.id,
-      slot:success.slot_connect,
-
+      startFrom: moment(success.startFrom).format("DD/MM/YYYY"),
+      endTo: moment(success.endTo).format("DD/MM/YYYY"),
+      wing: success.slots.wing.wingName,
+      plan: success.plan,
+      id: success.id,
+      slot: success.slot_connect,
     };
     console.log(data);
     setMailStatus({
-        status: "Sending",
-        to: success.User.email,
-      });
+      status: "Sending",
+      to: success.User.email,
+    });
 
     axios_call("POST", "send_mail_booking/", data).then((response) => {
       console.log(response);
@@ -347,6 +345,35 @@ export default function Booking() {
       });
     });
   }
+
+  useEffect(() => {
+    if (
+      booking.slotid &&
+      booking.name &&
+      booking.userId &&
+      booking.plan &&
+      booking.endTo &&
+      booking.startFrom &&
+      booking.charge
+    ) {
+      setData_fail(true);
+    }
+    else{
+        setData_fail(false)
+    }
+
+    if (!booking.userId) {
+      setData_fail("Invalid user name");
+    } else setData_fail(false);
+  }, [
+    booking.slotid,
+    booking.name,
+    booking.userId,
+    booking.plan,
+    booking.endTo,
+    booking.startFrom,
+    booking.charge,
+  ]);
 
   return (
     <motion.div
@@ -358,55 +385,85 @@ export default function Booking() {
          <title>Munidex Parking - Booking </title>
       </Helmet>
 
-
       {preview && (
         <div className="overlay1">
           <div className="row">
             <div className="col-6 px-5">
-            <Bookinginvoice bookingData={success} ClosePreview={ClosePreview} />
+              <Bookinginvoice
+                bookingData={success}
+                ClosePreview={ClosePreview}
+              />
             </div>
 
             <div className="col-6">
               <div className="p-3 ">
-              <div className='' style={{ marginTop: mailStatus ? "31vh" :"84vh" }}>
-                  {mailStatus &&
-                  <div className='' >
-                      <div className='h2 text-center'>{
-                          mailStatus.status == 'Sending' && 
-                          <div className='text-center mb-2'>
-                          <div class="spinner-grow mx-1 text-primary" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-secondary" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-success" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-danger" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-warning" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-info" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-light" role="status">
-  <span class="sr-only"></span>
-</div>
-<div class="spinner-grow mx-1 text-dark" role="status">
-  <span class="sr-only"></span>
-</div>
-
+                <div
+                  className=""
+                  style={{ marginTop: mailStatus ? "31vh" : "84vh" }}
+                >
+                  {mailStatus && (
+                    <div className="">
+                      <div className="h2 text-center">
+                        {mailStatus.status == "Sending" && (
+                          <div className="text-center mb-2">
+                            <div
+                              class="spinner-grow mx-1 text-primary"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-secondary"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-success"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-danger"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-warning"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-info"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-light"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
+                            <div
+                              class="spinner-grow mx-1 text-dark"
+                              role="status"
+                            >
+                              <span class="sr-only"></span>
+                            </div>
                           </div>
-                      }
-  {mailStatus.status} !! </div>
- <div className='h2 mt-3 text-center'>
- To : {mailStatus.to}  </div>
-                  </div>
-}
-</div>
+                        )}
+                        {mailStatus.status} !!{" "}
+                      </div>
+                      <div className="h2 mt-3 text-center">
+                        To : {mailStatus.to}{" "}
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 <div className="d-flex" style={{ marginTop: "35vh" }}>
                   <div
@@ -423,15 +480,11 @@ export default function Booking() {
                     Send Receipt
                   </button>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
       )}
-
-
-
 
       {success && (
         <div className="overlay">
@@ -462,7 +515,9 @@ export default function Booking() {
                 </div>
                 <div className="bookingspopup_head">
                   To:{" "}
-                  <span className="bookingspopup_body">{moment(success.endTo).format("DD/MM/YYYY")}</span>
+                  <span className="bookingspopup_body">
+                    {moment(success.endTo).format("DD/MM/YYYY")}
+                  </span>
                 </div>
               </div>
               <div className="bookingspopup_details_flex mb-3">
@@ -520,94 +575,93 @@ export default function Booking() {
         </div>
       )}
 
-      
-      {wing &&
-
-      <div className="">
-        <div className="row booking_container">
-          <div className="col-7">
-            {" "}
-            <div className="px-4 pt-1">
-          
-              <div className={datafail ? " danger p-3" : "shadow-sm p-3"}>
-                {!bookinghover ? (
-                  <div className="row">
-                    <div className="col-12">
-                      <div className="row">
-                        <small className="col-7">
-                          Name: {booking.name != "not_selected" && booking.name}
-                        </small>
-                        <small className="col-5">
-                          Plan: {booking.plan != "not_selected" && booking.plan}
-                        </small>
+      {wing && (
+        <div className="">
+          <div className="row booking_container">
+            <div className="col-7">
+              {" "}
+              <div className="px-4 pt-1">
+                <div className={datafail ? " danger p-3" : "shadow-sm p-3"}>
+                  {!bookinghover ? (
+                    <div className="row">
+                      <div className="col-12">
+                        <div className="row">
+                          <small className="col-7">
+                            Name:{" "}
+                            {booking.name != "not_selected" && booking.name}
+                          </small>
+                          <small className="col-5">
+                            Plan:{" "}
+                            {booking.plan != "not_selected" && booking.plan}
+                          </small>
+                        </div>
+                      </div>
+                      <div className="mt-2 col-12 ">
+                        <div className="row">
+                          <small className="col-7">
+                            Slot Id:{" "}
+                            <span
+                              className={
+                                booking.slot_connect &&
+                                "p-1 text-white rounded px-2 small  bg-success"
+                              }
+                            >
+                              {booking.wing_name &&
+                                booking.wing_name +
+                                  " [" +
+                                  booking.slot_connect +
+                                  "]"}
+                            </span>
+                          </small>
+                          <small className="col-5"> $: {booking.charge}</small>
+                        </div>
                       </div>
                     </div>
-                    <div className="mt-2 col-12 ">
-                      <div className="row">
-                        <small className="col-7">
-                          Slot Id:{" "}
-                          <span
-                            className={
-                              booking.slot_connect &&
-                              "p-1 text-white rounded px-2 small  bg-success"
-                            }
-                          >
-                            {booking.wing_name &&
-                              booking.wing_name +
-                                " [" +
-                                booking.slot_connect +
-                                "]"}
-                          </span>
-                        </small>
-                        <small className="col-5"> $: {booking.charge}</small>
+                  ) : (
+                    <div className="row">
+                      <div className="col-12">
+                        <div className="row">
+                          <small className="col-7">
+                            Name: {bookinghover.name}
+                          </small>
+                          <small className="col-5">
+                            Plan: {bookinghover.plan}
+                          </small>
+                        </div>
+                      </div>
+                      <div className="mt-2 col-12 ">
+                        <div className="row">
+                          <small className="col-7 ">
+                            Slot Id:{" "}
+                            <span
+                              className={
+                                bookinghover &&
+                                "p-1 text-white rounded px-2 small  bg-primary"
+                              }
+                            >
+                              {bookinghover.wing_name &&
+                                bookinghover.wing_name +
+                                  " [" +
+                                  bookinghover.slot_connect +
+                                  "]"}
+                            </span>
+                          </small>
+                          <small className="col-5">
+                            {" "}
+                            {bookinghover.day ? (
+                              <>Days left: {bookinghover.day}</>
+                            ) : (
+                              <>$:</>
+                            )}
+                          </small>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="row">
-                    <div className="col-12">
-                      <div className="row">
-                        <small className="col-7">
-                          Name: {bookinghover.name}
-                        </small>
-                        <small className="col-5">
-                          Plan: {bookinghover.plan}
-                        </small>
-                      </div>
-                    </div>
-                    <div className="mt-2 col-12 ">
-                      <div className="row">
-                        <small className="col-7 ">
-                          Slot Id:{" "}
-                          <span
-                            className={
-                              bookinghover &&
-                              "p-1 text-white rounded px-2 small  bg-primary"
-                            }
-                          >
-                            {bookinghover.wing_name &&
-                              bookinghover.wing_name +
-                                " [" +
-                                bookinghover.slot_connect +
-                                "]"}
-                          </span>
-                        </small>
-                        <small className="col-5">
-                          {" "}
-                          {bookinghover.day ? (
-                            <>Days left: {bookinghover.day}</>
-                          ) : (
-                            <>$:</>
-                          )}
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="">
-              {/* {wing_data && wing_data.length < 10 && (
+              <div className="">
+                {/* {wing_data && wing_data.length < 10 && (
                 <div className="parking_setup_wing_title_section">
                   <>
                     {" "}
@@ -632,39 +686,43 @@ export default function Booking() {
                   </>
                 </div>
               )} */}
-              {wing_data && wing_data.length && (
-                <div className="parking_setup_wing_title_section  ">
-                  <div style={{ flexGrow: 1 }} >
-                    <Carousel
-                      itemsToShow={6}
-                      itemsToScroll={1}
-                      pagination={false}
-                      showArrows={true}
-                    >
-                      {wing_data.map((wing) => {
-                        return (
-                          <div
-                            className={
-                              wing.id != (slot && slot[0].wingId)
-                                ? "btn-light btn btn-sm m-1 text-capitalize"
-                                : "btn-primary btn btn-sm m-1 text-capitalize"
-                            }
-                            onClick={() => (
-                              SetWing(wing),
-                              setbooking({ ...booking, plan: "", charge: "" }),
-                              SetSlot(wing.slots)
-                            )}
-                          >
-                            {wing.wingName}
-                          </div>
-                        );
-                      })}
-                    </Carousel>
+                {wing_data && wing_data.length && (
+                  <div className="parking_setup_wing_title_section  ">
+                    <div style={{ flexGrow: 1 }}>
+                      <Carousel
+                        itemsToShow={6}
+                        itemsToScroll={1}
+                        pagination={false}
+                        showArrows={true}
+                      >
+                        {wing_data.map((wing) => {
+                          return (
+                            <div
+                              className={
+                                wing.id != (slot && slot[0].wingId)
+                                  ? "btn-light btn btn-sm m-1 text-capitalize"
+                                  : "btn-primary btn btn-sm m-1 text-capitalize"
+                              }
+                              onClick={() => (
+                                SetWing(wing),
+                                setbooking({
+                                  ...booking,
+                                  plan: "",
+                                  charge: "",
+                                }),
+                                SetSlot(wing.slots)
+                              )}
+                            >
+                              {wing.wingName}
+                            </div>
+                          );
+                        })}
+                      </Carousel>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* {wing_data && wing_data.length > 10 && (
+                {/* {wing_data && wing_data.length > 10 && (
                 <div className="parking_setup_wing_title_section">
                   <div className="d-flex">
                     {wing_data.map((wing) => {
@@ -689,201 +747,217 @@ export default function Booking() {
                 </div>
               )} */}
 
-              <div className="parking_setup_wing_container">
-                {slot && (
-                  <>
-                    {slot.map((slot, id) => {
-                      return (
-                        <span>{checkslots(slot, id, booking_details)}</span>
-                      );
-                    })}
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="col-5">
-            <div className="row">
-              <div className="col-6">
-                <div className="booking_reserved_text">Reserved</div>
-                <div className="booking_reserved_percentage_text">
-                  {percent && percent.reserved}%
-                </div>
-                <div class="progress booking_reserved_progress">
-                  <div
-                    class="progress-bar"
-                    role="progressbar"
-                    aria-valuenow="25"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style={{
-                      width: percent && percent.reserved + "%",
-                      backgroundColor: "#FF6767",
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="booking_unreserved_text">Unreserved</div>
-                <div className="booking_unreserved_percentage_text">
-                  {percent && percent.unreserved}%
-                </div>
-                <div class="progress booking_unreserved_progress">
-                  <div
-                    class="progress-bar"
-                    role="progressbar"
-                    aria-valuenow="25"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style={{
-                      width: percent && percent.unreserved + "%",
-                      backgroundColor: "#2AB0FF",
-                    }}
-                  ></div>
+                <div className="parking_setup_wing_container">
+                  {slot && (
+                    <>
+                      {slot.map((slot, id) => {
+                        return (
+                          <span>{checkslots(slot, id, booking_details)}</span>
+                        );
+                      })}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
-
-            <div className="booking_colorcodes mt-5 pe-5 me-5 ">
-              <span className="booking_undercons"> Under Construction</span>
-              <span className="booking_lessweek"> &lt; 7 days </span>
-              <span className="booking_moreweek"> &gt; 7 days</span>
-            </div>
-
-           
-
-            <div className="booking_form_container">
-              <div className="booking_form_title bg-light me-5 p-2"> Booking </div>
-              <div className="mx-3 p-2">
-              <div className="booking_form_name_input">
-                <label for="name">Name</label>
-                <div className="d-flex flex-column booking_form_name_input">
-                  <input
-                    autocomplete="off"
-                    list="data"
-                    onChange={(e) => (
-                      checkuser(e.target.value),
-                      setbooking({ ...booking, name: e.target.value })
-                    )}
-                    onBlur={(e) =>
-                      setbooking({ ...booking, name: e.target.value })
-                    }
-                    type="text"
-                    value={booking.name != "not_selected" ? booking.name : ""}
-                    className={"" + validation_name(booking.name).class}
-                    id="name"
-                    style={{ marginLeft: "109px", marginTop: "20px" }}
-                  />
-                  <div style={{ marginTop: "5px", fontSize: "10px" }}>
-                    {validation_name(booking.name).msg}
+            <div className="col-5">
+              <div className="row">
+                <div className="col-6">
+                  <div className="booking_reserved_text">Reserved</div>
+                  <div className="booking_reserved_percentage_text">
+                    {percent && percent.reserved}%
+                  </div>
+                  <div class="progress booking_reserved_progress">
+                    <div
+                      class="progress-bar"
+                      role="progressbar"
+                      aria-valuenow="25"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      style={{
+                        width: percent && percent.reserved + "%",
+                        backgroundColor: "#FF6767",
+                      }}
+                    ></div>
                   </div>
                 </div>
-                <datalist id="data">
-                  {usr_suggestion.map((item, key) => (
-                    <option key={key} value={item.userName} />
-                  ))}
-                </datalist>
-              </div>
-
-              <div className="booking_form_date_input">
-                <label for="date">Date</label>
-                <div style={{ marginLeft: "65px", marginTop: "-5px" }}>
-                  <DatePicker
-                    dateFormat="dd/MM/yyyy"
-                    className="payment_date"
-                    selected={booking.date}
-                    onClickOutside
-                    onSelect={(date) =>(GetBooking(date),setbooking({ ...booking, date: date }))}
-                  />
+                <div className="col-6">
+                  <div className="booking_unreserved_text">Unreserved</div>
+                  <div className="booking_unreserved_percentage_text">
+                    {percent && percent.unreserved}%
+                  </div>
+                  <div class="progress booking_unreserved_progress">
+                    <div
+                      class="progress-bar"
+                      role="progressbar"
+                      aria-valuenow="25"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      style={{
+                        width: percent && percent.unreserved + "%",
+                        backgroundColor: "#2AB0FF",
+                      }}
+                    ></div>
+                  </div>
                 </div>
               </div>
 
-              <div className="booking_form_plan_input">
-                <div className="booking_form_plan_input_text"> Plan </div>
-                <div className="booking_form_plan_input_buttons">
-                  <div
-                    className={
-                      booking.plan == "Weekly"
-                        ? "booking_form_input_button_weekly_selected"
-                        : "booking_form_input_button_weekly"
-                    }
-                    onClick={() =>
-                      setbooking({
-                        ...booking,
-                        plan: "Weekly",
-                        charge: wing && wing.planWeekly,
-                      })
-                    }
-                  >
-                    {" "}
-                    Weekly{" "}
+              <div className="booking_colorcodes mt-5 pe-5 me-5 ">
+                <span className="booking_undercons"> Under Construction</span>
+                <span className="booking_lessweek"> &lt; 7 days </span>
+                <span className="booking_moreweek"> &gt; 7 days</span>
+              </div>
+
+              <div className="booking_form_container">
+                <div className="booking_form_title bg-light me-5 p-2">
+                  {" "}
+                  Booking{" "}
+                </div>
+                <div className="mx-3 p-2">
+                  <div className="booking_form_name_input">
+                    <label for="name">Name</label>
+                    <div className="d-flex flex-column booking_form_name_input">
+                      <input
+                        autocomplete="off"
+                        list="data"
+                        onChange={(e) => (
+                          checkuser(e.target.value),
+                          setbooking({ ...booking, name: e.target.value,userId:'' })
+                        )}
+                        onBlur={(e) =>
+                          setbooking({ ...booking, name: e.target.value})
+                        }
+                        type="text"
+                        value={
+                          booking.name != "not_selected" ? booking.name : ""
+                        }
+                        className={
+                          "" +
+                          booking.userId !='not_selected' && (!booking.userId
+                            ? "warn"
+                            : "pass")
+                        }
+                        id="name"
+                        style={{ marginLeft: "109px", marginTop: "20px" }}
+                      />
+                      <div style={{ marginTop: "5px", fontSize: "10px" }}>
+                        <div className="text-danger text-center">
+                          {datafail && datafail}
+                        </div>
+                      </div>
+                    </div>
+                    <datalist id="data">
+                      {usr_suggestion.map((item, key) => (
+                        <option key={key} value={item.userName} />
+                      ))}
+                    </datalist>
                   </div>
-                  <div
-                    className={
-                      booking.plan == "Monthly"
-                        ? "booking_form_input_button_monthly_selected"
-                        : "booking_form_input_button_monthly"
-                    }
-                    onClick={() =>
-                      setbooking({
-                        ...booking,
-                        plan: "Monthly",
-                        charge: wing && wing.planMonthly,
-                      })
-                    }
-                  >
-                    {" "}
-                    Monthly{" "}
+
+                  <div className="booking_form_date_input">
+                    <label for="date">Date</label>
+                    <div style={{ marginLeft: "65px", marginTop: "-5px" }}>
+                      <DatePicker
+                        dateFormat="dd/MM/yyyy"
+                        className="payment_date"
+                        selected={booking.date}
+                        onClickOutside
+                        onSelect={(date) => (
+                          GetBooking(date),
+                          setbooking({ ...booking, date: date })
+                        )}
+                      />
+                    </div>
                   </div>
-                  <div
-                    className={
-                      booking.plan == "Quarterly"
-                        ? "booking_form_input_button_quarterly_selected"
-                        : "booking_form_input_button_quarterly"
-                    }
-                    onClick={() =>
-                      setbooking({
-                        ...booking,
-                        plan: "Quarterly",
-                        charge: wing && wing.planQuarterly,
-                      })
-                    }
-                  >
-                    {" "}
-                    Quarterly{" "}
-                  </div>
-                  <div
-                    className={
-                      booking.plan == "Yearly"
-                        ? "booking_form_input_button_yearly_selected"
-                        : "booking_form_input_button_yearly"
-                    }
-                    onClick={() =>
-                      setbooking({
-                        ...booking,
-                        plan: "Yearly",
-                        charge: wing && wing.planYearly,
-                      })
-                    }
-                  >
-                    {" "}
-                    Yearly{" "}
+
+                  <div className="booking_form_plan_input">
+                    <div className="booking_form_plan_input_text"> Plan </div>
+                    <div className="booking_form_plan_input_buttons">
+                      <div
+                        className={
+                          booking.plan == "Weekly"
+                            ? "booking_form_input_button_weekly_selected"
+                            : "booking_form_input_button_weekly"
+                        }
+                        onClick={() =>
+                          setbooking({
+                            ...booking,
+                            plan: "Weekly",
+                            charge: wing && wing.planWeekly,
+                          })
+                        }
+                      >
+                        {" "}
+                        Weekly{" "}
+                      </div>
+                      <div
+                        className={
+                          booking.plan == "Monthly"
+                            ? "booking_form_input_button_monthly_selected"
+                            : "booking_form_input_button_monthly"
+                        }
+                        onClick={() =>
+                          setbooking({
+                            ...booking,
+                            plan: "Monthly",
+                            charge: wing && wing.planMonthly,
+                          })
+                        }
+                      >
+                        {" "}
+                        Monthly{" "}
+                      </div>
+                      <div
+                        className={
+                          booking.plan == "Quarterly"
+                            ? "booking_form_input_button_quarterly_selected"
+                            : "booking_form_input_button_quarterly"
+                        }
+                        onClick={() =>
+                          setbooking({
+                            ...booking,
+                            plan: "Quarterly",
+                            charge: wing && wing.planQuarterly,
+                          })
+                        }
+                      >
+                        {" "}
+                        Quarterly{" "}
+                      </div>
+                      <div
+                        className={
+                          booking.plan == "Yearly"
+                            ? "booking_form_input_button_yearly_selected"
+                            : "booking_form_input_button_yearly"
+                        }
+                        onClick={() =>
+                          setbooking({
+                            ...booking,
+                            plan: "Yearly",
+                            charge: wing && wing.planYearly,
+                          })
+                        }
+                      >
+                        {" "}
+                        Yearly{" "}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            </div>
-            <div className="booking_form_submit_clear">
-              <div className="booking_form_submit" onClick={FormSumbit}>
-                {" "}
-                Submit{" "}
+              <div className="booking_form_submit_clear">
+                <div className="booking_form_submit" onClick={FormSumbit}>
+                  {" "}
+                  Submit{" "}
+                </div>
+                <div className="booking_form_clear" onClick={reset}>
+                  {" "}
+                  Clear{" "}
+                </div>
               </div>
-              <div className="booking_form_clear" onClick={reset}> Clear </div>
             </div>
           </div>
         </div>
-      </div>
-}
+      )}
     </motion.div>
   );
 }
