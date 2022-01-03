@@ -60,7 +60,7 @@ export default function Booking() {
           set_usr_suggestion(response);
           console.log(response[0]);
           console.log(val);
-          if (response[0] && response[0].userName == val) {
+          if (response[0] && response[0].userName.toUpperCase() == val.toUpperCase()) {
             setbooking({
               ...booking,
               name: response[0].userName,
