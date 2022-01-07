@@ -160,9 +160,9 @@
   font-weight: bold;
   font-size: 12px;
   line-height: 128%;
-  padding: 4px;
+  padding: 4px 10px;
   border-radius: 3px;
-  margin-top: 6px;
+  margin-top: 0px;
   cursor: pointer;
   text-transform: capitalize;
 }

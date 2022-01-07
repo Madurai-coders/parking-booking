@@ -1,7 +1,7 @@
 .user_dashboard_container {
   height: 96vh;
-  padding-left: 5%;
-  padding-right: 3%;
+  padding-left: 3%;
+  padding-right: 2%;
 }
 
 .user_dashboard_munidex_logo {
@@ -272,7 +272,7 @@
 }
 
 .user_dashboard_popup_table_container{
-  height: 60vh;
+  height: 35vh;
   overflow: hidden;
   overflow-y: scroll;
 }
@@ -314,6 +314,8 @@
   font-size: 16px;
   font-weight: 600;
   display: inline-block;
+  background-color: aliceblue;
+  padding: 10px;
 }
 
 .user_dashboard-popup_close {

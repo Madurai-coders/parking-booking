@@ -1,5 +1,5 @@
 .payment_container {
-  padding: 5% 0% 0% 0.2%;
+  padding: 4.5% 0% 0% 0.2%;
 }
 
 .payment_entry_fields {
@@ -91,10 +91,17 @@
 
 
 .payment_table_container {
-    max-height: 63vh;
+    max-height: 62vh;
     overflow: hidden;
     overflow-y: scroll;
 }
+
+.payment_table_container1 {
+    max-height: 77vh;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
 
 .payment_table_container::-webkit-scrollbar{
     width: 2px;
@@ -137,17 +144,17 @@
   text-transform: capitalize;
 }
 
-.payment_table tr:nth-child(even) td {
-  background-color: #f0f0f0;
+.payment_table tr:nth-child(odd) td {
+  background-color: #eef9fc;
 }
 
 .payment_table_button_book {
   color: #fff;
-  font-weight: bold;
-  font-size: .5rem;
+  font-weight: 700;
+  font-size: .6rem;
   line-height: 8px;
-  padding:5% 10%;
-  background-color: #268E02;
+  padding:4% 8%;
+  background-color: #3fc513;
   border-radius: 2.27px;
   cursor: pointer;
 }

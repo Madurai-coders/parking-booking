@@ -53,13 +53,13 @@ export default function Navbarbigscreen(props) {
       {!expand && (
         <motion.div 
        
-        className="Navbigscreen_container">
+        className="Navbigscreen_container " style={{ width: "4vw" }}  onMouseEnter={()=>setExpand(true)}>
           <div>
             <ul className="Navbigscreen_list">
-              <li className="Navbigscreen_menu_noexpand" onClick={handleExpand}>
+              <li className="Navbigscreen_menu_noexpand pt-1" onClick={handleExpand}>
                 <img
                   src={Menu}
-                  className="Navbigscreen_menu_img"
+                  className="Navbigscreen_menu_img "
                   alt="Munidex_Parking_Menu"
                 />
               </li>
@@ -99,7 +99,7 @@ export default function Navbarbigscreen(props) {
                 />
               </li>
               </Link>
-              <Link to = 'AdmindashboardUserreport' onClick={() => setCurrentpage("userreport")} >
+              <Link to ='AdmindashboardUserreport' onClick={() => setCurrentpage("userreport")} >
               <li className={current_page=="userreport" ? "Navbigscreen_listitem_userreport_noexpand_active" : "Navbigscreen_listitem_userreport_noexpand"}>
                 <img
                   src={User_report}
@@ -126,10 +126,10 @@ export default function Navbarbigscreen(props) {
       {expand && (
         <motion.div 
   
-        className="Navbigscreen_container" style={{ width: "13vw" }}>
+        className="Navbigscreen_container" style={{ width: "13vw" }}  onMouseLeave={()=>setExpand(false)}>
           <div>
             <ul className="Navbigscreen_list">
-              <li className="Navbigscreen_menu" onClick={handleContract}>
+              <li className="Navbigscreen_menu pt-1" onClick={handleContract}>
                 <img
                   src={Menu}
                   className="Navbigscreen_menu_img"

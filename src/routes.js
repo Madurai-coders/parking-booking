@@ -129,13 +129,13 @@ const Routes = () => {
           {is_admin && (
               <Switch>
                    <Route path="/" exact component={User_login} />
-                  <div className="d-flex flex-row">
+                  <div className="d-flex flex-row"  >
               <div >
                 <Navigation />
               </div>
               <Logoplacer />
-          <>
-                <Route path="/admin" exact render={() => (
+              < >
+                                  <Route path="/admin" exact render={() => (
                 loader ? <Loader/> :<Booking/>
                   )}/>  
                   

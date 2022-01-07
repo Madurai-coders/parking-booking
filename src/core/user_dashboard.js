@@ -207,73 +207,7 @@ export default function User_dashboard() {
           )}
           {user && (
             <div className="user_dashboard_container">
-              {popup && (
-                <div className="row user_dashboard_popup_section shadow">
-                  <div className="col-4 user_dashboard_popup_leftside text-center">
-                    <img
-                      src={handshake}
-                      alt="zengov"
-                      className="user_dashboard_handshake_image"
-                    />
-                    <div className="user_dashboard_popup_leftside_text">
-                      Zen<span>Gov</span>
-                    </div>
-                  </div>
-                  <div className="col-8">
-                    <div className="user_dashboard_popup_history_container">
-                      <div className="user_dashboard_popup_transaction_history_flex">
-                        <div className="user_dashboard_popup_transaction_history mb-5">
-                          {" "}
-                          Transaction History{" "}
-                        </div>
-                        <div
-                          className="user_dashboard-popup_close"
-                          onClick={() => setPopup(false)}
-                        >
-                          <IoClose style={{ color: "#646262" }} size={30} />
-                        </div>
-                      </div>
-                      <div className="user_dashboard_popup_table_container">
-                        <table className="user_dashboard_popup_table">
-                          <tr className="user_dashboard_popup_table_header">
-                            <th>Transaction id</th>
-                            <th>Date</th>
-                            <th>Payment</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                          </tr>
-                          {user.payment_partner.map((transaction) => {
-                            return (
-                              <tr className="user_dashboard_popup_table_content">
-                                <td>{transaction.paymentId}</td>
-                                <td>
-                                  {moment(transaction.paymentDate).format(
-                                    "DD-MM-YYYY"
-                                  )}
-                                </td>
-                                <td>{transaction.paymentType}</td>
-                                <td>{transaction.amount}</td>
-
-                                <td>
-                                  <span
-                                    className={
-                                      "user_dashboard_popup_status_" +
-                                      "Successful".toLowerCase()
-                                    }
-                                  >
-                                    Successful
-                                  </span>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
+             
               <img
                 src={logo}
                 alt="munidex_logo"
@@ -348,6 +282,7 @@ export default function User_dashboard() {
                       })}
                     </table>
                   </div>
+                  
                 </div>
                 <div className="col-5">
                   <div className="user_dashboard_right_container">
@@ -385,71 +320,73 @@ export default function User_dashboard() {
 
                     {!getAmount ? (
                       <>
-                        {user.payment_partner.length > 0 && (
-                          <div className="user_dashboard_transaction_card">
-                            <div className="user_dashboard_transaction_card_title">
-                              {" "}
-                              Last Transaction{" "}
-                            </div>
-                            <div className="user_dashboard_transaction_card_transaction_id mb-3">
-                              {" "}
-                              Transaction id :{" "}
-                              <span>
-                                {
-                                  user.payment_partner[
-                                    user.payment_partner.length - 1
-                                  ].paymentId
-                                }{" "}
-                              </span>
-                            </div>
-                            <div className="user_dashboard_transaction_card_datetime_text">
-                              {" "}
-                              <div className="user_dashboard_transaction_card_date_text">
-                                {" "}
-                                Date{" "}
-                              </div>{" "}
-                              <div className="user_dashboard_transaction_card_time_text">
-                                {" "}
-                                Time{" "}
-                              </div>
-                            </div>
-                            <div className=" user_dashboard_transaction_card_datetime">
-                              {" "}
-                              {moment(
-                                user.payment_partner[
-                                  user.payment_partner.length - 1
-                                ].paymentDate
-                              ).format("DD-MM-YYYY")}
-                              <div> </div>
-                              {moment(
-                                user.payment_partner[
-                                  user.payment_partner.length - 1
-                                ].paymentDate
-                              ).format("hh:mm a")}{" "}
-                              <div> </div>
-                            </div>
-                            <div className="user_dashboard_transaction_card_amount_section">
-                              <div className="user_dashboard_transaction_card_amount_text mb-3">
-                                {" "}
-                                Amount{" "}
-                              </div>
-                              <div className="user_dashboard_transaction_card_amount_number mb-3">
-                                {
-                                  user.payment_partner[
-                                    user.payment_partner.length - 1
-                                  ].amount
-                                }{" "}
-                                $
-                              </div>
-                            </div>
-                            <div
-                              className="user_dashboard_transaction_card_seemore text-center mt-4"
-                              onClick={() => setPopup(true)}
-                            >
-                              See more
-                            </div>
-                          </div>
-                        )}
+                         {true && (
+                <div className="  ">
+                  {/* <div className="col-4 user_dashboard_popup_leftside text-center">
+                    <img
+                      src={handshake}
+                      alt="zengov"
+                      className="user_dashboard_handshake_image"
+                    />
+                    <div className="user_dashboard_popup_leftside_text">
+                      Zen<span>Gov</span>
+                    </div>
+                  </div> */}
+                  <div className="">
+                    <div className="user_dashboard_popup_history_container">
+                      <div className="user_dashboard_popup_transaction_history_flex">
+                        <div className="user_dashboard_popup_transaction_history mb-4">
+                          {" "}
+                          Transaction History{" "}
+                        </div>
+                        {/* <div
+                          className="user_dashboard-popup_close"
+                          onClick={() => setPopup(false)}
+                        >
+                          <IoClose style={{ color: "#646262" }} size={30} />
+                        </div> */}
+                      </div>
+                      <div className="user_dashboard_popup_table_container">
+                        <table className="user_dashboard_popup_table">
+                          <tr className="user_dashboard_popup_table_header">
+                            <th>Transaction id</th>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                          </tr>
+                          {user.payment_partner.map((transaction) => {
+                            return (
+                              <tr className="user_dashboard_popup_table_content">
+                                <td>{transaction.paymentId}</td>
+                                <td>
+                                  {moment(transaction.paymentDate).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </td>
+                                <td>{transaction.paymentType}</td>
+                                <td>{transaction.amount}</td>
+
+                                <td>
+                                  <span
+                                    className={
+                                      "user_dashboard_popup_status_" +
+                                      "Successful".toLowerCase()
+                                    }
+                                  >
+                                    Successful
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
                       </>
                     ) : (
                       <div className="user_dashboard_transaction_card">

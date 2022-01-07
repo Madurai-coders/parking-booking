@@ -665,7 +665,7 @@ export default function Payment() {
               </div>
             )}
           </div>
-          <div className="payment_table_container">
+          <div className="payment_table_container1 table">
             <table className="payment_table ">
               <tr className="payment_table_heading">
                 <th>Name</th>
@@ -686,8 +686,8 @@ export default function Payment() {
                         <span
                           class={
                             payment.paymentType == "cash"
-                              ? "bg-primary p-1  text-white rounded"
-                              : "bg-danger p-1  text-white rounded"
+                              ? "bg-primary p-1 small  text-white rounded"
+                              : "bg-danger p-1 small  text-white rounded"
                           }
                         >
                           {payment.paymentType}

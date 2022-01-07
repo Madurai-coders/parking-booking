@@ -139,6 +139,7 @@ export default function Booking_report() {
           backgroundColor: "rgba(247, 128, 99, 0.6)",
           borderRadius: 5,
           borderSkipped: false,
+          tension: 0.1
         },
         {
           label: "Reserved %",
@@ -148,6 +149,7 @@ export default function Booking_report() {
           fill: true,
           borderRadius: 5,
           borderSkipped: false,
+          tension: 0.1
         },
       ],
     });
@@ -208,6 +210,7 @@ export default function Booking_report() {
           backgroundColor: "rgba(247, 128, 99, 0.6)",
           borderRadius: 5,
           borderSkipped: false,
+          tension: 0.1
         },
       ],
     });

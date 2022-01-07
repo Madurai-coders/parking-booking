@@ -1,11 +1,11 @@
 .User_report_container {
-  padding: 5% .4%;
+  padding: 4% .4%;
 }
 
 .User_report_recent_container {
   overflow: hidden;
   overflow-y: scroll;
-  max-height: 52vh;
+  max-height: 100vh;
 }
 
 .User_report_recent_container::-webkit-scrollbar {
