@@ -537,7 +537,7 @@ export default function Payment() {
                   className={
                     "payment_email " + validation_name(form.payment_type).class
                   }
-                  style={{ width: "150px", height: "30px" }}
+                  style={{ width: "150px", height: "28.4px", marginTop:'5px'}}
                   id="payment_ptype"
                 >
                   <option ></option>

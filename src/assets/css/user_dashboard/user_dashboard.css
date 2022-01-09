@@ -22,7 +22,8 @@
 }
 .user_dashboard_text_booking_details {
   color: #FFFFFF;
-  background-color :#0CB0E2;
+  background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
   text-align: center;
   padding: 1% 0;
   font-weight: 600;

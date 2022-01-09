@@ -196,6 +196,7 @@ export default function Booking() {
     var startFrom = moment(booking.date, "YYYY-MM-DD").format("YYYY-MM-DD");
     var endTo = "";
 
+
     if (booking.plan == "Monthly") {
       endTo = moment(booking.date, "YYYY-MM-DD")
         .add(31, "days")
@@ -230,6 +231,8 @@ export default function Booking() {
 
     if (
       booking_finalized.slotid &&
+      booking_finalized.name !='not_selected' &&
+      booking_finalized.userId   !='not_selected' &&
       booking_finalized.name &&
       booking_finalized.userId &&
       booking_finalized.plan &&

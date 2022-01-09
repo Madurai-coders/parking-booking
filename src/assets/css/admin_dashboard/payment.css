@@ -22,7 +22,8 @@
 }
 
 .payment_text_booking_report {
-  background-color: #0cb0e2;
+ background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
   color: #fff;
   font-weight: 500;
   font-size: 12.9px;
@@ -44,8 +45,9 @@
 .payment_date,
 .payment_amount
  {
-  margin: 2.5% 0;
-  border: 0.6px solid #dcdcdc;
+  margin: 2.5% 1px;
+  border: 0.6px solid #aaaaaa;
+  border-radius: 4px;
 }
 
 #payment_ptype{
@@ -126,11 +128,12 @@
 
 .payment_table_heading th {
   color: #fff;
-  background-color: #0cb0e2;
-  font-weight: 600;
+ background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
+  font-weight: 500;
   font-size: 14px;
   line-height: 15px;
-  padding:10px;
+  padding:6px;
   position: sticky;
   top: 0;
 }

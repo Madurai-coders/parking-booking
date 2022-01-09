@@ -1,7 +1,7 @@
 .Navbigscreen_container {
   height: 100vh;
-  background-color: #28a8e0;
-  display: flex;
+  background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);    display: flex;
   flex-direction: column;
   justify-content: space-between;
   border-radius: 0px 16px 16px 0px;
@@ -42,11 +42,12 @@
 .Navbigscreen_listitem_parkingsetup,
 .Navbigscreen_listitem_bookingreport,
 .Navbigscreen_listitem_userreport {
-  margin: 0 1rem 4.45rem 1rem;
+  margin: 0 1rem 3rem 1rem;
 }
 
 .Navbigscreen_listitem_logout {
   margin: 0 1rem 1.5rem 1rem;
+
 }
 
 .Navbigscreen_listitem_booking_text,
@@ -72,11 +73,11 @@
 .Navbigscreen_listitem_payment_noexpand,
 .Navbigscreen_listitem_parkingsetup_noexpand,
 .Navbigscreen_listitem_userreport_noexpand {
-  margin: 1rem 1rem 4.45rem 1rem;
+  margin: 1rem 1rem 3rem 1rem;
 }
 
 .Navbigscreen_listitem_logout_noexpand {
-    margin: 1rem 1rem 4.45rem 1rem;
+    margin: 0rem 1rem 1.5rem 1rem;
 }
 
 .Navbigscreen_listitem_parkingsetup_active,
@@ -86,10 +87,8 @@
 .Navbigscreen_listitem_userreport_active {
   background-color: #fff;
   border-radius: 4px 0px 0px 4px;
-  padding-left: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.4rem;
-  margin: 0.5rem -0.1rem 3.35rem 0.5rem;
+  padding: 0.4rem 0.5rem;
+  margin: 0 -0.1rem 3.45rem 0.5rem;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 

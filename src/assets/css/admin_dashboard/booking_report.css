@@ -11,7 +11,8 @@
   font-size: 12.8px;
   line-height: 15px;
   letter-spacing: 0.183px;
-  background-color: #0cb0e2;
+ background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
   padding: 0.6% 1%;
 }
 
@@ -49,8 +50,9 @@
   font-weight: 600;
   font-size: 12px;
   line-height: 9px;
-  background-color: #0cb0e2;
-  padding: 2% 2%;
+ background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
+  padding: 1% 1%;
   position: sticky;
   z-index: 2;
   top: 0;
@@ -134,7 +136,8 @@
 } */
 
 .booking_report_wingsubmit {
-  background-color: #0cb0e2;
+ background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
   padding: 0.8% 1.5%;
   font-weight: 500;
   font-size: 14px;
@@ -155,7 +158,8 @@
 }
 
 .booking_report_wing_button {
-  background-color: #0cb0e2;
+ background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
   color: #fff;
   font-weight: bold;
   font-size: 12px;

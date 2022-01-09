@@ -227,7 +227,8 @@
   text-align: center;
   overflow: hidden;
   padding: 0.4% 3%;
-  background-color: #0cb0e2;
+ background: rgb(72,180,227);
+  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
   clip-path: polygon(0 0, 100% 0%, 86% 100%, 0% 100%);
 }
 
@@ -236,7 +237,7 @@
 }
 
 .parking_setup_wing_title_section {
-  padding:5px;
+  padding:3px;
   margin: 5% 5% 2% 1%;
   background-color:rgba(218, 221, 240, 0.788);
   border-radius:4px ;

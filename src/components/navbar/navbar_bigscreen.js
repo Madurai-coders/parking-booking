@@ -56,7 +56,7 @@ export default function Navbarbigscreen(props) {
         className="Navbigscreen_container " style={{ width: "4vw" }}  onMouseEnter={()=>setExpand(true)}>
           <div>
             <ul className="Navbigscreen_list">
-              <li className="Navbigscreen_menu_noexpand pt-1" onClick={handleExpand}>
+              <li className="Navbigscreen_menu_noexpand pt-1" >
                 <img
                   src={Menu}
                   className="Navbigscreen_menu_img "
@@ -129,7 +129,7 @@ export default function Navbarbigscreen(props) {
         className="Navbigscreen_container" style={{ width: "13vw" }}  onMouseLeave={()=>setExpand(false)}>
           <div>
             <ul className="Navbigscreen_list">
-              <li className="Navbigscreen_menu pt-1" onClick={handleContract}>
+              <li className="Navbigscreen_menu pt-1">
                 <img
                   src={Menu}
                   className="Navbigscreen_menu_img"
