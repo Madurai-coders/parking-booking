@@ -132,6 +132,22 @@ input:focus{
     cursor: pointer; /* Add a pointer on hover */
   }
 
+  .overlay_userdashboard{
+    position: fixed; /* Sit on top of the page content */
+    /* Hidden by default */
+   width: 95%; /* Full width (cover the whole page) */
+   height: 95%; /* Full height (cover the whole page) */
+   top: 2.5%;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: rgb(255, 255, 255); /* Black background with opacity */
+   z-index: 10; /* Specify a stack order in case you're using a different order for other elements */
+   cursor: pointer; /* Add a pointer on hover */
+left: 2.5%;;
+border-radius: 16px;
+ } 
+  
 
   .overlay1 {
     position: fixed; /* Sit on top of the page content */

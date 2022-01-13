@@ -79,23 +79,25 @@
   width: 18vw;
   background: #ffffff;
   box-shadow: 2px 2px 7px rgba(151, 151, 151, 0.15);
-  border-radius: 3px;
-  margin: 2.5% 6% 3% 0;
-  padding: 2% 2% 2% 2%;
+  border-radius: 8px;
+  margin: 2.5% 2% 3% 0;
+  padding: 2% 2% 1% 2%;
+  border: 1px solid rgb(174, 216, 255);
+
 }
 
 .booking_report_slot_number_text {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 12px;
-  line-height: 11px;
+  line-height: 10px;
   color: #505255;
 }
 
 .booking_report_bottom_flex_number {
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 12px;
+  font-weight: 500;
+  font-size: 16px;
   color: #32325d;
+  margin-top: 12px;
 }
 
 .booking_report_bottom_flex {

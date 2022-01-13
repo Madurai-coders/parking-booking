@@ -14,6 +14,7 @@ import {
   validation_count,
   logout,
   generateUUID,
+  formatUsd
 } from "../functions/reusable_functions";
 import { useLocation } from "react-router";
 import Cookies from "js-cookie";
@@ -40,8 +41,30 @@ export default function User_dashboard() {
     booking.forEach((element) => {
       booking_total = booking_total + parseInt(element.charge);
     });
-    return payment_total - booking_total;
-  }
+    var val = payment_total - booking_total
+
+    if(val<0){
+    return <div><span className="user_dashboard_balance_card_amount" >{formatUsd(Math.abs(payment_total - booking_total))}</span><span className=" small bg-danger mx-2 text-white px-1 rounded">Delinquent</span></div>
+    }
+    else
+    if(val==0){
+
+        return (
+            <div>
+              {" "}
+              {formatUsd(payment_total - booking_total)}
+              <span className="small bg-warning mx-1 text-white px-1 rounded">
+                Paid
+              </span>
+            </div>
+          );
+
+    }
+    else{
+    {
+    return <div><span className="user_dashboard_balance_card_amount" >{formatUsd(payment_total - booking_total)}</span><span className="small bg-success mx-2 text-white px-1 rounded">OverPayment</span></div>
+    }  }
+}
 
   function Dayleft(endTo) {
     var b = moment(endTo, "YYYY-MM-DD");
@@ -300,7 +323,7 @@ export default function User_dashboard() {
                               onClick={() => setGetAmount(true)}
                             >
                               {" "}
-                              Pay{" "}
+                              Pay Online{" "}
                             </div>
                           ) : (
                             <div
@@ -313,15 +336,15 @@ export default function User_dashboard() {
                           )}
                         </div>
                       </div>
-                      <div className="user_dashboard_balance_card_amount d-flex">
-                        {Balance(user.payment_partner, user.booking_partner)} $
+                      <div className="d-flex">
+                        {Balance(user.payment_partner, user.booking_partner)} 
                       </div>
                     </div>
 
                     {!getAmount ? (
                       <>
                          {true && (
-                <div className="  ">
+                <div className="">
                   {/* <div className="col-4 user_dashboard_popup_leftside text-center">
                     <img
                       src={handshake}
@@ -331,7 +354,7 @@ export default function User_dashboard() {
                     <div className="user_dashboard_popup_leftside_text">
                       Zen<span>Gov</span>
                     </div>
-                  </div> */}
+                  </div> */} 
                   <div className="">
                     <div className="user_dashboard_popup_history_container">
                       <div className="user_dashboard_popup_transaction_history_flex">

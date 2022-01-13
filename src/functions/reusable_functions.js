@@ -3,6 +3,14 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+export function formatUsd(val) {
+
+  
+return '$' + (val).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+
+
+}
+
 export function generateUUID() {
     // Public Domain/MIT
     var d = new Date().getTime(); //Timestamp

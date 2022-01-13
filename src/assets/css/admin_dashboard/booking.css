@@ -51,7 +51,7 @@
 .booking_form_pid_input {
   display: flex;
   align-items: center;
-  padding-right: 20%;
+  padding-right: 10%;
   margin-bottom: 4%;
 }
 
@@ -100,6 +100,7 @@
   padding: 1.6% 4%;
   border-radius: 2.84px;
   font-weight: 900;
+  margin-right: 4px;
 }
 
 .booking_form_input_button_weekly:hover {

@@ -13,6 +13,7 @@ import {
   axios_call,
   axios_call_auto,
   generateUUID,
+  formatUsd
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -694,7 +695,7 @@ export default function Payment() {
                         </span>
                       </td>
                       <td>{payment.paymentId}</td>
-                      <td>{payment.amount} $</td>
+                      <td>{formatUsd(parseInt(payment.amount))} </td>
                       <td>
                         {moment(payment.paymentDate).format("DD/MM/YYYY")}
                       </td>

@@ -9,7 +9,7 @@ import Amount from "../assets/images/Amount.svg";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import Carousel from "react-elastic-carousel";
-import { axios_call, axios_call_auto } from "../functions/reusable_functions";
+import { axios_call, axios_call_auto ,formatUsd} from "../functions/reusable_functions";
 import { Bar, Line } from "react-chartjs-2";
 import moment from "moment";
 import Chart from "chart.js/auto";
@@ -533,7 +533,7 @@ export default function Booking_report() {
                     {" "}
                     <span className="booking_report_bottom_flex_number">
                       {" "}
-                      {slotdata && slotdata.amount}{" "}
+                      {slotdata && formatUsd(parseInt(slotdata.amount))}
                     </span>{" "}
                     <span>
                       {" "}
@@ -569,7 +569,7 @@ export default function Booking_report() {
                             {bookingdata.slots.wing.wingName} [
                             {bookingdata.slots.id}]
                           </td>
-                          <td>{bookingdata.charge} $</td>
+                          <td>{bookingdata.charge && formatUsd(parseInt(bookingdata.charge))}</td>
                           <td>
                             <IoTrashOutline
                             style={{cursor:'pointer'}}
@@ -598,7 +598,7 @@ export default function Booking_report() {
                             {bookingdata.slots.wing.wingName} [
                             {bookingdata.slots.id}]
                           </td>{" "}
-                          <td>{bookingdata.charge} $</td>
+                          <td>{bookingdata.charge && formatUsd(parseInt(bookingdata.charge))} </td>
                           <td>
                             <IoTrashOutline
                             style={{cursor:'pointer'}}

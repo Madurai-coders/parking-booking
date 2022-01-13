@@ -8,6 +8,7 @@ import {
   validation_name,
   axios_call,
   axios_call_auto,
+  formatUsd,
 } from "../functions/reusable_functions";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -25,6 +26,7 @@ export default function User_report() {
   const [checked_completed, setChecked_completed] = useState(false);
   const [user, setUser] = useState();
   const [pagination, setPagination] = useState();
+  const [loading, setloading] = useState(false);
   const [data, setData] = useState([
     {
       name: "Alfreds Futterkiste",
@@ -48,7 +50,41 @@ export default function User_report() {
     booking.forEach((element) => {
       booking_total = booking_total + parseInt(element.charge);
     });
-    return payment_total - booking_total;
+    var val = payment_total - booking_total;
+
+    if (val < 0) {
+      return (
+        <div>
+          {" "}
+          {formatUsd(Math.abs(payment_total - booking_total))}
+          <span className="small bg-danger mx-1 text-white px-1 rounded">
+            Delinquent
+          </span>
+        </div>
+      );
+    } else {
+      if (val == 0) {
+        return (
+          <div>
+            {" "}
+            {formatUsd(payment_total - booking_total)}
+            <span className="small bg-warning mx-1 text-white px-1 rounded">
+              Paid
+            </span>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            {" "}
+            {formatUsd(payment_total - booking_total)}
+            <span className="small bg-success mx-1 text-white px-1 rounded">
+              OverPayment
+            </span>
+          </div>
+        );
+      }
+    }
   }
 
   const checkuser = async (val) => {
@@ -57,17 +93,26 @@ export default function User_report() {
         (response) => {
           console.log(response);
           set_usr_suggestion(response);
+          setPagination();
         }
       );
     }
+    else{
+        GetBusinessPartner()
+    }
+
   };
 
   const GetPagination = async (val) => {
+    setloading(true);
     axios_call("GET", "GetBusinessPartner/?page=" + val).then((response) => {
-      console.log(response);
+      var val = [...response.results];
       setPagination(response);
       set_usr_suggestion(response.results);
       set_usr_suggestion_all(response.results);
+      setloading(false);
+      CallFliter(val);
+      console.log(val);
     });
   };
 
@@ -86,8 +131,12 @@ export default function User_report() {
 
   useEffect(() => {}, []);
 
-  useEffect(() => {
-    var usr = usr_suggestion;
+  function CallFliter(val) {
+    if (!val) {
+      var usr = usr_suggestion;
+    } else {
+      var usr = val;
+    }
     var completed = [];
     var pending = [];
     for (const element of usr) {
@@ -121,6 +170,10 @@ export default function User_report() {
     ) {
       set_usr_suggestion(usr_suggestion_all);
     }
+  }
+
+  useEffect(() => {
+    CallFliter();
   }, [checked_pending, checked_completed]);
 
   function set_up_flag() {
@@ -133,7 +186,10 @@ export default function User_report() {
          <title>Munidex Parking - User report </title>
       </Helmet>
       {!flag && (
-        <div className="overlay" style={{ display: flag }}>
+        <div
+          className="overlay_userdashboard shadow-lg"
+          style={{ display: flag }}
+        >
           <User user={user} set_up_flag={set_up_flag}></User>
         </div>
       )}
@@ -154,7 +210,7 @@ export default function User_report() {
                 className="User_report_search_input_label"
               >
                 {" "}
-                Name/Account
+                Name
               </label>
               <input
                 type="text"
@@ -190,7 +246,7 @@ export default function User_report() {
                       className="mx-1 User_report_filter_card_segment1_text_pending"
                     >
                       {" "}
-                      Pending{" "}
+                      Delinquent{" "}
                     </label>
                   </div>
                   <div className="col-3">
@@ -207,7 +263,7 @@ export default function User_report() {
                       className="mx-1 User_report_filter_card_segment1_text_completed"
                     >
                       {" "}
-                      Completed{" "}
+                      OverPayment{" "}
                     </label>
                   </div>
                   <div
@@ -261,11 +317,12 @@ export default function User_report() {
               </div>
             )}
           </div>
-
-         
         </div>
 
-        <div className="payment_table_container table mt-2">
+        <div
+          className="payment_table_container table mt-2"
+          onClick={() => setFilter(false)}
+        >
           <table className="payment_table ">
             {usr_suggestion && (
               <tr className="payment_table_heading">
@@ -288,8 +345,7 @@ export default function User_report() {
                       {Balance(
                         userdata.payment_partner,
                         userdata.booking_partner
-                      )}{" "}
-                      $
+                      )}
                     </td>
                     <td>
                       {userdata.payment_partner.length ? (
@@ -320,9 +376,18 @@ export default function User_report() {
                 );
               })}
           </table>
-          
         </div>
         <div style={{ marginTop: "0px" }} className="justify-content-end">
+          {loading && (
+            <div
+              style={{ marginLeft: "47%", marginTop: "-5px" }}
+              class=" spinner-grow"
+              role="status"
+            >
+              <span class="sr-only"></span>
+            </div>
+          )}
+          <div div style={{ display: loading ? "none" : "" }}>
             {pagination && pagination.count > 20 && (
               <Pagination
                 count={pagination.count}
@@ -330,6 +395,7 @@ export default function User_report() {
               />
             )}
           </div>
+        </div>
       </motion.div>
     </>
   );

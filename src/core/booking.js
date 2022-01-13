@@ -10,6 +10,7 @@ import {
   axios_call,
   axios_call_auto,
   generateUUID_334,
+  formatUsd
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import { set } from "js-cookie";
@@ -554,7 +555,7 @@ export default function Booking() {
               <span className="bookingspopup_text_amount"> Amount </span>{" "}
               <span className="bookingspopup_value_amount">
                 {" "}
-                $ {success.charge}
+                 {success.charge && formatUsd(parseInt(success.charge))}
               </span>
             </div>
             <div className="bookingspopup_amount_flex">
@@ -581,7 +582,7 @@ export default function Booking() {
       {wing && (
         <div className="">
           <div className="row booking_container">
-            <div className="col-7">
+            <div className="col-7 mt-2">
               {" "}
               <div className="px-4 pt-1">
                 <div className={datafail ? " danger p-3" : "shadow-sm p-3"}>
