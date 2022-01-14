@@ -6,7 +6,17 @@
   justify-content: space-between;
   border-radius: 0px 16px 16px 0px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  width: 4vw;
+  transition: width 0.4s;
+  transition-timing-function: ease;
 }
+
+.Navbigscreen_container:hover {
+   
+    width: 13vw;
+    transition: width 0.4s;
+
+  }
 
 .Navbigscreen_container ul {
   list-style-type: none;
@@ -63,6 +73,7 @@
   letter-spacing: 0.2px;
   vertical-align: middle;
   padding: 0 10% 0 6%;
+  text-decoration:none!important;
 }
 
 .Navbigscreen_menu_noexpand {
@@ -74,8 +85,10 @@
 .Navbigscreen_listitem_payment_noexpand,
 .Navbigscreen_listitem_parkingsetup_noexpand,
 .Navbigscreen_listitem_userreport_noexpand {
-  margin: 1rem 1rem 3rem 1rem;
-}
+    margin: 0 0.5rem 3rem 0.5rem;
+    background: transparent;
+    border-radius: 4px;
+    padding: 0.4rem 0.5rem;}
 
 .Navbigscreen_listitem_logout_noexpand {
     margin: 0rem 1rem 1.5rem 1rem;
@@ -119,6 +132,8 @@
   font-weight: 600;
   letter-spacing: 0.2px;
   padding: 0 10% 0 6%;
+  text-decoration:none!important;
+
 }
 
 .Navbigscreen_listitem_parkingsetup_img_active,
@@ -141,6 +156,17 @@
 .Navbigscreen_listitem_parkingsetup_noexpand_active {
   margin: 0 0.5rem 3rem 0.5rem;
   background: linear-gradient(78.68deg, #ffffff 4.29%, #ffffff 111.05%);
+  border-radius: 4px;
+  padding: 0.4rem 0.5rem;
+}
+
+.Navbigscreen_listitem_booking_noexpand:hover,
+.Navbigscreen_listitem_bookingreport_noexpand:hover,
+.Navbigscreen_listitem_userreport_noexpand:hover,
+.Navbigscreen_listitem_payment_noexpand:hover,
+.Navbigscreen_listitem_parkingsetup_noexpand:hover {
+  margin: 0 0.5rem 3rem 0.5rem;
+  background: linear-gradient(78.68deg, #ffffff88 4.29%, #ffffff48 111.05%);
   border-radius: 4px;
   padding: 0.4rem 0.5rem;
 }
