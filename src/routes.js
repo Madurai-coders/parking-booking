@@ -14,6 +14,7 @@ import User_report from "./core/user_report.js";
 import User from "./core/user.js";
 import "../src/assets/css/general.css";
 import logo from "../src/assets/images/navlogo.svg";
+import Search from "../src/assets/images/search.jpg";
 import {
   axios_call,
   axios_call_auto,
@@ -25,28 +26,35 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
 
-const Logoplacer = () => {
+const Logoplacer = (props) => {
   const logation = useLocation();
+  var icon = Cookies.get("icon")
   if (logation.pathname === "/" || logation.pathname == "/dashboard")
     return null;
   return (
-    <div style={{ borderRadius:'10px', position: "absolute", marginLeft: "4.5rem" }}>
+      <>    <div style={{ borderRadius:'10px', position: "absolute", marginLeft: "4.5rem" }}>
       <img src={logo} alt="Munidex_logo" className="admin_logo_placer" />
     </div>
-    
+
+{/* <img src={Search} alt="Munidex_logo"  style={{ width:'6%', marginTop:'4px' , borderRadius:'10px', position: "absolute", marginLeft: "88%" }} /> */}
+<img src={icon} alt="user"  style={{ borderRadius:'100%', width:'30px', marginTop:'12px' , position: "absolute", marginLeft: "94%" }} />
+</>
+
   );
 };
 
 const Routes = () => {
   let history = useHistory();
   const [is_admin, setis_admin] = useState(false);
+  const [user, setuser] = useState();
 
   const [loader, setloader] = useState(true);
 
 
   const call_login = async () => {
     login(true).then(function (log) {
-      console.log(log);
+      console.log(log.data.user.photoURL);
+      Cookies.set('icon',log.data.user.photoURL)
       if (log != null) {
         axios({
           method: "GET",
@@ -134,7 +142,7 @@ const Routes = () => {
               <div >
                 <Navigation />
               </div>
-              <Logoplacer />
+              <Logoplacer usericon={user}  />
               < >
                                   <Route path="/admin" exact render={() => (
                 loader ? <Loader/> :<Booking/>
