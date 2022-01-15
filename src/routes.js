@@ -30,9 +30,10 @@ const Logoplacer = () => {
   if (logation.pathname === "/" || logation.pathname == "/dashboard")
     return null;
   return (
-    <div style={{ position: "absolute", marginLeft: "4.5rem" }}>
+    <div style={{ borderRadius:'10px', position: "absolute", marginLeft: "4.5rem" }}>
       <img src={logo} alt="Munidex_logo" className="admin_logo_placer" />
     </div>
+    
   );
 };
 

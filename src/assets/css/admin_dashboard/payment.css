@@ -93,7 +93,7 @@
 
 
 .payment_table_container {
-    max-height: 62vh;
+    max-height: 66vh;
     overflow: hidden;
     overflow-y: scroll;
 }
@@ -122,7 +122,7 @@
   }
 
 .payment_table {
-  width: 100%;
+  width:99.5%;
   text-align: center;
 }
 
@@ -143,7 +143,7 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 15px;
-  padding:10px;
+  padding:8px;
   text-transform: capitalize;
 }
 

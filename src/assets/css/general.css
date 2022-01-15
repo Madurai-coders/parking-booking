@@ -103,6 +103,8 @@ body{
   padding-top: .6rem;
   height: 3rem;
   padding-bottom: .6rem;
+  border-radius: 0px 14px 0px 14px ;
+  
 }
 
 input:focus{

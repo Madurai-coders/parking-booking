@@ -85,13 +85,23 @@
 .Navbigscreen_listitem_payment_noexpand,
 .Navbigscreen_listitem_parkingsetup_noexpand,
 .Navbigscreen_listitem_userreport_noexpand {
-    margin: 0 0.5rem 3rem 0.5rem;
+    margin: 0 0.5rem 1.7rem 0.5rem;
     background: transparent;
     border-radius: 4px;
     padding: 0.4rem 0.5rem;}
 
 .Navbigscreen_listitem_logout_noexpand {
-    margin: 0rem 1rem 1.5rem 1rem;
+    margin: 0 0.5rem 1.7rem 0.5rem;
+    background: transparent;
+    border-radius: 4px;
+    padding: 0.4rem 0.5rem;}
+
+.Navbigscreen_listitem_logout_noexpand:hover {
+    margin: 0 0.5rem 1.7rem 0.5rem;
+    background: linear-gradient(78.68deg, #ffffff88 4.29%, #ffffff48 111.05%);
+    border-radius: 4px;
+    padding: 0.4rem 0.5rem;
+
 }
 
 .Navbigscreen_listitem_parkingsetup_active,
@@ -154,7 +164,7 @@
 .Navbigscreen_listitem_userreport_noexpand_active,
 .Navbigscreen_listitem_payment_noexpand_active,
 .Navbigscreen_listitem_parkingsetup_noexpand_active {
-  margin: 0 0.5rem 3rem 0.5rem;
+  margin: 0 0.5rem 1.7rem 0.5rem;
   background: linear-gradient(78.68deg, #ffffff 4.29%, #ffffff 111.05%);
   border-radius: 4px;
   padding: 0.4rem 0.5rem;
@@ -165,7 +175,7 @@
 .Navbigscreen_listitem_userreport_noexpand:hover,
 .Navbigscreen_listitem_payment_noexpand:hover,
 .Navbigscreen_listitem_parkingsetup_noexpand:hover {
-  margin: 0 0.5rem 3rem 0.5rem;
+  margin: 0 0.5rem 1.7rem 0.5rem;
   background: linear-gradient(78.68deg, #ffffff88 4.29%, #ffffff48 111.05%);
   border-radius: 4px;
   padding: 0.4rem 0.5rem;
