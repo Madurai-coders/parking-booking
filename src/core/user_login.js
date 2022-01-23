@@ -149,7 +149,7 @@ export default function User_login() {
                 />
               </Link>
             </div>
-            <div className="user_login_signin_text text-center  mb-3">
+            <div className="user_login_signin_text text-center  mb-4">
               Sign in
             </div>
 

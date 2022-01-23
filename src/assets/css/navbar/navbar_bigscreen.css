@@ -7,14 +7,16 @@
   border-radius: 0px 16px 16px 0px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   width: 4vw;
-  transition: width 0.4s;
+  transition: width 0.3s;
   transition-timing-function: ease;
 }
 
 .Navbigscreen_container:hover {
    
     width: 13vw;
-    transition: width 0.4s;
+    transition: width 0.3s;
+    transition-timing-function: ease;
+
 
   }
 

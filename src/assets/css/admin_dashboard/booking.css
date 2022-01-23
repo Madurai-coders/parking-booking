@@ -118,6 +118,8 @@
     padding: 1.6% 4%;
     border-radius: 2.84px;
     cursor:pointer;
+    font-weight: 900;
+
 
   }
 
@@ -130,25 +132,27 @@
 
 .booking_form_input_button_monthly:hover {
   color: #fff;
-  background-color: #fadf14;
+  background-color: #d6c529;
   cursor: pointer;
 }
 
 .booking_form_input_button_monthly_selected {
     color: #fff;
-    background-color: #ffe632;
-    border: solid 1px #ffe632;
+    background-color: #d6c529;
+    border: solid 1px #d6c529;
     font-style: bold;
     font-size: 0.6rem;
     padding: 1.6% 4%;
     border-radius: 2.84px;
     cursor: pointer;
+    font-weight: 900;
+
 
   }
 
 .booking_form_input_button_monthly {
-  color: #ffe632;
-  border: solid 1px #ffe632;
+  color: #d6c529;
+  border: solid 1px #d6c529;
   background-color: #fff;
   cursor: pointer;
 }
@@ -168,6 +172,8 @@
     padding: 1.6% 4%;
     border-radius: 2.84px;
     cursor: pointer;
+    font-weight: 900;
+
   }
 
 .booking_form_input_button_quarterly {
@@ -192,6 +198,8 @@
     padding: 1.6% 4%;
     border-radius: 2.84px;
     cursor: pointer;
+    font-weight: 900;
+
 
   }
 

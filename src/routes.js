@@ -37,7 +37,7 @@ const Logoplacer = (props) => {
     </div>
 
 {/* <img src={Search} alt="Munidex_logo"  style={{ width:'6%', marginTop:'4px' , borderRadius:'10px', position: "absolute", marginLeft: "88%" }} /> */}
-<img src={icon} alt="user"  style={{ borderRadius:'100%', width:'30px', marginTop:'12px' , position: "absolute", marginLeft: "94%" }} />
+<img src={icon} alt="user"  style={{ borderRadius:'100%', width:'26px', marginTop:'14px' , position: "absolute", marginLeft: "94%" }} />
 </>
 
   );

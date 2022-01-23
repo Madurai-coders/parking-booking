@@ -1,13 +1,13 @@
 .user_login{
     height : 100vh;
-    background-image: url('../../images/user_login_bg.png');
+    background-image: url('../../images/cover.jpg');
     background-repeat: no-repeat;
-    background-size: 100% 50%;
+    background-size: 100% 55%;
 }
 
 .user_login_card_container{
     position: relative;
-    top:26%;
+    top:28%;
 }
 
 .user_login_card{
@@ -58,9 +58,9 @@
 
 .user_login_google_button{
     color: #727272;
-    font-size: 13px;
-    border: 0.88247px solid #6b6b6b;
-    border-radius: 14px;
+    font-size: 12px;
+    border: 0.88247px solid #979797;
+    border-radius: 16px;
     display: inline-block;
     padding: 1.5% 6% 1.2% 6%;
     cursor: pointer;
@@ -68,9 +68,9 @@
 
 .user_login_google_button:hover{
     color: #000000;
-    font-size: 13px;
-    border: 0.88247px solid #e72727;
-    border-radius: 14px;
+    font-size: 12px;
+    border: 0.88247px solid #c0c0c0;
+    border-radius: 16px;
     display: inline-block;
     padding: 1.5% 6% 1.2% 6%;
     cursor: pointer;

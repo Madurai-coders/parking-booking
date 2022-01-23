@@ -21,11 +21,11 @@ export default function Admin_login(props) {
             <div className="user_login_card_container text-center">
               <div className="user_login_card shadow">
                 <div><Link to='/'><img src={logo} alt="munidex_logo"  className="user_login_signin_logo m-4"/></Link></div>
-                <div className="user_login_signin_text text-center mt- 5 mb-5">
+                <div className="user_login_signin_text text-center  mb-5">
                     Welcome Admin
                 </div>
         
-                <div className="text-center"><div className="text-center user_login_google_button mb-4" onClick={props.login}>
+                <div className="text-center"><div className="text-center user_login_google_button mb-3" onClick={props.login}>
                 <div className="d-flex">
                       <FcGoogle size={20} />
                       <div style={{ marginTop: "1px", marginLeft: "4px" }}>

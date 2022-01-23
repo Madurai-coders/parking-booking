@@ -105,20 +105,24 @@ export default function User_report() {
 
   const GetPagination = async (val) => {
     setloading(true);
+    set_usr_suggestion([]);
+    set_usr_suggestion_all([]);
     axios_call("GET", "GetBusinessPartner/?page=" + val).then((response) => {
       var val = [...response.results];
       setPagination(response);
       set_usr_suggestion(response.results);
       set_usr_suggestion_all(response.results);
       setloading(false);
-      CallFliter(val);
+      if (checked_pending && !checked_completed) {
+        CallFliter(val);      }
+     
       console.log(val);
     });
   };
 
   const GetBusinessPartner = async (val) => {
     axios_call("GET", "GetBusinessPartner/").then((response) => {
-      console.log(response);
+      console.log('response');
       setPagination(response);
       set_usr_suggestion(response.results);
       set_usr_suggestion_all(response.results);
@@ -129,7 +133,6 @@ export default function User_report() {
     GetBusinessPartner();
   }, []);
 
-  useEffect(() => {}, []);
 
   function CallFliter(val) {
     if (!val) {
@@ -337,7 +340,7 @@ export default function User_report() {
             {usr_suggestion &&
               usr_suggestion.map((userdata) => {
                 return (
-                  <tr className="payment_table_content">
+                  <tr key={userdata.id} className="payment_table_content">
                     <td>{userdata.userName}</td>
                     <td>{userdata.accountNumber}</td>
                     <td>{userdata.booking_partner.length}</td>
@@ -387,7 +390,7 @@ export default function User_report() {
               <span class="sr-only"></span>
             </div>
           )}
-          <div div style={{ display: loading ? "none" : "" }}>
+          <div style={{ display: loading ? "none" : "" }}>
             {pagination && pagination.count > 20 && (
               <Pagination
                 count={pagination.count}
