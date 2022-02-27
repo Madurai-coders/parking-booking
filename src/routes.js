@@ -98,7 +98,7 @@ const Routes = () => {
           
           setTimeout(() => {
             setloader(false)
-        }, 2400);
+        }, 1500);
 
         }
       });

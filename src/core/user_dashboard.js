@@ -135,40 +135,42 @@ export default function User_dashboard() {
       };
 
       console.log(data);
-      axios_call_unauthenticated(
-        "POST",
-        "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
-        data
-      ).then((response) => {
-        console.log(response);
-        let userDate = user;
-        userDate.payment_partner.push(response);
-        setUser(user);
-        setGetAmount(false);
-        setAmount();
-      });
+    //   axios_call_unauthenticated(
+    //     "POST",
+    //     "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+    //     data
+    //   ).then((response) => {
+    //     console.log(response);
+    //     let userDate = user;
+    //     userDate.payment_partner.push(response);
+    //     setUser(user);
+    //     setGetAmount(false);
+    //     setAmount();
+    //   });
+
+    window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' )
 
 
-      //   axios({
-      //     method: "POST",
-      //     url: "https://taxdev.munidex.info/pbs2/pbsreq",
-      //     data: body,
-      //     port: 443,
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Cookie:
-      //         "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
-      //     },
-      //     json: true,
-      //     withCredentials: true
-      //   }).then((response) => {
+        // axios({
+        //   method: "POST",
+        //   url: "https://taxdev.munidex.info/pbs2/pbsreq",
+        //   data: body,
+        //   port: 443,
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     Cookie:
+        //       "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
+        //   },
+        //   json: true,
+        //   withCredentials: true
+        // }).then((response) => {
 
         // window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
 
 
-      //     console.log(response);
+        //   console.log(response);
 
-      //   });
+        // });
     }
   }
 

@@ -11,9 +11,9 @@
   transition-timing-function: ease;
 }
 
-.Navbigscreen_container:hover {
+.Navbigscreen_container_active {
    
-    width: 13vw;
+    width: 12.5vw;
     transition: width 0.3s;
     transition-timing-function: ease;
 
@@ -44,8 +44,8 @@
 
 
 .Navbigscreen_listitem_logout_img {
-  height: 1.1rem;
-  width: 1.1rem;
+  height: 1rem;
+  width: 1rem;
   cursor: pointer;
 
 }
@@ -96,13 +96,13 @@
     margin: 0 0.5rem 1.7rem 0.5rem;
     background: transparent;
     border-radius: 4px;
-    padding: 0.4rem 0.5rem;}
+    padding: 0.4rem 0.75rem;}
 
 .Navbigscreen_listitem_logout_noexpand:hover {
     margin: 0 0.5rem 1.7rem 0.5rem;
     background: linear-gradient(78.68deg, #ffffff88 4.29%, #ffffff48 111.05%);
     border-radius: 4px;
-    padding: 0.4rem 0.5rem;
+    padding: 0.4rem 0.75rem;
 
 }
 
@@ -182,3 +182,6 @@
   border-radius: 4px;
   padding: 0.4rem 0.5rem;
 }
+
+
+  

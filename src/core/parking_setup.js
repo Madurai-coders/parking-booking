@@ -34,6 +34,7 @@ export default function Parkingsetup() {
   });
 
   const [data_fail, setData_fail] = useState(false);
+  const [loading, setloading] = useState(false);
 
   const [wing_data, SetWing_data] = useState();
   const [slot, SetSlot] = useState();
@@ -196,6 +197,7 @@ export default function Parkingsetup() {
   };
 
   const TotalInactiveSlotupdate = async (value) => {
+    setloading(true)
     if (value.id) {
       value = { ...value, slotStatus: !value.slotStatus };
       axios_call("PUT", "Inactiveslots/" + value.id + "/", value).then(
@@ -231,6 +233,8 @@ export default function Parkingsetup() {
 
           Wingdata[index] = { ...wing_data[index], slots: [...slotsdata] };
           SetWing_data([...Wingdata]);
+          setloading(false)
+
         }
       );
     }
@@ -793,7 +797,7 @@ export default function Parkingsetup() {
                                 TotalInactiveSlotupdate(parkingsetupdata, id)
                               }
                             >
-                              Activate
+                             {loading ? 'processing' : 'Activate' } 
                             </span>
                           </td>
                         </tr>

@@ -14,6 +14,7 @@ import { set } from "js-cookie";
 
 export default function Navbarbigscreen(props) {
   const [expand, setExpand] = useState(false);
+  const [expandb_bar, setExpandBar] = useState(false);
   const [current_page, setCurrentpage] = useState("booking");
   const [logout_popup, setlogout_popup] = useState();
 
@@ -22,10 +23,12 @@ export default function Navbarbigscreen(props) {
   }
 
   function handleContract() {
-    setExpand(false)
+    if(expand){
+    setExpand(false);}
+    if(!expand){
     setTimeout(() => {
-        setExpand(false);
-      }, 185);
+      setExpand(!expand);
+    }, 220);}
   }
 
   return (
@@ -73,17 +76,19 @@ export default function Navbarbigscreen(props) {
         )}
         {true && (
           <div
-            className="Navbigscreen_container"
-            onMouseLeave={() => handleContract()}
-            onMouseEnter={() => {
-              setTimeout(() => {
-                setExpand(true);
-              }, 220);
-            }}
+            className= {'Navbigscreen_container' + ' ' + (expandb_bar && 'Navbigscreen_container_active')}
+           
           >
             <div>
               <ul className="Navbigscreen_list">
-                <li className="Navbigscreen_menu_noexpand pt-1">
+                <li
+                  className="Navbigscreen_menu_noexpand pt-1"
+                  onClick={() => {
+                    setExpandBar(!expandb_bar);
+                   handleContract()
+                    
+                  }}
+                >
                   <img
                     src={Menu}
                     className="Navbigscreen_menu_img "
@@ -145,6 +150,7 @@ export default function Navbarbigscreen(props) {
                       }
                       alt="Munidex_parking_Booking_Report"
                     />
+                    
                     {expand && (
                       <span
                         className={
@@ -154,6 +160,7 @@ export default function Navbarbigscreen(props) {
                         }
                       >
                         Booking Report
+                        
                       </span>
                     )}
                   </li>
@@ -179,6 +186,7 @@ export default function Navbarbigscreen(props) {
                       }
                       alt="Munidex_parking_payment"
                     />
+                   
                     {expand && (
                       <span
                         className={
@@ -188,7 +196,9 @@ export default function Navbarbigscreen(props) {
                         }
                       >
                         Payment
+                        
                       </span>
+                      
                     )}
                   </li>
                 </Link>
@@ -263,10 +273,13 @@ export default function Navbarbigscreen(props) {
               </ul>
             </div>
 
+            
+
             <div
               onClick={() => (setlogout_popup(true), setExpand(false))}
               className="Navbigscreen_listitem_logout_noexpand"
             >
+                
               <img
                 src={Logout}
                 className="Navbigscreen_listitem_logout_img"
@@ -286,95 +299,7 @@ export default function Navbarbigscreen(props) {
       </AnimatePresence>
 
       <AnimatePresence>
-        {/* {expand && (
-        <motion.div 
-  
-        className="Navbigscreen_container" style={{width:'13vw'}}   onMouseLeave={()=>{
-            setTimeout(() => {
-                setExpand(false)
-            }, 500);
-            }}>
-          <div>
-            <ul className="Navbigscreen_list">
-              <li className="Navbigscreen_menu pt-1">
-                <img
-                  src={Menu}
-                  className="Navbigscreen_menu_img"
-                  alt="Munidex_Parking_Menu"
-                />
-              </li>
-              <Link to = 'admin' style={{textDecoration:"none"}}  onClick={() => setCurrentpage("booking")}>
-              <li className={current_page == "booking" ? "Navbigscreen_listitem_booking_active" : "Navbigscreen_listitem_booking"}>
-                <img
-                  src={Booking}
-                  className={current_page == "booking" ? "Navbigscreen_listitem_booking_img_active" : "Navbigscreen_listitem_booking_img"}
-                  alt="Munidex_Parking_booking"
-                />
-                <span className={current_page=="booking" ? "Navbigscreen_listitem_booking_text_active" : "Navbigscreen_listitem_booking_text"}>
-                  Booking
-                </span>
-              </li>
-              </Link>
-              <Link to = "AdmindashboardBookingreport" style={{textDecoration:"none"}} onClick={() => setCurrentpage("bookingreport")}>
-              <li className={current_page == "bookingreport" ? "Navbigscreen_listitem_bookingreport_active" : "Navbigscreen_listitem_bookingreport"}>
-                <img
-                  src={Bookingreport}
-                  className={current_page == "bookingreport" ? "Navbigscreen_listitem_bookingreport_img_active" : "Navbigscreen_listitem_bookingreport_img"}
-                  alt="Munidex_parking_Booking_Report"
-                />
-                <span className={current_page=="bookingreport" ? "Navbigscreen_listitem_bookingreport_text_active" : "Navbigscreen_listitem_bookingreport_text"}>
-                  Booking Report
-                </span>
-              </li>
-              </Link>
-              <Link to="Admindashboardpayment" style={{textDecoration:"none"}} onClick={() => setCurrentpage("payment")}>
-              <li className={current_page == "payment" ? "Navbigscreen_listitem_payment_active" : "Navbigscreen_listitem_payment"}>
-                <img
-                  src={payment}
-                  className={current_page == "payment" ? "Navbigscreen_listitem_payment_img_active" : "Navbigscreen_listitem_payment_img"}
-                  alt="Munidex_parking_payment"
-                />
-                <span className={current_page=="payment" ? "Navbigscreen_listitem_payment_text_active" : "Navbigscreen_listitem_payment_text"}>
-                  Payment
-                </span>
-              </li>
-              </Link>
-              <Link to = 'AdmindashboardParkingsetup' style={{textDecoration:"none"}} onClick={() => setCurrentpage("parkingsetup")}>
-              <li className={current_page == "parkingsetup" ? "Navbigscreen_listitem_parkingsetup_active" : "Navbigscreen_listitem_parkingsetup"}>
-                <img
-                  src={Parkingsetup}
-                  className={current_page == "parkingsetup" ? "Navbigscreen_listitem_parkingsetup_img_active" : "Navbigscreen_listitem_parkingsetup_img"}
-                  alt="Munidex_parking_Parking_setup"
-                />
-                <span className={current_page=="parkingsetup" ? "Navbigscreen_listitem_parkingsetup_text_active" : "Navbigscreen_listitem_parkingsetup_text"}>
-                  Parking Setup
-                </span>
-              </li>
-              </Link>
-              <Link to = 'AdmindashboardUserreport' style={{textDecoration:"none"}} onClick={() => setCurrentpage("userreport")}>
-              <li className={current_page == "userreport" ? "Navbigscreen_listitem_userreport_active" : "Navbigscreen_listitem_userreport"}>
-                <img
-                  src={User_report}
-                  className={current_page == "userreport" ? "Navbigscreen_listitem_userreport_img_active" : "Navbigscreen_listitem_userreport_img"}
-                  alt="Munidex_parking_user_report"
-                />
-                <span className={current_page=="userreport" ? "Navbigscreen_listitem_userreport_text_active" : "Navbigscreen_listitem_userreport_text"}>
-                  User Report
-                </span>
-              </li>
-              </Link>
-            </ul>
-          </div>
-          <div className="Navbigscreen_listitem_logout" onClick={()=>setlogout_popup(true)}>
-            <img
-              src={Logout}
-              className="Navbigscreen_listitem_logout_img"
-              alt="Munidex_parking_logout"
-            />
-            <span className="Navbigscreen_listitem_logout_text" style={{cursor:'pointer'}}>Logout</span>
-          </div>
-        </motion.div>
-      )} */}
+       
       </AnimatePresence>
     </>
   );
