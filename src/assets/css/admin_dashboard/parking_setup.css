@@ -1,5 +1,5 @@
 .parking_setup_container {
-  padding-top: 8vh;
+  padding-top: 9vh;
 }
 
 .parking_setup_active_progress {
@@ -16,8 +16,8 @@
 
 .parking_setup_active_text,
 .parking_setup_inactive_text {
-  color: #838383;
-  font-weight: 500;
+    color: #292929;
+    font-weight: 500;
   font-size: 11.18px;
   margin-bottom: 2%;
 }
@@ -39,7 +39,7 @@
 .parking_setup_text_slot_type,
 .parking_setup_text_count,
 .parking_setup_text_plan {
-  color: #838383;
+  color: #292929;
   font-weight: 500;
   font-size: 11.3px;
   line-height: 14px;
@@ -62,10 +62,12 @@
 .parking_setup_input_quarterly,
 .parking_setup_input_yearly {
   max-width: 90%;
-  background: rgba(248, 248, 248, 0.61);
+  background: rgba(189, 189, 189, 0.61);
   border-width: 0px;
   border-color: thistle;
   border-radius: 4px;
+  height: 35px;
+
   
 }
 
@@ -73,18 +75,17 @@
 .parking_setup_input_monthly::placeholder,
 .parking_setup_input_quarterly::placeholder,
 .parking_setup_input_yearly::placeholder {
-  color: #bbbbbb;
+  color: #000000;
   font-weight: 500;
-  font-size: 6.82px;
-  line-height: 0.5rem;
+  font-size: 10px;
   padding-left: 3%;
 }
 .parking_setup_input_count,
 .parking_setup_input_slot_type {
-  background: rgba(248, 248, 248, 0.61);
+  background: rgba(189, 189, 189, 0.61);
   border-width: 0px;
   width: 80%;
-  min-height: 35%;
+ height: 50px;
   margin-top: 3%;
   border-radius: 4px;
   border-color: thistle;
@@ -94,7 +95,7 @@
 
 .parking_setup_input_count::placeholder,
 .parking_setup_input_slot_type::placeholder {
-  color: #bbbbbb;
+  color: #000000;
   font-weight: 500;
   font-size: 11.3px;
   line-height: 14px;

@@ -4,7 +4,8 @@ import User_login from "./core/user_login";
 import Admin_login from "./core/admin_login";
 import User_dashboard from "./core/user_dashboard";
 import Booking from "./core/booking";
-import Booking_Report from "./core/booking_report";
+import Booking_Report1 from "./core/booking_report";
+import Booking_Report from "./core/booking_report copy";
 import Parkingsetup from "./core/parking_setup";
 import Payment from "./core/payment.js";
 import Menu from "./core/Menu";
@@ -28,7 +29,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Logoplacer = (props) => {
   const logation = useLocation();
-  var icon = Cookies.get("icon")
+//   var icon = Cookies.get("icon")
   if (logation.pathname === "/" || logation.pathname == "/dashboard")
     return null;
   return (
@@ -37,7 +38,7 @@ const Logoplacer = (props) => {
     </div>
 
 {/* <img src={Search} alt="Munidex_logo"  style={{ width:'6%', marginTop:'4px' , borderRadius:'10px', position: "absolute", marginLeft: "88%" }} /> */}
-<img src={icon} alt="user"  style={{ borderRadius:'100%', width:'26px', marginTop:'14px' , position: "absolute", marginLeft: "94%" }} />
+{/* <img src={icon} alt="user"  style={{ borderRadius:'100%', width:'26px', marginTop:'14px' , position: "absolute", marginLeft: "94%" }} /> */}
 </>
 
   );
@@ -54,11 +55,11 @@ const Routes = () => {
   const call_login = async () => {
     login(true).then(function (log) {
       console.log(log.data.user.photoURL);
-      Cookies.set('icon',log.data.user.photoURL)
+    //   Cookies.set('icon',log.data.user.photoURL)
       if (log != null) {
         axios({
           method: "GET",
-          url: "https://munidexparking.pythonanywhere.com/admins/",
+          url: "http://127.0.0.1:8000/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {
@@ -174,6 +175,7 @@ const Routes = () => {
                 exact
                 component={test}
                 />
+                
                 </>
 
             

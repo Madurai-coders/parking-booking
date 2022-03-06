@@ -1,9 +1,15 @@
 .booking_report_container {
-  padding-top: 8vh;
+  padding-top: 50px;
   padding-left: .5vw;
   padding-right: .5vw;
-  height: 92vh;
+  /* height: 82vh; */
+  overflow-y: scroll;
 }
+.booking_report_container_whole {
+
+    height: 100vh;
+    overflow-y: scroll;
+  }
 
 .booking_report_title {
   color: #fff;
@@ -14,13 +20,25 @@
  background: rgb(72,180,227);
   background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
   padding: 0.6% 1%;
+  position: fixed;
+  width: 95%;
+  z-index: 1000;
 }
 
-.booking_report_table_container {
+
+
+.booking_report_table_container_mini {
   overflow: hidden;
   overflow-y: scroll;
-  max-height: 60vh;
+  max-height: 40vh;
 }
+
+
+.booking_report_table_container {
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 50vh;
+  }
 
 .booking_report_table_container::-webkit-scrollbar {
   width: 2px;
@@ -42,7 +60,7 @@
   text-align: center;
   width: 100%;
   background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
 }
 
 .booking_report_table_headers th {
@@ -80,24 +98,24 @@
   background: #ffffff;
   box-shadow: 2px 2px 7px rgba(151, 151, 151, 0.15);
   border-radius: 8px;
-  margin: 2.5% 2% 3% 0;
+  margin: 1% 2% 3% 0;
   padding: 2% 2% 1% 2%;
   border: 1px solid rgb(174, 216, 255);
 
 }
 
 .booking_report_slot_number_text {
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 10px;
-  color: #505255;
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 16px;
+  color: #0f0f0f;
 }
 
 .booking_report_bottom_flex_number {
-  font-weight: 500;
-  font-size: 16px;
-  color: #32325d;
-  margin-top: 12px;
+  font-weight: 900;
+  font-size: 10px;
+  color: #575757;
+  margin-top: 14px;
 }
 
 .booking_report_bottom_flex {
@@ -160,15 +178,27 @@
 }
 
 .booking_report_wing_button {
- background: rgb(72,180,227);
-  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
+ background: rgb(12, 74, 100);
+  /* background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);   */
   color: #fff;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 128%;
   padding: 4px 10px;
   border-radius: 3px;
-  margin-top: 0px;
   cursor: pointer;
   text-transform: capitalize;
 }
+
+.booking_report_wing_button_selected {
+    background: rgb(255, 255, 255);
+     color: rgb(19, 65, 85);
+     font-weight: 900;
+     font-size: 14px;
+     line-height: 128%;
+     padding: 4px 10px;
+     border-radius: 3px;
+     cursor: pointer;
+     text-transform: capitalize;
+     border: 1px solid rgb(174, 216, 255);
+   }

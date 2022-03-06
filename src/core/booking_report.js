@@ -461,9 +461,9 @@ export default function Booking_report() {
       )}
 
       <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: [0.5, 1], x: 0 }}
-        transition={{ duration: 1 }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: [0.5, 1], y: 0 }}
+        transition={{ duration: 0.3 }}
         className="flex-grow-1"
       >
         <div className="booking_report_container">

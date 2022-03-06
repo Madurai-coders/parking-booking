@@ -26,6 +26,7 @@ export default function Parkingsetup() {
     wingName: "not_selected",
     wingCount: "not_selected",
     wingStatus: true,
+    planDaily: "not_selected",
     planWeekly: "not_selected",
     planMonthly: "not_selected",
     planQuarterly: "not_selected",
@@ -52,6 +53,7 @@ export default function Parkingsetup() {
     if (
       validation_name(wing.wingName).class == "pass" &&
       validation_count(wing.wingCount).class == "pass" &&
+      validation_amount(wing.planDaily).class == "pass" &&
       validation_amount(wing.planWeekly).class == "pass" &&
       validation_amount(wing.planMonthly).class == "pass" &&
       validation_amount(wing.planQuarterly).class == "pass" &&
@@ -67,6 +69,9 @@ export default function Parkingsetup() {
       }
       if (wing.planWeekly == "not_selected") {
         value = { ...value, planWeekly: "" };
+      }
+      if (wing.planDaily == "not_selected") {
+        value = { ...value, planDaily: "" };
       }
       if (wing.planMonthly == "not_selected") {
         value = { ...value, planMonthly: "" };
@@ -167,6 +172,8 @@ export default function Parkingsetup() {
   };
 
   const Slotupdate = async (value, id) => {
+      setloading(value.id)
+      console.log('cool')
     if (value.id) {
       value = { ...value, slotStatus: !value.slotStatus };
       axios_call("PUT", "CreateSlots/" + value.id + "/", value).then(
@@ -187,17 +194,21 @@ export default function Parkingsetup() {
 
           reset();
           if (value.slotStatus == false) {
-            SetInactivelot((inactiveslot) => [...inactiveslot, value]);
+            SetInactivelot((inactiveslot) => [value,...inactiveslot]);
           } else {
             SetInactivelot(inactiveslot.filter((item) => item.id !== value.id));
           }
+          setloading(false)
         }
+        
       );
+      
+
     }
   };
 
   const TotalInactiveSlotupdate = async (value) => {
-    setloading(true)
+    setloading(value.id)
     if (value.id) {
       value = { ...value, slotStatus: !value.slotStatus };
       axios_call("PUT", "Inactiveslots/" + value.id + "/", value).then(
@@ -305,6 +316,7 @@ export default function Parkingsetup() {
       wingName: "not_selected",
       wingCount: "not_selected",
       wingStatus: true,
+      planDaily :"not_selected",
       planWeekly: "not_selected",
       planMonthly: "not_selected",
       planQuarterly: "not_selected",
@@ -374,23 +386,29 @@ export default function Parkingsetup() {
   
 
       <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: [0.5, 1], x: 0 }}
-        transition={{ duration: 1 }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: [0.5, 1], y: 0 }}
+        transition={{ duration: 0.3 }}
         className="flex-grow-1 parking_setup_container"
       >
               {data_fail &&
-              <div className="d-flex justify-content-center" style={{marginTop:'-40px'}}>
+              <div className="d-flex justify-content-center " style={{marginTop:'-20px'}}>
       <div className="small btn-sm btn mb-3 btn-outline-danger">{data_fail}</div></div>}
+
         <div className="row">
-          <div className="col-7">
+
+          <div className="col-12">
+
             <div className="row">
-              <div className="col-5 parking_setup_slot_container">
+
+
+              <div className="col-4 parking_setup_slot_container">
                 <div className="parking_setup_text_slot_type"> Wing Name </div>
                 <input
                   autoComplete="off"
                   type="text"
                   name="slot_type"
+                  placeholder='Give a name'
                   className="parking_setup_input_slot_type"
                   onChange={(e) => (
                     call_wingName_check(e.target.value),
@@ -404,53 +422,19 @@ export default function Parkingsetup() {
                     validation_name(wing.wingName).class
                   }
                 />
-                <div style={{ marginTop: "5px", fontSize: "10px" }}>
+                <div style={{marginTop: "5px", fontSize: "10px" }}>
                   {validation_name(wing.wingName).msg}
                 </div>
-                {!wing.wingId && (
-                  <div className="parking_setup_button_container mt-4">
-                    <div
-                      className="parking_setup_submit_button"
-                      onClick={form_submit}
-                    >
-                      {" "}
-                      Submit{" "}
-                    </div>
-                    <div className="parking_setup_clear_button" onClick={reset}>
-                      {" "}
-                      Clear{" "}
-                    </div>
-                  </div>
-                )}
 
-                {wing.wingId && (
-                  <div className="parking_setup_button_container mt-4">
-                    <div
-                      className="parking_setup_submit_button"
-                      onClick={Wingupdate}
-                    >
-                      {" "}
-                      update{" "}
-                    </div>
-                    <div className="parking_setup_clear_button" onClick={reset}>
-                      {" "}
-                      Clear{" "}
-                    </div>
+                
 
-                    <div
-                      className="parking_setup_danger_button mx-2"
-                      onClick={()=>setRemove_wing(true)}
-                    >
-                      {" "}
-                      Remove{" "}
-                    </div>
-                  </div>
-                )}
               </div>
+
+
               <div className="col-3">
                 <div className="parking_setup_text_count"> Count </div>
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Number of slots"
                   name="slot_count"
                   onChange={(e) => {
@@ -470,14 +454,46 @@ export default function Parkingsetup() {
                   {validation_count(wing.wingCount).msg}
                 </div>
               </div>
-              <div className="col-4">
+
+
+
+              <div className="col-5">
                 <div className="parking_setup_text_plan"> Plan </div>
                 <div className="row">
-                  <div className="col-6">
-                    <div className="parking_setup_text_weekly"> Weekly </div>
+
+                <div className="col-4">
+                    {/* <div className="parking_setup_text_weekly"> Daily </div> */}
                     <input
                       type="text"
-                      placeholder="Enter"
+                      placeholder="Daily"
+                      name="weekly_rate"
+                      onChange={(e) =>
+                        setWing({ ...wing, planDaily: e.target.value })
+                      }
+                      onBlur={(e) =>
+                        setWing({ ...wing, planDaily: e.target.value })
+                      }
+                      value={
+                        wing.planDaily != "not_selected" ? wing.planDaily : ""
+                      }
+                      className={
+                        "parking_setup_input_weekly mt-3 " +
+                        validation_amount(wing.planDaily).class
+                      }
+                    />
+                    <div style={{ marginTop: "5px", fontSize: "10px" }}>
+                      {validation_amount(wing.planDaily).msg}
+                    </div>
+                    </div>
+
+
+                    
+
+                  <div className="col-4">
+                    {/* <div className="parking_setup_text_weekly"> Weekly </div> */}
+                    <input
+                      type="text"
+                      placeholder="Weekly"
                       name="weekly_rate"
                       onChange={(e) =>
                         setWing({ ...wing, planWeekly: e.target.value })
@@ -489,20 +505,24 @@ export default function Parkingsetup() {
                         wing.planWeekly != "not_selected" ? wing.planWeekly : ""
                       }
                       className={
-                        "parking_setup_input_weekly " +
+                        "parking_setup_input_weekly mt-3 " +
                         validation_amount(wing.planWeekly).class
                       }
                     />
                     <div style={{ marginTop: "5px", fontSize: "10px" }}>
                       {validation_amount(wing.planWeekly).msg}
                     </div>
-                    <div className="parking_setup_text_quarterly">
+                    </div>
+
+                    <div className="col-4">
+
+                    {/* <div className="parking_setup_text_quarterly">
                       {" "}
                       Quarterly
-                    </div>
+                    </div> */}
                     <input
                       type="text"
-                      placeholder="Enter"
+                      placeholder="Quarterly"
                       name="quarterly_rate"
                       onChange={(e) =>
                         setWing({ ...wing, planQuarterly: e.target.value })
@@ -516,7 +536,7 @@ export default function Parkingsetup() {
                           : ""
                       }
                       className={
-                        "parking_setup_input_weekly " +
+                        "parking_setup_input_weekly mt-3 " +
                         validation_amount(wing.planQuarterly).class
                       }
                     />
@@ -524,11 +544,13 @@ export default function Parkingsetup() {
                       {validation_amount(wing.planQuarterly).msg}
                     </div>
                   </div>
-                  <div className="col-6">
-                    <div className="parking_setup_text_monthly"> Monthly </div>
+                  
+                  
+                  <div className="col-4">
+                    {/* <div className="parking_setup_text_monthly"> Monthly </div> */}
                     <input
                       type="text"
-                      placeholder="Enter"
+                      placeholder="Monthly"
                       name="monthly_rate"
                       onChange={(e) =>
                         setWing({ ...wing, planMonthly: e.target.value })
@@ -542,17 +564,21 @@ export default function Parkingsetup() {
                           : ""
                       }
                       className={
-                        "parking_setup_input_weekly " +
+                        "parking_setup_input_weekly mt-3 " +
                         validation_amount(wing.planMonthly).class
                       }
                     />
                     <div style={{ marginTop: "5px", fontSize: "10px" }}>
                       {validation_amount(wing.planMonthly).msg}
                     </div>
-                    <div className="parking_setup_text_yearly"> Yearly </div>
+                    </div>
+
+                  <div className="col-4">
+
+                    {/* <div className="parking_setup_text_yearly"> Yearly </div> */}
                     <input
                       type="text"
-                      placeholder="Enter"
+                      placeholder="Yearly"
                       name="yearly_rate"
                       onChange={(e) =>
                         setWing({ ...wing, planYearly: e.target.value })
@@ -564,7 +590,7 @@ export default function Parkingsetup() {
                         wing.planYearly != "not_selected" ? wing.planYearly : ""
                       }
                       className={
-                        "parking_setup_input_weekly " +
+                        "parking_setup_input_weekly mt-3 " +
                         validation_amount(wing.planYearly).class
                       }
                     />
@@ -575,8 +601,13 @@ export default function Parkingsetup() {
                 </div>
               </div>
             </div>
+
+
           </div>
-          <div className="col-5">
+          
+          
+          {/* <div className="col-5">
+
             <div className="row">
               <div className="col-6">
                 <div className="parking_setup_active_text">Active Slot</div>
@@ -617,8 +648,51 @@ export default function Parkingsetup() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
+
+
         </div>
+        {!wing.wingId && (
+                  <div className="mx-5" style={{marginTop:'-25px'}}>
+                    <div
+                      className="btn btn-success btn-sm mx-2"
+                      onClick={form_submit}
+                    >
+                      {" "}
+                      Submit{" "}
+                    </div>
+                    <div className="btn btn-light btn-sm mx-2" onClick={reset}>
+                      {" "}
+                      Clear{" "}
+                    </div>
+                  </div>
+                )}
+
+                
+                {wing.wingId && (
+                  <div className="mx-5" style={{marginTop:'-25px'}}>
+                  <div
+                      className="btn btn-success mx-2"
+                      onClick={Wingupdate}
+                    >
+                      {" "}
+                      update{" "}
+                    </div>
+                    <div className="btn btn-light mx-2" onClick={reset}>
+                      {" "}
+                      Clear{" "}
+                    </div>
+
+                    <div
+                      className="btn btn-danger  mx-2"
+                      onClick={()=>setRemove_wing(true)}
+                    >
+                      {" "}
+                      Remove{" "}
+                    </div>
+                  </div>
+                )}
+
         <div className="row">
           <div className="col-7">
             {/* {wing_data && wing_data.length > 10 && (
@@ -677,6 +751,7 @@ export default function Parkingsetup() {
                               wingName: wing.wingName,
                               wingCount: wing.slots.length,
                               wingStatus: true,
+                              planDaily: parseInt(wing.planDaily),
                               planWeekly: parseInt(wing.planWeekly),
                               planMonthly: parseInt(wing.planMonthly),
                               planQuarterly: parseInt(wing.planQuarterly),
@@ -728,25 +803,31 @@ export default function Parkingsetup() {
             )} */}
 
             <div className="parking_setup_wing_container">
+                
               {slot && (
                 <>
                   {slot.map((slot, id) => {
                     return (
                       <span>
-                        <img
-                          key={id}
-                          src={Car}
-                          onClick={() =>
-                            wing.wingId
-                              ? RemoveSlot(slot, id)
-                              : Slotupdate(slot, id)
-                          }
-                          className={
-                            "ps-3 pe-3 mb-3 parking_setup_car_img " +
-                            (!slot.slotStatus && "closes_soon")
-                          }
-                          alt="Munidex_parking_Booking_slots"
-                        />
+                          {loading == slot.id ? <span className="ps-3 pe-3"> <div  key={id} class=" spinner-border spinner-border-sm text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div></span>:
+  <img
+  key={id}
+  src={Car}
+  onClick={() =>
+    wing.wingId
+      ? RemoveSlot(slot, id)
+      : Slotupdate(slot, id)
+  }
+  className={
+    "ps-3 pe-3 mb-3 parking_setup_car_img " +
+    (!slot.slotStatus && "closes_soon")
+  }
+  alt="Munidex_parking_Booking_slots"
+/>
+ }
+                       
                       </span>
                     );
                   })}{" "}
@@ -791,14 +872,21 @@ export default function Parkingsetup() {
                           <td>{parkingsetupdata.id}</td>
                           {/* <td>{parkingsetupdata.date}</td> */}
                           <td>
+                              {loading==parkingsetupdata.id? <span
+                              className={"bg-danger parking_setup_table_activate_button" }
+                             
+                            >
+                            Processing
+                            </span>: 
                             <span
-                              className="parking_setup_table_activate_button"
+                              className={ "parking_setup_table_activate_button"}
                               onClick={() =>
                                 TotalInactiveSlotupdate(parkingsetupdata, id)
                               }
                             >
-                             {loading ? 'processing' : 'Activate' } 
+                            Activate
                             </span>
+                    }
                           </td>
                         </tr>
                       );

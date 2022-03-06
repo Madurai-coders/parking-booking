@@ -298,9 +298,7 @@ export default function Navbarbigscreen(props) {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-       
-      </AnimatePresence>
+      
     </>
   );
 }

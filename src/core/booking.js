@@ -197,6 +197,11 @@ export default function Booking() {
     var startFrom = moment(booking.date, "YYYY-MM-DD").format("YYYY-MM-DD");
     var endTo = "";
 
+    if (booking.plan == "Daily") {
+        endTo = moment(booking.date, "YYYY-MM-DD")
+          .add(1, "days")
+          .format("YYYY-MM-DD");
+      }
 
     if (booking.plan == "Monthly") {
       endTo = moment(booking.date, "YYYY-MM-DD")
@@ -221,6 +226,7 @@ export default function Booking() {
         .add(366, "days")
         .format("YYYY-MM-DD");
     }
+
 
     var booking_finalized = {
       ...booking,
@@ -381,9 +387,9 @@ export default function Booking() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 50 }}
-      animate={{ opacity: [0.5, 1], x: 0 }}
-      transition={{ duration: 1 }}
+    initial={{ opacity: 0, y: 15 }}
+    animate={{ opacity: [0.5, 1], y: 0 }}
+    transition={{ duration: 0.3 }}
     >
       <Helmet>
          <title>Munidex Parking - Booking </title>
@@ -876,6 +882,24 @@ export default function Booking() {
                   <div className="booking_form_plan_input">
                     <div className="booking_form_plan_input_text"> Plan </div>
                     <div className="booking_form_plan_input_buttons">
+                      <div
+                        className={
+                          booking.plan == "Daily"
+                            ? "booking_form_input_button_daily_selected"
+                            : "booking_form_input_button_daily"
+                        }
+                        onClick={() =>
+                          setbooking({
+                            ...booking,
+                            plan: "Daily",
+                            charge: wing && wing.planDaily,
+                          })
+                        }
+                      >
+                        {" "}
+                        Daily{" "}
+                      </div>
+
                       <div
                         className={
                           booking.plan == "Weekly"

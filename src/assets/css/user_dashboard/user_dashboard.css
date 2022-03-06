@@ -286,11 +286,12 @@
 }
 
 .user_dashboard_popup_table_header th{
-  color: #b8b8b8;
+  color: #424242;
   font-weight: 500;
   font-size: 12px;
-  padding-bottom: 2%;
-  background-color: #fff;
+  padding-bottom: 0.4%;
+  padding-top: 0.5%;
+  background-color: rgb(202, 202, 202);
   position: sticky;
   z-index: 2;
   top: 0;

@@ -6,7 +6,7 @@ export default function Bookinginvoice(props) {
     <>
       <div
         onClick={props.ClosePreview}
-        className="bookinginvoice_container flex-grow-1 px-3 pt-1 mb-3 bg-white shadow"
+        className="bookinginvoice_container flex-grow-1 px-3 pt-1 mb-3 mt-5 bg-white shadow"
       >
         <div className="bookinginvoice_topsection row">
           <div className="col-8"></div>

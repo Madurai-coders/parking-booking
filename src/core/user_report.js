@@ -197,14 +197,14 @@ export default function User_report() {
         </div>
       )}
       <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: [0.5, 1], x: 0 }}
-        transition={{ duration: 1 }}
+       initial={{ opacity: 0, y: 15 }}
+       animate={{ opacity: [0.5, 1], y: 0 }}
+       transition={{ duration: 0.3 }}
         className="User_report_container flex-grow-1"
       >
         <div className="User_report_detail_entry">
           {/* <div className="User_report_title_text">User Report </div> */}
-          <div className="booking_report_title">User Report</div>
+          <div className="User_report_title">User Report</div>
 
           <div className="User_report_filter_search_container">
             <div className="User_report_search_container">

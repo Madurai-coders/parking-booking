@@ -84,6 +84,7 @@ export default function Payment() {
       axios_call("GET", "Check_BusinessPartner?search=" + val).then(
         (response) => {
           set_usr_suggestion(response);
+          console.log(response)
         }
       );
     }
@@ -221,7 +222,7 @@ export default function Payment() {
   }
 
   useEffect(() => {
-    if (form.name == "not_selected" || !form.name) {
+    if (form.name == "not_selected" || !form.name   ) {
       axios_call("GET", "CreatePayment/").then((response) => {
         console.log(response);
         setPayment(response.results);
@@ -233,14 +234,17 @@ export default function Payment() {
         console.log("search");
       });
     }
-    if (usr_suggestion[0]) {
-      if (form.name == usr_suggestion[0].userName) {
-        setForm({ ...form, email: usr_suggestion[0].email });
-      } else {
-        setForm({ ...form, email: "not_selected" });
-      }
+    if (usr_suggestion) {
+        console.log(form.name)
+        
+        usr_suggestion.forEach(element => {
+            if (form.name == element.userName) {
+                setForm({ ...form, email: element.email });
+              }
+});     
     }
   }, [form.name]);
+  
 
   function checkpaymentid() {
     if (form.payment_id) {
@@ -457,9 +461,9 @@ export default function Payment() {
       )}
 
       <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: [0.5, 1], x: 0 }}
-        transition={{ duration: 1 }}
+       initial={{ opacity: 0, y: 15 }}
+       animate={{ opacity: [0.5, 1], y: 0 }}
+       transition={{ duration: 0.3 }}
         className="flex-grow-1"
       >
         <div className="payment_container">
