@@ -54,7 +54,7 @@ const Routes = () => {
 
   const call_login = async () => {
     login(true).then(function (log) {
-      console.log(log.data.user.photoURL);
+    //   console.log(log.data.user.photoURL);
     //   Cookies.set('icon',log.data.user.photoURL)
       if (log != null) {
         axios({

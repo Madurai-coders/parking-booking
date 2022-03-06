@@ -93,7 +93,7 @@
 
 
 .payment_table_container {
-    max-height: 66vh;
+    max-height: 70vh;
     overflow: hidden;
     overflow-y: scroll;
 }
