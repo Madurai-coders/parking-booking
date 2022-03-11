@@ -199,7 +199,7 @@ export default function Booking() {
 
     if (booking.plan == "Daily") {
         endTo = moment(booking.date, "YYYY-MM-DD")
-          .add(1, "days")
+          .add(0, "days")
           .format("YYYY-MM-DD");
       }
 
