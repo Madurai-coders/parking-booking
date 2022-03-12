@@ -104,6 +104,18 @@
 
 }
 
+.booking_report_slot_number_card_selected {
+    width: 18vw;
+    background: #ffffff;
+    box-shadow: 2px 2px 7px rgba(151, 151, 151, 0.15);
+    border-radius: 8px;
+    margin: 1% 2% 3% 0;
+    padding: 2% 2% 1% 2%;
+    border: 2px solid rgb(25, 111, 192);
+  
+  }
+  
+
 .booking_report_slot_number_text {
   font-weight: 900;
   font-size: 28px;

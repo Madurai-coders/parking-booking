@@ -971,12 +971,14 @@ export default function Booking_report() {
           <div className="booking_report_container">
             <div className="booking_report_title "> Booking Report </div>
             <div className="row mt-5">
-              <div className="col-3">
-                {/* <div className="booking_report_text_date"> Date </div> */}
-                <DateRangePicker onCallback={handleCallback}>
+             
+               
+{display !='booking_status' &&
+<>
+<div className="col-3">
+<DateRangePicker onCallback={handleCallback}>
                   <input type="text" className="booking_report_date_input" />
                 </DateRangePicker>
-
                 <div className="booking_form_plan_input_buttons mt-4 mx-2">
                   <div
                     className={
@@ -1079,11 +1081,15 @@ export default function Booking_report() {
                     Next{" "}
                   </div>
                 </div>
-              </div>
+                </div>
 
-              <div className="col-9">
+                </>
+              }
+              
+
+              <div className={display !='booking_status'?"col-9":'col-12'}>
                 <div className="booking_report_topdisplay">
-                  <div onClick={() => setdisplay("booking_status")} className="booking_report_slot_number_card">
+                  <div onClick={() => setdisplay("booking_status")} className={display=='booking_status'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}>
                     <div className="booking_report_slot_number_text">
                       {" "}
                       {slotdata && slotdata.total}
@@ -1102,7 +1108,7 @@ export default function Booking_report() {
                   </div>
                   <div
                     onClick={() => setdisplay("booking_status")}
-                    className="booking_report_slot_number_card"
+                    className={display=='booking_status'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}
                   >
                     <div className="booking_report_slot_number_text">
                       {" "}
@@ -1119,7 +1125,9 @@ export default function Booking_report() {
                       </span>{" "}
                     </div>
                   </div>
-                  <div  className="booking_report_slot_number_card">
+                  <div   onClick={() => setdisplay("booking_status")}
+                    className={display=='booking_status'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}
+>
                     <div className="booking_report_slot_number_text">
                       {" "}
                       {slotdata && slotdata.unreserved}
@@ -1138,7 +1146,7 @@ export default function Booking_report() {
                   </div>
                   <div
                     onClick={() => setdisplay("booking_report")}
-                    className="booking_report_slot_number_card"
+                    className={display=='booking_report'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}
                   >
                     <div className="booking_report_slot_number_text">
                       {" "}
@@ -1159,7 +1167,7 @@ export default function Booking_report() {
 
                   <div
                     onClick={() => setdisplay("payment_report")}
-                    className="booking_report_slot_number_card"
+                    className={display=='payment_report'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}
                   >
                     <div className="booking_report_slot_number_text">
                       {" "}
@@ -1182,16 +1190,17 @@ export default function Booking_report() {
                 </div>
               </div>
             </div>
-
-            <div className="text-center">
+            {display !='booking_status' &&
+            <div className="text-center" style={{marginTop:'-20px'}}>
               {moment(date && date.start).format("dddd, MMMM Do YYYY")}
               &nbsp; -- -- &nbsp;
               {moment(date && date.end).format("dddd, MMMM Do YYYY")}
             </div>
+}
 
             {display != "payment_report" && (
               <>
-                <div className="booking_report_wingselection_container mt-1 mb-3">
+                <div className="booking_report_wingselection_container mb-3">
                   <div style={{ flexGrow: 1 }}>
                     <Carousel
                       itemsToShow={7}
