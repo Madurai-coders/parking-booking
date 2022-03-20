@@ -130,7 +130,7 @@ input:focus{
     right: 0;
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.801); /* Black background with opacity */
-    z-index: 10; /* Specify a stack order in case you're using a different order for other elements */
+    z-index: 10000; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
   }
 
@@ -144,7 +144,7 @@ input:focus{
    right: 0;
    bottom: 0;
    background-color: rgb(255, 255, 255); /* Black background with opacity */
-   z-index: 10; /* Specify a stack order in case you're using a different order for other elements */
+   z-index: 10000; /* Specify a stack order in case you're using a different order for other elements */
    cursor: pointer; /* Add a pointer on hover */
 left: 2.5%;;
 border-radius: 16px;
@@ -161,7 +161,7 @@ border-radius: 16px;
     right: 0;
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.829); /* Black background with opacity */
-    z-index: 20; /* Specify a stack order in case you're using a different order for other elements */
+    z-index: 20000; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
   }
 

@@ -10,8 +10,9 @@ import logo from "../../assets/images/navlogo.svg";
 
 import User_report from "../../assets/images/userreport.svg";
 import { useEffect } from "react";
-function Respons_nav() {
+function Respons_nav(props) {
     const [current_page, setCurrentpage] = useState();
+    const [logout_popup, setlogout_popup] = useState();
 
 
   const addclass = () => {
@@ -45,6 +46,46 @@ function Respons_nav() {
 
   return (
     <>
+      {logout_popup && (
+          <div className="overlay">
+            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Logout
+                  </h5>
+                  <button
+                    type="button"
+                    onClick={() => setlogout_popup(false)}
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">Are your sure?</div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    onClick={() => setlogout_popup(false)}
+                    class="btn btn-light btn-sm"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancle
+                  </button>
+                  <button
+                    type="button"
+                    onClick={props.logout}
+                    class="btn btn-primary btn-sm"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+              {/* </div> */}
+            </div>
+          </div>
+        )}
       <div className="sidebar shadow-sm" id="sidebar">
         <div className="logo_cnt shadow-sm">
           <div className="logo">
@@ -52,6 +93,7 @@ function Respons_nav() {
             <span className="logo_name" id="logo_1">
               <img src={logo} id="btn" onClick={addclass}></img>
             </span>
+            <i class="fa fa-power-off"   onClick={() => setlogout_popup(true)} style={{fontSize:'20px',color:'grey',marginLeft:'87vw'}}></i>
           </div>
           {/* <i  id="btn" className="btn fa fa-bars"></i> */}
         </div>

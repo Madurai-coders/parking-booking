@@ -340,7 +340,11 @@ export default function User_report() {
             {usr_suggestion &&
               usr_suggestion.map((userdata) => {
                 return (
-                  <tr key={userdata.id} className="payment_table_content">
+                  <tr   onClick={() => (
+                    console.log(userdata),
+                    setUser(userdata),
+                    setFlag(false)
+                  )}  key={userdata.id} className="payment_table_content">
                     <td>{userdata.userName}</td>
                     <td>{userdata.accountNumber}</td>
                     <td>{userdata.booking_partner.length}</td>

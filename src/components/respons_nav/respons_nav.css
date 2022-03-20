@@ -13,7 +13,7 @@
   top: 0;
   left: 0;
   /* padding: 6px 14px; */
-  background-color: rgb(255, 253, 253);
+  background-color: rgb(255, 255, 255);
   transition: width 0.3s;
   transition-timing-function: ease;
   overflow-y: scroll;
@@ -27,7 +27,7 @@
 
 }
 .sidebar.close {
-  width: 180px;
+  width: 195px;
   transition: width 0.3s;
   transition-timing-function: ease;
   border-radius: 16px;

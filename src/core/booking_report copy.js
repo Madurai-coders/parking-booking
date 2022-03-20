@@ -21,10 +21,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import send from "../assets/images/send.svg";
 import Bookinginvoice from "../components/Booking/bookinginvoice";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import { Doughnut,PolarArea } from "react-chartjs-2";
 import { set } from "js-cookie";
+import Table  from   "../components/table/table";
+
 
 export default function Booking_report() {
+
   const [data, setData] = useState();
   const [date, setDate] = useState();
   const [selected_wing, setSelected_wing] = useState();
@@ -49,6 +52,8 @@ export default function Booking_report() {
   const [paymentType_graph, setPaymentType_graph] = useState();
   const [display, setdisplay] = useState("payment_report");
   const [date_timeline, setdate_timeline] = useState();
+
+
 
   const options = {
     indexAxis: "x",
@@ -726,10 +731,29 @@ export default function Booking_report() {
     }, 2000);
   }
 
+  function Table_data(data,key){
+      var val=[]
+     
+     
+        Daily_payment.forEach((element,id) => 
+            val.push(
+           {S_No:id+1,
+            Date:moment(element.date).format(
+                "DD-MM-YYYY"
+              ),
+            No_of_pay:element.no_of_pay,
+            Amount:element.tot_amount}
+            )
+        )
+         
+          
+      return val
+  }
 
   
   function Booking_validity_function(booking_validity) {
     var array = [];
+ 
 
     if (booking_validity) {
        
@@ -818,6 +842,8 @@ export default function Booking_report() {
       <Helmet>
         <title>Munidex Parking - Booking Report</title>
       </Helmet>
+
+
 
       {preview && (
         <div className="overlay1">
@@ -967,13 +993,14 @@ export default function Booking_report() {
         transition={{ duration: 0.3 }}
         className="flex-grow-1"
       >
+
         <div className="booking_report_container_whole">
           <div className="booking_report_container">
             <div className="booking_report_title "> Booking Report </div>
             <div className="row mt-5">
              
                
-{display !='booking_status' &&
+            {display !='booking_status' &&
 <>
 <div className="col-3">
 <DateRangePicker onCallback={handleCallback}>
@@ -1190,6 +1217,9 @@ export default function Booking_report() {
                 </div>
               </div>
             </div>
+
+
+
             {display !='booking_status' &&
             <div className="text-center" style={{marginTop:'-20px'}}>
               {moment(date && date.start).format("dddd, MMMM Do YYYY")}
@@ -1433,7 +1463,7 @@ export default function Booking_report() {
                   <>
                     <div className="col-6 p-3 mt-2">
                       <div className="booking_report_table_container_mini">
-                        <table className="booking_report_table">
+                        {/* <table className="booking_report_table">
                           <tr className="booking_report_table_headers">
                             <th>S.No</th>
                             <th>Date</th>
@@ -1458,7 +1488,22 @@ export default function Booking_report() {
                                 </tr>
                               );
                             })}
-                        </table>
+                        </table> */}
+{Daily_payment &&
+                        <Table 
+                        headers= {[
+        { label: "S.No", key: "S_No" },
+        { label: "Date", key: "Date" },
+        { label: "No of pay", key: "No_of_pay" },
+        { label: "Amount", key: "Amount" }
+      ]}
+
+      data = {Table_data(Daily_payment,['date','no_of_pay','tot_amount'])}
+              
+                    
+      
+      
+      ></Table>}
                       </div>
                     </div>
 
@@ -1547,7 +1592,9 @@ export default function Booking_report() {
 
             {display == "booking_status" && (
               <>
-                <div className="col-10 mb-4 offset-1">
+
+                  <div className="col-7 mb-4">
+
                   <div className="p-3 shadow rounded">
                     {maingraph && !slotgrap && (
                       <Bar data={maingraph} options={options}></Bar>
@@ -1555,6 +1602,14 @@ export default function Booking_report() {
                     {maingraph && slotgrap && (
                       <Line data={slotgrap} options={slotgrap_option}></Line>
                     )}
+                  </div>
+                  </div>
+
+
+                  <div className="col-5 mb-4">
+                  <div className="p-3 shadow rounded">
+                  <Bar data={maingraph} options={options}></Bar>
+
                   </div>
                 </div>
 
