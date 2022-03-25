@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap");
 /* scroll */
 
 /* .horizontalwrapper {
@@ -31,11 +31,10 @@
     width: 100vw;
     height: 100vh;
   } */
-  
-  /* ::-webkit-scrollbar {
+
+/* ::-webkit-scrollbar {
     display:none;
   } */
-
 
 /* ----------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
@@ -43,18 +42,18 @@
 /* common font style  */
 
 * {
-    font-family: 'Josefin Sans', sans-serif;
-        letter-spacing: 0.5px;
-/* font-family: "Quicksand", sans-serif;
+  font-family: "Josefin Sans", sans-serif;
+  letter-spacing: 0.5px;
+  /* font-family: "Quicksand", sans-serif;
 	letter-spacing: 0.2px; */
 }
 
-.bg-clr{
-background-color:'#F3EAF9'
+.bg-clr {
+  background-color: "#F3EAF9";
 }
 
-body{
-	margin: 0
+body {
+  margin: 0;
 }
 
 /* ----------------------------------------------------------------------------------- */
@@ -63,61 +62,53 @@ body{
 /* common wrapper  */
 
 .main-wrapper {
-	height: 100vh;
+  height: 100vh;
 }
 
 /* ----------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
-
 
 /* validation class */
 
-.pass   {
-    border-color: #0ae92f!important;
-    border-width: 0 0 2px 0!important;
+.pass {
+  border-color: #0ae92f !important;
+  border-width: 0 0 2px 0 !important;
 }
 
-
-.pass:focus{
-    border-color: #0ae92f!important;
-    border-width: 0 0 2px 0!important;
+.pass:focus {
+  border-color: #0ae92f !important;
+  border-width: 0 0 2px 0 !important;
 }
 
-
-
-.warn
-   {
-    border-color: #ed9e9e!important;
-    border-width: 0 0 2px 0!important;
-   }
-
-
-.warn:focus{
-    border-color: #ed9e9e!important;
-    border-width: 0 0 2px 0!important;
+.warn {
+  border-color: #ed9e9e !important;
+  border-width: 0 0 2px 0 !important;
 }
 
-.admin_logo_placer{
+.warn:focus {
+  border-color: #ed9e9e !important;
+  border-width: 0 0 2px 0 !important;
+}
+
+.admin_logo_placer {
   width: calc(13vw - 4.5rem);
   background-color: #fff;
-  padding-top: .6rem;
+  padding-top: 0.6rem;
   height: 3rem;
-  padding-bottom: .6rem;
-  border-radius: 0px 14px 0px 14px ;
-  
+  padding-bottom: 0.6rem;
+  border-radius: 0px 14px 0px 14px;
 }
 
-input:focus{
+input:focus {
   outline: none;
 }
 
-
 .alert {
-    position: relative;
-    padding: 0.5rem 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
+  position: relative;
+  padding: 0.5rem 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
 }
 
 .overlay {
@@ -168,28 +159,29 @@ border-radius: 16px;
 
 
 .container_flex {
-    flex-basis: auto;
-    display: flex;
-    flex-direction: row;
-    height: 100%;
+  flex-basis: auto;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
 }
 
 .item {
-    flex-grow: 20;
-    flex-shrink: 1;
-    flex-basis: auto;
-    transition: all 5s;
+  flex-grow: 20;
+  flex-shrink: 1;
+  flex-basis: auto;
+  transition: all 5s;
 }
 
 .collapse {
-    flex-grow: 0.001;
+  flex-grow: 0.001;
 }
 
 .rec.rec-arrow:disabled {
   display: none;
 }
 
-.rec.rec-arrow.rec-arrow-right,.rec.rec-arrow.rec-arrow-left{
+.rec.rec-arrow.rec-arrow-right,
+.rec.rec-arrow.rec-arrow-left {
   border-radius: 50%;
   background-color: #fff;
   color: rgb(107, 94, 231);
@@ -200,13 +192,15 @@ border-radius: 16px;
   margin-top: -5px;
 }
 
-.rec.rec-arrow.rec-arrow-right:hover,.rec.rec-arrow.rec-arrow-left:hover{
+.rec.rec-arrow.rec-arrow-right:hover,
+.rec.rec-arrow.rec-arrow-left:hover {
   border-radius: 50%;
   background-color: rgb(20, 8, 87);
   color: rgb(29, 6, 65);
 }
 
-.rec.rec-arrow.rec-arrow-right:focus,.rec.rec-arrow.rec-arrow-left:focus{
+.rec.rec-arrow.rec-arrow-right:focus,
+.rec.rec-arrow.rec-arrow-left:focus {
   border-radius: 50%;
   background-color: #fff;
   color: rgb(18, 15, 161);

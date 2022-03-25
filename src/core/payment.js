@@ -492,7 +492,7 @@ export default function Payment() {
                   onBlur={(e) => setForm({ ...form, name: e.target.value })}
                   type="text"
                   value={form.name != "not_selected" ? form.name : ""}
-                  className={"payment_name " + validation_name(form.name).class}
+                  className={"form-control " + validation_name(form.name).class}
                   id="pname"
                 />
                 <datalist id="data">
@@ -500,7 +500,7 @@ export default function Payment() {
                     <option key={key} value={item.userName} />
                   ))}
                 </datalist>
-                <div style={{ marginTop: "-5px", fontSize: "10px" }}>
+                <div style={{ marginTop: "1px", fontSize: "10px" }}>
                   {validation_name(form.name).msg}
                 </div>
               </div>
@@ -514,19 +514,19 @@ export default function Payment() {
                   onBlur={(e) => setForm({ ...form, email: e.target.value })}
                   type="text"
                   className={
-                    "payment_email " + validation_email(form.email).class
+                    "form-control " + validation_email(form.email).class
                   }
                   value={form.email != "not_selected" ? form.email : ""}
                   id="pemail"
                 />
-                <div style={{ marginTop: "-5px", fontSize: "10px" }}>
+                <div style={{ marginTop: "1px", fontSize: "10px" }}>
                   {validation_email(form.email).msg}
                 </div>{" "}
               </div>
 
               <div className="payment_label_container">
                 <label for="ptype" className="plabel">
-                  Payment type
+                  Type
                 </label>
                 <select
                   name="payment_ptype"
@@ -540,9 +540,9 @@ export default function Payment() {
                     form.payment_type != "not_selected" ? form.payment_type : ""
                   }
                   className={
-                    "payment_email " + validation_name(form.payment_type).class
+                    "form-select  " + validation_name(form.payment_type).class
                   }
-                  style={{ width: "150px", height: "28.4px", marginTop:'5px'}}
+                //   style={{ width: "130%", height: "80%", margin:'0px'}}
                   id="payment_ptype"
                 >
                   <option ></option>
@@ -551,7 +551,7 @@ export default function Payment() {
                   <option value="cash">cash</option>
                   <option value="online">online</option>
                 </select>
-                <div style={{ marginTop: "-5px", fontSize: "10px" }}>
+                <div style={{ marginTop: "1px", fontSize: "10px" }}>
                   {validation_name(form.payment_type).msg}
                 </div>{" "}
               </div>
@@ -576,12 +576,12 @@ export default function Payment() {
                   }
                   name="payment_pid"
                   className={
-                    "payment_pid " +
+                    "form-control " +
                     validation_payment_id(form.payment_id).class
                   }
                   id="pid"
                 />
-                <div style={{ marginTop: "-5px", fontSize: "10px" }}>
+                <div style={{ marginTop: "1px", fontSize: "10px" }}>
                   {validation_payment_id(form.payment_id).msg}
                 </div>{" "}
               </div>
@@ -593,7 +593,7 @@ export default function Payment() {
 
                 <DatePicker
                   dateFormat="dd/MM/yyyy"
-                  className="payment_date"
+                  className="form-control"
                   selected={form.date}
                   onClickOutside
                   onSelect={(date) => setForm({ ...form, date: date })}
@@ -611,11 +611,11 @@ export default function Payment() {
                   value={form.amount != "not_selected" ? form.amount : ""}
                   name="payment_amount"
                   className={
-                    "payment_pid " + validation_amount(form.amount).class
+                    "form-control " + validation_amount(form.amount).class
                   }
                   id="pamount"
                 />
-                <div style={{ marginTop: "-5px", fontSize: "10px" }}>
+                <div style={{ marginTop: "1px", fontSize: "10px" }}>
                   {validation_amount(form.amount).msg}
                 </div>{" "}
               </div>

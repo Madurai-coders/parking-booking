@@ -391,12 +391,12 @@ export default function Parkingsetup() {
         transition={{ duration: 0.3 }}
         className="flex-grow-1 parking_setup_container"
       >
-              {data_fail &&
-              <div className="d-flex justify-content-center " style={{marginTop:'-20px'}}>
-      <div className="small btn-sm btn mb-3 btn-outline-danger">{data_fail}</div></div>}
+            
 
         <div className="row">
-
+  {data_fail &&
+              <div className="d-flex justify-content-center " style={{marginTop:'5px'}}>
+      <div className="small btn-sm btn mb-3 btn-outline-danger">{data_fail}</div></div>}
           <div className="col-12">
 
             <div className="row">

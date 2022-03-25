@@ -1,5 +1,5 @@
 .parking_setup_container {
-  padding-top: 9vh;
+  padding-top: 100px;
 }
 
 .parking_setup_active_progress {
@@ -67,6 +67,7 @@
   border-color: thistle;
   border-radius: 4px;
   height: 35px;
+  padding: 8px;
 
   
 }
@@ -85,10 +86,11 @@
   background: rgba(189, 189, 189, 0.61);
   border-width: 0px;
   width: 80%;
- height: 50px;
+ height: 40px;
   margin-top: 3%;
   border-radius: 4px;
   border-color: thistle;
+  padding: 8px;
 
 
 }
