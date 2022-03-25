@@ -584,7 +584,9 @@ export default function Booking() {
           </div>
         </div>
       )}
+  <div className="booking_report_title ">Booking </div>
 
+<div className="booking_report_container_whole">
       {wing && (
         <div className="">
           <div className="row booking_container">
@@ -986,6 +988,7 @@ export default function Booking() {
           </div>
         </div>
       )}
+      </div>
     </motion.div>
   );
 }

@@ -105,7 +105,7 @@
 }
 
 .parking_setup_slot_container {
-  padding-left: 5%;
+  padding-left: 2%;
 }
 
 .parking_setup_button_container {
@@ -192,7 +192,7 @@
 }
 
 .parking_setup_inactive_slot_table tr:nth-child(odd) {
-  background-color: #ebf9fe;
+  background-color: #f3f3f3;
 }
 
 .parking_setup_table_activate_button {

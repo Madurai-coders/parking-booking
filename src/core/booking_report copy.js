@@ -21,13 +21,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import send from "../assets/images/send.svg";
 import Bookinginvoice from "../components/Booking/bookinginvoice";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut,PolarArea } from "react-chartjs-2";
+import { Doughnut, PolarArea } from "react-chartjs-2";
 import { set } from "js-cookie";
-import Table  from   "../components/table/table";
-
+import Table from "../components/table/table";
 
 export default function Booking_report() {
-
   const [data, setData] = useState();
   const [date, setDate] = useState();
   const [selected_wing, setSelected_wing] = useState();
@@ -52,8 +50,6 @@ export default function Booking_report() {
   const [paymentType_graph, setPaymentType_graph] = useState();
   const [display, setdisplay] = useState("payment_report");
   const [date_timeline, setdate_timeline] = useState();
-
-
 
   const options = {
     indexAxis: "x",
@@ -172,25 +168,31 @@ export default function Booking_report() {
     var booked_slots_wing = booking.filter(
       (val) => val.slots.wing.wingName == wing.wingName
     );
+    if (data){
     var booked_slots_wing_alter = data.filter(
       (val) => val.slots.wing.wingName == wing.wingName
     );
-
 
     var amount = 0;
     booked_slots_wing_alter.forEach((element) => {
       amount = amount + parseInt(element.charge);
     });
+    
+    setWing_result(booked_slots_wing_alter)
 
     setSlotdata({
-      ...slotdata,
-      unreserved: wing.slots.length - booked_slots_wing.length,
-      reserved: booked_slots_wing.length,
-      total: wing.slots.length,
-      amount: amount,
-    });
+        ...slotdata,
+        unreserved: wing.slots.length - booked_slots_wing.length,
+        reserved: booked_slots_wing.length,
+        total: wing.slots.length,
+        amount: amount,
+      });
 
-    setWing_result(booked_slots_wing_alter);
+}
+
+   
+
+   
 
     wing.slots.forEach((slot) => {
       slotId.push(slot.id);
@@ -250,6 +252,15 @@ export default function Booking_report() {
       unreserved: val,
       amount: amount,
     });
+
+    if (wingdata && booking_validity) {
+      SlotGraph(
+        wingdata[0],
+        booking_validity.booking,
+        booking_validity.start,
+        booking_validity.end
+      );
+    }
   }
 
   const GetBooking = async (start, end) => {
@@ -286,7 +297,12 @@ export default function Booking_report() {
     var wingdata = await axios_call("GET", "CreateWing/");
     setWingData(wingdata);
 
+    if (wingdata && booking_validity) {
+      SlotGraph(wingdata[0], booking_validity, start1, end1);
+    }
+
     MainGraph(start1, end1, booking_validity, wingdata);
+
     return booking;
   };
 
@@ -470,31 +486,33 @@ export default function Booking_report() {
         });
 
         booking.forEach((element) => {
-            if (
-                selected_wing
-                  ? selected_wing.wingName == element.slots.wing.wingName
-                  : true
-              ) {            if (timeline == "Yearly") {
-            if (
-              moment(date_payment).format("YYYY-MM-DD") ==
-              moment(moment(element.startFrom).startOf("month")).format(
-                "YYYY-MM-DD"
-              )
-            ) {
-              total_amount_booking =
-                total_amount_booking + parseInt(element.charge);
-              no_of_booking = no_of_booking + 1;
+          if (
+            selected_wing
+              ? selected_wing.wingName == element.slots.wing.wingName
+              : true
+          ) {
+            if (timeline == "Yearly") {
+              if (
+                moment(date_payment).format("YYYY-MM-DD") ==
+                moment(moment(element.startFrom).startOf("month")).format(
+                  "YYYY-MM-DD"
+                )
+              ) {
+                total_amount_booking =
+                  total_amount_booking + parseInt(element.charge);
+                no_of_booking = no_of_booking + 1;
+              }
+            } else {
+              if (
+                moment(date_payment).format("YYYY-MM-DD") ==
+                moment(element.startFrom).format("YYYY-MM-DD")
+              ) {
+                total_amount_booking =
+                  total_amount_booking + parseInt(element.charge);
+                no_of_booking = no_of_booking + 1;
+              }
             }
-          } else {
-            if (
-              moment(date_payment).format("YYYY-MM-DD") ==
-              moment(element.startFrom).format("YYYY-MM-DD")
-            ) {
-              total_amount_booking =
-                total_amount_booking + parseInt(element.charge);
-              no_of_booking = no_of_booking + 1;
-            }
-          }}
+          }
         });
 
         booking_amount_by_fliter.push(total_amount_booking);
@@ -538,8 +556,10 @@ export default function Booking_report() {
           labels: date_of_lable,
           datasets: [
             {
-                label:"Booking collection in " + (timeline=="Yearly" ? 'Months': 'days'),
-                data: booking_amount_by_fliter,
+              label:
+                "Booking collection in " +
+                (timeline == "Yearly" ? "Months" : "days"),
+              data: booking_amount_by_fliter,
               borderColor: "rgba(144, 181, 240, 0.71)",
               backgroundColor: "rgb(55, 157, 201)",
               borderRadius: 5,
@@ -718,7 +738,9 @@ export default function Booking_report() {
         labels: date_of_lable,
         datasets: [
           {
-            label:"Booking collection in " + (timeline=="Yearly" ? 'Months': 'days'),
+            label:
+              "Booking collection in " +
+              (timeline == "Yearly" ? "Months" : "days"),
             data: booking_amount_by_fliter,
             borderColor: "rgba(144, 181, 240, 0.71)",
             backgroundColor: "rgb(55, 157, 201)",
@@ -731,32 +753,78 @@ export default function Booking_report() {
     }, 2000);
   }
 
-  function Table_data(data,key){
-      var val=[]
-     
-     
-        Daily_payment.forEach((element,id) => 
-            val.push(
-           {S_No:id+1,
-            Date:moment(element.date).format(
-                "DD-MM-YYYY"
-              ),
-            No_of_pay:element.no_of_pay,
-            Amount:element.tot_amount}
-            )
+  function Table_data(data, key) {
+    var val = [];
+
+    if (key == "Daily_payment") {
+      let count = 0;
+      data.forEach(
+        (element, id) => (
+          (count = count + 1),
+          val.push({
+            data1: count,
+            data2: moment(element.date).format("DD-MM-YYYY").toString(),
+            data3: element.no_of_pay,
+            data4: element.tot_amount,
+          })
         )
-         
-          
-      return val
+      );
+    }
+
+    if (key == "payment") {
+      let count = 0;
+      data.forEach(
+        (element, id) => (
+          (count = count + 1),
+          val.push({
+            data1: element.User.userName,
+            data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
+            data3: element.paymentType,
+            data4: element.amount,
+          })
+        )
+      );
+    }
+
+
+    if (key == "payment") {
+        let count = 0;
+        data.forEach(
+          (element, id) => (
+            (count = count + 1),
+            val.push({
+              data1: element.User.userName,
+              data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
+              data3: element.paymentType,
+              data4: element.amount,
+            })
+          )
+        );
+      }
+
+      if (key == "booking_validity") {
+        let count = 0;
+        data.forEach(
+          (element, id) => (
+            (count = count + 1),
+            val.push({
+              data1: element.User.userName,
+              data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
+              data3: element.paymentType,
+              data4: element.amount,
+            })
+          )
+        );
+      }
+
+    console.log(val);
+    return val;
   }
 
-  
   function Booking_validity_function(booking_validity) {
     var array = [];
- 
 
     if (booking_validity) {
-       
       booking_validity.booking.forEach((element) => {
         array.push({
           ...element,
@@ -771,66 +839,71 @@ export default function Booking_report() {
       return a.day_left - b.day_left;
     });
 
-   
-  
     return (
       <>
         {array &&
           array.map((bookingdata, id) => {
             return (
-                <>
-                {selected_wing?selected_wing.wingName==bookingdata.slots.wing.wingName &&
-              <tr key={id} className="booking_report_table_data">
-                <td>{id + 1}</td>
-                <td>{bookingdata.User.lastName}</td>
-                <td>{bookingdata.bookingId}</td>
-                <td>{bookingdata.plan}</td>
+              <>
+                {selected_wing ? (
+                  selected_wing.wingName == bookingdata.slots.wing.wingName && (
+                    <tr key={id} className="booking_report_table_data">
+                      <td>{id + 1}</td>
+                      <td>{bookingdata.User.lastName}</td>
+                      <td>{bookingdata.bookingId}</td>
+                      <td>{bookingdata.plan}</td>
 
-                <td>{moment(bookingdata.startFrom).format("DD-MM-YYYY")}</td>
-                <td>{moment(bookingdata.endTo).format("DD-MM-YYYY")}</td>
-                <td>
-                  <div
-                    className={
-                      bookingdata.day_left < 7 &&
-                      "p-1 shadow-sm rounded bg-danger"
-                    }
-                  >
-                    {bookingdata.day_left}
-                  </div>
-                </td>
-                <td>
-                  {" "}
-                  {bookingdata.slots.wing.wingName} [{bookingdata.slots.id}]
-                </td>
-                <td>{bookingdata.charge}</td>
-              </tr>
-          :
-          <tr key={id} className="booking_report_table_data">
-                <td>{id + 1}</td>
-                <td>{bookingdata.User.lastName}</td>
-                <td>{bookingdata.bookingId}</td>
-                <td>{bookingdata.plan}</td>
+                      <td>
+                        {moment(bookingdata.startFrom).format("DD-MM-YYYY")}
+                      </td>
+                      <td>{moment(bookingdata.endTo).format("DD-MM-YYYY")}</td>
+                      <td>
+                        <div
+                          className={
+                            bookingdata.day_left < 7 &&
+                            "p-1 shadow-sm rounded bg-danger"
+                          }
+                        >
+                          {bookingdata.day_left}
+                        </div>
+                      </td>
+                      <td>
+                        {" "}
+                        {bookingdata.slots.wing.wingName} [
+                        {bookingdata.slots.id}]
+                      </td>
+                      <td>{bookingdata.charge}</td>
+                    </tr>
+                  )
+                ) : (
+                  <tr key={id} className="booking_report_table_data">
+                    <td>{id + 1}</td>
+                    <td>{bookingdata.User.lastName}</td>
+                    <td>{bookingdata.bookingId}</td>
+                    <td>{bookingdata.plan}</td>
 
-                <td>{moment(bookingdata.startFrom).format("DD-MM-YYYY")}</td>
-                <td>{moment(bookingdata.endTo).format("DD-MM-YYYY")}</td>
-                <td>
-                  <div
-                    className={
-                      bookingdata.day_left < 7 &&
-                      "p-1 shadow-sm rounded bg-danger"
-                    }
-                  >
-                    {bookingdata.day_left}
-                  </div>
-                </td>
-                <td>
-                  {" "}
-                  {bookingdata.slots.wing.wingName} [{bookingdata.slots.id}]
-                </td>
-                <td>{bookingdata.charge}</td>
-              </tr>
-          }
-          </>
+                    <td>
+                      {moment(bookingdata.startFrom).format("DD-MM-YYYY")}
+                    </td>
+                    <td>{moment(bookingdata.endTo).format("DD-MM-YYYY")}</td>
+                    <td>
+                      <div
+                        className={
+                          bookingdata.day_left < 7 &&
+                          "p-1 shadow-sm rounded bg-danger"
+                        }
+                      >
+                        {bookingdata.day_left}
+                      </div>
+                    </td>
+                    <td>
+                      {" "}
+                      {bookingdata.slots.wing.wingName} [{bookingdata.slots.id}]
+                    </td>
+                    <td>{bookingdata.charge}</td>
+                  </tr>
+                )}
+              </>
             );
           })}
       </>
@@ -842,8 +915,6 @@ export default function Booking_report() {
       <Helmet>
         <title>Munidex Parking - Booking Report</title>
       </Helmet>
-
-
 
       {preview && (
         <div className="overlay1">
@@ -992,69 +1063,70 @@ export default function Booking_report() {
         animate={{ opacity: [0.5, 1], y: 0 }}
         transition={{ duration: 0.3 }}
         className="flex-grow-1"
-      >
+      >            <div className="booking_report_title ">Report </div>
 
         <div className="booking_report_container_whole">
           <div className="booking_report_container">
-            <div className="booking_report_title "> Booking Report </div>
             <div className="row mt-5">
-             
-               
-            {display !='booking_status' &&
-<>
-<div className="col-3">
-<DateRangePicker onCallback={handleCallback}>
-                  <input type="text" className="booking_report_date_input" />
-                </DateRangePicker>
-                <div className="booking_form_plan_input_buttons mt-4 mx-2">
-                  <div
-                    className={
-                      timeline == "Daily"
-                        ? "booking_form_input_button_daily_selected"
-                        : "booking_form_input_button_daily"
-                    }
-                    onClick={() => (
-                      GetPayment("Daily", "", "", 0),
-                      settimeline("Daily"),
-                      setCountval(0),
-                      setexpand(true)
-                    )}
-                  >
-                    {" "}
-                    Daily{" "}
-                  </div>
+              {display != "booking_status" && (
+                <>
+                  <div className="col-3 ">
+                      <div className="ms-3">
+                    <DateRangePicker onCallback={handleCallback}>
+                      <input
+                        type="text"
+                        className="booking_report_date_input"
+                      />
+                    </DateRangePicker></div>
+                    <div className="booking_form_plan_input_buttons mt-4 ms-3 ">
+                      <div
+                        className={
+                          timeline == "Daily"
+                            ? "booking_form_input_button_daily_selected"
+                            : "booking_form_input_button_daily"
+                        }
+                        onClick={() => (
+                          GetPayment("Daily", "", "", 0),
+                          settimeline("Daily"),
+                          setCountval(0),
+                          setexpand(true)
+                        )}
+                      >
+                        {" "}
+                        Daily{" "}
+                      </div>
 
-                  <div
-                    className={
-                      timeline == "Weekly"
-                        ? "booking_form_input_button_weekly_selected"
-                        : "booking_form_input_button_weekly"
-                    }
-                    onClick={() => (
-                      GetPayment("Weekly"),
-                      settimeline("Weekly"),
-                      setCountval(0)
-                    )}
-                  >
-                    {" "}
-                    Weekly{" "}
-                  </div>
-                  <div
-                    className={
-                      timeline == "Monthly"
-                        ? "booking_form_input_button_monthly_selected"
-                        : "booking_form_input_button_monthly"
-                    }
-                    onClick={() => (
-                      GetPayment("Monthly"),
-                      settimeline("Monthly"),
-                      setCountval(0)
-                    )}
-                  >
-                    {" "}
-                    Monthly{" "}
-                  </div>
-                  {/* <div
+                      <div
+                        className={
+                          timeline == "Weekly"
+                            ? "booking_form_input_button_weekly_selected"
+                            : "booking_form_input_button_weekly"
+                        }
+                        onClick={() => (
+                          GetPayment("Weekly"),
+                          settimeline("Weekly"),
+                          setCountval(0)
+                        )}
+                      >
+                        {" "}
+                        Weekly{" "}
+                      </div>
+                      <div
+                        className={
+                          timeline == "Monthly"
+                            ? "booking_form_input_button_monthly_selected"
+                            : "booking_form_input_button_monthly"
+                        }
+                        onClick={() => (
+                          GetPayment("Monthly"),
+                          settimeline("Monthly"),
+                          setCountval(0)
+                        )}
+                      >
+                        {" "}
+                        Monthly{" "}
+                      </div>
+                      {/* <div
                     className={
                       timeline == "Quarterly"
                         ? "booking_form_input_button_quarterly_selected"
@@ -1069,59 +1141,64 @@ export default function Booking_report() {
                     {" "}
                     Quarterly{" "}
                   </div> */}
-                  <div
-                    className={
-                      timeline == "Yearly"
-                        ? "booking_form_input_button_yearly_selected"
-                        : "booking_form_input_button_yearly"
-                    }
-                    onClick={() => (
-                      GetPayment("Yearly"),
-                      settimeline("Yearly"),
-                      setCountval(0)
-                    )}
-                  >
-                    {" "}
-                    Yearly{" "}
-                  </div>
-                </div>
+                      <div
+                        className={
+                          timeline == "Yearly"
+                            ? "booking_form_input_button_yearly_selected"
+                            : "booking_form_input_button_yearly"
+                        }
+                        onClick={() => (
+                          GetPayment("Yearly"),
+                          settimeline("Yearly"),
+                          setCountval(0)
+                        )}
+                      >
+                        {" "}
+                        Yearly{" "}
+                      </div>
+                    </div>
 
-                <div className="booking_form_plan_input_buttons mt-2 mx-2">
-                  <div
-                    className={"booking_form_input_button_quarterly"}
-                    onClick={() => (
-                      setCountval(count_val - 1),
-                      GetPayment(timeline, 0, 0, count_val - 1)
-                    )}
-                  >
-                    {" "}
-                    Previous{" "}
+                    <div className="booking_form_plan_input_buttons mt-2 ms-3">
+                      <div
+                        className={"booking_form_input_button_quarterly"}
+                        onClick={() => (
+                          setCountval(count_val - 1),
+                          GetPayment(timeline, 0, 0, count_val - 1)
+                        )}
+                      >
+                        {" "}
+                        Previous{" "}
+                      </div>
+                      <div
+                        className={"booking_form_input_button_quarterly"}
+                        onClick={() => (
+                          setCountval(count_val + 1),
+                          GetPayment(timeline, 0, 0, count_val + 1)
+                        )}
+                      >
+                        {" "}
+                        Next{" "}
+                      </div>
+                    </div>
                   </div>
-                  <div
-                    className={"booking_form_input_button_quarterly"}
-                    onClick={() => (
-                      setCountval(count_val + 1),
-                      GetPayment(timeline, 0, 0, count_val + 1)
-                    )}
-                  >
-                    {" "}
-                    Next{" "}
-                  </div>
-                </div>
-                </div>
-
                 </>
-              }
-              
+              )}
 
-              <div className={display !='booking_status'?"col-9":'col-12'}>
+              <div className={display != "booking_status" ? "col-9" : "col-12"}>
                 <div className="booking_report_topdisplay">
-                  <div onClick={() => setdisplay("booking_status")} className={display=='booking_status'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}>
+                  <div
+                    onClick={() => setdisplay("booking_status")}
+                    className={
+                      display == "booking_status"
+                        ? "booking_report_slot_number_card_selected"
+                        : "booking_report_slot_number_card"
+                    }
+                  >
                     <div className="booking_report_slot_number_text">
                       {" "}
                       {slotdata && slotdata.total}
                     </div>
-                    <div   className="booking_report_bottom_flex">
+                    <div className="booking_report_bottom_flex">
                       {" "}
                       <span className="booking_report_bottom_flex_number">
                         {" "}
@@ -1135,13 +1212,17 @@ export default function Booking_report() {
                   </div>
                   <div
                     onClick={() => setdisplay("booking_status")}
-                    className={display=='booking_status'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}
+                    className={
+                      display == "booking_status"
+                        ? "booking_report_slot_number_card_selected"
+                        : "booking_report_slot_number_card"
+                    }
                   >
                     <div className="booking_report_slot_number_text">
                       {" "}
                       {slotdata && slotdata.reserved}
                     </div>
-                    <div  className="booking_report_bottom_flex">
+                    <div className="booking_report_bottom_flex">
                       {" "}
                       <span className="booking_report_bottom_flex_number">
                         Reserved Slot
@@ -1152,9 +1233,14 @@ export default function Booking_report() {
                       </span>{" "}
                     </div>
                   </div>
-                  <div   onClick={() => setdisplay("booking_status")}
-                    className={display=='booking_status'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}
->
+                  <div
+                    onClick={() => setdisplay("booking_status")}
+                    className={
+                      display == "booking_status"
+                        ? "booking_report_slot_number_card_selected"
+                        : "booking_report_slot_number_card"
+                    }
+                  >
                     <div className="booking_report_slot_number_text">
                       {" "}
                       {slotdata && slotdata.unreserved}
@@ -1173,7 +1259,11 @@ export default function Booking_report() {
                   </div>
                   <div
                     onClick={() => setdisplay("booking_report")}
-                    className={display=='booking_report'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}
+                    className={
+                      display == "booking_report"
+                        ? "booking_report_slot_number_card_selected"
+                        : "booking_report_slot_number_card"
+                    }
                   >
                     <div className="booking_report_slot_number_text">
                       {" "}
@@ -1194,7 +1284,11 @@ export default function Booking_report() {
 
                   <div
                     onClick={() => setdisplay("payment_report")}
-                    className={display=='payment_report'?"booking_report_slot_number_card_selected":"booking_report_slot_number_card"}
+                    className={
+                      display == "payment_report"
+                        ? "booking_report_slot_number_card_selected"
+                        : "booking_report_slot_number_card"
+                    }
                   >
                     <div className="booking_report_slot_number_text">
                       {" "}
@@ -1218,19 +1312,18 @@ export default function Booking_report() {
               </div>
             </div>
 
-
-
-            {display !='booking_status' &&
-            <div className="text-center" style={{marginTop:'-20px'}}>
-              {moment(date && date.start).format("dddd, MMMM Do YYYY")}
-              &nbsp; -- -- &nbsp;
-              {moment(date && date.end).format("dddd, MMMM Do YYYY")}
-            </div>
-}
+            {display != "booking_status" && (
+              <div className="text-center" style={{ marginTop: "10px"}}>
+                  <div className="btn-sm btn btn-primary">
+                {moment(date && date.start).format("dddd, MMMM Do YYYY")}
+                &nbsp; -- -- &nbsp;
+                {moment(date && date.end).format("dddd, MMMM Do YYYY")}
+              </div></div>
+            )}
 
             {display != "payment_report" && (
               <>
-                <div className="booking_report_wingselection_container mb-3">
+                <div className="booking_report_wingselection_container mx-5 mb-4 mt-3">
                   <div style={{ flexGrow: 1 }}>
                     <Carousel
                       itemsToShow={7}
@@ -1405,44 +1498,44 @@ export default function Booking_report() {
                   </div>
                 </div>
 
-             
-
                 {timeline != "Daily" && (
                   <>
-                     {!expand && (
-                  <>
-                    <div className="col-6">
-                      <div className="booking_report_table_container_mini">
-                        <table className="booking_report_table">
-                          <tr className="booking_report_table_headers">
-                            <th>S.No</th>
-                            <th>Date</th>
-                            <th>No</th>
-                            <th>Amount</th>
-                          </tr>
-                          {Daily_booking &&
-                            Daily_booking.map((bookingdata, id) => {
-                              return (
-                                <tr
-                                  key={id}
-                                  className="booking_report_table_data"
-                                >
-                                  <td>{id + 1}</td>
-                                  <td>
-                                    {moment(bookingdata.date).format(
-                                      "DD-MM-YYYY"
-                                    )}
-                                  </td>
-                                  <td>{bookingdata.no_of_booking}</td>
-                                  <td>{bookingdata.total_amount_booking}</td>
-                                </tr>
-                              );
-                            })}
-                        </table>
-                      </div>
-                    </div>
-                  </>
-                )}
+                    {!expand && (
+                      <>
+                        <div className="col-6">
+                          <div className="booking_report_table_container_mini">
+                            <table className="booking_report_table">
+                              <tr className="booking_report_table_headers">
+                                <th>S.No</th>
+                                <th>Date</th>
+                                <th>No</th>
+                                <th>Amount</th>
+                              </tr>
+                              {Daily_booking &&
+                                Daily_booking.map((bookingdata, id) => {
+                                  return (
+                                    <tr
+                                      key={id}
+                                      className="booking_report_table_data"
+                                    >
+                                      <td>{id + 1}</td>
+                                      <td>
+                                        {moment(bookingdata.date).format(
+                                          "DD-MM-YYYY"
+                                        )}
+                                      </td>
+                                      <td>{bookingdata.no_of_booking}</td>
+                                      <td>
+                                        {bookingdata.total_amount_booking}
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                            </table>
+                          </div>
+                        </div>
+                      </>
+                    )}
                     {booking_graph && (
                       <div className="col-8 offset-2 mb-5">
                         <div className="p-3 shadow rounded">
@@ -1456,14 +1549,13 @@ export default function Booking_report() {
             )}
           </div>
 
-          <div className="row mx-2 mb-3 mt-2">
+          <div className="row mx-2 mb-3">
             {display == "payment_report" && (
               <>
                 {timeline != "Daily" && (
                   <>
                     <div className="col-6 p-3 mt-2">
-                      <div className="booking_report_table_container_mini">
-                        {/* <table className="booking_report_table">
+                      {/* <table className="booking_report_table">
                           <tr className="booking_report_table_headers">
                             <th>S.No</th>
                             <th>Date</th>
@@ -1489,26 +1581,21 @@ export default function Booking_report() {
                               );
                             })}
                         </table> */}
-{Daily_payment &&
-                        <Table 
-                        headers= {[
-        { label: "S.No", key: "S_No" },
-        { label: "Date", key: "Date" },
-        { label: "No of pay", key: "No_of_pay" },
-        { label: "Amount", key: "Amount" }
-      ]}
-
-      data = {Table_data(Daily_payment,['date','no_of_pay','tot_amount'])}
-              
-                    
-      
-      
-      ></Table>}
-                      </div>
+                      {Daily_payment && (
+                        <Table
+                          headers={[
+                            { label: "S.No", key: "data1" },
+                            { label: "Date", key: "data2" },
+                            { label: "No of pay", key: "data3" },
+                            { label: "Amount", key: "data4" },
+                          ]}
+                          data={Table_data(Daily_payment, "Daily_payment")}
+                        ></Table>
+                      )}
                     </div>
 
                     {payment_graph && (
-                      <div className="col-6 mt-2">
+                      <div className="col-6 mt-5">
                         <div className="p-3 shadow rounded">
                           <Line data={payment_graph} options={options1}></Line>
                         </div>
@@ -1517,8 +1604,8 @@ export default function Booking_report() {
                   </>
                 )}
 
-                <div className="col-2 p-3 mt-2">
-                  <div className="h4 p-2 shadow rounded">
+                <div className="col-2 p-3 mt-5">
+                  <div className="h4 p-2 mt-3 shadow rounded">
                     <div className="h5">Cash</div>
                     {payment_values && formatUsd(parseInt(payment_values.cash))}
                   </div>
@@ -1541,79 +1628,62 @@ export default function Booking_report() {
                   </div>
                   <br></br>
                 </div>
-                <div className="col-4 p-4 mt-2">
+                <div className="col-4 p-5 mt-4">
                   {paymentType_graph && <Doughnut data={paymentType_graph} />}
                 </div>
 
-                <div className="col-6 mt-3">
-                  <div className="booking_report_table_container">
-                    <table className="booking_report_table">
-                      <tr className="booking_report_table_headers">
-                        {/* <th>Transaction id</th> */}
-                        <th>User</th>
-                        <th>Date</th>
-                        <th>Payment</th>
-                        <th>Amount</th>
-                        {/* <th>Status</th> */}
-                      </tr>
-                      {payment &&
-                        payment.map((transaction) => {
-                          return (
-                            <tr className="booking_report_table_data">
-                              {/* <td>{transaction.paymentId}</td> */}
-                              <td>{transaction.User.userName}</td>
-
-                              <td>
-                                {moment(transaction.paymentDate).format(
-                                  "DD-MM-YYYY"
-                                )}
-                              </td>
-                              <td>{transaction.paymentType}</td>
-                              <td>{transaction.amount}</td>
-
-                              {/* <td>
-                                  <span
-                                    className={
-                                      "user_dashboard_popup_status_" +
-                                      "Successful".toLowerCase()
-                                    }
-                                  >
-                                    Successful
-                                  </span>
-                                </td> */}
-                            </tr>
-                          );
-                        })}
-                    </table>
-                  </div>
+                <div className="col-6 mt-5">
+                  {payment && (
+                    <Table
+                      headers={[
+                        { label: "User", key: "data1" },
+                        { label: "Date", key: "data2" },
+                        { label: "Payment", key: "data3" },
+                        { label: "Amount", key: "data4" },
+                      ]}
+                      data={Table_data(payment, "payment")}
+                    ></Table>
+                  )}
                 </div>
               </>
             )}
 
             {display == "booking_status" && (
               <>
-
-                  <div className="col-7 mb-4">
-
+                <div className="col-7 mb-4">
                   <div className="p-3 shadow rounded">
-                    {maingraph && !slotgrap && (
+                    {/* {maingraph && !slotgrap && (
                       <Bar data={maingraph} options={options}></Bar>
-                    )}
+                    )} */}
                     {maingraph && slotgrap && (
                       <Line data={slotgrap} options={slotgrap_option}></Line>
                     )}
                   </div>
-                  </div>
+                </div>
 
-
-                  <div className="col-5 mb-4">
+                <div className="col-5 mb-4">
                   <div className="p-3 shadow rounded">
-                  <Bar data={maingraph} options={options}></Bar>
-
+                    <Bar data={maingraph} options={options}></Bar>
                   </div>
                 </div>
 
                 <div className="col-12 p-3 mt-2">
+                {/* {booking_validity && (
+                        <Table
+                          headers={[
+                            { label: "S.No", key: "data1" },
+                            { label: "Name", key: "data2" },
+                            { label: "Booking Id", key: "data3" },
+                            { label: "Plan", key: "data4" },
+                            { label: "From", key: "data5" },
+                            { label: "To", key: "data6" },
+                            { label: "Days left", key: "data7" },
+                            { label: "Slot", key: "data8" },
+                            { label: "Amount", key: "data9" },
+                          ]}
+                          data={Table_data(booking_validity, "booking_validity")}
+                        ></Table>
+                      )} */}
                   <div className="booking_report_table_container">
                     <table className="booking_report_table">
                       <tr className="booking_report_table_headers">
@@ -1627,10 +1697,12 @@ export default function Booking_report() {
                         <th>Slot</th>
                         <th>Amount</th>
                       </tr>
-                      {booking_validity && !selected_wing ?
-                      Booking_validity_function(booking_validity):
-                      Booking_validity_function(booking_validity,selected_wing.wingName)
-                      }
+                      {booking_validity && !selected_wing
+                        ? Booking_validity_function(booking_validity)
+                        : Booking_validity_function(
+                            booking_validity,
+                            selected_wing.wingName
+                          )}
                     </table>
                   </div>
                 </div>

@@ -47,7 +47,7 @@
 
 .User_report_search_container {
   display: flex;
-  background-color: #fafafa;
+  background-color: #ffffff;
   align-items: center;
   padding: 2% 0 2% 2%;
 }
@@ -172,15 +172,12 @@
   font-weight: 600;
   font-size: 9.07px;
   line-height: 11px;
-  padding: 4% 10%;
+  padding: 4px 10px;
   border-radius: 3.63px;
   vertical-align: middle;
   cursor: pointer;
 }
 
-.User_report_filter_search_container {
-  position: relative;
-}
 
 .User_report_filter_card_segment1_text_ps,
 .User_report_filter_card_segment2_text_date,

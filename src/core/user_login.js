@@ -206,7 +206,7 @@ export default function User_login() {
                 })
               }
               className={
-                "user_login_signin_lastname mb-5" +
+                "user_login_signin_lastname mb-4" +
                 " " +
                 validation_name(form_values.lastname).class
               }
@@ -238,7 +238,7 @@ export default function User_login() {
                 Login
               </div>
             </div>
-            {!loginuser && (
+            {/* {!loginuser && (
               <>
                 <div className="text-center user_login_text_or mb-2"> or </div>
                 <div className="text-center">
@@ -257,7 +257,7 @@ export default function User_login() {
                   </div>{" "}
                 </div>
               </>
-            )}
+            )} */}
           </div>
           {loginuser && (
             <div className="mb-2 mt-4">

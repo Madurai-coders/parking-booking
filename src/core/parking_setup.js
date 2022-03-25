@@ -369,8 +369,7 @@ export default function Parkingsetup() {
                 </button>
                 <button
                   type="button"
-                  onClick={removeWing}
-                  onClick={() => setRemove_wing(false)}
+                  onClick={() => (removeWing,setRemove_wing(false))}
                   class="btn btn-danger"
                   data-bs-dismiss="modal"
                 >
@@ -389,15 +388,16 @@ export default function Parkingsetup() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: [0.5, 1], y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex-grow-1 parking_setup_container"
+        className="flex-grow-1 "
       >
+          <div className="booking_report_title ">Payment Setup </div>
+
+<div className="booking_report_container_whole">
             
 
-        <div className="row">
-  {data_fail &&
-              <div className="d-flex justify-content-center " style={{marginTop:'5px'}}>
-      <div className="small btn-sm btn mb-3 btn-outline-danger">{data_fail}</div></div>}
-          <div className="col-12">
+        <div className="row mt-5">
+ 
+          <div className="col-12 mt-3">
 
             <div className="row">
 
@@ -409,13 +409,11 @@ export default function Parkingsetup() {
                   type="text"
                   name="slot_type"
                   placeholder='Give a name'
-                  className="parking_setup_input_slot_type"
                   onChange={(e) => (
                     call_wingName_check(e.target.value),
                     setWing({ ...wing, wingName: e.target.value })
                   )}
                   onBlur={(e) => setWing({ ...wing, wingName: e.target.value })}
-                  type="text"
                   value={wing.wingName != "not_selected" ? wing.wingName : ""}
                   className={
                     "parking_setup_input_slot_type " +
@@ -432,7 +430,7 @@ export default function Parkingsetup() {
 
 
               <div className="col-3">
-                <div className="parking_setup_text_count"> Count </div>
+                <div className="parking_setup_text_slot_type mb-1"> Count </div>
                 <input
                   type="text"
                   placeholder="Number of slots"
@@ -653,7 +651,7 @@ export default function Parkingsetup() {
 
         </div>
         {!wing.wingId && (
-                  <div className="mx-5" style={{marginTop:'-25px'}}>
+                  <div className="mx-3" style={{marginTop:'-15px'}}>
                     <div
                       className="btn btn-success btn-sm mx-2"
                       onClick={form_submit}
@@ -665,26 +663,29 @@ export default function Parkingsetup() {
                       {" "}
                       Clear{" "}
                     </div>
-                  </div>
+                   {data_fail &&
+                    
+            <div className="small btn-sm btn  btn-outline-danger">{data_fail}</div>}                  </div>
+
                 )}
 
                 
                 {wing.wingId && (
-                  <div className="mx-5" style={{marginTop:'-25px'}}>
+                  <div className="mx-3" style={{marginTop:'-15px'}}>
                   <div
-                      className="btn btn-success mx-2"
+                      className="btn btn-success btn-sm mx-2"
                       onClick={Wingupdate}
                     >
                       {" "}
                       update{" "}
                     </div>
-                    <div className="btn btn-light mx-2" onClick={reset}>
+                    <div className="btn btn-light btn-sm mx-2" onClick={reset}>
                       {" "}
                       Clear{" "}
                     </div>
 
                     <div
-                      className="btn btn-danger  mx-2"
+                      className="btn btn-danger btn-sm  mx-2"
                       onClick={()=>setRemove_wing(true)}
                     >
                       {" "}
@@ -895,6 +896,7 @@ export default function Parkingsetup() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </motion.div>
     </>

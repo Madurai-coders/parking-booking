@@ -466,6 +466,9 @@ export default function Payment() {
        transition={{ duration: 0.3 }}
         className="flex-grow-1"
       >
+            <div className="booking_report_title">Payment </div>
+
+<div className="booking_report_container_whole">
         <div className="payment_container">
           {/* {data_fail && (
             <div className="pr-5 pl-5">
@@ -474,7 +477,6 @@ export default function Payment() {
               </div>
             </div>
           )} */}
-          <div className="payment_text_booking_report"> Payment Report</div>
 
           <div className="payment_enty_container">
             <div className="payment_entry_fields">
@@ -670,7 +672,7 @@ export default function Payment() {
               </div>
             )}
           </div>
-          <div className="payment_table_container1 table">
+          <div className="payment_table_container1 ">
             <table className="payment_table ">
               <tr className="payment_table_heading">
                 <th>Name</th>
@@ -733,6 +735,7 @@ export default function Payment() {
                 })}
             </table>
           </div>
+        </div>
         </div>
       </motion.div>
     </>

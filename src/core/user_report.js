@@ -200,13 +200,16 @@ export default function User_report() {
        initial={{ opacity: 0, y: 15 }}
        animate={{ opacity: [0.5, 1], y: 0 }}
        transition={{ duration: 0.3 }}
-        className="User_report_container flex-grow-1"
+        className=" flex-grow-1"
       >
+            <div className="booking_report_title ">User </div>
+
+<div className="booking_report_container_whole">
         <div className="User_report_detail_entry">
           {/* <div className="User_report_title_text">User Report </div> */}
-          <div className="User_report_title">User Report</div>
+          {/* <div className="User_report_title">User Report</div> */}
 
-          <div className="User_report_filter_search_container">
+          <div className="User_report_filter_search_container mt-5">
             <div className="User_report_search_container">
               <label
                 for="User_report_uid"
@@ -321,7 +324,25 @@ export default function User_report() {
             )}
           </div>
         </div>
-
+        <div style={{ marginTop: "-20px",marginLeft:'85%',zIndex:'1000000' }} className="">
+          {loading && (
+            <div
+              style={{ marginLeft: "47%", marginTop: "-5px" }}
+              class=" spinner-grow"
+              role="status"
+            >
+              <span class="sr-only"></span>
+            </div>
+          )}
+          <div style={{ display: loading ? "none" : "" }}>
+            {pagination && pagination.count > 20 && (
+              <Pagination
+                count={pagination.count}
+                GetPagination={GetPagination}
+              />
+            )}
+          </div>
+        </div>
         <div
           className="payment_table_container table mt-2"
           onClick={() => setFilter(false)}
@@ -384,26 +405,10 @@ export default function User_report() {
               })}
           </table>
         </div>
-        <div style={{ marginTop: "0px" }} className="justify-content-end">
-          {loading && (
-            <div
-              style={{ marginLeft: "47%", marginTop: "-5px" }}
-              class=" spinner-grow"
-              role="status"
-            >
-              <span class="sr-only"></span>
-            </div>
-          )}
-          <div style={{ display: loading ? "none" : "" }}>
-            {pagination && pagination.count > 20 && (
-              <Pagination
-                count={pagination.count}
-                GetPagination={GetPagination}
-              />
-            )}
-          </div>
+        
         </div>
       </motion.div>
+      
     </>
   );
 }

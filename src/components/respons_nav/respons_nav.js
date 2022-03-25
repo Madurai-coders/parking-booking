@@ -11,9 +11,8 @@ import logo from "../../assets/images/navlogo.svg";
 import User_report from "../../assets/images/userreport.svg";
 import { useEffect } from "react";
 function Respons_nav(props) {
-    const [current_page, setCurrentpage] = useState();
-    const [logout_popup, setlogout_popup] = useState();
-
+  const [current_page, setCurrentpage] = useState();
+  const [logout_popup, setlogout_popup] = useState();
 
   const addclass = () => {
     document.querySelector("#btn").classList.toggle("inactive");
@@ -43,59 +42,69 @@ function Respons_nav(props) {
     document.querySelector("#arrow_1").classList.toggle("down_1");
   };
 
-
   return (
     <>
       {logout_popup && (
-          <div className="overlay">
-            {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">
-                    Logout
-                  </h5>
-                  <button
-                    type="button"
-                    onClick={() => setlogout_popup(false)}
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body">Are your sure?</div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    onClick={() => setlogout_popup(false)}
-                    class="btn btn-light btn-sm"
-                    data-bs-dismiss="modal"
-                  >
-                    Cancle
-                  </button>
-                  <button
-                    type="button"
-                    onClick={props.logout}
-                    class="btn btn-primary btn-sm"
-                  >
-                    Logout
-                  </button>
-                </div>
+        <div className="overlay">
+          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Logout
+                </h5>
+                <button
+                  type="button"
+                  onClick={() => setlogout_popup(false)}
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
-              {/* </div> */}
+              <div class="modal-body">Are your sure?</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  onClick={() => setlogout_popup(false)}
+                  class="btn btn-light btn-sm"
+                  data-bs-dismiss="modal"
+                >
+                  Cancle
+                </button>
+                <button
+                  type="button"
+                  onClick={props.logout}
+                  class="btn btn-primary btn-sm"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+            {/* </div> */}
+          </div>
+        </div>
+      )}
+      <div className="sidebar shadow-sm" id="sidebar">
+        <div className="logo_cnt shadow-sm  ">
+          <div className="logo d-flex justify-content-between ">
+            <div>
+              <span className="logo_name" id="logo_1">
+                <img src={logo} id="btn" onClick={addclass}></img>
+              </span>
+            </div>
+            {/* <div>
+              <span className="logo_name" id="logo_1">
+                <img src={logo} id="btn" onClick={addclass}></img>
+              </span>
+            </div> */}
+            <div>
+              <i
+                class="fa fa-power-off"
+                onClick={() => setlogout_popup(true)}
+                style={{ fontSize: "20px", color: "grey", marginRight:'60px',marginTop:'7px',cursor:'pointer'}}
+              ></i>
             </div>
           </div>
-        )}
-      <div className="sidebar shadow-sm" id="sidebar">
-        <div className="logo_cnt shadow-sm">
-          <div className="logo">
-            {/* <i class="lg fa fa-code" id="logo"></i> */}
-            <span className="logo_name" id="logo_1">
-              <img src={logo} id="btn" onClick={addclass}></img>
-            </span>
-            <i class="fa fa-power-off"   onClick={() => setlogout_popup(true)} style={{fontSize:'20px',color:'grey',marginLeft:'87vw'}}></i>
-          </div>
-          {/* <i  id="btn" className="btn fa fa-bars"></i> */}
         </div>
 
         <ul className="nav_list">
@@ -108,7 +117,11 @@ function Respons_nav(props) {
           </li> */}
           <Link to="/admin" style={{ textDecoration: "none" }}>
             <li className="dropdown select">
-              <a href="#"  onClick={() => setCurrentpage("Booking")} className={current_page == "Booking" && 'sl'}>
+              <a
+                href="#"
+                onClick={() => setCurrentpage("Booking")}
+                className={current_page == "Booking" && "sl"}
+              >
                 <i class="fa fa-bookmark"></i>
                 <span className="link_name" id="link_name_close">
                   Booking
@@ -127,9 +140,16 @@ function Respons_nav(props) {
             </div> */}
           </Link>
 
-          <Link to="AdmindashboardBookingreport" style={{ textDecoration: "none" }}>
+          <Link
+            to="AdmindashboardBookingreport"
+            style={{ textDecoration: "none" }}
+          >
             <li>
-              <a href="#"  onClick={() => setCurrentpage("Report")} className={current_page == "Report" && 'sl'}>
+              <a
+                href="#"
+                onClick={() => setCurrentpage("Report")}
+                className={current_page == "Report" && "sl"}
+              >
                 <i class="fa fa-pie-chart"></i>
                 <span className="link_name" id="link_name_close">
                   Report
@@ -140,16 +160,27 @@ function Respons_nav(props) {
           </Link>
           <Link to="/Admindashboardpayment" style={{ textDecoration: "none" }}>
             <li>
-              <a href="#"  onClick={() => setCurrentpage("Payment")} className={current_page == "Payment" && 'sl'}>
+              <a
+                href="#"
+                onClick={() => setCurrentpage("Payment")}
+                className={current_page == "Payment" && "sl"}
+              >
                 <i class="fa fa-credit-card"></i>
                 <span className="link_name">Payment</span>
               </a>
               <span className="tooltips">Analytics</span>
             </li>
           </Link>
-          <Link to="/AdmindashboardUserreport" style={{ textDecoration: "none" }}>
+          <Link
+            to="/AdmindashboardUserreport"
+            style={{ textDecoration: "none" }}
+          >
             <li>
-              <a href="#"  onClick={() => setCurrentpage("User")} className={current_page == "User" && 'sl'}>
+              <a
+                href="#"
+                onClick={() => setCurrentpage("User")}
+                className={current_page == "User" && "sl"}
+              >
                 <i class="fa fa-user"></i>
                 <span className="link_name">User</span>
                 {/* <i
@@ -175,9 +206,16 @@ function Respons_nav(props) {
             </li>
           </Link> */}
 
-          <Link to="/AdmindashboardParkingsetup" style={{ textDecoration: "none" }}>
+          <Link
+            to="/AdmindashboardParkingsetup"
+            style={{ textDecoration: "none" }}
+          >
             <li>
-            <a href="#"  onClick={() => setCurrentpage("Settings")} className={current_page == "Settings" && 'sl'}>
+              <a
+                href="#"
+                onClick={() => setCurrentpage("Settings")}
+                className={current_page == "Settings" && "sl"}
+              >
                 <i class="fa fa-cog"></i>
                 <span className="link_name">Settings</span>
               </a>

@@ -1,14 +1,14 @@
 .booking_report_container {
-  padding-top: 50px;
-  padding-left: .5vw;
+  padding-left: 0px;
   padding-right: .5vw;
   /* height: 82vh; */
   overflow-y: scroll;
 }
 .booking_report_container_whole {
-
+    margin-top: 50px;
     height: 100vh;
     overflow-y: scroll;
+    margin-left: 75px;
   }
 
 .booking_report_title {
@@ -17,12 +17,14 @@
   font-size: 12.8px;
   line-height: 15px;
   letter-spacing: 0.183px;
- background: rgb(72,180,227);
+  background: rgb(72,180,227);
   background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
-  padding: 0.6% 1%;
+  padding: 8px 10px;
   position: fixed;
-  width: 95%;
-  z-index: 1000;
+  width: 100%;
+  z-index: 150000;
+  margin-top: 50px;
+
 }
 
 
@@ -45,7 +47,7 @@
 }
 
 .booking_report_table_container::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #e2f5ff;
 }
 
 .booking_report_table_container::-webkit-scrollbar-thumb {
@@ -64,29 +66,29 @@
 }
 
 .booking_report_table_headers th {
-  color: #fff;
+  color: rgb(0, 0, 0);
   font-weight: 600;
-  font-size: 12px;
-  line-height: 9px;
- background: rgb(72,180,227);
-  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
+  font-size: 14px;
+  line-height: 10px;
   padding: 1% 1%;
   position: sticky;
   z-index: 2;
   top: 0;
+  margin-bottom: 10px;
+  background-color: #e0e0e0;
 }
 
 .booking_report_table_data td {
   font-weight: 500;
   font-size: 12px;
-  line-height: 9px;
+  line-height: 10px;
   padding: 1.5% 2%;
   text-transform: capitalize;
 
 }
 
 .booking_report_table tr:nth-child(even) td {
-  background-color: #f0f0f0;
+  background-color: #f8f8f8;
 }
 
 .booking_report_topdisplay {

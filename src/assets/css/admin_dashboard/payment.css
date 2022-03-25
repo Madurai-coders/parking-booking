@@ -1,5 +1,5 @@
 .payment_container {
-  padding: 4.5% 0% 0% 0.2%;
+  padding: 2.5% 0% 0% 0.2%;
 }
 
 .payment_entry_fields {
@@ -127,16 +127,24 @@
 }
 
 .payment_table_heading th {
-  color: #fff;
- background: rgb(72,180,227);
-  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
+  color: rgb(0, 0, 0);
+ background: rgb(236, 236, 236);
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 15px;
-  padding:6px;
+  padding:10px;
   position: sticky;
   top: 0;
 }
+
+.payment_table_heading1 th {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 15px;
+    padding:10px;
+    position: sticky;
+    top: 0;
+  }
 
 .payment_table_content td {
   color: #000000;
@@ -148,7 +156,7 @@
 }
 
 .payment_table tr:nth-child(odd) td {
-  background-color: #eef9fc;
+  background-color: #f8f8f8;
 }
 
 .payment_table_button_book {
@@ -156,7 +164,7 @@
   font-weight: 700;
   font-size: .6rem;
   line-height: 8px;
-  padding:4% 8%;
+  padding:6px 10px;
   background-color: #3fc513;
   border-radius: 2.27px;
   cursor: pointer;
