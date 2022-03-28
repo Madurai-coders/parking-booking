@@ -1,0 +1,204 @@
+.skl_1 {
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+  height: 35px;
+  width: 300px;
+}
+@keyframes skeletonshimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+.skl_2 {
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+  height: 10px;
+  width: 200px;
+}
+.skl_3 {
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+  height: 10px;
+  width: 100px;
+}
+.skl_4 {
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+  height: 10px;
+  width: 70px;
+}
+
+.card_skl {
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+  height: 80px;
+
+}
+
+.th_skl {
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+  height: 20px;
+}
+
+.td {
+  padding: 10px 60px;
+  background-color: #d8d8d8;
+  border: none;
+  position: relative;
+  left: 15px;
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+}
+.td_1 {
+  padding: 10px 60px;
+  background-color: #d8d8d8;
+  border: none;
+  margin-left: 30px;
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+}
+
+.graph_skl {
+  background: #d8d8d8;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: skeletonshimmer;
+  animation-timing-function: linear;
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #d8d8d8 0%,
+    #bdbdbd 20%,
+    #d8d8d8 40%,
+    #d8d8d8 100%
+  );
+  background-repeat: no-repeat;
+  height: 240px;
+  width: 98%;
+}
+
+
+@media only screen and (max-width: 1250px) {
+       .td {
+         padding: 10px 47px;
+       }
+       .td_1 {
+         padding: 10px 47px;
+       }
+       .graph_skl{
+              width: 94%;
+       }
+       .card_skl{
+              width: 93%;
+       }
+     }
+     
