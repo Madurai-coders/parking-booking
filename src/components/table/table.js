@@ -30,7 +30,7 @@ export default function Table(props) {
 
     data.forEach((element) => {
       array_store.forEach((element1) => {
-        element = { ...element, [element1]: "undefined" };
+        element = { ...element, [element1]: 'undefined' };
       });
       store.push(element);
     });
@@ -146,7 +146,6 @@ export default function Table(props) {
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Enter recipient mail id</h5>
-       
       </div>
       <div class="form-group p-3">
     <input type="email" class="form-control mb-1" id="exampleInputEmail1"
@@ -196,7 +195,7 @@ export default function Table(props) {
         <table className="booking_report_table table">
           <tr  className="payment_table_heading1">
             {headers &&
-              headers.map((headers, id) => {
+              headers_excel.map((headers, id) => {
                 return (
                   <th
                     key={id}
@@ -214,7 +213,7 @@ export default function Table(props) {
           </tr>
 
           {data &&
-            props.data.map((data, id) => {
+            data_excel.map((data, id) => {
               return (
                 <tr key={id} className="booking_report_table_data">
                   <td className="data1">{data.data1}</td>
