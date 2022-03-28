@@ -3,13 +3,13 @@ import 'firebase/auth'
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAL4mFs6Qv7i6tc9nF_SrkYA8-uWmIP-6A",
-    authDomain: "munidex-parking.firebaseapp.com",
-    projectId: "munidex-parking",
-    storageBucket: "munidex-parking.appspot.com",
-    messagingSenderId: "831997585533",
-    appId: "1:831997585533:web:5f588c0b151592c3d3a914",
-    measurementId: "G-HB1LVLCYCV"
+    apiKey: "AIzaSyAPrIngxy96jjnsbdvkXKpGZwO5DjTMKAU",
+    authDomain: "munidexparking-ece1b.firebaseapp.com",
+    projectId: "munidexparking-ece1b",
+    storageBucket: "munidexparking-ece1b.appspot.com",
+    messagingSenderId: "771429229694",
+    appId: "1:771429229694:web:9feb0013573a1ce122a42f",
+    measurementId: "G-395XVT0LEG"
   };
 
 

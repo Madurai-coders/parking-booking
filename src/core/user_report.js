@@ -197,7 +197,7 @@ export default function User_report() {
           <User user={user} set_up_flag={set_up_flag}></User>
         </div>
       )}
-      <Loader></Loader>
+     {!usr_suggestion[0] && <Loader></Loader>}
       <motion.div
        initial={{ opacity: 0, y: 15 }}
        animate={{ opacity: [0.5, 1], y: 0 }}

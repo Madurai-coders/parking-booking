@@ -121,6 +121,94 @@ export default function Loader(props) {
             <div className="graph_skl"></div>
           </div>
         </div>
+
+        
+        <div className="row mt-5">
+          <div className="col-xl-5 col-lg-5 m-3">
+            <div className="th_skl"> </div>
+            <div className="d-flex flex-column">
+              <div className="td_skl d-flex flex-row mt-4">
+                <button type="button" className="td btn btn-secondary"></button>
+                <button
+                  type="button"
+                  className="td_1 btn btn-secondary "
+                ></button>
+                <button
+                  type="button"
+                  className="td_1 btn btn-secondary "
+                ></button>
+                <button
+                  type="button"
+                  className="td_1 btn btn-secondary "
+                ></button>
+              </div>
+            </div>
+
+            <div className="td_skl d-flex flex-row mt-4">
+              <button type="button" className="td btn btn-secondary"></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+            </div>
+            <div className="td_skl d-flex flex-row mt-4">
+              <button type="button" className="td btn btn-secondary"></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+            </div>
+            <div className="td_skl d-flex flex-row mt-4">
+              <button type="button" className="td btn btn-secondary"></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+            </div>
+            <div className="td_skl d-flex flex-row mt-4">
+              <button type="button" className="td btn btn-secondary"></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+              <button
+                type="button"
+                className="td_1 btn btn-secondary "
+              ></button>
+            </div>
+          </div>
+          <div className="col-xl-6 col-lg-6 m-3">
+            <div className="graph_skl"></div>
+          </div>
+        </div>
       </div>
     </>
   );

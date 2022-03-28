@@ -54,10 +54,12 @@ const Routes = () => {
 
 
   const call_login = async () => {
+
     login(true).then(function (log) {
     //   console.log(log.data.user.photoURL);
     //   Cookies.set('icon',log.data.user.photoURL)
     setloading(true)
+
       if (log != null) {
         axios({
           method: "GET",
@@ -69,7 +71,7 @@ const Routes = () => {
             setloading(false)
               setTimeout(() => {
             setloader(false)
-        }, 2400);
+        }, 2500);
           }
         });
       }
@@ -102,7 +104,7 @@ const Routes = () => {
           
           setTimeout(() => {
             setloader(false)
-        }, 1500);
+        }, 2500);
 
         }
       });

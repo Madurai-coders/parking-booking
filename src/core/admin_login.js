@@ -47,7 +47,6 @@ export default function Admin_login(props) {
                 </div>
               </div>
               <br></br>
-              <br></br>
               <br></br>{" "}
             </div>
         {props.loading && (
@@ -55,6 +54,8 @@ export default function Admin_login(props) {
             <span class="sr-only">Loading...</span>
           </div>
         )}
+              <br></br>{" "}
+
           </div>
         </div>
       

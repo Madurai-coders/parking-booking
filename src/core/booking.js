@@ -28,6 +28,7 @@ import tick from "../assets/images/tick.svg";
 import close from "../assets/images/close.svg";
 import Bookinginvoice from "../components/Booking/bookinginvoice";
 import { motion, AnimatePresence } from "framer-motion";
+import Loader from "../components/loader/loader";
 
 export default function Booking() {
   const [booking, setbooking] = useState({
@@ -394,6 +395,7 @@ export default function Booking() {
       <Helmet>
          <title>Munidex Parking - Booking </title>
       </Helmet>
+      {!wing && <Loader></Loader>}
 
       {preview && (
         <div className="overlay1">

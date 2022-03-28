@@ -51,6 +51,7 @@ export default function Booking_report() {
   const [paymentType_graph, setPaymentType_graph] = useState();
   const [display, setdisplay] = useState("payment_report");
   const [date_timeline, setdate_timeline] = useState();
+  const [table_data, settable_data] = useState();
 
   const options = {
     indexAxis: "x",
@@ -634,6 +635,9 @@ export default function Booking_report() {
 
   useEffect(() => {
     GetPayment("Weekly");
+    axios_call("GET", "TableData/").then((response) => {
+        console.log(response)
+        settable_data(response[0])})
   }, []);
 
   function bookingPayment(selected_wing) {
@@ -911,6 +915,9 @@ export default function Booking_report() {
     );
   }
 
+ 
+
+
   return (
     <>
       <Helmet>
@@ -1059,6 +1066,8 @@ export default function Booking_report() {
           </div>
         </div>
       )}
+
+     {!payment && !paymentType_graph && <Loader></Loader>}
 
       <motion.div
         initial={{ opacity: 0, y: 15 }}
@@ -1558,7 +1567,7 @@ export default function Booking_report() {
               <>
                 {timeline != "Daily" && (
                   <>
-                    <div className="col-6 p-3 mt-2">
+                    <div className="col-6 p-3">
                       {/* <table className="booking_report_table">
                           <tr className="booking_report_table_headers">
                             <th>S.No</th>
@@ -1585,7 +1594,7 @@ export default function Booking_report() {
                               );
                             })}
                         </table> */}
-                      {Daily_payment && (
+                      {Daily_payment &&  (
                         <Table
                           headers={[
                             { label: "S.No", key: "data1" },
@@ -1594,12 +1603,13 @@ export default function Booking_report() {
                             { label: "Amount", key: "data4" },
                           ]}
                           data={Table_data(Daily_payment, "Daily_payment")}
+                        //   table_data={table_data}
                         ></Table>
                       )}
                     </div>
 
                     {payment_graph && (
-                      <div className="col-6 mt-5">
+                      <div className="col-6 mt-4">
                         <div className="p-3 shadow rounded">
                           <Line data={payment_graph} options={options1}></Line>
                         </div>
