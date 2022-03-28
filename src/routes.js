@@ -61,7 +61,7 @@ const Routes = () => {
       if (log != null) {
         axios({
           method: "GET",
-          url: "https://munidexparking.pythonanywhere.com/admins/",
+          url: "https://munidexparkingapp.pythonanywhere.com/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {
