@@ -7,7 +7,7 @@
 
 .user_login_card_container{
     position: relative;
-    top:28%;
+    top:35%;
 }
 
 .user_login_card{
@@ -47,8 +47,9 @@
     background-color: #63E9F7;
     border-radius: 5.3px;
     display: inline-block;
-    padding: 2.5% 6% 2.5% 6%;
+    padding: 9px 22px;
     cursor: pointer;
+    margin-top: 30px;
 }
 
 .user_login_text_or{

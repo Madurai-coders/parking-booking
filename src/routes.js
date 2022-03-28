@@ -50,12 +50,14 @@ const Routes = () => {
   const [user, setuser] = useState();
 
   const [loader, setloader] = useState(true);
+  const [loading, setloading] = useState(false);
 
 
   const call_login = async () => {
     login(true).then(function (log) {
     //   console.log(log.data.user.photoURL);
     //   Cookies.set('icon',log.data.user.photoURL)
+    setloading(true)
       if (log != null) {
         axios({
           method: "GET",
@@ -64,6 +66,7 @@ const Routes = () => {
         }).then((response) => {
           if (response.data[0].is_staff) {
             setis_admin(response.data[0].is_staff);
+            setloading(false)
               setTimeout(() => {
             setloader(false)
         }, 2400);
@@ -123,14 +126,14 @@ const Routes = () => {
                   path="/admin"
                   exact
                   render={() => (
-                    <Admin_login login={call_login} is_admin={is_admin} />
+                    <Admin_login login={call_login} is_admin={is_admin} loading={loading} />
                   )}
                 />
                
                 <Route path="/dashboard" exact component={User_dashboard} />
                 <Route path="/" exact component={User_login} />
                 <Route   render={() => (
-                    <Admin_login login={call_login} is_admin={is_admin} />
+                    <Admin_login login={call_login} is_admin={is_admin} loading={loading}/>
                   )}/>       
 
               </>

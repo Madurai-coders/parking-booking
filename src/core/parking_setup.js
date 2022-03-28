@@ -390,7 +390,7 @@ export default function Parkingsetup() {
         transition={{ duration: 0.3 }}
         className="flex-grow-1 "
       >
-          <div className="booking_report_title ">Payment Setup </div>
+          <div className="booking_report_title ">Setup </div>
 
 <div className="booking_report_container_whole">
             

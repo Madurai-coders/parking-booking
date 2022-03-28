@@ -62,7 +62,7 @@
 .parking_setup_input_quarterly,
 .parking_setup_input_yearly {
   max-width: 90%;
-  background: rgba(189, 189, 189, 0.61);
+  background: rgba(228, 228, 228, 0.61);
   border-width: 0px;
   border-color: thistle;
   border-radius: 4px;
@@ -83,8 +83,8 @@
 }
 .parking_setup_input_count,
 .parking_setup_input_slot_type {
-  background: rgba(189, 189, 189, 0.61);
-  border-width: 0px;
+    background: rgba(228, 228, 228, 0.61);
+    border-width: 0px;
   width: 80%;
  height: 40px;
   margin-top: 3%;

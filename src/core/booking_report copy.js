@@ -24,6 +24,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut, PolarArea } from "react-chartjs-2";
 import { set } from "js-cookie";
 import Table from "../components/table/table";
+import Loader from "../components/loader/loader";
 
 export default function Booking_report() {
   const [data, setData] = useState();
@@ -861,7 +862,7 @@ export default function Booking_report() {
                         <div
                           className={
                             bookingdata.day_left < 7 &&
-                            "p-1 shadow-sm rounded bg-danger"
+                            "p-1 shadow-sm rounded bg-danger display-block"
                           }
                         >
                           {bookingdata.day_left}
@@ -890,7 +891,7 @@ export default function Booking_report() {
                       <div
                         className={
                           bookingdata.day_left < 7 &&
-                          "p-1 shadow-sm rounded bg-danger"
+                          "pt-1 pb-1 text-white mx-3 shadow-sm rounded bg-danger"
                         }
                       >
                         {bookingdata.day_left}
@@ -915,6 +916,7 @@ export default function Booking_report() {
       <Helmet>
         <title>Munidex Parking - Booking Report</title>
       </Helmet>
+      {/* <Loader></Loader> */}
 
       {preview && (
         <div className="overlay1">
@@ -1323,7 +1325,7 @@ export default function Booking_report() {
 
             {display != "payment_report" && (
               <>
-                <div className="booking_report_wingselection_container mx-5 mb-4 mt-3">
+                <div className="booking_report_wingselection_container mx-5 mb-5 mt-3">
                   <div style={{ flexGrow: 1 }}>
                     <Carousel
                       itemsToShow={7}
@@ -1536,6 +1538,8 @@ export default function Booking_report() {
                         </div>
                       </>
                     )}
+
+                    
                     {booking_graph && (
                       <div className="col-8 offset-2 mb-5">
                         <div className="p-3 shadow rounded">

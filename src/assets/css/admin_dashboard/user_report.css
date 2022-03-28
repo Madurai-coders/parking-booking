@@ -61,10 +61,14 @@
 }
 
 .User_report_search_input {
-  background: #ffffff;
-  border: 0.9px solid #d6d6d6;
-  border-radius: 5.44px;
-  margin-right: 1%;
+    background: rgba(228, 228, 228, 0.61);
+    border-width: 0px;
+    width: 250px;
+    height: 40px;
+    border-radius: 4px;
+    border-color: thistle;
+    padding: 8px;
+    margin-right: 20px;
 }
 
 .User_report_get_button {
@@ -234,7 +238,6 @@
   border-radius: 7px;
   position: absolute;
   z-index: 4;
-  top:60%;
   left:28vw;
 }
 
