@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import logo from "../assets/images/navlogo.svg";
+import logo from "../assets/images/logogrey.svg";
 import userprof from "../assets/images/userprofile.png";
 import handshake from "../assets/images/handshake.png";
 import loader_video from "../assets/images/loader.mp4";
 import "../assets/css/user_dashboard/user_dashboard.css";
+import Carousel from "react-elastic-carousel";
+import Car from "../assets/images/Car.svg";
+import Cartcard from "../components/user_dashboard/cartcard.js";
+import Addslot from "../components/user_dashboard/addslot.js"
+import Activebooking from "../components/user_dashboard/activebookingcard.js"
+import Userprofile from "../components/user_dashboard/userprofile.js"
 import { IoClose } from "react-icons/io5";
 import moment from "moment";
 import {
@@ -14,7 +20,7 @@ import {
   validation_count,
   logout,
   generateUUID,
-  formatUsd
+  formatUsd,
 } from "../functions/reusable_functions";
 import { useLocation } from "react-router";
 import Cookies from "js-cookie";
@@ -29,6 +35,27 @@ export default function User_dashboard() {
   const [amount, setAmount] = useState();
   const [logout_popup, setlogout_popup] = useState();
   const [loader, setloader] = useState(true);
+  const [wing_data, setWing_data] = useState([
+    { wingName: "Wing A" },
+    { wingName: "Wing B" },
+    { wingName: "Wing C" },
+    { wingName: "Wing D" },
+    { wingName: "Wing E" },
+    { wingName: "Wing F" },
+    { wingName: "Wing G" },
+    { wingName: "Wing H" },
+    { wingName: "Wing I" },
+  ]);
+  const [slot, SetSlot] = useState([
+    1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
+    1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
+    1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
+    1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5
+  ]);
+  const [table , setTable] = useState ({
+    bookingdetails : true,
+    transactionhistory : false
+ })
 
   let history = useHistory();
 
@@ -41,30 +68,44 @@ export default function User_dashboard() {
     booking.forEach((element) => {
       booking_total = booking_total + parseInt(element.charge);
     });
-    var val = payment_total - booking_total
+    var val = payment_total - booking_total;
 
-    if(val<0){
-    return <div><span className="user_dashboard_balance_card_amount" >{formatUsd(Math.abs(payment_total - booking_total))}</span><span className=" small bg-danger mx-2 text-white px-1 rounded">Delinquent</span></div>
-    }
-    else
-    if(val==0){
-
+    if (val < 0) {
+      return (
+        <div>
+          <span className="user_dashboard_balance_card_amount">
+            {formatUsd(Math.abs(payment_total - booking_total))}
+          </span>
+          <span className=" small bg-danger mx-2 text-white px-1 rounded">
+            Delinquent
+          </span>
+        </div>
+      );
+    } else if (val == 0) {
+      return (
+        <div>
+          {" "}
+          {formatUsd(payment_total - booking_total)}
+          <span className="small bg-warning mx-1 text-white px-1 rounded">
+            Paid
+          </span>
+        </div>
+      );
+    } else {
+      {
         return (
-            <div>
-              {" "}
+          <div>
+            <span className="user_dashboard_balance_card_amount">
               {formatUsd(payment_total - booking_total)}
-              <span className="small bg-warning mx-1 text-white px-1 rounded">
-                Paid
-              </span>
-            </div>
-          );
-
+            </span>
+            <span className="small bg-success mx-2 text-white px-1 rounded">
+              OverPayment
+            </span>
+          </div>
+        );
+      }
     }
-    else{
-    {
-    return <div><span className="user_dashboard_balance_card_amount" >{formatUsd(payment_total - booking_total)}</span><span className="small bg-success mx-2 text-white px-1 rounded">OverPayment</span></div>
-    }  }
-}
+  }
 
   function Dayleft(endTo) {
     var b = moment(endTo, "YYYY-MM-DD");
@@ -72,6 +113,14 @@ export default function User_dashboard() {
     var day = b.diff(a, "days");
     return day;
   }
+
+  function toggleTable(val) {
+		setTable({
+			bookingdetails:false,
+      transactionhistory:false,
+			[val]: true,
+		});
+	}
 
   useEffect(() => {
     var accountnumber = Cookies.get("accountnumber");
@@ -135,49 +184,45 @@ export default function User_dashboard() {
       };
 
       console.log(data);
-    //   axios_call_unauthenticated(
-    //     "POST",
-    //     "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
-    //     data
-    //   ).then((response) => {
-    //     console.log(response);
-    //     let userDate = user;
-    //     userDate.payment_partner.push(response);
-    //     setUser(user);
-    //     setGetAmount(false);
-    //     setAmount();
-    //   });
+      //   axios_call_unauthenticated(
+      //     "POST",
+      //     "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+      //     data
+      //   ).then((response) => {
+      //     console.log(response);
+      //     let userDate = user;
+      //     userDate.payment_partner.push(response);
+      //     setUser(user);
+      //     setGetAmount(false);
+      //     setAmount();
+      //   });
 
-    window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' )
+      window.location.replace("https://taxdev.munidex.info/pbs2/pbs/");
 
+      // axios({
+      //   method: "POST",
+      //   url: "https://taxdev.munidex.info/pbs2/pbsreq",
+      //   data: body,
+      //   port: 443,
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Cookie:
+      //       "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
+      //   },
+      //   json: true,
+      //   withCredentials: true
+      // }).then((response) => {
 
-        // axios({
-        //   method: "POST",
-        //   url: "https://taxdev.munidex.info/pbs2/pbsreq",
-        //   data: body,
-        //   port: 443,
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Cookie:
-        //       "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
-        //   },
-        //   json: true,
-        //   withCredentials: true
-        // }).then((response) => {
+      // window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
 
-        // window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
+      //   console.log(response);
 
-
-        //   console.log(response);
-
-        // });
+      // });
     }
   }
 
   return (
     <>
-      {" "}
-       
       <Helmet>
         <title>Munidex Parking - User Dashboard</title>
       </Helmet>
@@ -191,7 +236,6 @@ export default function User_dashboard() {
         <>
           {logout_popup && (
             <div className="overlay">
-              {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -226,11 +270,228 @@ export default function User_dashboard() {
                     </button>
                   </div>
                 </div>
-                {/* </div> */}
               </div>
             </div>
           )}
           {user && (
+            <div className="user_dashboard_container">
+              <div className="udb_topsec p-2">
+                <img
+                  src={logo}
+                  alt="munidex_logo"
+                  className="user_dashboard_munidex_logo"
+                />
+                <img
+                  onClick={() => setlogout_popup(true)}
+                  src={userprof}
+                  alt="Customer_profile"
+                  className="user_dashboard_profile_icon"
+                />
+              </div>
+              <div className="row">
+                <Userprofile name="Mitchell" acntnum="56 7782684 85" email="michelle.rivera@example.com" num="(239) 555-0108"/>
+                <div className="col-10">
+                  <div className="row">
+                    <div className="col-9 abccards_section pb-2 pt-2 mb-2">
+                    <Carousel
+                                itemsToShow={3.5}
+                                itemsToScroll={1}
+                                pagination={false}
+                                showArrows={true}
+                              >
+                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
+                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
+                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
+                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
+                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
+                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
+                              </Carousel>
+                    </div>
+                    <div className="col-3">
+                      <div className="udb_bcsection mt-4 pt-4 ps-4 pe-3 me-4">
+                        <div className="udb_bctext mt-3 mb-2 ms-2">Balance</div>
+                        <div className="udb_bcval ms-2">$ 1.234</div>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
+                          className="pb-3"
+                        >
+                          <span className="udb_bccredit pt-2 pb-1 ps-2 pe-2">
+                            Credit
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-9 udb_middlescrollsection">
+                      <div>
+                        {wing_data && wing_data.length && (
+                          <div className="parking_setup_wing_title_section_udb">
+                            <div style={{ flexGrow: 1 }}>
+                              <Carousel
+                                itemsToShow={6}
+                                itemsToScroll={1}
+                                pagination={false}
+                                showArrows={true}
+                              >
+                                {wing_data.map((wing) => {
+                                  return (
+                                    <div className="btn-light btn btn-sm m-1 text-capitalize">
+                                      {wing.wingName}
+                                    </div>
+                                  );
+                                })}
+                              </Carousel>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="parking_setup_wing_container">
+                          {slot && (
+                            <>
+                              {slot.map((slot, id) => {
+                                return (
+                                  <img src={Car} className="ps-3 pe-3 mb-3" />
+                                );
+                              })}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      < Addslot amount="12" />
+                      < Addslot amount="20" />
+                      <div className="row user_dashboard_bookingdetails_heading mt-5 ps-2 pe-2"> <div className="col-6 user_dashboard_bookingdetails_heading_bd p-4" onClick={() => toggleTable("bookingdetails")} style={{backgroundColor : table.bookingdetails ? '#fff' : '#F9F9F9'}}> Booking Details  </div> <div className="col-6 user_dashboard_bookingdetails_heading_th p-4" onClick={() => toggleTable("transactionhistory")} style={{backgroundColor : table.transactionhistory ? '#fff' : '#F9F9F9'}}> Transaction History</div></div>
+                      {table.bookingdetails && (
+                      <div className="user_dashboard_booking_details_card ">
+                    <table className="user_dashboard_booking_details_table">
+                      <tr className="user_dashboard_booking_details_table_heading">
+                        <th>Wing</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                        <th>Plan</th>
+                        <th>Amount</th>
+                        <th>Active for</th>
+                      </tr>
+                      {user.booking_partner.map((userdata) => {
+                        return (
+                          <tr className="user_dashboard_booking_details_table_data">
+                            {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
+                            <td>{userdata.slots.wing.wingName}</td>
+                            <td>
+                              {moment(userdata.startFrom).format("DD-MM-YYYY")}
+                            </td>
+                            <td>
+                              {moment(userdata.endTo).format("DD-MM-YYYY")}
+                            </td>
+                            <td>{userdata.plan}</td>
+                            <td>
+                              {userdata.charge}$
+                            </td>
+                            <td>
+                              {Dayleft(userdata.endTo) > 0
+                                ? Dayleft(userdata.endTo)
+                                : 0}{" "}
+                              days
+                              <span
+                                className={
+                                  "mx-1 user_dashboard_active_" +
+                                  (Dayleft(userdata.endTo) > 0
+                                    ? "green"
+                                    : "red")
+                                }
+                              ></span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </table>
+                  </div> 
+                      )}
+                      {table.transactionhistory && (
+                        <div className="user_dashboard_booking_details_card">
+                        <table className="user_dashboard_booking_details_table">
+                          <tr className="user_dashboard_booking_details_table_heading">
+                            <th>Transaction id</th>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                          </tr>
+                          {user.payment_partner.map((transaction) => {
+                            return (
+                              <tr className="user_dashboard_booking_details_table_data">
+                                <td>{transaction.paymentId}</td>
+                                <td>
+                                  {moment(transaction.paymentDate).format(
+                                    "DD-MM-YYYY"
+                                  )}
+                                </td>
+                                <td>{transaction.paymentType}</td>
+                                <td>{transaction.amount}</td>
+
+                                <td>
+                                  <span
+                                    className={
+                                      "user_dashboard_popup_status_" +
+                                      "Successful".toLowerCase()
+                                    }
+                                  >
+                                    Successful
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </table>
+                      </div>
+                      )}
+                    </div>
+                    <div className="col-3">
+                      <div className="udb_cartsection mt-4 pt-4 ps-3 pe-3 pb-2">
+                        <Cartcard
+                          slot="10"
+                          wing="A"
+                          plan="Daily"
+                          amount="$ 12"
+                        />
+                        <Cartcard
+                          slot="10"
+                          wing="A"
+                          plan="Daily"
+                          amount="$ 12"
+                        />
+                      </div>
+                      <div className="udb_carttotal p-4">
+                        Total Amount : $46
+                      </div>
+                      <div className="row">
+                        <div className="col-6" style={{ paddingRight: "0" }}>
+                          <button
+                            type="button"
+                            class="btn btn-secondary btn-md w-100 udb_cart_clrbutton"
+                          >
+                            Clear
+                          </button>
+                        </div>
+                        <div className="col-6" style={{ paddingLeft: "0" }}>
+                          <button
+                            type="button"
+                            class="btn btn-success btn-md w-100 udb_cart_continuebutton"
+                          >
+                            Continue
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* {user && (
             <div className="user_dashboard_container">
              
               <img
@@ -269,7 +530,6 @@ export default function User_dashboard() {
                       {user.booking_partner.map((userdata) => {
                         return (
                           <tr className="user_dashboard_booking_details_table_data">
-                            {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
                             <td>{userdata.slots.wing.wingName}</td>
                             <td>
                               {moment(userdata.startFrom).format("DD-MM-YYYY")}
@@ -279,13 +539,7 @@ export default function User_dashboard() {
                             </td>
                             <td>{userdata.plan}</td>
                             <td>
-                              {/* <span
-                          className={
-                            "user_dashboard_payment_text_" + userdata.status
-                          }
-                        >
-                          {userdata.status}
-                        </span> */}
+
                               {userdata.charge}$
                             </td>
                             <td>
@@ -315,9 +569,7 @@ export default function User_dashboard() {
                       <div className="user_dashboard_balance_card_text mb-3">
                         {" "}
                         Balance{" "}
-                        {/* <div className="user_dashboard_pay_container text-center">
-                    <div className="user_dashboard_pay"> Pay </div>
-                  </div> */}
+
                         <div className="user_dashboard_pay_container text-center">
                           {!getAmount ? (
                             <div
@@ -347,16 +599,7 @@ export default function User_dashboard() {
                       <>
                          {true && (
                 <div className="">
-                  {/* <div className="col-4 user_dashboard_popup_leftside text-center">
-                    <img
-                      src={handshake}
-                      alt="zengov"
-                      className="user_dashboard_handshake_image"
-                    />
-                    <div className="user_dashboard_popup_leftside_text">
-                      Zen<span>Gov</span>
-                    </div>
-                  </div> */} 
+
                   <div className="">
                     <div className="user_dashboard_popup_history_container">
                       <div className="user_dashboard_popup_transaction_history_flex">
@@ -364,12 +607,7 @@ export default function User_dashboard() {
                           {" "}
                           Transaction History{" "}
                         </div>
-                        {/* <div
-                          className="user_dashboard-popup_close"
-                          onClick={() => setPopup(false)}
-                        >
-                          <IoClose style={{ color: "#646262" }} size={30} />
-                        </div> */}
+
                       </div>
                       <div className="user_dashboard_popup_table_container">
                         <table className="user_dashboard_popup_table">
@@ -466,7 +704,7 @@ export default function User_dashboard() {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </>
       )}
     </>

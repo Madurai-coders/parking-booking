@@ -1,17 +1,25 @@
 .user_dashboard_container {
   height: 100vh;
-  padding-left: 3%;
-  padding-right: 2%;
+  padding-left: 1%;
 }
 
 .user_dashboard_munidex_logo {
-  width: 10%;
+  width: 8%;
 }
 
 .user_dashboard_profile_icon {
-  width: 2.8%;
+  width: 2.04%;
   margin-left: 80%;
   cursor: pointer;
+}
+
+.udb_topsec {
+  background: #f9f9f9;
+}
+
+.udb_middlescrollsection {
+  overflow-y: scroll;
+  height: 100vh;
 }
 
 .user_dashboard_username {
@@ -21,53 +29,63 @@
   text-transform: capitalize;
 }
 .user_dashboard_text_booking_details {
-  color: #FFFFFF;
-  background: rgb(72,180,227);
-  background: linear-gradient(351deg, rgba(72,180,227,1) 0%, rgba(61,163,208,1) 50%, rgba(31,138,185,1) 81%);  
+  color: #ffffff;
+  background: rgb(72, 180, 227);
+  background: linear-gradient(
+    351deg,
+    rgba(72, 180, 227, 1) 0%,
+    rgba(61, 163, 208, 1) 50%,
+    rgba(31, 138, 185, 1) 81%
+  );
   text-align: center;
   padding: 1% 0;
   font-weight: 600;
   font-size: 16px;
 }
 
-.user_dashboard_down_arrow{
+.user_dashboard_down_arrow {
   width: 0;
   height: 0;
-  border-top: 12px solid #0CB0E2;
+  border-top: 12px solid #0cb0e2;
   border-left: 25px solid transparent;
   border-right: 25px solid transparent;
-  margin:auto;
+  margin: auto;
   margin-bottom: 2%;
 }
 
 .user_dashboard_booking_details_card {
   background: #ffffff;
   box-shadow: 0px 4px 18px rgba(169, 169, 169, 0.15);
-  max-height: 55vh;
+  max-height: 60vh;
   overflow: hidden;
   overflow-y: scroll;
+  margin-bottom: 10%;
 }
 
-.user_dashboard_booking_details_card::-webkit-scrollbar , .user_dashboard_popup_table_container::-webkit-scrollbar{
-    width: 2px;
+.user_dashboard_booking_details_card::-webkit-scrollbar,
+.user_dashboard_popup_table_container::-webkit-scrollbar {
+  width: 2px;
 }
 
-.user_dashboard_booking_details_card::-webkit-scrollbar-track, .user_dashboard_popup_table_container::-webkit-scrollbar-track{
-    background: #f1f1f1; 
+.user_dashboard_booking_details_card::-webkit-scrollbar-track,
+.user_dashboard_popup_table_container::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
-.user_dashboard_booking_details_card::-webkit-scrollbar-thumb, .user_dashboard_popup_table_container::-webkit-scrollbar-thumb {
-    background: #888; 
-  }
+.user_dashboard_booking_details_card::-webkit-scrollbar-thumb,
+.user_dashboard_popup_table_container::-webkit-scrollbar-thumb {
+  background: #888;
+}
 
-  .user_dashboard_booking_details_card::-webkit-scrollbar-thumb:hover , .user_dashboard_popup_table_container::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
-
+.user_dashboard_booking_details_card::-webkit-scrollbar-thumb:hover,
+.user_dashboard_popup_table_container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 .user_dashboard_booking_details_table {
   width: 100%;
   text-align: center;
+  margin-bottom: 15%;
 }
 
 .user_dashboard_booking_details_table_heading th {
@@ -77,17 +95,17 @@
   padding-top: 3%;
   padding-bottom: 2%;
   position: sticky;
-  background-color: #F0F8FF;
+  background-color: #f0f8ff;
   z-index: 2;
   top: 0;
 }
 
-.user_dashboard_booking_details_table_data td{
-    font-weight: 500;
-    font-size: 12px;
-    padding: 2% 0%;
-    border-bottom: .8px solid #E0E0E0 ;
-    text-transform: capitalize;
+.user_dashboard_booking_details_table_data td {
+  font-weight: 500;
+  font-size: 12px;
+  padding: 2% 0%;
+  border-bottom: 0.8px solid #e0e0e0;
+  text-transform: capitalize;
 }
 
 .user_dashboard_payment_text_pending {
@@ -104,7 +122,6 @@
   background-color: #33a86d;
   border-radius: 50%;
   display: inline-block;
-  
 }
 
 .user_dashboard_active_red {
@@ -113,7 +130,6 @@
   background-color: #ea234f;
   border-radius: 50%;
   display: inline-block;
-
 }
 
 .user_dashboard_right_container {
@@ -272,20 +288,20 @@
   padding: 3% 3% 12% 4%;
 }
 
-.user_dashboard_popup_table_container{
+.user_dashboard_popup_table_container {
   height: 35vh;
   overflow: hidden;
   overflow-y: scroll;
 }
 
-.user_dashboard_popup_table{
-  width:100%;
+.user_dashboard_popup_table {
+  width: 100%;
   text-align: center;
   position: relative;
-  right: 4%
+  right: 4%;
 }
 
-.user_dashboard_popup_table_header th{
+.user_dashboard_popup_table_header th {
   color: #424242;
   font-weight: 500;
   font-size: 12px;
@@ -297,7 +313,7 @@
   top: 0;
 }
 
-.user_dashboard_popup_table_content td{
+.user_dashboard_popup_table_content td {
   color: #030303;
   font-weight: 500;
   font-size: 10px;
@@ -325,14 +341,419 @@
   cursor: pointer;
 }
 
-.user_dashboard_popup_status_pending{
+.user_dashboard_popup_status_pending {
   color: #fe9923;
 }
 
-.user_dashboard_popup_status_successful{
+.user_dashboard_popup_status_successful {
   color: #258e00;
-
 }
 
+.user_dashboard_bookingdetails_heading {
+  text-align: center;
+}
 
+.user_dashboard_bookingdetails_heading_bd,
+.user_dashboard_bookingdetails_heading_th {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: #4a4949;
+}
 
+/* User dashboard Profile Section */
+
+.udb_prosec {
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  height: 100vh;
+}
+
+.udb_propicsection {
+  background: #ffffff;
+  border: 1px solid rgba(193, 193, 193, 0.33);
+  box-sizing: border-box;
+  border-radius: 11px;
+  text-align: center;
+}
+
+.udb_propic {
+  border-radius: 50%;
+}
+
+.udb_details {
+  background: #ffffff;
+  border-bottom: none !important;
+  border: 1px solid rgba(193, 193, 193, 0.33);
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+.udb_propicname,
+.udb_name {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000000;
+}
+
+.udb_proedit {
+  display: flex;
+  justify-content: space-between;
+}
+
+.udb_acnum,
+.udb_email,
+.udb_num {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+  color: #828282;
+}
+
+.udb_acnumval,
+.udb_emailval,
+.udb_numval {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #131415;
+}
+
+.udb_pwdtxt {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: center;
+  color: #08b6db;
+}
+
+.udb_cnfrmpwdlabel {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 15px;
+  color: #000000;
+  display: block;
+}
+
+.udb_cnfrmpwd {
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+  width: 80%;
+}
+
+.udb_savebtn {
+  font-weight: 500;
+  font-size: 8px;
+  line-height: 9px;
+  color: #ffffff;
+  background: #258e00;
+  border-radius: 2.1px;
+  padding: 2.5% 4%;
+}
+
+.udb_backbtn {
+  font-weight: 500;
+  font-size: 8px;
+  line-height: 9px;
+  color: #000000;
+  background: #e8e8e8;
+  border-radius: 2.1px;
+  border-color: #e8e8e8;
+  padding: 2.5% 5%;
+}
+
+/* Balance card */
+
+.udb_bcsection {
+  background-image: url("../../images/balancecard.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.udb_bctext {
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 30px;
+  color: #ffffff;
+}
+
+.udb_bcval {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 48px;
+  color: #ffffff;
+}
+
+.udb_bccredit {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 12px;
+  color: #00556f;
+  background: #b0ff72;
+  border-radius: 12.9px;
+}
+
+/* Cart Section */
+
+.udb_cartsection {
+  overflow-y: scroll;
+  background: #f9f9f9;
+  border-radius: 75px 0px 0px 0px;
+  height: 50vh;
+}
+
+.udb_cartcard {
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+.udb_cartcard_flex {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.udb_cartcard_flexalign {
+  text-align: center;
+}
+
+.udb_cartcard_valflex {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.24px;
+  color: #383838;
+}
+
+.udb_cartcard_textflex {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.24px;
+  color: #a8a8a8;
+}
+
+.udb_cartcard_btn {
+  text-align: center;
+  background: #28a8e0;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 18.6775px;
+  line-height: 25px;
+  color: #ffffff;
+}
+
+.udb_carttotal {
+  background: #ffffff;
+  box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.15);
+  font-weight: 500;
+  font-size: 18.6775px;
+  line-height: 25px;
+  color: #000000;
+  text-align: center;
+}
+
+.udb_cart_clrbutton {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
+  color: #7c7c7c;
+  background: #d6d6d6;
+  border-radius: 5px;
+  border-color: #d6d6d6;
+}
+
+.udb_cart_continuebutton {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
+  color: #ffffff;
+  border-radius: 4px;
+}
+
+/* Add slot section */
+.udb_addslotsec {
+  padding: 0 2% 0 6%;
+}
+
+.udb_addslotsec1 {
+  background: rgba(196, 196, 196, 0.12);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.udb_planbtncontainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.udb_planbtn {
+  font-weight: 700;
+  font-size: 12px;
+  border-radius: 50%;
+}
+
+.udb_slotinputtext {
+  font-weight: 500;
+  font-size: 12.8px;
+  line-height: 15px;
+  color: #ffffff;
+  background: #28a8e0;
+  border-radius: 3.5px 0 0 3.5px;
+}
+
+.udb_slotinput {
+  background: #fff;
+  border-radius: 0 3.5px 3.5px 0;
+  border: none;
+  text-align: center;
+  width: 60%;
+}
+
+.udb_plantxt {
+  font-weight: 500;
+  font-size: 12.8px;
+  line-height: 15px;
+  color: #535353;
+}
+
+.udb_addslotamt {
+  text-align: center;
+  background: #ffffff;
+  box-shadow: 0px 3.4122px 3.4122px rgba(0, 0, 0, 0.13);
+  padding: 8% 0;
+}
+
+.udb_addslotamttext {
+  font-weight: 500;
+  font-size: 12.8px;
+  line-height: 15px;
+  color: #535353;
+  position: relative;
+  top: 50%;
+}
+
+.udb_addslotamtval {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 21px;
+  color: #232323;
+  position: relative;
+  top: 50%;
+}
+
+/* Active Booking Card */
+
+.abccards_section {
+  background: #f9fbfb;
+  box-shadow: 0px 2px 5px rgba(97, 97, 97, 0.12);
+  display: flex;
+  align-items: center;
+}
+
+.abc_card {
+  background: #ffffff;
+  border-radius: 7.55px;
+  width:96%
+}
+
+.abc_entrydatetext {
+  font-weight: 600;
+  font-size: 10px;
+  color: #4f4f4f;
+}
+
+.abc_entrydateval {
+  font-weight: 500;
+  font-size: 11px;
+  color: #a8a8a8;
+}
+
+.abc_active {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #258e00;
+  text-align: center;
+}
+
+.abc_expirydatetext {
+  font-weight: 600;
+  font-size: 10px;
+  color: #4f4f4f;
+}
+
+.abc_expirydateval {
+  font-weight: 500;
+  font-size: 11px;
+  color: #a8a8a8;
+}
+
+.abc_remdaycover {
+  display: flex;
+  align-items: center;
+  background: #28a8e0;
+  border-radius: 8.7px;
+  justify-content: center;
+}
+
+.abc_remdaysval {
+  font-weight: 700;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.abc_remdaystext {
+  font-weight: 600;
+  font-size: 10px;
+  color: #ffffff;
+}
+
+.abc_card_bottomsection{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.abc_cardbottom_flex{
+  display: flex;
+  align-items: center;
+}
+
+.abc_cardbottomcar{
+background: #E2FDFF;
+border-radius: 4px;
+}
+
+.abc_cardbottom_slottxt{
+  font-weight: 600;
+  font-size: 10px;
+  color: #4F4F4F;
+}
+
+.abc_cardbottom_slotval{
+  font-weight: 500;
+  font-size: 13px;
+  color: #A8A8A8;
+}
+
+.abc_cardbottom_plantxt{
+  font-weight: 600;
+  font-size: 10px;
+  color: #4F4F4F;
+}
+
+.abc_cardbottom_planval{
+  font-weight: 500;
+  font-size: 11px;
+  color: #A8A8A8;
+}
+
+.abc_cardhr{
+  margin: 0;
+  border: none;
+  border-bottom: 2px dashed #4F4F4F;
+  background: none;
+}

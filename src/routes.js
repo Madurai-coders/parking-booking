@@ -22,25 +22,31 @@ import {
   login,
   logout,
 } from "./functions/reusable_functions";
-import { useHistory,Redirect } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Logoplacer = (props) => {
   const logation = useLocation();
-//   var icon = Cookies.get("icon")
+  //   var icon = Cookies.get("icon")
   if (logation.pathname === "/" || logation.pathname == "/dashboard")
     return null;
   return (
-      <>    <div style={{ borderRadius:'10px', position: "absolute", marginLeft: "4.5rem" }}>
-      <img src={logo} alt="Munidex_logo" className="admin_logo_placer" />
-    </div>
-
-{/* <img src={Search} alt="Munidex_logo"  style={{ width:'6%', marginTop:'4px' , borderRadius:'10px', position: "absolute", marginLeft: "88%" }} /> */}
-{/* <img src={icon} alt="user"  style={{ borderRadius:'100%', width:'26px', marginTop:'14px' , position: "absolute", marginLeft: "94%" }} /> */}
-</>
-
+    <>
+      {" "}
+      <div
+        style={{
+          borderRadius: "10px",
+          position: "absolute",
+          marginLeft: "4.5rem",
+        }}
+      >
+        <img src={logo} alt="Munidex_logo" className="admin_logo_placer" />
+      </div>
+      {/* <img src={Search} alt="Munidex_logo"  style={{ width:'6%', marginTop:'4px' , borderRadius:'10px', position: "absolute", marginLeft: "88%" }} /> */}
+      {/* <img src={icon} alt="user"  style={{ borderRadius:'100%', width:'26px', marginTop:'14px' , position: "absolute", marginLeft: "94%" }} /> */}
+    </>
   );
 };
 
@@ -51,7 +57,6 @@ const Routes = () => {
 
   const [loader, setloader] = useState(true);
   const [loading, setloading] = useState(false);
-
 
   const call_login = async () => {
 
@@ -106,21 +111,23 @@ const Routes = () => {
             setloader(false)
         }, 2500);
 
+          setTimeout(() => {
+            setloader(false);
+          }, 1500);
         }
       });
     }
-
   }, []);
 
-  
   return (
     <>
       <BrowserRouter>
         <div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ duration: 0.6 }}
-						style={{ overflow: "hidden", height:"100vh" }}>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          style={{ overflow: "hidden", height: "100vh" }}
+        >
           <Switch>
             {!is_admin && (
               <>
@@ -131,7 +138,7 @@ const Routes = () => {
                     <Admin_login login={call_login} is_admin={is_admin} loading={loading} />
                   )}
                 />
-               
+
                 <Route path="/dashboard" exact component={User_dashboard} />
                 <Route path="/" exact component={User_login} />
                 <Route   render={() => (
@@ -142,51 +149,45 @@ const Routes = () => {
             )}
           </Switch>
           {is_admin && (
-              <Switch>
-                   <Route path="/" exact component={User_login} />
-                  <div className="d-flex flex-row"  >
-              <div >
-                <Navigation />
-              </div>
-              <Logoplacer usericon={user}  />
-              < >
-                                  <Route path="/admin" exact render={() => (
-                loader ? <Loader/> :<Booking/>
-                  )}/>  
-                  
-                <Route
-                  path="/AdmindashboardBookingreport"   
-                  exact
-                  component={Booking_Report}
-                />
-                <Route
-                  path="/AdmindashboardParkingsetup"
-                  exact
-                  component={Parkingsetup}
-                />
-                <Route
-                  path="/Admindashboardpayment"
-                  exact
-                  component={Payment}
-                />
-                <Route
-                  path="/AdmindashboardUserreport"
-                  exact
-                  component={User_report}
-                />
-               
-                <Route
-                path="/test"
-                exact
-                component={test}
-                />
-                
+            <Switch>
+              <Route path="/" exact component={User_login} />
+              <div className="d-flex flex-row">
+                <div>
+                  <Navigation />
+                </div>
+                <Logoplacer usericon={user} />
+                <>
+                  <Route
+                    path="/admin"
+                    exact
+                    render={() => (loader ? <Loader /> : <Booking />)}
+                  />
+
+                  <Route
+                    path="/AdmindashboardBookingreport"
+                    exact
+                    component={Booking_Report}
+                  />
+                  <Route
+                    path="/AdmindashboardParkingsetup"
+                    exact
+                    component={Parkingsetup}
+                  />
+                  <Route
+                    path="/Admindashboardpayment"
+                    exact
+                    component={Payment}
+                  />
+                  <Route
+                    path="/AdmindashboardUserreport"
+                    exact
+                    component={User_report}
+                  />
+
+                  <Route path="/test" exact component={test} />
                 </>
-
-            
-            </div>
-
-              </Switch>
+              </div>
+            </Switch>
           )}
         </div>
       </BrowserRouter>

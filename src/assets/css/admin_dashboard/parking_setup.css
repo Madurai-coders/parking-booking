@@ -252,7 +252,13 @@
   margin: 5% 5% 2% 1%;
   background-color:rgba(218, 221, 240, 0.788);
   border-radius:4px ;
-  
+}
+
+.parking_setup_wing_title_section_udb{
+  padding:3px;
+  margin: 2% 2% 1% 1%;
+  background-color:rgba(218, 221, 240, 0.788);
+  border-radius:4px ;
 }
 
 .parking_setup_wing_container {
