@@ -7,12 +7,17 @@ import {
   formatUsd,
   validation_email,
 } from "../../functions/reusable_functions";
+import send from "../../assets/images/send.svg";
+import { IoTrashOutline } from "react-icons/io5";
+ import NoData from "../../assets/images/no_data.png"
 export default function Table(props) {
   const [data, setData] = useState(props.data);
   const [headers, setHeaders] = useState(props.headers);
   const [headers_excel, setHeaderExcel] = useState(props.headers);
   const [data_excel, setDataExcel] = useState(props.data);
   const [array, setarray] = useState([]);
+  const [setting, setSetting] = useState(false);
+  
   const [get_mail, setGetMail] = useState({
     flag: false,
     mail: "",
@@ -20,57 +25,6 @@ export default function Table(props) {
     validation: "",
     describe: "",
   });
-
-  function removeCol(head, val) {
-    var store = [];
-    var header = [];
-    var array_store = array;
-    // if(head){
-    if (!array.includes(head)) {
-      array_store.push(head);
-    } else {
-      array_store = array_store.filter((n) => {
-        return n != head;
-      });
-    }
-    // }
-    //   else{
-    //         array_store=val
-    //     }
-
-    data.forEach((element) => {
-      array_store.forEach((element1) => {
-        element = { ...element, [element1]: null };
-      });
-      store.push(element);
-    });
-    console.log(store);
-
-    headers.forEach((element) => {
-      if (!array_store.includes(element.key)) header.push(element);
-    });
-
-    console.log(store);
-    console.log(array_store);
-    console.log(header);
-    setarray(array_store);
-    setHeaderExcel(header);
-    setDataExcel(store);
-  }
-
-  useEffect(() => {
-    setHeaders(props.headers);
-    setData(props.data);
-    setHeaderExcel(props.headers);
-    setDataExcel(props.data);
-    // if(props.table_data){
-    //     const myArray = props.table_data.table_data.split(",");
-    //     console.log(props.table_data.table_data)
-    //     removeCol(false,myArray)
-    //     setarray(myArray)
-    // }
-    setarray([]);
-  }, [props.data, props.headers]);
 
   const { jsonToCSV } = usePapaParse();
 
@@ -169,6 +123,81 @@ export default function Table(props) {
     }
   }
 
+  function removeCol(head, val) {
+    var store = [];
+    var header = [];
+    var array_store = array;
+    if (head) {
+      if (!array.includes(head)) {
+        array_store.push(head);
+      } else {
+        array_store = array_store.filter((n) => {
+          return n != head;
+        });
+      }
+    } else {
+      array_store = val;
+    }
+
+    data.forEach((element) => {
+      array_store.forEach((element1) => {
+        element = { ...element, [element1]: null };
+      });
+      store.push(element);
+    });
+    console.log(store);
+
+    headers.forEach((element) => {
+      if (!array_store.includes(element.key)) header.push(element);
+    });
+
+    setarray(array_store);
+    setHeaderExcel(header);
+    setDataExcel(store);
+
+    var string = "";
+    array_store.forEach((element, id) => {
+      string = string + element;
+      if (array_store.length != id + 1) {
+        string = string + ",";
+      }
+    });
+    if (!array_store) {
+      string = "null";
+    }
+
+    var updated_data = {
+      table_name: props.table_data.table_name,
+      table_data: string,
+    };
+    console.log("---------------------------");
+    console.log(updated_data);
+    console.log("---------------------------");
+
+    if (head) {
+      axios_call(
+        "PUT",
+        "TableData/" + props.table_data.table_name + "/",
+        updated_data
+      ).then((response) => {
+        console.log(response);
+      });
+    }
+  }
+
+  useEffect(() => {
+    setHeaders(props.headers);
+    setData(props.data);
+    setHeaderExcel(props.headers);
+    setDataExcel(props.data);
+    if (props.table_data) {
+      const myArray = props.table_data.table_data.split(",");
+      console.log(props.table_data.table_data);
+      removeCol(false, myArray);
+      setarray(myArray);
+    }
+  }, [props.data, props.headers]);
+
   return (
     <>
       {get_mail.sent == "success" && (
@@ -245,66 +274,149 @@ export default function Table(props) {
       )}
 
       {data && headers && (
-        <div className="m-1 mb-2">
+        <div className="m-1 mb-2 text-end">
           <CSVLink
             filename="results.csv"
             target="/"
             data={data_excel}
             headers={headers_excel}
-            class="btn btn-primary btn-sm"
+            class="btn btn-light btn-sm"
           >
-            Download
+            <i class="fa fa-download" aria-hidden="true"></i>
           </CSVLink>
           <button
             type="button"
             onClick={() => setGetMail({ ...get_mail, flag: true })}
-            class="btn btn-outline-primary btn-sm mx-1 "
+            class="btn btn-light btn-sm mx-1 "
             data-toggle="button"
             aria-pressed="false"
             autocomplete="off"
           >
-            Mail
+            <i class="fa fa-envelope" aria-hidden="true"></i>
           </button>
+          <div class="btn btn-light btn-sm" onClick={() => setSetting(true)}>
+            <i class="fa fa-cog" aria-hidden="true"></i>
+          </div>
         </div>
       )}
-      <div className="booking_report_table_container_mini">
+      <div className="booking_report_table_container_mini shadow mb-5 ">
         <table className="booking_report_table table">
           <tr className="payment_table_heading1">
-            {headers &&
+            {headers_excel &&
               headers_excel.map((headers, id) => {
                 return (
                   <th
                     key={id}
-                    bgcolor={
-                      !array.includes(headers.key) ? " #ececec" : "#e2f5ff"
-                    }
-                    // onClick={() => removeCol(headers.key)}
+                    bgcolor={'#ececec'}
                     style={{ padding: "1% 0%", position: "sticky" }}
                   >
                     {headers.label}
                   </th>
                 );
               })}
+            {props.controls == true && <th  bgcolor={'#ececec'}
+                    style={{ padding: "1% 0%", position: "sticky" }}>**</th>}
           </tr>
 
-          {data &&
-            data_excel.map((data, id) => {
+          {data_excel&&data_excel[0] ?
+            <>{data_excel.map((data, id) => {
               return (
                 <tr key={id} className="booking_report_table_data">
-                  {<td className="data1">{data.data1}</td>}
-                  {<td className="data2"> {data.data2}</td>}
-                  {<td className="data3">{data.data3}</td>}
-                  {<td className="data4"> {data.data4}</td>}
-                  {<td className="data5"> {data.data5}</td>}
-                  <td className="data5">{data.data6 && data.data6}</td>
-                  <td className="data5">{data.data7 && data.data7}</td>
-                  <td className="data5">{data.data8 && data.data8}</td>
-                  <td className="data5">{data.data9 && data.data9}</td>
+                  {data.data1 != undefined && <td>{data.data1}</td>}
+                  {data.data2 != undefined && <td> {data.data2}</td>}
+                  {data.data3 != undefined && <td>{data.data3}</td>}
+                  {data.data4 != undefined && <td> {data.data4}</td>}
+                  {data.data5 != undefined && <td> {data.data5}</td>}
+                  {data.data6 != undefined && <td> {data.data6}</td>}
+                  {data.data7 != undefined && <td> {data.data7}</td>}
+                  {data.data8 != undefined && <td> {data.data8}</td>}
+                  {data.data9 != undefined && <td> {data.data9}</td>}
+                  {data.data10 != undefined && <td> {data.data10}</td>}
+                  {props.controls == true && (
+                    <td>
+                        <div className="d-flex justify-content-center">
+                      <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() =>
+                                    props.remove(props.data[id].id)
+                                  }
+                                  className='text-muted'
+                                ><i si class="fa fa-trash" aria-hidden="true"></i>
+</div>
+                                <img
+                                  style={{ cursor: "pointer" }}
+                                  src={send} 
+                                  className="px-2"
+                                  onClick={() => props.mail(props.data[id].id)}
+                                /></div>
+                               
+
+                    </td>
+                  )}
                 </tr>
               );
-            })}
+            })}</>:
+<>        
+<td colspan={headers_excel.length}>
+    <img src={NoData} style={{width:'275px', marginTop:'50px'}}></img></td>
+            </>
+
+            }
         </table>
       </div>
+
+      {setting && (
+        <div className="overlay_table shadow">
+          <div className="text-end m-2">
+            <div class="btn btn-light btn-sm" onClick={() => setSetting(false)}>
+              <i class="fa fa-close" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div className="mt-1 p-4 ">
+            <div className="booking_report_table_container_mini ">
+              <table className="booking_report_table table">
+                <tr className="payment_table_heading1">
+                  {headers &&
+                    headers.map((headers, id) => {
+                      return (
+                        <th
+                          key={id}
+                          bgcolor={
+                            !array.includes(headers.key)
+                              ? " #ececec"
+                              : "#e2f5ff"
+                          }
+                          onClick={() => removeCol(headers.key)}
+                          style={{ padding: "1% 0%", position: "sticky" }}
+                        >
+                          {headers.label}
+                        </th>
+                      );
+                    })}
+                </tr>
+
+                {data &&
+                  data.map((data, id) => {
+                    return (
+                      <tr key={id} className="booking_report_table_data">
+                        <td>{data.data1}</td>
+                        <td> {data.data2}</td>
+                        <td>{data.data3}</td>
+                        <td> {data.data4}</td>
+                        <td> {data.data5}</td>
+                        <td>{data.data6}</td>
+                        <td>{data.data7}</td>
+                        <td>{data.data8}</td>
+                        <td>{data.data9}</td>
+                        <td>{data.data10}</td>
+                      </tr>
+                    );
+                  })}
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

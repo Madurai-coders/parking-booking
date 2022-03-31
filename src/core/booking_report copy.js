@@ -156,7 +156,7 @@ export default function Booking_report() {
     });
   }
 
-  const SlotGraph = async (wing, booking, start, end) => {
+  const SlotGraph = async (wing, booking, start, end, selected) => {
     var dateOne = moment(start);
     var dateTwo = moment(end);
 
@@ -170,31 +170,27 @@ export default function Booking_report() {
     var booked_slots_wing = booking.filter(
       (val) => val.slots.wing.wingName == wing.wingName
     );
-    if (data){
-    var booked_slots_wing_alter = data.filter(
-      (val) => val.slots.wing.wingName == wing.wingName
-    );
+    if (data) {
+      var booked_slots_wing_alter = data.filter(
+        (val) => val.slots.wing.wingName == wing.wingName
+      );
 
-    var amount = 0;
-    booked_slots_wing_alter.forEach((element) => {
-      amount = amount + parseInt(element.charge);
-    });
-    
-    setWing_result(booked_slots_wing_alter)
-
-    setSlotdata({
-        ...slotdata,
-        unreserved: wing.slots.length - booked_slots_wing.length,
-        reserved: booked_slots_wing.length,
-        total: wing.slots.length,
-        amount: amount,
+      var amount = 0;
+      booked_slots_wing_alter.forEach((element) => {
+        amount = amount + parseInt(element.charge);
       });
 
-}
-
-   
-
-   
+      setWing_result(booked_slots_wing_alter);
+      if (selected_wing || selected) {
+        setSlotdata({
+          ...slotdata,
+          unreserved: wing.slots.length - booked_slots_wing.length,
+          reserved: booked_slots_wing.length,
+          total: wing.slots.length,
+          amount: amount,
+        });
+      }
+    }
 
     wing.slots.forEach((slot) => {
       slotId.push(slot.id);
@@ -331,6 +327,8 @@ export default function Booking_report() {
             .format("YYYY-MM-DD"),
           end: moment(today, "YYYY-MM-DD").add(y, "days").format("YYYY-MM-DD"),
         });
+      } else {
+        setexpand(false);
       }
 
       if (timeline == "Monthly") {
@@ -636,8 +634,8 @@ export default function Booking_report() {
   useEffect(() => {
     GetPayment("Weekly");
     axios_call("GET", "TableData/").then((response) => {
-        console.log(response)
-        settable_data(response[0])})
+      settable_data(response);
+    });
   }, []);
 
   function bookingPayment(selected_wing) {
@@ -791,36 +789,57 @@ export default function Booking_report() {
       );
     }
 
+    if (key == "Daily_booking") {
+      let count = 0;
+      data.forEach(
+        (element, id) => (
+          (count = count + 1),
+          val.push({
+            data1: count,
+            data2: moment(element.date).format("DD-MM-YYYY").toString(),
+            data3: element.no_of_booking,
+            data4: element.total_amount_booking,
+          })
+        )
+      );
+    }
 
-    if (key == "payment") {
-        let count = 0;
-        data.forEach(
-          (element, id) => (
-            (count = count + 1),
-            val.push({
-              data1: element.User.userName,
-              data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
-              data3: element.paymentType,
-              data4: element.amount,
-            })
-          )
-        );
-      }
+    if (key == "data") {
+      let count = 0;
+      data.forEach(
+        (element, id) => (
+          (count = count + 1),
+          val.push({
+            id: element.bookingId,
+            data1: count,
+            data2: element.User.lastName,
+            data3: element.User.email,
+            data4: element.User.accountNumber,
+            data5: element.plan,
+            data6: element.bookingId,
+            data7: moment(element.startFrom).format("DD-MM-YYYY"),
+            data8: moment(element.endTo).format("DD-MM-YYYY"),
+            data9: element.slots.wing.wingName + " [" + element.slots.id + "]",
+            data10: formatUsd(parseInt(element.charge)),
+          })
+        )
+      );
+    }
 
-      if (key == "booking_validity") {
-        let count = 0;
-        data.forEach(
-          (element, id) => (
-            (count = count + 1),
-            val.push({
-              data1: element.User.userName,
-              data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
-              data3: element.paymentType,
-              data4: element.amount,
-            })
-          )
-        );
-      }
+    if (key == "booking_validity") {
+      let count = 0;
+      data.forEach(
+        (element, id) => (
+          (count = count + 1),
+          val.push({
+            data1: element.User.userName,
+            data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
+            data3: element.paymentType,
+            data4: element.amount,
+          })
+        )
+      );
+    }
 
     console.log(val);
     return val;
@@ -915,8 +934,18 @@ export default function Booking_report() {
     );
   }
 
- 
+  function Set_booking_id(val) {
+    const value = data.filter((element) => element.bookingId == val);
+    if (value) {
+      setRemove_booking(value[0].id);
+    }
+  }
 
+  function Set_Preview(val) {
+    const value = data.filter((element) => element.bookingId == val);
+    setPreview(value[0]);
+    console.log(val);
+  }
 
   return (
     <>
@@ -1067,77 +1096,91 @@ export default function Booking_report() {
         </div>
       )}
 
-     {!payment && !paymentType_graph && <Loader></Loader>}
+      {!payment && !paymentType_graph && <Loader></Loader>}
 
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: [0.5, 1], y: 0 }}
         transition={{ duration: 0.3 }}
         className="flex-grow-1"
-      >            <div className="booking_report_title ">Report </div>
-
+      >
+        {" "}
+        <div className="booking_report_title ">Report </div>
         <div className="booking_report_container_whole">
           <div className="booking_report_container">
             <div className="row mt-5">
               {display != "booking_status" && (
                 <>
-                  <div className="col-3 ">
-                      <div className="ms-3">
-                    <DateRangePicker onCallback={handleCallback}>
-                      <input
-                        type="text"
-                        className="booking_report_date_input"
-                      />
-                    </DateRangePicker></div>
-                    <div className="booking_form_plan_input_buttons mt-4 ms-3 ">
-                      <div
-                        className={
-                          timeline == "Daily"
-                            ? "booking_form_input_button_daily_selected"
-                            : "booking_form_input_button_daily"
-                        }
-                        onClick={() => (
-                          GetPayment("Daily", "", "", 0),
-                          settimeline("Daily"),
-                          setCountval(0),
-                          setexpand(true)
+                  <div className="col-3  ">
+                    <div className="text-center">
+                      <DateRangePicker onCallback={handleCallback}>
+                        {display != "booking_status" && (
+                          <div
+                            className="text-center"
+                            style={{ marginTop: "10px" }}
+                          >
+                            <div className="btn-sm btn btn-outline-primary">
+                              {moment(date && date.start).format(
+                                "dd, MMM Do YYYY"
+                              )}
+                              &nbsp; -- &nbsp;
+                              {moment(date && date.end).format(
+                                "dd, MMM Do YYYY"
+                              )}
+                            </div>
+                          </div>
                         )}
-                      >
-                        {" "}
-                        Daily{" "}
-                      </div>
+                      </DateRangePicker>
+                    
+                      <div className="booking_form_plan_input_buttons mt-4  ">
+                        <div
+                          className={
+                            timeline == "Daily"
+                              ? "booking_form_input_button_daily_selected"
+                              : "booking_form_input_button_daily"
+                          }
+                          onClick={() => (
+                            GetPayment("Daily", "", "", 0),
+                            settimeline("Daily"),
+                            setCountval(0),
+                            setexpand(true)
+                          )}
+                        >
+                          {" "}
+                          Daily{" "}
+                        </div>
 
-                      <div
-                        className={
-                          timeline == "Weekly"
-                            ? "booking_form_input_button_weekly_selected"
-                            : "booking_form_input_button_weekly"
-                        }
-                        onClick={() => (
-                          GetPayment("Weekly"),
-                          settimeline("Weekly"),
-                          setCountval(0)
-                        )}
-                      >
-                        {" "}
-                        Weekly{" "}
-                      </div>
-                      <div
-                        className={
-                          timeline == "Monthly"
-                            ? "booking_form_input_button_monthly_selected"
-                            : "booking_form_input_button_monthly"
-                        }
-                        onClick={() => (
-                          GetPayment("Monthly"),
-                          settimeline("Monthly"),
-                          setCountval(0)
-                        )}
-                      >
-                        {" "}
-                        Monthly{" "}
-                      </div>
-                      {/* <div
+                        <div
+                          className={
+                            timeline == "Weekly"
+                              ? "booking_form_input_button_weekly_selected"
+                              : "booking_form_input_button_weekly"
+                          }
+                          onClick={() => (
+                            GetPayment("Weekly"),
+                            settimeline("Weekly"),
+                            setCountval(0)
+                          )}
+                        >
+                          {" "}
+                          Weekly{" "}
+                        </div>
+                        <div
+                          className={
+                            timeline == "Monthly"
+                              ? "booking_form_input_button_monthly_selected"
+                              : "booking_form_input_button_monthly"
+                          }
+                          onClick={() => (
+                            GetPayment("Monthly"),
+                            settimeline("Monthly"),
+                            setCountval(0)
+                          )}
+                        >
+                          {" "}
+                          Monthly{" "}
+                        </div>
+                        {/* <div
                     className={
                       timeline == "Quarterly"
                         ? "booking_form_input_button_quarterly_selected"
@@ -1152,43 +1195,44 @@ export default function Booking_report() {
                     {" "}
                     Quarterly{" "}
                   </div> */}
-                      <div
-                        className={
-                          timeline == "Yearly"
-                            ? "booking_form_input_button_yearly_selected"
-                            : "booking_form_input_button_yearly"
-                        }
-                        onClick={() => (
-                          GetPayment("Yearly"),
-                          settimeline("Yearly"),
-                          setCountval(0)
-                        )}
-                      >
-                        {" "}
-                        Yearly{" "}
+                        <div
+                          className={
+                            timeline == "Yearly"
+                              ? "booking_form_input_button_yearly_selected"
+                              : "booking_form_input_button_yearly"
+                          }
+                          onClick={() => (
+                            GetPayment("Yearly"),
+                            settimeline("Yearly"),
+                            setCountval(0)
+                          )}
+                        >
+                          {" "}
+                          Yearly{" "}
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="booking_form_plan_input_buttons mt-2 ms-3">
-                      <div
-                        className={"booking_form_input_button_quarterly"}
-                        onClick={() => (
-                          setCountval(count_val - 1),
-                          GetPayment(timeline, 0, 0, count_val - 1)
-                        )}
-                      >
-                        {" "}
-                        Previous{" "}
-                      </div>
-                      <div
-                        className={"booking_form_input_button_quarterly"}
-                        onClick={() => (
-                          setCountval(count_val + 1),
-                          GetPayment(timeline, 0, 0, count_val + 1)
-                        )}
-                      >
-                        {" "}
-                        Next{" "}
+                      <div className="booking_form_plan_input_buttons mt-2">
+                        <div
+                          className={"booking_form_input_button_quarterly"}
+                          onClick={() => (
+                            setCountval(count_val - 1),
+                            GetPayment(timeline, 0, 0, count_val - 1)
+                          )}
+                        >
+                          {" "}
+                          Previous{" "}
+                        </div>
+                        <div
+                          className={"booking_form_input_button_quarterly"}
+                          onClick={() => (
+                            setCountval(count_val + 1),
+                            GetPayment(timeline, 0, 0, count_val + 1)
+                          )}
+                        >
+                          {" "}
+                          Next{" "}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1323,18 +1367,9 @@ export default function Booking_report() {
               </div>
             </div>
 
-            {display != "booking_status" && (
-              <div className="text-center" style={{ marginTop: "10px"}}>
-                  <div className="btn-sm btn btn-primary">
-                {moment(date && date.start).format("dddd, MMMM Do YYYY")}
-                &nbsp; -- -- &nbsp;
-                {moment(date && date.end).format("dddd, MMMM Do YYYY")}
-              </div></div>
-            )}
-
             {display != "payment_report" && (
               <>
-                <div className="booking_report_wingselection_container mx-5 mb-5 mt-3">
+                <div className="booking_report_wingselection_container">
                   <div style={{ flexGrow: 1 }}>
                     <Carousel
                       itemsToShow={7}
@@ -1357,7 +1392,8 @@ export default function Booking_report() {
                                   wing,
                                   booking_validity.booking,
                                   booking_validity.start,
-                                  booking_validity.end
+                                  booking_validity.end,
+                                  true
                                 ),
                                 setSelected_wing(wing),
                                 bookingPayment(wing)
@@ -1388,8 +1424,31 @@ export default function Booking_report() {
 
             {display == "booking_report" && (
               <div className="row">
-                <div className={expand ? "col-10 offset-1" : "col-6"}>
-                  <div className="booking_report_table_container">
+                <div className={"col-12 mb-3"}>
+                  <Table
+                    headers={[
+                      { label: "S.No", key: "data1" },
+                      { label: "Name", key: "data2" },
+                      { label: "Mail", key: "data3" },
+                      { label: "UserId", key: "data4" },
+                      { label: "Plan", key: "data5" },
+                      { label: "BookingId", key: "data6" },
+                      { label: "From", key: "data7" },
+                      { label: "To", key: "data8" },
+                      { label: "Slot", key: "data9" },
+                      { label: "Amount", key: "data10" },
+                    ]}
+                    data={Table_data(
+                      !selected_wing ? data : wing_results,
+                      "data"
+                    )}
+                    table_data={table_data[2]}
+                    controls={true}
+                    mail={Set_Preview}
+                    remove={Set_booking_id}
+                  ></Table>
+
+                  {/* <div className="booking_report_table_container">
                     <table className="booking_report_table">
                       <tr className="booking_report_table_headers">
                         <th>S.No</th>
@@ -1458,6 +1517,10 @@ export default function Booking_report() {
                           );
                         })}
 
+
+
+
+
                       {wing_results &&
                         wing_results.map((bookingdata, id) => {
                           count++;
@@ -1505,8 +1568,10 @@ export default function Booking_report() {
                             </tr>
                           );
                         })}
+
+
                     </table>
-                  </div>
+                  </div> */}
                 </div>
 
                 {timeline != "Daily" && (
@@ -1514,7 +1579,18 @@ export default function Booking_report() {
                     {!expand && (
                       <>
                         <div className="col-6">
-                          <div className="booking_report_table_container_mini">
+                          <Table
+                            headers={[
+                              { label: "S.No", key: "data1" },
+                              { label: "Date", key: "data2" },
+                              { label: "No", key: "data3" },
+                              { label: "Amount", key: "data4" },
+                            ]}
+                            data={Table_data(Daily_booking, "Daily_booking")}
+                            table_data={table_data[2]}
+                          ></Table>
+
+                          {/* <div className="booking_report_table_container_mini">
                             <table className="booking_report_table">
                               <tr className="booking_report_table_headers">
                                 <th>S.No</th>
@@ -1543,15 +1619,14 @@ export default function Booking_report() {
                                   );
                                 })}
                             </table>
-                          </div>
+                          </div> */}
                         </div>
                       </>
                     )}
 
-                    
                     {booking_graph && (
-                      <div className="col-8 offset-2 mb-5">
-                        <div className="p-3 shadow rounded">
+                      <div className="col-6 mt-4 mb-5">
+                        <div className="p-4 shadow rounded">
                           <Line data={booking_graph} options={options1}></Line>
                         </div>
                       </div>
@@ -1594,7 +1669,7 @@ export default function Booking_report() {
                               );
                             })}
                         </table> */}
-                      {Daily_payment &&  (
+                      {Daily_payment && table_data && (
                         <Table
                           headers={[
                             { label: "S.No", key: "data1" },
@@ -1603,14 +1678,14 @@ export default function Booking_report() {
                             { label: "Amount", key: "data4" },
                           ]}
                           data={Table_data(Daily_payment, "Daily_payment")}
-                        //   table_data={table_data}
+                          table_data={table_data[0]}
                         ></Table>
                       )}
                     </div>
 
                     {payment_graph && (
-                      <div className="col-6 mt-4">
-                        <div className="p-3 shadow rounded">
+                      <div className="col-6 mt-5">
+                        <div className="p-4 shadow rounded">
                           <Line data={payment_graph} options={options1}></Line>
                         </div>
                       </div>
@@ -1642,7 +1717,7 @@ export default function Booking_report() {
                   </div>
                   <br></br>
                 </div>
-                <div className="col-4 p-5 mt-4">
+                <div className="col-4 p-5 mt-5">
                   {paymentType_graph && <Doughnut data={paymentType_graph} />}
                 </div>
 
@@ -1656,6 +1731,7 @@ export default function Booking_report() {
                         { label: "Amount", key: "data4" },
                       ]}
                       data={Table_data(payment, "payment")}
+                      table_data={table_data[1]}
                     ></Table>
                   )}
                 </div>
@@ -1682,7 +1758,7 @@ export default function Booking_report() {
                 </div>
 
                 <div className="col-12 p-3 mt-2">
-                {/* {booking_validity && (
+                  {/* {booking_validity && (
                         <Table
                           headers={[
                             { label: "S.No", key: "data1" },

@@ -87,8 +87,8 @@
 
 .booking_form_plan_input_buttons {
   display: flex;
-  justify-content: space-between;
-  width: 70%;
+  justify-content: center;
+  width: 100%;
 }
 
 .booking_form_input_button_weekly,

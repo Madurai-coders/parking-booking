@@ -112,67 +112,87 @@ input:focus {
 }
 
 .overlay {
-    position: fixed; /* Sit on top of the page content */
-     /* Hidden by default */
-    width: 100%; /* Full width (cover the whole page) */
-    height: 100%; /* Full height (cover the whole page) */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, 0.801); /* Black background with opacity */
-    z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
-    cursor: pointer; /* Add a pointer on hover */
-  }
+  position: fixed; /* Sit on top of the page content */
+  /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.801
+  ); /* Black background with opacity */
+  z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
 
-  .overlay_loader {
-    position: fixed; /* Sit on top of the page content */
-     /* Hidden by default */
-    width: 100%; /* Full width (cover the whole page) */
-    height: 100%; /* Full height (cover the whole page) */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgb(255, 255, 255); /* Black background with opacity */
-    z-index: 1000; /* Specify a stack order in case you're using a different order for other elements */
-    cursor: pointer; /* Add a pointer on hover */
-    margin-left: 70px;
-    margin-top:85px;
-  }
+.overlay_table {
+  position: fixed; /* Sit on top of the page content */
+  width: 80%; /* Full width (cover the whole page) */
+  height: 60%; /* Full height (cover the whole page) */
+  top: 20%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(255, 255, 255); /* Black background with opacity */
+  z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
+  left: 10%;
+  border-radius: 4px;
+}
 
-  .overlay_userdashboard{
-    position: fixed; /* Sit on top of the page content */
-    /* Hidden by default */
-   width: 95%; /* Full width (cover the whole page) */
-   height: 95%; /* Full height (cover the whole page) */
-   top: 2.5%;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   background-color: rgb(255, 255, 255); /* Black background with opacity */
-   z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
-   cursor: pointer; /* Add a pointer on hover */
-left: 2.5%;;
-border-radius: 16px;
- } 
-  
+.overlay_loader {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(255, 255, 255); /* Black background with opacity */
+  z-index: 1000; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+  margin-left: 70px;
+  margin-top: 85px;
+}
 
-  .overlay1 {
-    position: fixed; /* Sit on top of the page content */
-     /* Hidden by default */
-    width: 100%; /* Full width (cover the whole page) */
-    height: 100%; /* Full height (cover the whole page) */
-    top: 0;
-    left: 0%;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, 0.829); /* Black background with opacity */
-    z-index: 2000000; /* Specify a stack order in case you're using a different order for other elements */
-    cursor: pointer; /* Add a pointer on hover */
-  }
+.overlay_userdashboard {
+  position: fixed; /* Sit on top of the page content */
+  /* Hidden by default */
+  width: 95%; /* Full width (cover the whole page) */
+  height: 95%; /* Full height (cover the whole page) */
+  top: 2.5%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(255, 255, 255); /* Black background with opacity */
+  z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+  left: 2.5%;
+  border-radius: 16px;
+}
 
-
+.overlay1 {
+  position: fixed; /* Sit on top of the page content */
+  /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0%;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.829
+  ); /* Black background with opacity */
+  z-index: 2000000; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
 
 .container_flex {
   flex-basis: auto;

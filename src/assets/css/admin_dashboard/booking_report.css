@@ -32,7 +32,9 @@
 .booking_report_table_container_mini {
   overflow: hidden;
   overflow-y: scroll;
-  max-height: 40vh;
+  max-height: 400px;
+  min-height: 400px;
+  border-radius:16px
 }
 
 
@@ -188,7 +190,10 @@
   align-items: center;
   justify-content: space-between;
   padding:4px;
-  margin-top: 0px;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  margin-right: 20px;
+
 }
 
 .booking_report_wing_button {
