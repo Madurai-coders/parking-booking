@@ -114,11 +114,11 @@
 }
 
 .payment_table_container::-webkit-scrollbar-thumb {
-    background: #888; 
+    background: rgb(255, 255, 255); 
   }
 
   .payment_table_container::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: rgb(226, 226, 226); 
   }
 
 .payment_table {
@@ -135,6 +135,7 @@
   padding:10px;
   position: sticky;
   top: 0;
+  border-style: none;
 }
 
 .payment_table_heading1 th {
@@ -144,6 +145,8 @@
     padding:10px;
     position: sticky;
     top: 0;
+  border-style: none;
+
   }
 
 .payment_table_content td {
@@ -153,6 +156,8 @@
   line-height: 15px;
   padding:8px;
   text-transform: capitalize;
+  border-style: none;
+
 }
 
 .payment_table tr:nth-child(odd) td {

@@ -6,6 +6,8 @@ import {
   axios_call_auto,
   formatUsd,
   validation_email,
+  validation_inquiry,
+  validation_title
 } from "../../functions/reusable_functions";
 import send from "../../assets/images/send.svg";
 import { IoTrashOutline } from "react-icons/io5";
@@ -24,6 +26,7 @@ export default function Table(props) {
     status: "send",
     validation: "",
     describe: "",
+    description:''
   });
 
   const { jsonToCSV } = usePapaParse();
@@ -65,6 +68,7 @@ export default function Table(props) {
         to: get_mail.mail,
         csv: results,
         name: "zenGov parking",
+        description:get_mail.description,
       };
       axios_call("POST", "email_with_attachment/", data).then((response) => {
         console.log(response);
@@ -75,6 +79,7 @@ export default function Table(props) {
             status: "Send",
             validation: "",
             describe: "",
+            description:"",
             sent: "success",
           });
           setTimeout(() => {
@@ -84,6 +89,7 @@ export default function Table(props) {
               status: "Send",
               validation: "",
               describe: "",
+            description:"",
               sent: "",
             });
           }, 2000);
@@ -94,6 +100,7 @@ export default function Table(props) {
             status: "Send",
             validation: "",
             describe: "",
+            description:"",
             sent: "failed",
           });
         }
@@ -104,6 +111,7 @@ export default function Table(props) {
             status: "Send",
             validation: "",
             describe: "",
+            description:"",
             sent: "",
           });
         }, 2000);
@@ -113,7 +121,7 @@ export default function Table(props) {
 
   function mailSubmit() {
     console.log(validation_email(get_mail.mail));
-    if (validation_email(get_mail.mail).class == "pass") {
+    if (validation_email(get_mail.mail).class == "pass" && validation_title(get_mail.description) ) {
       click(get_mail.mail);
     } else {
       setGetMail({
@@ -231,7 +239,7 @@ export default function Table(props) {
                   aria-describedby="emailHelp"
                   autoFocus
                   onChange={(e) => (
-                    setGetMail({ ...get_mail, validation: "" }),
+                    // setGetMail({ ...get_mail, validation: "" }),
                     setGetMail({
                       ...get_mail,
                       mail: e.target.value,
@@ -239,6 +247,22 @@ export default function Table(props) {
                     })
                   )}
                   placeholder="Enter email"
+                />
+
+               <textarea 
+               row='5'
+                  type="text"
+                  class="form-control mb-1 mt-3"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  onChange={(e) => (
+                    setGetMail({
+                      ...get_mail,
+                      description: e.target.value,
+                      validation: "",
+                    })
+                  )}
+                  placeholder="Description"
                 />
                 {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
               </div>
@@ -262,7 +286,7 @@ export default function Table(props) {
                       describe: "",
                     })
                   }
-                  class="btn btn-secondary btn-sm"
+                  class="btn btn-light btn-sm"
                   data-dismiss="modal"
                 >
                   Close
@@ -276,7 +300,7 @@ export default function Table(props) {
       {data && headers && (
         <div className="m-1 mb-2 text-end">
           <CSVLink
-            filename="results.csv"
+            filename="ZenGov_Parking_data.csv"
             target="/"
             data={data_excel}
             headers={headers_excel}
@@ -299,7 +323,7 @@ export default function Table(props) {
           </div>
         </div>
       )}
-      <div className="booking_report_table_container_mini shadow mb-5 ">
+      <div className="booking_report_table_container_mini shadow mb-5  ">
         <table className="booking_report_table table">
           <tr className="payment_table_heading1">
             {headers_excel &&
@@ -366,13 +390,14 @@ export default function Table(props) {
       </div>
 
       {setting && (
-        <div className="overlay_table shadow">
-          <div className="text-end m-2">
+        <div className="overlay_table shadow-lg">
+          <div className="text-end mx-3 mt-2">
             <div class="btn btn-light btn-sm" onClick={() => setSetting(false)}>
-              <i class="fa fa-close" aria-hidden="true"></i>
+              <i class="fa fa-close"  aria-hidden="true"></i>
             </div>
           </div>
-          <div className="mt-1 p-4 ">
+          <div className="h3 text-center">Add/Remove Data</div>
+          <div className="mt-1 p-4 mx-5 ">
             <div className="booking_report_table_container_mini ">
               <table className="booking_report_table table">
                 <tr className="payment_table_heading1">

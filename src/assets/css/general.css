@@ -51,7 +51,19 @@
 .bg-clr {
   background-color: "#F3EAF9";
 }
-
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #0d3e4b !important;
+    border: #0b3742 !important;
+    box-shadow: none!important;
+}
+.bg-primary{
+    background-color: #3aaece !important;
+}
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+    background-color: #48d83b !important;
+    border: #48d83b !important;
+    box-shadow: none!important;
+}
 body {
   margin: 0;
 }
@@ -132,15 +144,15 @@ input:focus {
 
 .overlay_table {
   position: fixed; /* Sit on top of the page content */
-  width: 80%; /* Full width (cover the whole page) */
-  height: 60%; /* Full height (cover the whole page) */
-  top: 20%;
+  width: 90%; /* Full width (cover the whole page) */
+  height: 80%; /* Full height (cover the whole page) */
+  top: 10%;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgb(255, 255, 255); /* Black background with opacity */
   z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
-  left: 10%;
+  left: 5%;
   border-radius: 4px;
 }
 
@@ -218,26 +230,25 @@ input:focus {
 
 .rec.rec-arrow.rec-arrow-right,
 .rec.rec-arrow.rec-arrow-left {
-  border-radius: 50%;
-  background-color: #fff;
-  color: rgb(107, 94, 231);
+  border-radius: 10%;
+  background-color: rgb(22, 118, 163);
+  color: rgb(22, 118, 163);
   height: 0px;
   width: 0px;
   min-width: 25px;
   line-height: 5px;
-  margin-top: -5px;
 }
 
 .rec.rec-arrow.rec-arrow-right:hover,
 .rec.rec-arrow.rec-arrow-left:hover {
   border-radius: 50%;
-  background-color: rgb(20, 8, 87);
-  color: rgb(29, 6, 65);
+  background-color: rgb(22, 118, 163);
+  color: rgb(22, 118, 163);
 }
 
 .rec.rec-arrow.rec-arrow-right:focus,
 .rec.rec-arrow.rec-arrow-left:focus {
   border-radius: 50%;
   background-color: #fff;
-  color: rgb(18, 15, 161);
+  color: rgb(22, 118, 163);
 }

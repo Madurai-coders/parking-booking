@@ -13,7 +13,6 @@ import test from "./core/test";
 import Loader from "./core/loader";
 import User_report from "./core/user_report.js";
 import User from "./core/user.js";
-import "../src/assets/css/general.css";
 import logo from "../src/assets/images/navlogo.svg";
 import Search from "../src/assets/images/search.jpg";
 import {
@@ -22,10 +21,13 @@ import {
   login,
   logout,
 } from "./functions/reusable_functions";
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+ // Inside of your index.js
 import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
+import "../src/assets/css/general.css";
 
 const Logoplacer = (props) => {
   const logation = useLocation();

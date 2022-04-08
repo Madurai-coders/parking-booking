@@ -25,7 +25,7 @@ import { Doughnut, PolarArea } from "react-chartjs-2";
 import { set } from "js-cookie";
 import Table from "../components/table/table";
 import Loader from "../components/loader/loader";
-
+import "../../src/assets/css/general.css";
 export default function Booking_report() {
   const [data, setData] = useState();
   const [date, setDate] = useState();
@@ -52,7 +52,7 @@ export default function Booking_report() {
   const [display, setdisplay] = useState("payment_report");
   const [date_timeline, setdate_timeline] = useState();
   const [table_data, settable_data] = useState();
-
+const [timer, settimer] = useState(false)
   const options = {
     indexAxis: "x",
     elements: {
@@ -414,10 +414,10 @@ export default function Booking_report() {
           label: "Payment Method",
           data: [cash, card, online, check],
           backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
+            "rgba(3, 248, 252, 1)",
+            "rgba(54, 162, 235,1)",
+            "rgba(252, 244, 3, 1)",
+            "rgba(75, 192, 192, 1)",
           ],
           borderColor: [
             "rgba(255, 99, 132, 1)",
@@ -782,8 +782,10 @@ export default function Booking_report() {
           val.push({
             data1: element.User.userName,
             data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
-            data3: element.paymentType,
-            data4: element.amount,
+            data3: element.User.email,
+            data4: element.User.accountNumber,
+            data5: element.paymentType,
+            data6: element.amount,
           })
         )
       );
@@ -874,6 +876,8 @@ export default function Booking_report() {
                     <tr key={id} className="booking_report_table_data">
                       <td>{id + 1}</td>
                       <td>{bookingdata.User.lastName}</td>
+                      <td>{bookingdata.User.accountNumber}</td>
+                      <td>{bookingdata.User.email}</td>
                       <td>{bookingdata.bookingId}</td>
                       <td>{bookingdata.plan}</td>
 
@@ -946,6 +950,8 @@ export default function Booking_report() {
     setPreview(value[0]);
     console.log(val);
   }
+
+  
 
   return (
     <>
@@ -1096,7 +1102,7 @@ export default function Booking_report() {
         </div>
       )}
 
-      {!payment && !paymentType_graph && <Loader></Loader>}
+      {!payment_graph&& <Loader></Loader>}
 
       <motion.div
         initial={{ opacity: 0, y: 15 }}
@@ -1583,7 +1589,7 @@ export default function Booking_report() {
                             headers={[
                               { label: "S.No", key: "data1" },
                               { label: "Date", key: "data2" },
-                              { label: "No", key: "data3" },
+                              { label: "No of Payments", key: "data3" },
                               { label: "Amount", key: "data4" },
                             ]}
                             data={Table_data(Daily_booking, "Daily_booking")}
@@ -1674,7 +1680,7 @@ export default function Booking_report() {
                           headers={[
                             { label: "S.No", key: "data1" },
                             { label: "Date", key: "data2" },
-                            { label: "No of pay", key: "data3" },
+                            { label: "No of Payment", key: "data3" },
                             { label: "Amount", key: "data4" },
                           ]}
                           data={Table_data(Daily_payment, "Daily_payment")}
@@ -1694,9 +1700,9 @@ export default function Booking_report() {
                 )}
 
                 <div className="col-2 p-3 mt-5">
-                  <div className="h4 p-2 mt-3 shadow rounded">
-                    <div className="h5">Cash</div>
-                    {payment_values && formatUsd(parseInt(payment_values.cash))}
+                  <div className="h4 p-2 mt-3 shadow bg-primary rounded">
+                    <div className="h5 text-white">Cash</div>
+                   <span className='text-white'> {payment_values && formatUsd(parseInt(payment_values.cash))}</span>
                   </div>
                   <br></br>
                   <div className="h4 p-2 shadow rounded">
@@ -1704,10 +1710,10 @@ export default function Booking_report() {
                     {payment_values && formatUsd(parseInt(payment_values.card))}
                   </div>
                   <br></br>
-                  <div className="h4 p-2 shadow rounded">
-                    <div className="h5">Online</div>
-                    {payment_values &&
-                      formatUsd(parseInt(payment_values.online))}
+                  <div className="h4 p-2 bg-primary shadow rounded">
+                    <div className="h5 text-white">Online</div>
+                    <span className='text-white'> {payment_values &&
+                      formatUsd(parseInt(payment_values.online))}</span>
                   </div>
                   <br></br>
                   <div className="h4 p-2 shadow rounded">
@@ -1727,8 +1733,10 @@ export default function Booking_report() {
                       headers={[
                         { label: "User", key: "data1" },
                         { label: "Date", key: "data2" },
-                        { label: "Payment", key: "data3" },
-                        { label: "Amount", key: "data4" },
+                        { label: "Mail", key: "data3" },
+                        { label: "UserId", key: "data4" },
+                        { label: "Payment type", key: "data5" },
+                        { label: "Amount", key: "data6" },
                       ]}
                       data={Table_data(payment, "payment")}
                       table_data={table_data[1]}
@@ -1779,6 +1787,8 @@ export default function Booking_report() {
                       <tr className="booking_report_table_headers">
                         <th>S.No</th>
                         <th>Name</th>
+                        <th>UserId</th>
+                        <th>Mail</th>
                         <th>Booking Id</th>
                         <th>Plan</th>
                         <th>From</th>

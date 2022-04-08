@@ -3,7 +3,7 @@ import "./loader.css";
 export default function Loader(props) {
   return (
     <>
-      <div className="overlay_loader">
+      <div className="overlay_loader ">
         <div className="row">
           <div className="col-3 m-3">
             <div className="col-3 d-flex flex-column">
@@ -22,7 +22,7 @@ export default function Loader(props) {
 
         
           <div className="col-xl-2 col-lg-2 mt-3">
-            <div className="card_skl mt-1"></div>
+            <div className="card_skl mt-1 "></div>
           </div>
           <div className="col-xl-2 col-lg-2 mt-3">
             <div className="card_skl mt-1"></div>
