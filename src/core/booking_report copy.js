@@ -768,7 +768,7 @@ const [timer, settimer] = useState(false)
             data1: count,
             data2: moment(element.date).format("DD-MM-YYYY").toString(),
             data3: element.no_of_pay,
-            data4: element.tot_amount,
+            data4: formatUsd(parseInt(element.tot_amount)),
           })
         )
       );
@@ -785,7 +785,7 @@ const [timer, settimer] = useState(false)
             data3: element.User.email,
             data4: element.User.accountNumber,
             data5: element.paymentType,
-            data6: element.amount,
+            data6: formatUsd(parseInt(element.amount)),
           })
         )
       );
@@ -800,7 +800,7 @@ const [timer, settimer] = useState(false)
             data1: count,
             data2: moment(element.date).format("DD-MM-YYYY").toString(),
             data3: element.no_of_booking,
-            data4: element.total_amount_booking,
+            data4:   formatUsd(parseInt(element.total_amount_booking)),
           })
         )
       );
@@ -865,7 +865,7 @@ if(selected_wing){
             data8: moment(element.endTo).format("DD-MM-YYYY"),
             data9:element.day_left,
             data10: element.slots.wing.wingName,
-            data11: element.charge,
+            data11:  formatUsd(parseInt(element.charge)),
           })
         )
       );
