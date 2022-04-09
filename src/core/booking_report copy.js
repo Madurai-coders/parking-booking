@@ -829,15 +829,49 @@ const [timer, settimer] = useState(false)
     }
 
     if (key == "booking_validity") {
+        var array = [];
+
+        if (data) {
+          data.booking.forEach((element) => {
+            array.push({
+              ...element,
+              day_left: Daysleft(
+                moment(new Date(), "YYYY-MM-DD"),
+                moment(element.endTo, "YYYY-MM-DD")
+              ),
+            });
+          });
+        }
+        array.sort(function (a, b) {
+          return a.day_left - b.day_left;
+        });
+        console.log(array)
       let count = 0;
-      data.forEach(
+if(selected_wing){
+    array=array.filter(val=> selected_wing.wingName == val.slots.wing.wingName)
+}
+
+      array.forEach(
         (element, id) => (
           (count = count + 1),
           val.push({
-            data1: element.User.userName,
-            data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
-            data3: element.paymentType,
-            data4: element.amount,
+            data1: count,
+            data2: element.User.lastName,
+            data3: element.User.accountNumber,
+            data4: element.User.email,
+            data5: element.bookingId,
+            data6: element.plan,
+            data7: moment(element.startFrom).format("DD-MM-YYYY"),
+            data8: moment(element.endTo).format("DD-MM-YYYY"),
+            data9:<div className="mx-2"><div
+          className={
+              element.day_left < 15 &&
+            "p-1 shadow-sm rounded bg-primary display-block text-white "
+          }
+        >{element.day_left}
+          </div></div>,
+            data10: element.slots.wing.wingName,
+            data11: element.charge,
           })
         )
       );
@@ -907,7 +941,10 @@ const [timer, settimer] = useState(false)
                   <tr key={id} className="booking_report_table_data">
                     <td>{id + 1}</td>
                     <td>{bookingdata.User.lastName}</td>
+                     <td>{bookingdata.User.accountNumber}</td>
+                      <td>{bookingdata.User.email}</td>
                     <td>{bookingdata.bookingId}</td>
+                    
                     <td>{bookingdata.plan}</td>
 
                     <td>
@@ -1589,7 +1626,7 @@ const [timer, settimer] = useState(false)
                             headers={[
                               { label: "S.No", key: "data1" },
                               { label: "Date", key: "data2" },
-                              { label: "No of Payments", key: "data3" },
+                              { label: "No of Booking", key: "data3" },
                               { label: "Amount", key: "data4" },
                             ]}
                             data={Table_data(Daily_booking, "Daily_booking")}
@@ -1766,23 +1803,26 @@ const [timer, settimer] = useState(false)
                 </div>
 
                 <div className="col-12 p-3 mt-2">
-                  {/* {booking_validity && (
+                  {booking_validity && (
                         <Table
                           headers={[
                             { label: "S.No", key: "data1" },
                             { label: "Name", key: "data2" },
-                            { label: "Booking Id", key: "data3" },
-                            { label: "Plan", key: "data4" },
-                            { label: "From", key: "data5" },
-                            { label: "To", key: "data6" },
-                            { label: "Days left", key: "data7" },
-                            { label: "Slot", key: "data8" },
-                            { label: "Amount", key: "data9" },
+                            { label: "UserId", key: "data3" },
+                            { label: "Mail", key: "data4" },
+                            { label: "Booking Id", key: "data5" },
+                            { label: "Plan", key: "data6" },
+                            { label: "From", key: "data7" },
+                            { label: "To", key: "data8" },
+                            { label: "Days left", key: "data9" },
+                            { label: "Slot", key: "data10" },
+                            { label: "Amount", key: "data11" },
                           ]}
                           data={Table_data(booking_validity, "booking_validity")}
+                          table_data={table_data[3]}
                         ></Table>
-                      )} */}
-                  <div className="booking_report_table_container">
+                      )}
+                  {/* <div className="booking_report_table_container">
                     <table className="booking_report_table">
                       <tr className="booking_report_table_headers">
                         <th>S.No</th>
@@ -1804,7 +1844,7 @@ const [timer, settimer] = useState(false)
                             selected_wing.wingName
                           )}
                     </table>
-                  </div>
+                  </div> */}
                 </div>
               </>
             )}

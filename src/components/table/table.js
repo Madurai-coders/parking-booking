@@ -356,6 +356,7 @@ export default function Table(props) {
                   {data.data8 != undefined && <td> {data.data8}</td>}
                   {data.data9 != undefined && <td> {data.data9}</td>}
                   {data.data10 != undefined && <td> {data.data10}</td>}
+                  {data.data11 != undefined && <td> {data.data11}</td>}
                   {props.controls == true && (
                     <td>
                         <div className="d-flex justify-content-center">
@@ -434,6 +435,7 @@ export default function Table(props) {
                         <td>{data.data8}</td>
                         <td>{data.data9}</td>
                         <td>{data.data10}</td>
+                        <td>{data.data11}</td>
                       </tr>
                     );
                   })}
