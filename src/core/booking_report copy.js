@@ -863,13 +863,7 @@ if(selected_wing){
             data6: element.plan,
             data7: moment(element.startFrom).format("DD-MM-YYYY"),
             data8: moment(element.endTo).format("DD-MM-YYYY"),
-            data9:<div className="mx-2"><div
-          className={
-              element.day_left < 15 &&
-            "p-1 shadow-sm rounded bg-primary display-block text-white "
-          }
-        >{element.day_left}
-          </div></div>,
+            data9:element.day_left,
             data10: element.slots.wing.wingName,
             data11: element.charge,
           })
