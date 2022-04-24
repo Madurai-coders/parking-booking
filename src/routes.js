@@ -20,6 +20,7 @@ import {
   axios_call_auto,
   login,
   logout,
+  email_login
 } from "./functions/reusable_functions";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
  // Inside of your index.js
@@ -85,6 +86,35 @@ const Routes = () => {
     });
   };
 
+
+  const Email_login = async (email,password) => {
+
+    email_login(true,email,password).then(function (log) {
+    //   console.log(log.data.user.photoURL);
+    //   Cookies.set('icon',log.data.user.photoURL)
+    setloading(true)
+
+      if (log != null && log != 'error') {
+        axios({
+          method: "GET",
+          url: "http://127.0.0.1:8000/admins/",
+          headers: { Authorization: `Bearer ${log.access}` },
+        }).then((response) => {
+          if (response.data[0].is_staff) {
+            setis_admin(response.data[0].is_staff);
+            setloading(false)
+              setTimeout(() => {
+            setloader(false)
+        }, 2500);
+          }
+        });
+      }
+      else{
+        setloading('error')
+      }
+    });
+  };
+
   const call_logout = async () => {
     logout().then(function (log) {
       console.log(log);
@@ -137,14 +167,14 @@ const Routes = () => {
                   path="/admin"
                   exact
                   render={() => (
-                    <Admin_login login={call_login} is_admin={is_admin} loading={loading} />
+                    <Admin_login login={call_login} Email_login={Email_login} is_admin={is_admin} loading={loading} />
                   )}
                 />
 
                 <Route path="/dashboard" exact component={User_dashboard} />
                 <Route path="/" exact component={User_login} />
                 <Route   render={() => (
-                    <Admin_login login={call_login} is_admin={is_admin} loading={loading}/>
+                    <Admin_login login={call_login} Email_login={Email_login}  is_admin={is_admin} loading={loading}/>
                   )}/>       
 
               </>

@@ -8,9 +8,9 @@ import "../assets/css/user_dashboard/user_dashboard.css";
 import Carousel from "react-elastic-carousel";
 import Car from "../assets/images/Car.svg";
 import Cartcard from "../components/user_dashboard/cartcard.js";
-import Addslot from "../components/user_dashboard/addslot.js"
-import Activebooking from "../components/user_dashboard/activebookingcard.js"
-import Userprofile from "../components/user_dashboard/userprofile.js"
+import Addslot from "../components/user_dashboard/addslot.js";
+import Activebooking from "../components/user_dashboard/activebookingcard.js";
+import Userprofile from "../components/user_dashboard/userprofile.js";
 import { IoClose } from "react-icons/io5";
 import moment from "moment";
 import {
@@ -50,12 +50,12 @@ export default function User_dashboard() {
     1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
     1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
     1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
-    1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5
+    1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5,
   ]);
-  const [table , setTable] = useState ({
-    bookingdetails : true,
-    transactionhistory : false
- })
+  const [table, setTable] = useState({
+    bookingdetails: true,
+    transactionhistory: false,
+  });
 
   let history = useHistory();
 
@@ -115,12 +115,12 @@ export default function User_dashboard() {
   }
 
   function toggleTable(val) {
-		setTable({
-			bookingdetails:false,
-      transactionhistory:false,
-			[val]: true,
-		});
-	}
+    setTable({
+      bookingdetails: false,
+      transactionhistory: false,
+      [val]: true,
+    });
+  }
 
   useEffect(() => {
     var accountnumber = Cookies.get("accountnumber");
@@ -289,23 +289,76 @@ export default function User_dashboard() {
                 />
               </div>
               <div className="row">
-                <Userprofile name="Mitchell" acntnum="56 7782684 85" email="michelle.rivera@example.com" num="(239) 555-0108"/>
+                <Userprofile
+                  name="Mitchell"
+                  acntnum="56 7782684 85"
+                  email="michelle.rivera@example.com"
+                  num="(239) 555-0108"
+                />
                 <div className="col-10">
                   <div className="row">
                     <div className="col-9 abccards_section pb-2 pt-2 mb-2">
-                    <Carousel
-                                itemsToShow={3.5}
-                                itemsToScroll={1}
-                                pagination={false}
-                                showArrows={true}
-                              >
-                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
-                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
-                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
-                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
-                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
-                             <Activebooking entry="5/27/21" expiry="6/27/21" status="Active" remdays="26" slot="6" wing="B" plan="Monthly"/>
-                              </Carousel>
+                      <Carousel
+                        itemsToShow={2.2}
+                        itemsToScroll={1}
+                        pagination={false}
+                        showArrows={true}
+                      >
+                        <Activebooking
+                          entry="5/27/21"
+                          expiry="6/27/21"
+                          status="Active"
+                          remdays="26"
+                          slot="6"
+                          wing="B"
+                          plan="Monthly"
+                        />
+                        <Activebooking
+                          entry="5/27/21"
+                          expiry="6/27/21"
+                          status="Active"
+                          remdays="26"
+                          slot="6"
+                          wing="B"
+                          plan="Monthly"
+                        />
+                        <Activebooking
+                          entry="5/27/21"
+                          expiry="6/27/21"
+                          status="Active"
+                          remdays="26"
+                          slot="6"
+                          wing="B"
+                          plan="Monthly"
+                        />
+                        <Activebooking
+                          entry="5/27/21"
+                          expiry="6/27/21"
+                          status="Active"
+                          remdays="26"
+                          slot="6"
+                          wing="B"
+                          plan="Monthly"
+                        />
+                        <Activebooking
+                          entry="5/27/21"
+                          expiry="6/27/21"
+                          status="Active"
+                          remdays="26"
+                          slot="6"
+                          wing="B"
+                          plan="Monthly"
+                        />
+                        <Activebooking
+                          entry="5/27/21"
+                          expiry="6/27/21"
+                          status="Active"
+                          remdays="26"
+                          slot="6"
+                          wing="B"
+                          plan="Monthly"
+                        />
+                      </Carousel>
                     </div>
                     <div className="col-3">
                       <div className="udb_bcsection mt-4 pt-4 ps-4 pe-3 me-4">
@@ -361,92 +414,125 @@ export default function User_dashboard() {
                           )}
                         </div>
                       </div>
-                      < Addslot amount="12" />
-                      < Addslot amount="20" />
-                      <div className="row user_dashboard_bookingdetails_heading mt-5 ps-2 pe-2"> <div className="col-6 user_dashboard_bookingdetails_heading_bd p-4" onClick={() => toggleTable("bookingdetails")} style={{backgroundColor : table.bookingdetails ? '#fff' : '#F9F9F9'}}> Booking Details  </div> <div className="col-6 user_dashboard_bookingdetails_heading_th p-4" onClick={() => toggleTable("transactionhistory")} style={{backgroundColor : table.transactionhistory ? '#fff' : '#F9F9F9'}}> Transaction History</div></div>
+                      <hr></hr>
+                      <div className="px-5 mt-3 pb-3">
+                        <Addslot amount="12" />
+                        <Addslot amount="20" />
+                      </div>
+                      <hr></hr>
+
+                      <div className="row user_dashboard_bookingdetails_heading mt-5 ps-2 pe-2">
+                        {" "}
+                        <div
+                          className="col-6 user_dashboard_bookingdetails_heading_bd p-4"
+                          onClick={() => toggleTable("bookingdetails")}
+                          style={{
+                            backgroundColor: table.bookingdetails
+                              ? "#f0f8ff"
+                              : "#fff",
+                          }}
+                        >
+                          {" "}
+                          Booking Details{" "}
+                        </div>
+                        <div
+                          className="col-6 user_dashboard_bookingdetails_heading_th p-4"
+                          onClick={() => toggleTable("transactionhistory")}
+                          style={{
+                            backgroundColor: table.transactionhistory
+                              ? "#f0f8ff"
+                              : "#fff",
+                          }}
+                        >
+                          {" "}
+                          Transaction History
+                        </div>
+                      </div>
                       {table.bookingdetails && (
-                      <div className="user_dashboard_booking_details_card ">
-                    <table className="user_dashboard_booking_details_table">
-                      <tr className="user_dashboard_booking_details_table_heading">
-                        <th>Wing</th>
-                        <th>Start date</th>
-                        <th>End date</th>
-                        <th>Plan</th>
-                        <th>Amount</th>
-                        <th>Active for</th>
-                      </tr>
-                      {user.booking_partner.map((userdata) => {
-                        return (
-                          <tr className="user_dashboard_booking_details_table_data">
-                            {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
-                            <td>{userdata.slots.wing.wingName}</td>
-                            <td>
-                              {moment(userdata.startFrom).format("DD-MM-YYYY")}
-                            </td>
-                            <td>
-                              {moment(userdata.endTo).format("DD-MM-YYYY")}
-                            </td>
-                            <td>{userdata.plan}</td>
-                            <td>
-                              {userdata.charge}$
-                            </td>
-                            <td>
-                              {Dayleft(userdata.endTo) > 0
-                                ? Dayleft(userdata.endTo)
-                                : 0}{" "}
-                              days
-                              <span
-                                className={
-                                  "mx-1 user_dashboard_active_" +
-                                  (Dayleft(userdata.endTo) > 0
-                                    ? "green"
-                                    : "red")
-                                }
-                              ></span>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </table>
-                  </div> 
+                        <div className="user_dashboard_booking_details_card pb-5 ">
+                          <table className="user_dashboard_booking_details_table">
+                            <tr className="user_dashboard_booking_details_table_heading">
+                              <th>Wing</th>
+                              <th>Start date</th>
+                              <th>End date</th>
+                              <th>Plan</th>
+                              <th>Amount</th>
+                              <th>Active for</th>
+                            </tr>
+                            {user.booking_partner.map((userdata) => {
+                              return (
+                                <tr className="user_dashboard_booking_details_table_data">
+                                  {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
+                                  <td>{userdata.slots.wing.wingName}</td>
+                                  <td>
+                                    {moment(userdata.startFrom).format(
+                                      "DD-MM-YYYY"
+                                    )}
+                                  </td>
+                                  <td>
+                                    {moment(userdata.endTo).format(
+                                      "DD-MM-YYYY"
+                                    )}
+                                  </td>
+                                  <td>{userdata.plan}</td>
+                                  <td>{userdata.charge}$</td>
+                                  <td>
+                                    {Dayleft(userdata.endTo) > 0
+                                      ? Dayleft(userdata.endTo)
+                                      : 0}{" "}
+                                    days
+                                    <span
+                                      className={
+                                        "mx-1 user_dashboard_active_" +
+                                        (Dayleft(userdata.endTo) > 0
+                                          ? "green"
+                                          : "red")
+                                      }
+                                    ></span>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </table>
+                        </div>
                       )}
                       {table.transactionhistory && (
-                        <div className="user_dashboard_booking_details_card">
-                        <table className="user_dashboard_booking_details_table">
-                          <tr className="user_dashboard_booking_details_table_heading">
-                            <th>Transaction id</th>
-                            <th>Date</th>
-                            <th>Payment</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                          </tr>
-                          {user.payment_partner.map((transaction) => {
-                            return (
-                              <tr className="user_dashboard_booking_details_table_data">
-                                <td>{transaction.paymentId}</td>
-                                <td>
-                                  {moment(transaction.paymentDate).format(
-                                    "DD-MM-YYYY"
-                                  )}
-                                </td>
-                                <td>{transaction.paymentType}</td>
-                                <td>{transaction.amount}</td>
+                        <div className="user_dashboard_booking_details_card pb-5">
+                          <table className="user_dashboard_booking_details_table">
+                            <tr className="user_dashboard_booking_details_table_heading">
+                              <th>Transaction id</th>
+                              <th>Date</th>
+                              <th>Payment</th>
+                              <th>Amount</th>
+                              <th>Status</th>
+                            </tr>
+                            {user.payment_partner.map((transaction) => {
+                              return (
+                                <tr className="user_dashboard_booking_details_table_data">
+                                  <td>{transaction.paymentId}</td>
+                                  <td>
+                                    {moment(transaction.paymentDate).format(
+                                      "DD-MM-YYYY"
+                                    )}
+                                  </td>
+                                  <td>{transaction.paymentType}</td>
+                                  <td>{transaction.amount}</td>
 
-                                <td>
-                                  <span
-                                    className={
-                                      "user_dashboard_popup_status_" +
-                                      "Successful".toLowerCase()
-                                    }
-                                  >
-                                    Successful
-                                  </span>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </table>
-                      </div>
+                                  <td>
+                                    <span
+                                      className={
+                                        "user_dashboard_popup_status_" +
+                                        "Successful".toLowerCase()
+                                      }
+                                    >
+                                      Successful
+                                    </span>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </table>
+                        </div>
                       )}
                     </div>
                     <div className="col-3">
@@ -467,11 +553,11 @@ export default function User_dashboard() {
                       <div className="udb_carttotal p-4">
                         Total Amount : $46
                       </div>
-                      <div className="row">
+                      <div className="row text-center">
                         <div className="col-6" style={{ paddingRight: "0" }}>
                           <button
                             type="button"
-                            class="btn btn-secondary btn-md w-100 udb_cart_clrbutton"
+                            class="btn btn-secondary btn-md w-75 udb_cart_clrbutton"
                           >
                             Clear
                           </button>
@@ -479,7 +565,7 @@ export default function User_dashboard() {
                         <div className="col-6" style={{ paddingLeft: "0" }}>
                           <button
                             type="button"
-                            class="btn btn-success btn-md w-100 udb_cart_continuebutton"
+                            class="btn btn-success btn-md w-75 udb_cart_continuebutton"
                           >
                             Continue
                           </button>

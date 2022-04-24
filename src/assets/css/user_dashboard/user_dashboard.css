@@ -9,7 +9,7 @@
 
 .user_dashboard_profile_icon {
   width: 2.04%;
-  margin-left: 80%;
+  margin-left: 84%;
   cursor: pointer;
 }
 
@@ -469,6 +469,7 @@
   background-image: url("../../images/balancecard.svg");
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 20px;
 }
 
 .udb_bctext {
@@ -591,9 +592,9 @@
 }
 
 .udb_planbtn {
-  font-weight: 700;
-  font-size: 12px;
-  border-radius: 50%;
+  font-weight: 900;
+  font-size: 8px;
+  border-radius: 4px;
 }
 
 .udb_slotinputtext {

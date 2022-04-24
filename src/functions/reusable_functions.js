@@ -209,6 +209,79 @@ export function login(checkadmin) {
   });
 }
 
+
+export function email_login(checkadmin,email,password) {
+    console.log(email)
+    console.log(password)
+    return new Promise(function (resolve, reject) {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((data) => {
+    console.log(data)
+
+          var access_token = "";
+          if (data.additionalUserInfo.isNewUser) {
+            axios({
+              method: "POST",
+              url: "http://127.0.0.1:8000/register/",
+              data: {
+                username: data.user.email,
+                password: data.user.uid,
+              },
+              withCredentials: true,
+            }).then((response) => {
+              axios({
+                method: "POST",
+                url: "http://127.0.0.1:8000/api/jwt_token/",
+                data: {
+                  username: data.user.email,
+                  password: data.user.uid,
+                },
+                withCredentials: true,
+              }).then((response) => {
+                Cookies.set("refresh_token", response.data.refresh);
+                Cookies.set("access_token", response.data.access);
+  
+                if (!checkadmin) {
+                  resolve(data);
+                } else {
+                  resolve({ data, access: response.data.access });
+                }
+              });
+            });
+          } else {
+            axios({
+              method: "POST",
+              url: "http://127.0.0.1:8000/api/jwt_token/",
+              // data: {
+              //   username: 'maduraicoders@gmail.com',
+              //   password: 'nTSNMkEKIhPMIpsti0HoJbOyvID3',
+              // },
+              data: {
+                  username: data.user.email,
+                  password: data.user.uid,
+                },
+              withCredentials: true,
+            }).then((response) => {
+              Cookies.set("refresh_token", response.data.refresh);
+              Cookies.set("access_token", response.data.access);
+              if (!checkadmin) {
+                resolve(false);
+              } else {
+                resolve({data:true, access: response.data.access });
+              }
+            });
+          }
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            resolve('error')
+          });
+    });
+}
+  
+
+//Validation_function
 export function logout() {
   return new Promise(function (resolve, reject) {
     const data = firebase.auth().signOut();
@@ -222,7 +295,6 @@ export function logout() {
   });
 }
 
-//Validation_function
 
 //validation for first name lastname
 export function validation_name(value) {
@@ -354,6 +426,68 @@ export function validation_title(value) {
   }
   if (value == "not_selected") return "";
 }
+
+
+export function validation_password(value) {
+    if (value == "" || value != "not_selected") {
+      console.log(value);
+      if (value) {
+        if (!value.startsWith(" ")) {
+          if (value.length >= 6) {
+            if (value.length <= 150) {
+              if (!value.endsWith(" ")) {
+                return {
+                  class: "pass",
+                };
+              } else
+                return {
+                  class: "warn",
+                  msg: (
+                    <>
+                      <small class="text-danger">
+                        Cannot end with white space
+                      </small>
+                    </>
+                  ),
+                };
+            } else
+              return {
+                class: "warn",
+                msg: (
+                  <>
+                    <small class="text-danger">Max length is 18</small>
+                  </>
+                ),
+              };
+          } else
+            return {
+              class: "warn",
+              msg: (
+                <>
+                  <small class="text-danger">Min length is 6</small>
+                </>
+              ),
+            };
+        } else
+          return {
+            class: "warn",
+            msg: (
+              <>
+                <small class="text-danger">Cannot start with white space</small>
+              </>
+            ),
+          };
+      } else return {
+        class: "warn",
+        msg: (
+          <>
+            <small class="text-danger">This field is a required</small>
+          </>
+        ),
+      };;
+    }
+    if (value == "not_selected") return "";
+  }
 
 //Validation for mobile number
 export function validation_mobile_number(value) {

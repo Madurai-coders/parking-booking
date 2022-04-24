@@ -36,7 +36,7 @@ export default function Activebooking(props) {
           </div>
           <div className="col-6">
             <div className="abc_remdaycover p-1">
-              <div className="abc_remdaysval"> 26 </div>
+              <div className="abc_remdaysval px-3"> 26 </div>
               <div className="abc_remdaystext">
                 <div>Remaining</div>
                 <div>Days</div>

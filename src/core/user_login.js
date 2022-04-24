@@ -28,7 +28,7 @@ export default function User_login() {
   });
 
   const toastifyfail = () => {
-    toast.error("Please enter vaild  details", {
+    toast.error("Please enter valid details", {
       position: "bottom-right",
       autoClose: 4000,
       hideProgressBar: true,
@@ -186,7 +186,9 @@ export default function User_login() {
               style={{
                 marginTop: "-40px",
                 marginBottom: "30px",
-                fontSize: "10px",
+                fontSize: "12px",
+                textAlign: "right",
+                marginRight: "80px",
               }}
             >
               {validation_mobile_number(form_values.accountnumber).msg}
@@ -222,9 +224,11 @@ export default function User_login() {
             />
             <div
               style={{
-                marginTop: "-40px",
+                marginTop: "-18px",
                 marginBottom: "30px",
-                fontSize: "10px",
+                fontSize: "12px",
+                textAlign: "right",
+                marginRight: "80px",
               }}
             >
               {validation_name(form_values.lastname).msg}
