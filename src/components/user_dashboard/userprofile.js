@@ -1,6 +1,6 @@
 import React from "react";
 import { BiEditAlt } from "react-icons/bi";
-import propic from "../../assets/images/Profilepic.svg";
+import propic from "../../assets/images/profilepic.png";
 
 export default function Userprofile(props) {
   return (
@@ -13,7 +13,8 @@ export default function Userprofile(props) {
               size={16}
               style={{
                 position: "absolute",
-                bottom: "0",
+                bottom: "-33",
+                right: "10",
                 color: "#828282",
               }}
             />
@@ -21,15 +22,15 @@ export default function Userprofile(props) {
           <div className="udb_propicname mt-3">{props.name}</div>
         </div>
         <div className="udb_details ps-4 pb-3 pe-3 pt-3 ms-1 me-1">
-          <div className="udb_name mt-1 mb-3">{props.name}</div>
+          {/* <div className="udb_name mt-1 mb-3">{props.name}</div> */}
           <div className="udb_proedit">
             <div className="udb_acnum mb-2">Account Number </div>
-            <BiEditAlt size={16} color="#828282" />
+            {/* <BiEditAlt size={16} color="#828282" /> */}
           </div>
           <div className="udb_acnumval mb-3">{props.acntnum}</div>
           <div className="udb_proedit">
             <div className="udb_email mb-2">Email </div>
-            <BiEditAlt size={16} color="#828282" />
+            {/* <BiEditAlt size={16} color="#828282" /> */}
           </div>
           <div className="udb_emailval mb-3">{props.email}</div>
           <div className="udb_proedit">
@@ -38,8 +39,12 @@ export default function Userprofile(props) {
           </div>
           <div className="udb_numval mb-3">{props.num}</div>
         </div>
-        <div className="udb_pwdtxt mt-2 mb-3">
-          Leave the password field empty <br /> if you don’t want to change
+        <div onClick={()=>props.setHistory(false)} className={!props.history_report ? "btn btn-primary mx-3 mt-3 " : "btn btn-light mx-3 mt-3" }>Booking</div>
+        <div onClick={()=>props.setHistory(true)} className={props.history_report ? "btn btn-primary mt-3 " : "btn btn-light mt-3" }>History</div>
+
+        {/* <div  className="mt-4 mx-2">
+          Leave the password field empty <br /> if you don’t want to change</div> */}
+        {/* <div className="udb_pwdtxt mt-2 mb-3">
         </div>
         <div className="ps-3">
           <div className="mt-4 mb-4">
@@ -60,7 +65,7 @@ export default function Userprofile(props) {
           <button type="button" class="btn btn-secondary btn-sm udb_backbtn">
             Back
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );

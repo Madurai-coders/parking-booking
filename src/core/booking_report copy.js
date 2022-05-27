@@ -278,7 +278,7 @@ const [timer, settimer] = useState(false)
       "GetBookingByDate/?from=" + start + "&to=" + end
     );
     setData(booking);
-
+console.log(booking_validity)
     var amount = 0;
     booking.forEach((element) => {
       amount = amount + parseInt(element.charge);
@@ -758,6 +758,7 @@ const [timer, settimer] = useState(false)
 
   function Table_data(data, key) {
     var val = [];
+    console.log(val)
 
     if (key == "Daily_payment") {
       let count = 0;
@@ -845,7 +846,7 @@ const [timer, settimer] = useState(false)
         array.sort(function (a, b) {
           return a.day_left - b.day_left;
         });
-        console.log(array)
+        // console.log(array)
       let count = 0;
 if(selected_wing){
     array=array.filter(val=> selected_wing.wingName == val.slots.wing.wingName)
@@ -871,7 +872,7 @@ if(selected_wing){
       );
     }
 
-    console.log(val);
+    // console.log(val);
     return val;
   }
 
@@ -1144,7 +1145,7 @@ if(selected_wing){
         {" "}
         <div className="booking_report_title ">Report </div>
         <div className="booking_report_container_whole">
-          <div className="booking_report_container">
+          <div className="">
             <div className="row mt-5">
               {display != "booking_status" && (
                 <>
@@ -1481,6 +1482,8 @@ if(selected_wing){
                     )}
                     table_data={table_data[2]}
                     controls={true}
+                    link={true}
+                    // linkvalue
                     mail={Set_Preview}
                     remove={Set_booking_id}
                   ></Table>
@@ -1754,7 +1757,7 @@ if(selected_wing){
                   </div>
                   <br></br>
                 </div>
-                <div className="col-4 p-5 mt-5">
+                <div className="col-4 mt-5" style={{paddingLeft:'100px',paddingRigth:'100px'}}>
                   {paymentType_graph && <Doughnut data={paymentType_graph} />}
                 </div>
 

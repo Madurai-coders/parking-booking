@@ -17,7 +17,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Carousel from "react-elastic-carousel";
 import { motion, AnimatePresence } from "framer-motion";
-
+import ParkingSetup from "../components/ParkingSetup/parkingSetup"
 export default function Parkingsetup() {
   const [remove_wing, setRemove_wing] = useState();
   const [percent, setPercent] = useState();
@@ -340,6 +340,11 @@ export default function Parkingsetup() {
       <Helmet>
          <title>Munidex Parking - Parking Setup </title>
       </Helmet>
+
+     {slot&& <ParkingSetup slot={slot}/>
+}
+
+      {false && <>
 
       {remove_wing && (
         <div className="overlay">
@@ -899,6 +904,9 @@ export default function Parkingsetup() {
         </div>
         </div>
       </motion.div>
+
+      </>}
+      
     </>
   );
 }

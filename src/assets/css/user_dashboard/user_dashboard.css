@@ -495,13 +495,25 @@
   border-radius: 12.9px;
 }
 
+.udb_bcdelinquent {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 12px;
+    color: #ffffff;
+    background: #fa032c;
+    border-radius: 12.9px;
+  }
+
 /* Cart Section */
 
 .udb_cartsection {
   overflow-y: scroll;
-  background: #f9f9f9;
-  border-radius: 75px 0px 0px 0px;
-  height: 50vh;
+  background: #eeeeee;
+  border-radius: 45px 0px 0px 0px;
+  height: 67vh;
+  padding-left:20px ;
+  overflow-y: 'scroll';
+  /* margin-bottom: 20px; */
 }
 
 .udb_cartcard {

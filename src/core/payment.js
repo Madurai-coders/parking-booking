@@ -13,7 +13,7 @@ import {
   axios_call,
   axios_call_auto,
   generateUUID,
-  formatUsd
+  formatUsd,
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,6 +22,8 @@ import { useHistory } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import send from "../assets/images/send.svg";
 import Payment_invoice from "../components/Paymentinvoice/paymentinvoice";
+import { db, firebase } from "../core/firebase/firebase";
+import axios from "axios";
 
 export default function Payment() {
   const [payment, setPayment] = useState();
@@ -84,7 +86,7 @@ export default function Payment() {
       axios_call("GET", "Check_BusinessPartner?search=" + val).then(
         (response) => {
           set_usr_suggestion(response);
-          console.log(response)
+          console.log(response);
         }
       );
     }
@@ -143,7 +145,7 @@ export default function Payment() {
     const result = await form_validate();
     if (result && !data_fail) {
       if (usr_suggestion[0]) {
-        console.log("starting exsisting user");
+        console.log("starting existing user");
         if (
           usr_suggestion[0].userName === form.name &&
           usr_suggestion[0].email === form.email
@@ -175,39 +177,72 @@ export default function Payment() {
           setData_fail("username dose not match with email provided");
         }
       } else {
-        console.log("starting newuser");
+        console.log("initiate newUser");
         var newbookingpartner = {
           uId: new Date().getUTCMilliseconds(),
-          accountNumber: Math.floor(1000 + Math.random() * 9000),
+          accountNumber: Math.floor(100000 + Math.random() * 9000),
           userName: form.name,
           lastName: form.name,
           email: form.email,
         };
 
-        axios_call("POST", "CreateBusinessPartner/", newbookingpartner).then(
-          (response) => {
-            console.log("newuser created");
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(newbookingpartner.email,newbookingpartner.accountNumber.toString())
+          .then((userCredential) => {
+            console.log("initiated firebase");
+            console.log(userCredential);
+            axios({
+                method: "POST",
+                url: "http://127.0.0.1:8000/register/",
+                data: {
+                  username: userCredential.user.email,
+                  password: userCredential.user.uid,
+                },
+                withCredentials: true,
+              }).then((response_one) => {
+                console.log("initiated database");
+                console.log(response_one);
 
-            var data = {
-              userId: response.id,
-              paymentId: form.payment_id,
-              paymentType: form.payment_type,
-              paymentDate: form.date,
-              amount: form.amount,
-            };
-
-            axios_call("POST", "CreatePayment/", data).then((response) => {
-              axios_call("GET", "GetPayment?search=" + form.name).then(
+                
+            // Signed in
+            console.log(response_one.data.id)
+            axios_call("POST", "CreateBusinessPartner/", {...newbookingpartner,accountHolder:response_one.data.id}).then(
                 (response) => {
+                  console.log("newuser created");
                   console.log(response);
-                  setPayment(response);
-                  reset();
+
+                  var data = {
+                    userId: response.id,
+                    paymentId: form.payment_id,
+                    paymentType: form.payment_type,
+                    paymentDate: form.date,
+                    amount: form.amount,
+                  };
+                // })
+      
+                  axios_call("POST", "CreatePayment/", data).then((response) => {
+                    axios_call("GET", "GetPayment?search=" + form.name).then(
+                      (response) => {
+                        console.log(response);
+                        setPayment(response);
+                        reset();
+                      }
+                    );
+                    console.log("payment added to created existing user");
+                  });
                 }
               );
-              console.log("payment added to created existing user");
-            });
-          }
-        );
+            })
+          })
+
+          .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ..
+          });
+
+       
       }
 
       setData_fail(false);
@@ -222,7 +257,7 @@ export default function Payment() {
   }
 
   useEffect(() => {
-    if (form.name == "not_selected" || !form.name   ) {
+    if (form.name == "not_selected" || !form.name) {
       axios_call("GET", "CreatePayment/").then((response) => {
         console.log(response);
         setPayment(response.results);
@@ -235,16 +270,15 @@ export default function Payment() {
       });
     }
     if (usr_suggestion) {
-        console.log(form.name)
-        
-        usr_suggestion.forEach(element => {
-            if (form.name == element.userName) {
-                setForm({ ...form, email: element.email });
-              }
-});     
+      console.log(form.name);
+
+      usr_suggestion.forEach((element) => {
+        if (form.name == element.userName) {
+          setForm({ ...form, email: element.email });
+        }
+      });
     }
   }, [form.name]);
-  
 
   function checkpaymentid() {
     if (form.payment_id) {
@@ -461,16 +495,16 @@ export default function Payment() {
       )}
 
       <motion.div
-       initial={{ opacity: 0, y: 15 }}
-       animate={{ opacity: [0.5, 1], y: 0 }}
-       transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: [0.5, 1], y: 0 }}
+        transition={{ duration: 0.3 }}
         className="flex-grow-1"
       >
-            <div className="booking_report_title">Payment </div>
+        <div className="booking_report_title">Payment </div>
 
-<div className="booking_report_container_whole">
-        <div className="payment_container">
-          {/* {data_fail && (
+        <div className="booking_report_container_whole">
+          <div className="payment_container">
+            {/* {data_fail && (
             <div className="pr-5 pl-5">
               <div class="alert alert-danger" role="alert">
                 {data_fail}
@@ -478,264 +512,272 @@ export default function Payment() {
             </div>
           )} */}
 
-          <div className="payment_enty_container">
-            <div className="payment_entry_fields">
-              <div className="payment_label_container">
-                <label for="pname" className="plabel">
-                  Name
-                </label>
-                <input
-                  autocomplete="off"
-                  list="data"
-                  onChange={(e) => (
-                    checkuser(e.target.value),
-                    setForm({ ...form, name: e.target.value })
-                  )}
-                  onBlur={(e) => setForm({ ...form, name: e.target.value })}
-                  type="text"
-                  value={form.name != "not_selected" ? form.name : ""}
-                  className={"form-control " + validation_name(form.name).class}
-                  id="pname"
-                />
-                <datalist id="data">
-                  {usr_suggestion.map((item, key) => (
-                    <option key={key} value={item.userName} />
-                  ))}
-                </datalist>
-                <div style={{ marginTop: "1px", fontSize: "10px" }}>
-                  {validation_name(form.name).msg}
+            <div className="payment_enty_container">
+              <div className="payment_entry_fields">
+                <div className="payment_label_container">
+                  <label for="pname" className="plabel">
+                    Name
+                  </label>
+                  <input
+                    autocomplete="off"
+                    list="data"
+                    onChange={(e) => (
+                      checkuser(e.target.value),
+                      setForm({ ...form, name: e.target.value })
+                    )}
+                    onBlur={(e) => setForm({ ...form, name: e.target.value })}
+                    type="text"
+                    value={form.name != "not_selected" ? form.name : ""}
+                    className={
+                      "form-control " + validation_name(form.name).class
+                    }
+                    id="pname"
+                  />
+                  <datalist id="data">
+                    {usr_suggestion.map((item, key) => (
+                      <option key={key} value={item.userName} />
+                    ))}
+                  </datalist>
+                  <div style={{ marginTop: "1px", fontSize: "10px" }}>
+                    {validation_name(form.name).msg}
+                  </div>
+                </div>
+                <div className="payment_label_container">
+                  <label for="pemail" className="plabel">
+                    Email
+                  </label>
+                  <input
+                    autocomplete="off"
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.target.value })
+                    }
+                    onBlur={(e) => setForm({ ...form, email: e.target.value })}
+                    type="text"
+                    className={
+                      "form-control " + validation_email(form.email).class
+                    }
+                    value={form.email != "not_selected" ? form.email : ""}
+                    id="pemail"
+                  />
+                  <div style={{ marginTop: "1px", fontSize: "10px" }}>
+                    {validation_email(form.email).msg}
+                  </div>{" "}
+                </div>
+
+                <div className="payment_label_container">
+                  <label for="ptype" className="plabel">
+                    Type
+                  </label>
+                  <select
+                    name="payment_ptype"
+                    onBlur={(e) =>
+                      setForm({ ...form, payment_type: e.target.value })
+                    }
+                    onChange={(e) =>
+                      setForm({ ...form, payment_type: e.target.value })
+                    }
+                    value={
+                      form.payment_type != "not_selected"
+                        ? form.payment_type
+                        : ""
+                    }
+                    className={
+                      "form-select  " + validation_name(form.payment_type).class
+                    }
+                    //   style={{ width: "130%", height: "80%", margin:'0px'}}
+                    id="payment_ptype"
+                  >
+                    <option></option>
+                    <option value="check">check</option>
+                    <option value="card">card</option>
+                    <option value="cash">cash</option>
+                    <option value="online">online</option>
+                  </select>
+                  <div style={{ marginTop: "1px", fontSize: "10px" }}>
+                    {validation_name(form.payment_type).msg}
+                  </div>{" "}
+                </div>
+                <div className="payment_label_container">
+                  <label for="pid" className="plabel">
+                    {" "}
+                    Payment id
+                  </label>
+                  <input
+                    disabled={form.payment_type == "cash"}
+                    autocomplete="off"
+                    onChange={(e) =>
+                      setForm({ ...form, payment_id: e.target.value })
+                    }
+                    onBlur={(e) => (
+                      checkpaymentid(),
+                      setForm({ ...form, payment_id: e.target.value })
+                    )}
+                    type="text"
+                    value={
+                      form.payment_id != "not_selected" ? form.payment_id : ""
+                    }
+                    name="payment_pid"
+                    className={
+                      "form-control " +
+                      validation_payment_id(form.payment_id).class
+                    }
+                    id="pid"
+                  />
+                  <div style={{ marginTop: "1px", fontSize: "10px" }}>
+                    {validation_payment_id(form.payment_id).msg}
+                  </div>{" "}
+                </div>
+                <div className="payment_label_container">
+                  <label for="pdate" className="plabel">
+                    {" "}
+                    Date{" "}
+                  </label>
+
+                  <DatePicker
+                    dateFormat="dd/MM/yyyy"
+                    className="form-control"
+                    selected={form.date}
+                    onClickOutside
+                    onSelect={(date) => setForm({ ...form, date: date })}
+                  />
+                </div>
+                <div className="payment_label_container">
+                  <label for="pamount" className="plabel">
+                    {" "}
+                    Amount{" "}
+                  </label>
+                  <input
+                    onChange={(e) =>
+                      setForm({ ...form, amount: e.target.value })
+                    }
+                    onBlur={(e) => setForm({ ...form, amount: e.target.value })}
+                    type="number"
+                    value={form.amount != "not_selected" ? form.amount : ""}
+                    name="payment_amount"
+                    className={
+                      "form-control " + validation_amount(form.amount).class
+                    }
+                    id="pamount"
+                  />
+                  <div style={{ marginTop: "1px", fontSize: "10px" }}>
+                    {validation_amount(form.amount).msg}
+                  </div>{" "}
                 </div>
               </div>
-              <div className="payment_label_container">
-                <label for="pemail" className="plabel">
-                  Email
-                </label>
-                <input
-                  autocomplete="off"
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  onBlur={(e) => setForm({ ...form, email: e.target.value })}
-                  type="text"
-                  className={
-                    "form-control " + validation_email(form.email).class
-                  }
-                  value={form.email != "not_selected" ? form.email : ""}
-                  id="pemail"
-                />
-                <div style={{ marginTop: "1px", fontSize: "10px" }}>
-                  {validation_email(form.email).msg}
-                </div>{" "}
-              </div>
+              {!edit ? (
+                <div className="payment_submit_reset_container">
+                  <div
+                    className="payment_submit_button"
+                    style={{ cursor: "pointer" }}
+                    onClick={form_submit}
+                  >
+                    {" "}
+                    Submit{" "}
+                  </div>
 
-              <div className="payment_label_container">
-                <label for="ptype" className="plabel">
-                  Type
-                </label>
-                <select
-                  name="payment_ptype"
-                  onBlur={(e) =>
-                    setForm({ ...form, payment_type: e.target.value })
-                  }
-                  onChange={(e) =>
-                    setForm({ ...form, payment_type: e.target.value })
-                  }
-                  value={
-                    form.payment_type != "not_selected" ? form.payment_type : ""
-                  }
-                  className={
-                    "form-select  " + validation_name(form.payment_type).class
-                  }
-                //   style={{ width: "130%", height: "80%", margin:'0px'}}
-                  id="payment_ptype"
-                >
-                  <option ></option>
-                  <option value="check">check</option>
-                  <option value="card">card</option>
-                  <option value="cash">cash</option>
-                  <option value="online">online</option>
-                </select>
-                <div style={{ marginTop: "1px", fontSize: "10px" }}>
-                  {validation_name(form.payment_type).msg}
-                </div>{" "}
-              </div>
-              <div className="payment_label_container">
-                <label for="pid" className="plabel">
-                  {" "}
-                  Payment id
-                </label>
-                <input
-                  disabled={form.payment_type == "cash"}
-                  autocomplete="off"
-                  onChange={(e) =>
-                    setForm({ ...form, payment_id: e.target.value })
-                  }
-                  onBlur={(e) => (
-                    checkpaymentid(),
-                    setForm({ ...form, payment_id: e.target.value })
-                  )}
-                  type="text"
-                  value={
-                    form.payment_id != "not_selected" ? form.payment_id : ""
-                  }
-                  name="payment_pid"
-                  className={
-                    "form-control " +
-                    validation_payment_id(form.payment_id).class
-                  }
-                  id="pid"
-                />
-                <div style={{ marginTop: "1px", fontSize: "10px" }}>
-                  {validation_payment_id(form.payment_id).msg}
-                </div>{" "}
-              </div>
-              <div className="payment_label_container">
-                <label for="pdate" className="plabel">
-                  {" "}
-                  Date{" "}
-                </label>
+                  <div
+                    className="payment_reset_button"
+                    style={{ cursor: "pointer" }}
+                    onClick={reset}
+                  >
+                    {" "}
+                    Reset{" "}
+                  </div>
+                </div>
+              ) : (
+                <div className="payment_submit_reset_container">
+                  <div
+                    className="payment_submit_button"
+                    style={{ cursor: "pointer" }}
+                    onClick={call_edit_update}
+                  >
+                    {" "}
+                    Update{" "}
+                  </div>
 
-                <DatePicker
-                  dateFormat="dd/MM/yyyy"
-                  className="form-control"
-                  selected={form.date}
-                  onClickOutside
-                  onSelect={(date) => setForm({ ...form, date: date })}
-                />
-              </div>
-              <div className="payment_label_container">
-                <label for="pamount" className="plabel">
-                  {" "}
-                  Amount{" "}
-                </label>
-                <input
-                  onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                  onBlur={(e) => setForm({ ...form, amount: e.target.value })}
-                  type="number"
-                  value={form.amount != "not_selected" ? form.amount : ""}
-                  name="payment_amount"
-                  className={
-                    "form-control " + validation_amount(form.amount).class
-                  }
-                  id="pamount"
-                />
-                <div style={{ marginTop: "1px", fontSize: "10px" }}>
-                  {validation_amount(form.amount).msg}
-                </div>{" "}
-              </div>
+                  <div
+                    className="payment_reset_button "
+                    style={{ cursor: "pointer" }}
+                    onClick={reset}
+                  >
+                    {" "}
+                    Close{" "}
+                  </div>
+                  <div
+                    className="payment_danger_button mx-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setRemove_payment(form.id)}
+                  >
+                    {" "}
+                    remove{" "}
+                  </div>
+                </div>
+              )}
             </div>
-            {!edit ? (
-              <div className="payment_submit_reset_container">
-                <div
-                  className="payment_submit_button"
-                  style={{ cursor: "pointer" }}
-                  onClick={form_submit}
-                >
-                  {" "}
-                  Submit{" "}
-                </div>
-
-                <div
-                  className="payment_reset_button"
-                  style={{ cursor: "pointer" }}
-                  onClick={reset}
-                >
-                  {" "}
-                  Reset{" "}
-                </div>
-              </div>
-            ) : (
-              <div className="payment_submit_reset_container">
-                <div
-                  className="payment_submit_button"
-                  style={{ cursor: "pointer" }}
-                  onClick={call_edit_update}
-                >
-                  {" "}
-                  Update{" "}
-                </div>
-
-                <div
-                  className="payment_reset_button "
-                  style={{ cursor: "pointer" }}
-                  onClick={reset}
-                >
-                  {" "}
-                  Close{" "}
-                </div>
-                <div
-                  className="payment_danger_button mx-2"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setRemove_payment(form.id)}
-                >
-                  {" "}
-                  remove{" "}
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="payment_table_container1 ">
-            <table className="payment_table ">
-              <tr className="payment_table_heading">
-                <th>Name</th>
-                <th>UserId</th>
-                <th>Payment type</th>
-                <th>Payment id</th>
-                <th>Amount</th>
-                <th>Date/Time</th>
-                <th>Controls</th>
-              </tr>
-              {payment &&
-                payment.map((payment, id) => {
-                  return (
-                    <tr className="payment_table_content" key={id}>
-                      <td>{payment.User.userName}</td>
-                      <td>{payment.User.accountNumber}</td>
-                      <td>
-                        <span
-                          class={
-                            payment.paymentType == "cash"
-                              ? "bg-primary p-1 small  text-white rounded"
-                              : "bg-danger p-1 small  text-white rounded"
-                          }
-                        >
-                          {payment.paymentType}
-                        </span>
-                      </td>
-                      <td>{payment.paymentId}</td>
-                      <td>{formatUsd(parseInt(payment.amount))} </td>
-                      <td>
-                        {moment(payment.paymentDate).format("DD/MM/YYYY")}
-                      </td>
-                      <td>
-                        <div className="payment_table_controls_container">
+            <div className="payment_table_container1 ">
+              <table className="payment_table ">
+                <tr className="payment_table_heading">
+                  <th>Name</th>
+                  <th>UserId</th>
+                  <th>Payment type</th>
+                  <th>Payment id</th>
+                  <th>Amount</th>
+                  <th>Date/Time</th>
+                  <th>Controls</th>
+                </tr>
+                {payment &&
+                  payment.map((payment, id) => {
+                    return (
+                      <tr className="payment_table_content" key={id}>
+                        <td>{payment.User.userName}</td>
+                        <td>{payment.User.accountNumber}</td>
+                        <td>
                           <span
-                            className="payment_table_button_book"
-                            onClick={() => intiatebooking(payment)}
+                            class={
+                              payment.paymentType == "cash"
+                                ? "bg-primary p-1 small  text-white rounded"
+                                : "bg-danger p-1 small  text-white rounded"
+                            }
                           >
-                            Book
+                            {payment.paymentType}
                           </span>
-                          <img
-                            src={send}
-                            onClick={() => setPayment_invoice(payment)}
-                            style={{ cursor: "pointer" }}
-                          />
-                          <FaRegEdit
-                            onClick={() => call_edit(payment)}
-                            size={14}
-                            style={{ color: "#898989", cursor: "pointer" }}
-                          />
-                          <HiOutlineTrash
-                            onClick={() => setRemove_payment(payment.id)}
-                            size={16}
-                            style={{ color: "#898989", cursor: "pointer" }}
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </table>
+                        </td>
+                        <td>{payment.paymentId}</td>
+                        <td>{formatUsd(parseInt(payment.amount))} </td>
+                        <td>
+                          {moment(payment.paymentDate).format("DD/MM/YYYY")}
+                        </td>
+                        <td>
+                          <div className="payment_table_controls_container">
+                            <span
+                              className="payment_table_button_book"
+                              onClick={() => intiatebooking(payment)}
+                            >
+                              Book
+                            </span>
+                            <img
+                              src={send}
+                              onClick={() => setPayment_invoice(payment)}
+                              style={{ cursor: "pointer" }}
+                            />
+                            <FaRegEdit
+                              onClick={() => call_edit(payment)}
+                              size={14}
+                              style={{ color: "#898989", cursor: "pointer" }}
+                            />
+                            <HiOutlineTrash
+                              onClick={() => setRemove_payment(payment.id)}
+                              size={16}
+                              style={{ color: "#898989", cursor: "pointer" }}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </table>
+            </div>
           </div>
-        </div>
         </div>
       </motion.div>
     </>

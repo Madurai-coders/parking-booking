@@ -153,7 +153,7 @@ export default function Table(props) {
       });
       store.push(element);
     });
-    console.log(store);
+    // console.log(store);
 
     headers.forEach((element) => {
       if (!array_store.includes(element.key)) header.push(element);
@@ -178,9 +178,9 @@ export default function Table(props) {
       table_name: props.table_data.table_name,
       table_data: string,
     };
-    console.log("---------------------------");
-    console.log(updated_data);
-    console.log("---------------------------");
+    // console.log("---------------------------");
+    // console.log(updated_data);
+    // console.log("---------------------------");
 
     if (head) {
       axios_call(
@@ -188,7 +188,7 @@ export default function Table(props) {
         "TableData/" + props.table_data.table_name + "/",
         updated_data
       ).then((response) => {
-        console.log(response);
+        // console.log(response);
       });
     }
   }
@@ -200,7 +200,7 @@ export default function Table(props) {
     setDataExcel(props.data);
     if (props.table_data) {
       const myArray = props.table_data.table_data.split(",");
-      console.log(props.table_data.table_data);
+    //   console.log(props.table_data.table_data);
       removeCol(false, myArray);
       setarray(myArray);
     }

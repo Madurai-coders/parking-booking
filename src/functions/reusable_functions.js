@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export function formatUsd(val) {
-  return "$" + val.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+  return "$ " + val.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 }
 
 export function generateUUID() {
@@ -265,7 +265,7 @@ export function email_login(checkadmin,email,password) {
               Cookies.set("refresh_token", response.data.refresh);
               Cookies.set("access_token", response.data.access);
               if (!checkadmin) {
-                resolve(false);
+                resolve(response.data);
               } else {
                 resolve({data:true, access: response.data.access });
               }
@@ -280,6 +280,40 @@ export function email_login(checkadmin,email,password) {
     });
 }
   
+export function passwordLesslogin(email){
+    var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be in the authorized domains list in the Firebase Console.
+        url: 'https://www.example.com/finishSignUp?cartId=1234',
+        // This must be true.
+        handleCodeInApp: true,
+        iOS: {
+          bundleId: 'com.example.ios'
+        },
+        android: {
+          packageName: 'com.example.android',
+          installApp: true,
+          minimumVersion: '12'
+        },
+        dynamicLinkDomain: 'example.page.link'
+      };
+
+
+
+      firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
+  .then(() => {
+    // The link was successfully sent. Inform the user.
+    // Save the email locally so you don't need to ask the user for it again
+    // if they open the link on the same device.
+    window.localStorage.setItem('emailForSignIn', email);
+    // ...
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ...
+  });
+}
 
 //Validation_function
 export function logout() {
@@ -295,7 +329,38 @@ export function logout() {
   });
 }
 
-
+export function validation_value(value) {
+    if (value == "" || value != "not_selected") {
+      if (value) {
+       
+          if (value.length >= 1) {
+                  return {
+                    class: "pass",
+                  };
+                }
+                else
+            return {
+              class: "warn",
+              msg: (
+                <>
+                  <small class="text-danger">Min 1 tetter.</small>
+                </>
+              ),
+            };
+        }
+        else{
+        return {
+          class: "warn",
+          msg: (
+            <>
+              <small class="text-danger">This field is a required.</small>
+            </>
+          ),
+        };
+    }
+    }
+    if (value == "not_selected") return "";
+  }
 //validation for first name lastname
 export function validation_name(value) {
   var format = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?0-9]+/;
@@ -371,6 +436,69 @@ export function validation_name(value) {
   }
   if (value == "not_selected") return "";
 }
+
+export function validation_char(value) {
+    if (value == "" || value != "not_selected") {
+      // console.log(value);
+      if (value) {
+        if (!value.startsWith(" ")) {
+          if (value.length >= 1) {
+              if (value.length <= 50) {
+                if (!value.endsWith(" ")) {
+                  return {
+                    class: "pass",
+                  };
+                } else
+                  return {
+                    class: "warn",
+                    msg: (
+                      <>
+                        <small class="text-danger">
+                          Cannot end with a white space
+                        </small>
+                      </>
+                    ),
+                  };
+              } else
+                return {
+                  class: "warn",
+                  msg: (
+                    <>
+                      <small class="text-danger">Max letter 50</small>
+                    </>
+                  ),
+                };
+            
+          } else
+            return {
+              class: "warn",
+              msg: (
+                <>
+                  <small class="text-danger">Min 1 tetter.</small>
+                </>
+              ),
+            };
+        } else
+          return {
+            class: "warn",
+            msg: (
+              <>
+                <small class="text-danger">Cannot start with empty space</small>
+              </>
+            ),
+          };
+      } else
+        return {
+          class: "warn",
+          msg: (
+            <>
+              <small class="text-danger">This field is a required.</small>
+            </>
+          ),
+        };
+    }
+    if (value == "not_selected") return "";
+  }
 
 //Validation for title
 export function validation_title(value) {

@@ -1,7 +1,7 @@
 
 
 .sidebar {
-  width: 70px;
+  width: 74px;
   height: 100vh !important;
   top: 0;
   left: 0;
@@ -277,9 +277,9 @@
   display: none;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 body {
   overflow: hidden;
 }

@@ -1,3 +1,5 @@
+
+
 .booking_report_container {
   padding-left: 0px;
   padding-right: .5vw;
@@ -34,7 +36,7 @@
   overflow-y: scroll;
   max-height: 400px;
   min-height: 400px;
-  border-radius:16px
+  border-radius:8px
 }
 
 
@@ -82,9 +84,9 @@
 
 .booking_report_table_data td {
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 10px;
-  padding: 1.5% 2%;
+  padding: 15px 20px;
   text-transform: capitalize;
 
 }

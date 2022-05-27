@@ -1,3 +1,115 @@
+
+.homeinputblock{
+    position:relative;
+}
+ .homeinput{
+    background: #ffffff;
+    border: 1px solid #bdbdbd;
+    padding: 12px 16px;
+    border-radius: 4px;
+}
+ .full {
+  width: 80%;
+}
+ .label_cons{
+        padding:16px 0px 0px 0px;
+        pointer-events: none;
+        position:absolute;
+        left:5%;
+        top:0;
+        transition: 0.2s;
+        transition-timing-function: ease;
+        transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 19px;
+        color: #696969;
+}
+
+.homeinput.error+.label_cons{
+    color: #ff0606;
+}
+ .homeinput:focus + .label_cons, .homeinput:not(:placeholder-shown) + .label_cons {
+    opacity:1;
+    padding: 2px;
+    background: #fff;
+    transform: scale(1) translateY(-50%) translateX(1px);
+    color: #277aff;
+}
+
+.label_cons_1{
+    padding:16px 0px 0px 0px;
+    pointer-events: none;
+    position:absolute;
+    left:5%;
+    top:0;
+    transition: 0.2s;
+    transition-timing-function: ease;
+    transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 19px;
+    opacity:1;
+    padding: 2px;
+    background: #fff;
+    transform: scale(1) translateY(-50%) translateX(1px);
+    color: #277aff;
+}
+
+
+.homeinput:focus{
+    outline: none;
+    background: #ffffff;
+    border: 1px solid #277aff;
+    box-shadow: 0px 4px 4px rgba(102, 186, 19, 0.07);
+    border-radius: 4px;
+}
+
+.homeinput.valid{
+    outline: none;
+    background: #ffffff;
+    border: 1px solid #05bf2a;
+    box-shadow: 0px 4px 4px rgba(102, 186, 19, 0.07);
+    border-radius: 4px;
+}
+
+.homeinput.error{
+    outline: none;
+    background: #ffffff;
+    border: 1px solid #ff0606;
+    box-shadow: 0px 4px 4px rgba(102, 186, 19, 0.07);
+    border-radius: 4px;
+}
+
+.homeinput.error:focus + .label_cons, .homeinput.error:not(:placeholder-shown) + .label_cons {
+    opacity:1;
+    padding: 2px;
+    background: #fff;
+    transform: scale(1) translateY(-50%) translateX(1px);
+    color: #ff0606;
+}
+
+
+.homeinput.valid:focus + .label_cons, .homeinput.valid:not(:placeholder-shown) + .label_cons {
+    opacity:1;
+    padding: 2px;
+    background: #fff;
+    transform: scale(1) translateY(-50%) translateX(1px);
+    color: #05bf2a;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .booking_container {
   padding-top: 8vh;
 }
@@ -81,8 +193,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 20%;
-  margin-top: 6%;
+
 }
 
 .booking_form_plan_input_buttons {
@@ -91,6 +202,12 @@
   width: 100%;
 }
 
+.booking_form_plan_input_buttons1 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
 .booking_form_input_button_weekly,
 .booking_form_input_button_monthly,
 .booking_form_input_button_quarterly,
@@ -98,7 +215,7 @@
 .booking_form_input_button_daily {
   font-style: bold;
   font-size: 0.6rem;
-  padding: 1.6% 4%;
+  padding: 1.2% 3.5%;
   border-radius: 2.84px;
   font-weight: 900;
   margin-right: 4px;
@@ -115,7 +232,7 @@
       border: solid 1px #000000;
       font-style: bold;
       font-size: 0.6rem;
-      padding: 1.6% 4%;
+      padding: 1.2% 3.5%;
       border-radius: 2.84px;
       cursor:pointer;
       font-weight: 900;
@@ -130,7 +247,7 @@
     cursor: pointer;
     font-style: bold;
     font-size: 0.6rem;
-    padding: 1.6% 4%;
+    padding: 1.2% 3.5%;
     border-radius: 2.84px;
     cursor:pointer;
     font-weight: 900;
@@ -150,7 +267,7 @@
     border: solid 1px #0cb0e2;
     font-style: bold;
     font-size: 0.6rem;
-    padding: 1.6% 4%;
+    padding: 1.2% 3.5%;
     border-radius: 2.84px;
     cursor:pointer;
     font-weight: 900;
@@ -165,7 +282,7 @@
   cursor: pointer;
   font-style: bold;
   font-size: 0.6rem;
-  padding: 1.6% 4%;
+  padding: 1.2% 3.5%;
   border-radius: 2.84px;
   cursor:pointer;
   font-weight: 900;
@@ -183,7 +300,7 @@
     border: solid 1px #afa01c;
     font-style: bold;
     font-size: 0.6rem;
-    padding: 1.6% 4%;
+    padding: 1.2% 3.5%;
     border-radius: 2.84px;
     cursor: pointer;
     font-weight: 900;
@@ -200,7 +317,7 @@
   cursor: pointer;
   font-style: bold;
     font-size: 0.6rem;
-    padding: 1.6% 4%;
+    padding: 1.2% 3.5%;
     border-radius: 2.84px;
     cursor: pointer;
     font-weight: 900;
@@ -218,7 +335,7 @@
     border: solid 1px #36a900;
     font-style: bold;
     font-size: 0.6rem;
-    padding: 1.6% 4%;
+    padding: 1.2% 3.5%;
     border-radius: 2.84px;
     cursor: pointer;
     font-weight: 900;
@@ -234,7 +351,7 @@
   cursor: pointer;
   font-style: bold;
   font-size: 0.6rem;
-  padding: 1.6% 4%;
+  padding: 1.2% 3.5%;
   border-radius: 2.84px;
   cursor: pointer;
   font-weight: 900;
@@ -252,7 +369,7 @@
     border: solid 1px #ff6767;
     font-style: bold;
     font-size: 0.6rem;
-    padding: 1.6% 4%;
+    padding: 1.2% 3.5%;
     border-radius: 2.84px;
     cursor: pointer;
     font-weight: 900;
@@ -269,7 +386,7 @@
   cursor: pointer;
   font-style: bold;
   font-size: 0.6rem;
-  padding: 1.6% 4%;
+  padding: 1.2% 3.5%;
   border-radius: 2.84px;
   cursor: pointer;
   font-weight: 900;

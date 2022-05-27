@@ -5,12 +5,15 @@ import {
   validation_mobile_number,
   validation_email,
   validation_name,
+  validation_value,
+  validation_country,
   validation_payment_id,
   validation_amount,
   axios_call,
   axios_call_auto,
+  validation_char,
   generateUUID_334,
-  formatUsd
+  formatUsd,
 } from "../functions/reusable_functions";
 import DatePicker from "react-datepicker";
 import { set } from "js-cookie";
@@ -29,7 +32,8 @@ import close from "../assets/images/close.svg";
 import Bookinginvoice from "../components/Booking/bookinginvoice";
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from "../components/loader/loader";
-
+import {InputBox} from "../components/general/inputbox";
+import VehicalInformation from "../components/Booking/vehicleInformation";
 export default function Booking() {
   const [booking, setbooking] = useState({
     userId: "not_selected",
@@ -54,6 +58,17 @@ export default function Booking() {
   const [bookinghover, setBookinghover] = useState();
   const [datafail, setData_fail] = useState();
   const [percent, setPercent] = useState();
+  const [carInfo, setCarInfo] = useState(false);
+  const [cardata, setCarData] = useState({
+    license: "not_selected",
+    make: "not_selected",
+    model: "not_selected",
+    carRegistrationState: "not_selected",
+    color: "not_selected",
+    insurance: "not_selected",
+    permitYear: moment(new Date()).format("YYYY"),
+    valid: "nil",
+  });
 
   const checkuser = async (val) => {
     if (validation_name(val).class === "pass") {
@@ -62,7 +77,10 @@ export default function Booking() {
           set_usr_suggestion(response);
           console.log(response[0]);
           console.log(val);
-          if (response[0] && response[0].userName.toUpperCase() == val.toUpperCase()) {
+          if (
+            response[0] &&
+            response[0].userName.toUpperCase() == val.toUpperCase()
+          ) {
             setbooking({
               ...booking,
               name: response[0].userName,
@@ -100,7 +118,7 @@ export default function Booking() {
     axios_call("GET", "GetBooking/?from=" + start + "&to=" + end).then(
       (response) => {
         SetBookingdetails(response);
-        console.log(response.length);
+        console.log(response);
         axios_call("GET", "SlotCount/").then((response1) => {
           var tot = response1.total - response1.inactive;
           var val = ((tot - response.length) / tot) * 100;
@@ -128,7 +146,8 @@ export default function Booking() {
         return (
           <>
             <img
-              onMouseEnter={() =>
+              onMouseEnter={() =>(
+                  console.log(val[0]),
                 setBookinghover({
                   name: val[0].User.userName,
                   day: day,
@@ -136,9 +155,19 @@ export default function Booking() {
                   plan: val[0].plan,
                   slot_connect: slot.id,
                   wing_name: slot.wing.wingName,
-                })
+                  carInfo:false
+                }))
               }
-              onMouseLeave={() => setBookinghover()}
+              onClick={()=>setBookinghover({
+                name: val[0].User.userName,
+                day: day,
+                slotid: slot.slotId,
+                plan: val[0].plan,
+                slot_connect: slot.id,
+                wing_name: slot.wing.wingName,
+                carInfo:val[0].booking_link
+              })}
+              onMouseLeave={() => ((booking&&!bookinghover.carInfo) && setBookinghover())}
               key={id}
               src={Car}
               className={"ps-3 pe-3 mb-3 parking_setup_car_img " + indicate}
@@ -199,10 +228,10 @@ export default function Booking() {
     var endTo = "";
 
     if (booking.plan == "Daily") {
-        endTo = moment(booking.date, "YYYY-MM-DD")
-          .add(0, "days")
-          .format("YYYY-MM-DD");
-      }
+      endTo = moment(booking.date, "YYYY-MM-DD")
+        .add(0, "days")
+        .format("YYYY-MM-DD");
+    }
 
     if (booking.plan == "Monthly") {
       endTo = moment(booking.date, "YYYY-MM-DD")
@@ -228,7 +257,6 @@ export default function Booking() {
         .format("YYYY-MM-DD");
     }
 
-
     var booking_finalized = {
       ...booking,
       startFrom: startFrom,
@@ -236,11 +264,12 @@ export default function Booking() {
       bookingId: generateUUID_334(),
       //   date:moment(new Date(), "DD-MM-YYYY").format("DD-MM-YYYY")
     };
-
+    const { valid, ...carDetails } = cardata;
     if (
+      Validate_carData() &&
       booking_finalized.slotid &&
-      booking_finalized.name !='not_selected' &&
-      booking_finalized.userId   !='not_selected' &&
+      booking_finalized.name != "not_selected" &&
+      booking_finalized.userId != "not_selected" &&
       booking_finalized.name &&
       booking_finalized.userId &&
       booking_finalized.plan &&
@@ -249,12 +278,17 @@ export default function Booking() {
       booking_finalized.charge &&
       booking_finalized.bookingId
     ) {
-      console.log(booking_finalized);
 
       axios_call("POST", "CreateBooking/", booking_finalized)
         .then((response) => {
           console.log(response);
-          reset();
+          console.log({ ...carDetails, bookingId: response.id });
+          axios_call("POST", "CreateCarInfo/", {
+            ...carDetails,
+            bookingId: response.id,
+          }).then((response) => {
+            reset();
+          });
           setSuccess(response);
         })
         .catch((response) => {
@@ -266,14 +300,15 @@ export default function Booking() {
           );
         });
     } else {
-      if (booking_finalized.name == "not_selected" || booking_finalized.userId == 'not_selected') {
-        setbooking({ ...booking, name: "",userId:"" });
-        setData_fail('Invalid user name');
-      }
-      else{
+      if (
+        booking_finalized.name == "not_selected" ||
+        booking_finalized.userId == "not_selected"
+      ) {
+        setbooking({ ...booking, name: "", userId: "" });
+        setData_fail("Invalid user name");
+      } else {
         setData_fail(true);
       }
-      
     }
   }
 
@@ -291,6 +326,16 @@ export default function Booking() {
     GetWingDetails();
     GetBooking();
     setData_fail();
+    setCarData({
+      license: "not_selected",
+      make: "not_selected",
+      model: "not_selected",
+      carRegistrationState: "not_selected",
+      color: "not_selected",
+      insurance: "not_selected",
+      permitYear: moment(new Date()).format("YYYY"),
+      valid: "nil",
+    });
   }
 
   useEffect(() => {
@@ -357,6 +402,44 @@ export default function Booking() {
     });
   }
 
+  function Validate_carData() {
+    let val = false;
+    var value = { ...cardata };
+    if (
+      validation_char(cardata.license).class == "pass" &&
+      validation_char(cardata.make).class == "pass" &&
+      validation_char(cardata.model).class == "pass" &&
+      validation_country(cardata.carRegistrationState).class == "pass" &&
+      validation_value(cardata.color).class == "pass" &&
+      validation_char(cardata.insurance).class == "pass"
+    ) {
+      val = true;
+      setCarData({ ...cardata, valid: "pass" });
+      setCarInfo(false);
+    } else {
+      if (cardata.license == "not_selected") {
+        value = { ...value, license: "" };
+      }
+      if (cardata.make == "not_selected") {
+        value = { ...value, make: "" };
+      }
+      if (cardata.model == "not_selected") {
+        value = { ...value, model: "" };
+      }
+      if (cardata.carRegistrationState == "not_selected") {
+        value = { ...value, carRegistrationState: "" };
+      }
+      if (cardata.color == "not_selected") {
+        value = { ...value, color: "" };
+      }
+      if (cardata.insurance == "not_selected") {
+        value = { ...value, insurance: "" };
+      }
+      setCarData({ ...value, valid: "warn" });
+    }
+    return val;
+  }
+
   useEffect(() => {
     if (
       booking.slotid &&
@@ -368,9 +451,8 @@ export default function Booking() {
       booking.charge
     ) {
       setData_fail(true);
-    }
-    else{
-        setData_fail(false)
+    } else {
+      setData_fail(false);
     }
 
     if (!booking.userId) {
@@ -388,16 +470,22 @@ export default function Booking() {
 
   return (
     <motion.div
-    initial={{ opacity: 0, y: 15 }}
-    animate={{ opacity: [0.5, 1], y: 0 }}
-    transition={{ duration: 0.3 }}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: [0.5, 1], y: 0 }}
+      transition={{ duration: 0.3 }}
     >
       <Helmet>
          <title>Munidex Parking - Booking </title>
       </Helmet>
       {!wing && <Loader></Loader>}
 
-      {preview && (
+      
+{bookinghover&&bookinghover.carInfo&&
+<VehicalInformation bookinghover={bookinghover} setBookinghover={setBookinghover} />
+}  
+
+
+    {preview && (
         <div className="overlay1">
           <div className="row">
             <div className="col-6 px-5">
@@ -563,7 +651,7 @@ export default function Booking() {
               <span className="bookingspopup_text_amount"> Amount </span>{" "}
               <span className="bookingspopup_value_amount">
                 {" "}
-                 {success.charge && formatUsd(parseInt(success.charge))}
+                {success.charge && formatUsd(parseInt(success.charge))}
               </span>
             </div>
             <div className="bookingspopup_amount_flex">
@@ -586,96 +674,241 @@ export default function Booking() {
           </div>
         </div>
       )}
-  <div className="booking_report_title ">Booking </div>
 
-<div className="booking_report_container_whole">
-      {wing && (
-        <div className="">
-          <div className="row booking_container">
-            <div className="col-7 mt-2">
-              {" "}
-              <div className="px-4 pt-1">
-                <div className={datafail ? " danger p-3" : "shadow-sm p-3"}>
-                  {!bookinghover ? (
-                    <div className="row">
-                      <div className="col-12">
-                        <div className="row">
-                          <small className="col-7">
-                            Name:{" "}
-                            {booking.name != "not_selected" && booking.name}
-                          </small>
-                          <small className="col-5">
-                            Plan:{" "}
-                            {booking.plan != "not_selected" && booking.plan}
-                          </small>
-                        </div>
-                      </div>
-                      <div className="mt-2 col-12 ">
-                        <div className="row">
-                          <small className="col-7">
-                            Slot Id:{" "}
-                            <span
-                              className={
-                                booking.slot_connect &&
-                                "p-1 text-white rounded px-2 small  bg-success"
-                              }
-                            >
-                              {booking.wing_name &&
-                                booking.wing_name +
-                                  " [" +
-                                  booking.slot_connect +
-                                  "]"}
-                            </span>
-                          </small>
-                          <small className="col-5"> $: {booking.charge}</small>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="row">
-                      <div className="col-12">
-                        <div className="row">
-                          <small className="col-7">
-                            Name: {bookinghover.name}
-                          </small>
-                          <small className="col-5">
-                            Plan: {bookinghover.plan}
-                          </small>
-                        </div>
-                      </div>
-                      <div className="mt-2 col-12 ">
-                        <div className="row">
-                          <small className="col-7 ">
-                            Slot Id:{" "}
-                            <span
-                              className={
-                                bookinghover &&
-                                "p-1 text-white rounded px-2 small  bg-primary"
-                              }
-                            >
-                              {bookinghover.wing_name &&
-                                bookinghover.wing_name +
-                                  " [" +
-                                  bookinghover.slot_connect +
-                                  "]"}
-                            </span>
-                          </small>
-                          <small className="col-5">
-                            {" "}
-                            {bookinghover.day ? (
-                              <>Days left: {bookinghover.day}</>
-                            ) : (
-                              <>$:</>
-                            )}
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+      {carInfo && (
+        <div className="overlay_carInfo shadow">
+          <div className="row">
+            <div className="text-center h3" style={{ marginTop: "20px" }}>
+              Car Info
+            </div>
+            <div className="col-5 text-center">
+              <div className="d-flex flex-column" style={{ marginTop: "45px" }}>
+                <div>
+                  {" "}
+                  {booking.wing_name &&
+                    booking.wing_name + " [" + booking.slot_connect + "]"}
+                </div>
+                <img
+                  src={Car}
+                  style={{ marginLeft: "25%", marginTop: "20px" }}
+                  className="w-50"
+                  alt="Munidex_parking_Booking_slots"
+                />
+              </div>
+            </div>
+
+            <div className="col-7" style={{ marginTop: "20px" }}>
+              <div className="row">
+                <div className="col-6" style={{ marginTop: "1%" }}>
+                  <InputBox
+                    label="License Plate"
+                    type="text"
+                    state={cardata}
+                    setState={setCarData}
+                    value={cardata.license}
+                    keyValue={"license"}
+                    validate={validation_char}
+                  />
+                </div>
+                <div className="col-6" style={{ marginTop: "1%" }}>
+                  <InputBox
+                    label="Make"
+                    type="text"
+                    state={cardata}
+                    setState={setCarData}
+                    value={cardata.make}
+                    keyValue={"make"}
+                    validate={validation_char}
+                  />
+                </div>
+                <div className="col-6" style={{ marginTop: "1%" }}>
+                  <InputBox
+                    label="Model"
+                    type="number"
+                    state={cardata}
+                    setState={setCarData}
+                    value={cardata.model}
+                    keyValue={"model"}
+                    validate={validation_char}
+                  />
+                </div>
+                <div className="col-6" style={{ marginTop: "1%" }}>
+                  <InputBox
+                    label="Car Registration State"
+                    type="text"
+                    state={cardata}
+                    setState={setCarData}
+                    value={cardata.carRegistrationState}
+                    keyValue={"carRegistrationState"}
+                    validate={validation_char}
+                  />
+                </div>
+
+                <div className="col-6" style={{ marginTop: "1%" }}>
+                  <InputBox
+                    label="Insurance"
+                    type="text"
+                    state={cardata}
+                    setState={setCarData}
+                    value={cardata.insurance}
+                    keyValue={"insurance"}
+                    validate={validation_char}
+                  />
+                </div>
+                <div className="col-6" style={{ marginTop: "1%" }}>
+                  <div className="homeinputblock">
+                    <DatePicker
+                      className="homeinput full"
+                      onChange={(e) =>
+                        setCarData({
+                          ...cardata,
+                          permitYear: moment(e).format("YYYY"),
+                        })
+                      }
+                      dateFormat="yyyy"
+                      showYearPicker
+                      value={cardata.permitYear}
+                    />{" "}
+                    <label className="label_cons_1">Permit Year</label>
+                  </div>
+                </div>
+
+                <div className="col-6" style={{ marginTop: "1%" }}>
+                  <InputBox
+                    label="Color"
+                    type="color"
+                    state={cardata}
+                    setState={setCarData}
+                    value={cardata.color}
+                    keyValue={"color"}
+                    validate={validation_value}
+                    styles={{ padding: "18px", height: "48px" }}
+                  />
                 </div>
               </div>
-              <div className="">
-                {/* {wing_data && wing_data.length < 10 && (
+              <div style={{ marginRight: "100px", marginTop: "30px" }}>
+                <div className="d-flex justify-content-end">
+                  <div
+                    className="btn btn-light mx-3"
+                    onClick={() => (
+                      setCarInfo(false),
+                      setCarData({ ...cardata, valid: "warn" })
+                    )}
+                  >
+                    Close
+                  </div>
+                  {/* <div
+                    className="btn btn-secondary mx-3"
+                    onClick={() => reset()}
+                  >
+                    Reset
+                  </div> */}
+                  <div
+                    className="btn btn-primary"
+                    onClick={() => Validate_carData()}
+                  >
+                    Submit
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="booking_report_title ">Booking </div>
+
+      <div className="booking_report_container_whole">
+        {wing && (
+          <div className="">
+            <div className="row booking_container">
+              <div className="col-7 mt-2">
+                {" "}
+                <div className="px-4 pt-1">
+                  <div className={datafail ? " danger p-3" : "shadow-sm p-3"}>
+                    {!bookinghover ? (
+                      <div className="row">
+                        <div className="col-12">
+                          <div className="row">
+                            <small className="col-7">
+                              Name:{" "}
+                              {booking.name != "not_selected" && booking.name}
+                            </small>
+                            <small className="col-5">
+                              Plan:{" "}
+                              {booking.plan != "not_selected" && booking.plan}
+                            </small>
+                          </div>
+                        </div>
+                        <div className="mt-2 col-12 ">
+                          <div className="row">
+                            <small className="col-7">
+                              Slot Id:{" "}
+                              <span
+                                className={
+                                  booking.slot_connect &&
+                                  "p-1 text-white rounded px-2 small  bg-success"
+                                }
+                              >
+                                {booking.wing_name &&
+                                  booking.wing_name +
+                                    " [" +
+                                    booking.slot_connect +
+                                    "]"}
+                              </span>
+                            </small>
+                            <small className="col-5">
+                              {" "}
+                              $: {booking.charge}
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="row">
+                        <div className="col-12">
+                          <div className="row">
+                            <small className="col-7">
+                              Name: {bookinghover.name}
+                            </small>
+                            <small className="col-5">
+                              Plan: {bookinghover.plan}
+                            </small>
+                          </div>
+                        </div>
+                        <div className="mt-2 col-12 ">
+                          <div className="row">
+                            <small className="col-7 ">
+                              Slot Id:{" "}
+                              <span
+                                className={
+                                  bookinghover &&
+                                  "p-1 text-white rounded px-2 small  bg-primary"
+                                }
+                              >
+                                {bookinghover.wing_name &&
+                                  bookinghover.wing_name +
+                                    " [" +
+                                    bookinghover.slot_connect +
+                                    "]"}
+                              </span>
+                            </small>
+                            <small className="col-5">
+                              {" "}
+                              {bookinghover.day ? (
+                                <>Days left: {bookinghover.day}</>
+                              ) : (
+                                <>$:</>
+                              )}
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="">
+                  {/* {wing_data && wing_data.length < 10 && (
                 <div className="parking_setup_wing_title_section">
                   <>
                     {" "}
@@ -700,43 +933,43 @@ export default function Booking() {
                   </>
                 </div>
               )} */}
-                {wing_data && wing_data.length && (
-                  <div className="parking_setup_wing_title_section  ">
-                    <div style={{ flexGrow: 1 }}>
-                      <Carousel
-                        itemsToShow={6}
-                        itemsToScroll={1}
-                        pagination={false}
-                        showArrows={true}
-                      >
-                        {wing_data.map((wing) => {
-                          return (
-                            <div
-                              className={
-                                wing.id != (slot && slot[0].wingId)
-                                  ? "btn-light btn btn-sm m-1 text-capitalize"
-                                  : "btn-primary btn btn-sm m-1 text-capitalize"
-                              }
-                              onClick={() => (
-                                SetWing(wing),
-                                setbooking({
-                                  ...booking,
-                                  plan: "",
-                                  charge: "",
-                                }),
-                                SetSlot(wing.slots)
-                              )}
-                            >
-                              {wing.wingName}
-                            </div>
-                          );
-                        })}
-                      </Carousel>
+                  {wing_data && wing_data.length && (
+                    <div className="parking_setup_wing_title_section  ">
+                      <div style={{ flexGrow: 1 }}>
+                        <Carousel
+                          itemsToShow={6}
+                          itemsToScroll={1}
+                          pagination={false}
+                          showArrows={true}
+                        >
+                          {wing_data.map((wing) => {
+                            return (
+                              <div
+                                className={
+                                  wing.id != (slot && slot[0].wingId)
+                                    ? "btn-light btn btn-sm m-1 text-capitalize"
+                                    : "btn-primary btn btn-sm m-1 text-capitalize"
+                                }
+                                onClick={() => (
+                                  SetWing(wing),
+                                  setbooking({
+                                    ...booking,
+                                    plan: "",
+                                    charge: "",
+                                  }),
+                                  SetSlot(wing.slots)
+                                )}
+                              >
+                                {wing.wingName}
+                              </div>
+                            );
+                          })}
+                        </Carousel>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* {wing_data && wing_data.length > 10 && (
+                  {/* {wing_data && wing_data.length > 10 && (
                 <div className="parking_setup_wing_title_section">
                   <div className="d-flex">
                     {wing_data.map((wing) => {
@@ -761,235 +994,254 @@ export default function Booking() {
                 </div>
               )} */}
 
-                <div className="parking_setup_wing_container">
-                  {slot && (
-                    <>
-                      {slot.map((slot, id) => {
-                        return (
-                          <span>{checkslots(slot, id, booking_details)}</span>
-                        );
-                      })}
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="col-5">
-              <div className="row">
-                <div className="col-6">
-                  <div className="booking_reserved_text">Reserved</div>
-                  <div className="booking_reserved_percentage_text">
-                    {percent && percent.reserved}%
-                  </div>
-                  <div class="progress booking_reserved_progress">
-                    <div
-                      class="progress-bar"
-                      role="progressbar"
-                      aria-valuenow="25"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style={{
-                        width: percent && percent.reserved + "%",
-                        backgroundColor: "#FF6767",
-                      }}
-                    ></div>
-                  </div>
-                </div>
-                <div className="col-6">
-                  <div className="booking_unreserved_text">Unreserved</div>
-                  <div className="booking_unreserved_percentage_text">
-                    {percent && percent.unreserved}%
-                  </div>
-                  <div class="progress booking_unreserved_progress">
-                    <div
-                      class="progress-bar"
-                      role="progressbar"
-                      aria-valuenow="25"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style={{
-                        width: percent && percent.unreserved + "%",
-                        backgroundColor: "#2AB0FF",
-                      }}
-                    ></div>
+                  <div className="parking_setup_wing_container">
+                    {slot && (
+                      <>
+                        {slot.map((slot, id) => {
+                          return (
+                            <span>{checkslots(slot, id, booking_details)}</span>
+                          );
+                        })}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
+              <div className="col-5">
+                <div className="row">
+                  <div className="col-6">
+                    <div className="booking_reserved_text">Reserved</div>
+                    <div className="booking_reserved_percentage_text">
+                      {percent && percent.reserved}%
+                    </div>
+                    <div class="progress booking_reserved_progress">
+                      <div
+                        class="progress-bar"
+                        role="progressbar"
+                        aria-valuenow="25"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        style={{
+                          width: percent && percent.reserved + "%",
+                          backgroundColor: "#FF6767",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="booking_unreserved_text">Unreserved</div>
+                    <div className="booking_unreserved_percentage_text">
+                      {percent && percent.unreserved}%
+                    </div>
+                    <div class="progress booking_unreserved_progress">
+                      <div
+                        class="progress-bar"
+                        role="progressbar"
+                        aria-valuenow="25"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        style={{
+                          width: percent && percent.unreserved + "%",
+                          backgroundColor: "#2AB0FF",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="booking_colorcodes mt-5 pe-5 me-5 ">
-                <span className="booking_undercons"> Under Construction</span>
-                <span className="booking_lessweek"> &lt; 7 days </span>
-                <span className="booking_moreweek"> &gt; 7 days</span>
-              </div>
-
-              <div className="booking_form_container">
-                <div className="booking_form_title bg-light me-5 p-2">
-                  {" "}
-                  Booking{" "}
+                <div className="booking_colorcodes mt-5 pe-5 me-5 ">
+                  <span className="booking_undercons"> Under Construction</span>
+                  <span className="booking_lessweek"> &lt; 7 days </span>
+                  <span className="booking_moreweek"> &gt; 7 days</span>
                 </div>
-                <div className="mx-3 p-2">
-                  <div className="booking_form_name_input">
-                    <label for="name">Name</label>
-                    <div className="d-flex flex-column booking_form_name_input">
-                      <input
-                        autocomplete="off"
-                        list="data"
-                        onChange={(e) => (
-                          checkuser(e.target.value),
-                          setbooking({ ...booking, name: e.target.value,userId:'' })
-                        )}
-                        onBlur={(e) =>
-                          setbooking({ ...booking, name: e.target.value})
-                        }
-                        type="text"
-                        value={
-                          booking.name != "not_selected" ? booking.name : ""
-                        }
-                        className={
-                          "" +
-                          booking.userId !='not_selected' && (!booking.userId
-                            ? "warn"
-                            : "pass")
-                        }
-                        id="name"
-                        style={{ marginLeft: "109px", marginTop: "20px" }}
-                      />
-                      <div style={{ marginTop: "5px", fontSize: "10px" }}>
-                        <div className="text-danger text-center">
-                          {datafail && datafail}
+
+                <div className="booking_form_container">
+                  <div className="booking_form_title bg-light me-5 p-2">
+                    {" "}
+                    Booking{" "}
+                  </div>
+                  <div className="mx-3 p-2">
+                    <div className="booking_form_name_input">
+                      <label for="name">Name</label>
+                      <div className="d-flex flex-column booking_form_name_input">
+                        <input
+                          autocomplete="off"
+                          list="data"
+                          onChange={(e) => (
+                            checkuser(e.target.value),
+                            setbooking({
+                              ...booking,
+                              name: e.target.value,
+                              userId: "",
+                            })
+                          )}
+                          onBlur={(e) =>
+                            setbooking({ ...booking, name: e.target.value })
+                          }
+                          type="text"
+                          value={
+                            booking.name != "not_selected" ? booking.name : ""
+                          }
+                          className={
+                            "" + booking.userId != "not_selected" &&
+                            (!booking.userId ? "warn" : "pass")
+                          }
+                          id="name"
+                          style={{ marginLeft: "109px", marginTop: "20px" }}
+                        />
+                        <div style={{ marginTop: "5px", fontSize: "10px" }}>
+                          <div className="text-danger text-center">
+                            {datafail && datafail}
+                          </div>
+                        </div>
+                      </div>
+                      <datalist id="data">
+                        {usr_suggestion.map((item, key) => (
+                          <option key={key} value={item.userName} />
+                        ))}
+                      </datalist>
+                    </div>
+
+                    <div className="booking_form_date_input">
+                      <label for="date">Date</label>
+                      <div style={{ marginLeft: "65px", marginTop: "-5px" }}>
+                        <DatePicker
+                          dateFormat="dd/MM/yyyy"
+                          className="payment_date"
+                          selected={booking.date}
+                          onClickOutside
+                          onSelect={(date) => (
+                            GetBooking(date),
+                            setbooking({ ...booking, date: date })
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="booking_form_name_input">
+                      <label for="name">Car Info</label>
+                      <div className="d-flex flex-column booking_form_name_input">
+                        <input
+                          type="text"
+                          style={{ marginLeft: "109px", marginTop: "20px" }}
+                          placeholder={
+                            cardata.valid == "pass"
+                              ? "Filled"
+                              : "Fill this form"
+                          }
+                          onClick={() => setCarInfo(true)}
+                          className={cardata.valid}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="booking_form_plan_input">
+                      <div className="booking_form_plan_input_text"> Plan </div>
+                      <div className="booking_form_plan_input_buttons">
+                        <div
+                          className={
+                            booking.plan == "Daily"
+                              ? "booking_form_input_button_daily_selected"
+                              : "booking_form_input_button_daily"
+                          }
+                          onClick={() =>
+                            setbooking({
+                              ...booking,
+                              plan: "Daily",
+                              charge: wing && wing.planDaily,
+                            })
+                          }
+                        >
+                          {" "}
+                          Daily{" "}
+                        </div>
+
+                        <div
+                          className={
+                            booking.plan == "Weekly"
+                              ? "booking_form_input_button_weekly_selected"
+                              : "booking_form_input_button_weekly"
+                          }
+                          onClick={() =>
+                            setbooking({
+                              ...booking,
+                              plan: "Weekly",
+                              charge: wing && wing.planWeekly,
+                            })
+                          }
+                        >
+                          {" "}
+                          Weekly{" "}
+                        </div>
+                        <div
+                          className={
+                            booking.plan == "Monthly"
+                              ? "booking_form_input_button_monthly_selected"
+                              : "booking_form_input_button_monthly"
+                          }
+                          onClick={() =>
+                            setbooking({
+                              ...booking,
+                              plan: "Monthly",
+                              charge: wing && wing.planMonthly,
+                            })
+                          }
+                        >
+                          {" "}
+                          Monthly{" "}
+                        </div>
+                        <div
+                          className={
+                            booking.plan == "Quarterly"
+                              ? "booking_form_input_button_quarterly_selected"
+                              : "booking_form_input_button_quarterly"
+                          }
+                          onClick={() =>
+                            setbooking({
+                              ...booking,
+                              plan: "Quarterly",
+                              charge: wing && wing.planQuarterly,
+                            })
+                          }
+                        >
+                          {" "}
+                          Quarterly{" "}
+                        </div>
+                        <div
+                          className={
+                            booking.plan == "Yearly"
+                              ? "booking_form_input_button_yearly_selected"
+                              : "booking_form_input_button_yearly"
+                          }
+                          onClick={() =>
+                            setbooking({
+                              ...booking,
+                              plan: "Yearly",
+                              charge: wing && wing.planYearly,
+                            })
+                          }
+                        >
+                          {" "}
+                          Yearly{" "}
                         </div>
                       </div>
                     </div>
-                    <datalist id="data">
-                      {usr_suggestion.map((item, key) => (
-                        <option key={key} value={item.userName} />
-                      ))}
-                    </datalist>
-                  </div>
-
-                  <div className="booking_form_date_input">
-                    <label for="date">Date</label>
-                    <div style={{ marginLeft: "65px", marginTop: "-5px" }}>
-                      <DatePicker
-                        dateFormat="dd/MM/yyyy"
-                        className="payment_date"
-                        selected={booking.date}
-                        onClickOutside
-                        onSelect={(date) => (
-                          GetBooking(date),
-                          setbooking({ ...booking, date: date })
-                        )}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="booking_form_plan_input">
-                    <div className="booking_form_plan_input_text"> Plan </div>
-                    <div className="booking_form_plan_input_buttons">
-                      <div
-                        className={
-                          booking.plan == "Daily"
-                            ? "booking_form_input_button_daily_selected"
-                            : "booking_form_input_button_daily"
-                        }
-                        onClick={() =>
-                          setbooking({
-                            ...booking,
-                            plan: "Daily",
-                            charge: wing && wing.planDaily,
-                          })
-                        }
-                      >
-                        {" "}
-                        Daily{" "}
-                      </div>
-
-                      <div
-                        className={
-                          booking.plan == "Weekly"
-                            ? "booking_form_input_button_weekly_selected"
-                            : "booking_form_input_button_weekly"
-                        }
-                        onClick={() =>
-                          setbooking({
-                            ...booking,
-                            plan: "Weekly",
-                            charge: wing && wing.planWeekly,
-                          })
-                        }
-                      >
-                        {" "}
-                        Weekly{" "}
-                      </div>
-                      <div
-                        className={
-                          booking.plan == "Monthly"
-                            ? "booking_form_input_button_monthly_selected"
-                            : "booking_form_input_button_monthly"
-                        }
-                        onClick={() =>
-                          setbooking({
-                            ...booking,
-                            plan: "Monthly",
-                            charge: wing && wing.planMonthly,
-                          })
-                        }
-                      >
-                        {" "}
-                        Monthly{" "}
-                      </div>
-                      <div
-                        className={
-                          booking.plan == "Quarterly"
-                            ? "booking_form_input_button_quarterly_selected"
-                            : "booking_form_input_button_quarterly"
-                        }
-                        onClick={() =>
-                          setbooking({
-                            ...booking,
-                            plan: "Quarterly",
-                            charge: wing && wing.planQuarterly,
-                          })
-                        }
-                      >
-                        {" "}
-                        Quarterly{" "}
-                      </div>
-                      <div
-                        className={
-                          booking.plan == "Yearly"
-                            ? "booking_form_input_button_yearly_selected"
-                            : "booking_form_input_button_yearly"
-                        }
-                        onClick={() =>
-                          setbooking({
-                            ...booking,
-                            plan: "Yearly",
-                            charge: wing && wing.planYearly,
-                          })
-                        }
-                      >
-                        {" "}
-                        Yearly{" "}
-                      </div>
-                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="booking_form_submit_clear">
-                <div className="booking_form_submit" onClick={FormSumbit}>
-                  {" "}
-                  Submit{" "}
-                </div>
-                <div className="booking_form_clear" onClick={reset}>
-                  {" "}
-                  Clear{" "}
+                <div className="booking_form_submit_clear">
+                  <div className="booking_form_submit" onClick={FormSumbit}>
+                    {" "}
+                    Submit{" "}
+                  </div>
+                  <div className="booking_form_clear" onClick={reset}>
+                    {" "}
+                    Clear{" "}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </motion.div>
   );

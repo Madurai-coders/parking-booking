@@ -79,7 +79,7 @@ const Routes = () => {
             setloading(false)
               setTimeout(() => {
             setloader(false)
-        }, 2500);
+        }, 3000);
           }
         });
       }
@@ -105,7 +105,7 @@ const Routes = () => {
             setloading(false)
               setTimeout(() => {
             setloader(false)
-        }, 2500);
+        }, 3000);
           }
         });
       }
@@ -141,11 +141,9 @@ const Routes = () => {
           
           setTimeout(() => {
             setloader(false)
-        }, 2500);
+        }, 3000);
 
-          setTimeout(() => {
-            setloader(false);
-          }, 1500);
+          
         }
       });
     }
@@ -154,11 +152,12 @@ const Routes = () => {
   return (
     <>
       <BrowserRouter>
+      <div className="row justify-content-center">
         <div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
-          style={{ overflow: "hidden", height: "100vh" }}
+          style={{ overflow: "hidden", height: "100vh" ,maxWidth:'2000px'}}
         >
           <Switch>
             {!is_admin && (
@@ -221,7 +220,7 @@ const Routes = () => {
               </div>
             </Switch>
           )}
-        </div>
+        </div></div>
       </BrowserRouter>
     </>
   );

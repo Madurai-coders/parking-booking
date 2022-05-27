@@ -7,13 +7,13 @@
 
 .user_login_card_container{
     position: relative;
-    top:35%;
+    top:25%;
 }
 
 .user_login_card{
     background-color: #fff;
     display:inline-block;
-    width: 30%;
+    width: 35%;
     border-radius: 8px;
 }
 
@@ -45,7 +45,7 @@
     color: #fff;
     font-size: 13px;
     font-weight: bold;
-    background-color: #63E9F7;
+    background-color: rgb(99, 233, 247);
     border-radius: 5.3px;
     display: inline-block;
     padding: 9px 22px;
@@ -62,18 +62,57 @@
     color: #727272;
     font-size: 12px;
     border: 0.88247px solid #979797;
-    border-radius: 16px;
+    border-radius: 8px;
     display: inline-block;
     padding: 1.5% 20% 1.2% 20%;
     cursor: pointer;
 }
 
+.user_login_account_button{
+    color: #000000;
+    font-size: 12px;
+    border: 0.88247px solid #0005a0;
+    border-radius: 8px;
+    display: inline-block;
+    padding: 1.5% 20% 1.2% 20%;
+    cursor: pointer;
+}
+
+.user_login_account_button{
+    color: #ffffff;
+    font-size: 12px;
+    border: 0.88247px solid #0875e9;
+    border-radius: 8px;
+    display: inline-block;
+    padding: 1.5% 24.5% 1.2% 24.5%;
+    cursor: pointer;
+    background-color: #0875e9;
+}
+
+.user_login_account_button:hover{
+    color: #0875e9;
+    font-size: 12px;
+    border: 0.88247px solid #0875e9;
+    border-radius: 8px;
+    display: inline-block;
+    padding: 1.5% 24.5% 1.2% 24.5%;
+    cursor: pointer;
+    background-color: #ffffff;
+    -webkit-transition: background-color 100ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 200ms linear;
+}
+
+
 .user_login_google_button:hover{
     color: #000000;
     font-size: 12px;
     border: 0.88247px solid #c0c0c0;
-    border-radius: 16px;
+    border-radius: 8px;
     display: inline-block;
-    padding: 1.5% 6% 1.2% 6%;
+    padding: 1.5% 20% 1.2% 20%;
     cursor: pointer;
+    -webkit-transition: background-color 100ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 200ms linear;
 }

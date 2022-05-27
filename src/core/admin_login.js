@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import "../assets/css/user_login/user_login.css";
@@ -20,6 +20,7 @@ export default function Admin_login(props) {
   });
   const [reset, setReset] = useState(false);
   const [error, seterror] = useState();
+  const [visible, setVisible] = useState(true);
   const [error_login, seterror_login] = useState(props.loading);
   const [resetemail, setResetemail] = useState("not_selected");
 
@@ -59,15 +60,15 @@ export default function Admin_login(props) {
   }
 
   const onSubmit = async () => {
-    seterror_login(props.loading)
+    seterror_login(props.loading);
     const result = await form_validate();
     console.log(result);
     if (result) {
-      props
-        .Email_login(form_values.email, form_values.password)
-           }
-           if(props.loading=='error'){
-           seterror_login(props.loading)}
+      props.Email_login(form_values.email, form_values.password);
+    }
+    if (props.loading == "error") {
+      seterror_login(props.loading);
+    }
   };
 
   const Getlink = async () => {
@@ -92,6 +93,19 @@ export default function Admin_login(props) {
       }
     }
   };
+
+  const Entercredentials=(event)=> {
+    if (event.keyCode === 13) {
+        onSubmit()
+    }
+}
+
+const EnterForgotPassword=(event)=> {
+    if (event.keyCode === 13) {
+        Getlink()
+    }
+}
+
 
   return (
     <>
@@ -124,12 +138,13 @@ export default function Admin_login(props) {
                         email: e.target.value,
                       })
                     }
-                    onChange={(e) =>(
+                    onChange={(e) => (
                       setForm_values({
                         ...form_values,
                         email: e.target.value,
-                      }),seterror_login())
-                    }
+                      }),
+                      seterror_login()
+                    )}
                     value={
                       form_values && form_values.email == "not_selected"
                         ? ""
@@ -157,19 +172,23 @@ export default function Admin_login(props) {
                     {validation_email(form_values.email).msg}
                   </div>
                   <input
-                    type="password"
+                    type={visible?"password":"text"}
+                    onMouseOver={()=>setVisible(false)}
+                    onMouseLeave={()=>setVisible(true)}
                     onBlur={(e) =>
                       setForm_values({
                         ...form_values,
                         password: e.target.value,
                       })
                     }
-                    onChange={(e) =>(seterror_login(),
+                    onChange={(e) => (
+                      seterror_login(),
                       setForm_values({
                         ...form_values,
                         password: e.target.value,
-                      }))
-                    }
+                      })
+                    )}
+                    onKeyDown={(e) => Entercredentials(e)}
                     className={
                       "user_login_signin_lastname mb-4" +
                       " " +
@@ -234,14 +253,14 @@ export default function Admin_login(props) {
                   <br></br>
                   <br></br>{" "}
                 </div>
-                {error_login== "error" && (
+                {error_login == "error" && (
                   <>
                     <div class="alert alert-danger" role="alert">
                       Invalid email and Password
                     </div>
                   </>
                 )}
-                {props.loading && props.loading != 'error' && (
+                {props.loading && props.loading != "error" && (
                   <div
                     class="spinner-border text-danger text-center mb-3"
                     role="status"
@@ -265,6 +284,7 @@ export default function Admin_login(props) {
                 <div className="mt-4 mb-2">
                   <input
                     type="text"
+                    onKeyDown={(e) => EnterForgotPassword(e)}
                     onBlur={(e) => setResetemail(e.target.value)}
                     onChange={(e) => (
                       seterror(), setResetemail(e.target.value)
@@ -307,7 +327,10 @@ export default function Admin_login(props) {
                   <div
                     className="small  text-muted pt-2"
                     onClick={() => (
-                      seterror(), setResetemail("not_selected"), setReset(false),seterror_login()
+                      seterror(),
+                      setResetemail("not_selected"),
+                      setReset(false),
+                      seterror_login()
                     )}
                     style={{ cursor: "pointer" }}
                   >
