@@ -1733,7 +1733,7 @@ if(selected_wing){
                   </>
                 )}
 
-                <div className="col-2 p-3 mt-5">
+                <div className="col-2 p-3 ">
                   <div className="h4 p-2 mt-3 shadow bg-primary rounded">
                     <div className="h5 text-white">Cash</div>
                    <span className='text-white'> {payment_values && formatUsd(parseInt(payment_values.cash))}</span>
@@ -1757,8 +1757,11 @@ if(selected_wing){
                   </div>
                   <br></br>
                 </div>
-                <div className="col-4 mt-5" style={{paddingLeft:'100px',paddingRigth:'100px'}}>
-                  {paymentType_graph && <Doughnut data={paymentType_graph} />}
+                <div className="col-4 text-center" >
+                <div className="d-flex justify-content-center">
+                    <div style={{width:'350px' ,marginTop:'70px'}}>
+                  {paymentType_graph && <Doughnut data={paymentType_graph} />}</div>
+                </div>
                 </div>
 
                 <div className="col-6 mt-5">

@@ -29,7 +29,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
 import "../src/assets/css/general.css";
-
+import screenwidth from "./assets/images/screenwidth.svg"
 const Logoplacer = (props) => {
   const logation = useLocation();
   //   var icon = Cookies.get("icon")
@@ -152,12 +152,13 @@ const Routes = () => {
   return (
     <>
       <BrowserRouter>
+      {window.innerWidth>1280 ?
       <div className="row justify-content-center">
         <div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
-          style={{ overflow: "hidden", height: "100vh" ,maxWidth:'2000px'}}
+          style={{ overflow: "hidden", height: "100vh" ,maxWidth:'1900px'}}
         >
           <Switch>
             {!is_admin && (
@@ -182,7 +183,7 @@ const Routes = () => {
           {is_admin && (
             <Switch>
               <Route path="/" exact component={User_login} />
-              <div className="d-flex flex-row">
+              <div className="d-flex flex-row" >
                 <div>
                   <Navigation />
                 </div>
@@ -221,6 +222,18 @@ const Routes = () => {
             </Switch>
           )}
         </div></div>
+        :
+        <>
+        <div className="centered">
+                              {" "}
+                              <img src={screenwidth} className="w-100" />
+                            
+                            <div className="h4 text-center text-muted mt-5">
+                             Not supported
+                            </div>
+                            </div>
+        </>
+          }
       </BrowserRouter>
     </>
   );

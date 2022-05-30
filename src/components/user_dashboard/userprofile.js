@@ -13,8 +13,8 @@ export default function Userprofile(props) {
               size={16}
               style={{
                 position: "absolute",
-                bottom: "-33",
-                right: "10",
+                bottom: "-35",
+                right: "0",
                 color: "#828282",
               }}
             />

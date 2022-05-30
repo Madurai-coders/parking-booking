@@ -20,6 +20,8 @@
 .udb_middlescrollsection {
   overflow-y: scroll;
   height: 100vh;
+  background: #f9f9f9;
+  margin-top: -30px;
 }
 
 .user_dashboard_username {
@@ -500,7 +502,7 @@
     font-size: 13px;
     line-height: 12px;
     color: #ffffff;
-    background: #fa032c;
+    background: #cb3333;
     border-radius: 12.9px;
   }
 

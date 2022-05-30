@@ -256,6 +256,13 @@
   box-shadow: 0px 0px 30px 14px rgba(53,171,222,0.16);
 }
 
+.parking_setup_wing_title_section_user {
+    padding:3px;
+    margin: 2% 5% 2% 1%;
+    border-radius:8px ;
+    
+  }
+
 .parking_setup_wing_title_section_udb{
   padding:3px;
   margin: 2% 2% 1% 1%;

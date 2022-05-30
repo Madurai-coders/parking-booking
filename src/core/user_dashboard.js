@@ -16,6 +16,10 @@ import { IoClose } from "react-icons/io5";
 import moment from "moment";
 import "../assets/css/admin_dashboard/booking.css";
 import DatePicker from "react-datepicker";
+import tick from "../assets/images/tick.svg";
+import view from "../assets/images/view.svg";
+import close from "../assets/images/close.svg";
+
 import {
   validation_name,
   validation_value,
@@ -34,23 +38,26 @@ import { useLocation } from "react-router";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useHistory, Redirect } from "react-router-dom";
-import {InputBox} from "../components/general/inputbox";
-import noBooking from "../assets/images/noactiveBooking.svg"
+import { InputBox } from "../components/general/inputbox";
+import noBooking from "../assets/images/noactiveBooking.svg";
+import SetupProcess from "../components/user_dashboard/SetupProcessProgressbar";
 export default function User_dashboard() {
   const [popup, setPopup] = useState(false);
   const [user, setUser] = useState(false);
   const [props, setprops] = useState();
-  const [getAmount, setGetAmount] = useState(false);
-  const [amount, setAmount] = useState();
+//   const [getAmount, setGetAmount] = useState(false);
+//   const [amount, setAmount] = useState();
   const [logout_popup, setlogout_popup] = useState();
   const [loader, setloader] = useState(true);
   const [history_report, setHistory] = useState(false);
   const [credit, setCredit] = useState({ amount: 0, type: "" });
   const [success, setSuccess] = useState();
+  const [step, setstep] = useState(1);
   const [table, setTable] = useState({
     bookingdetails: true,
     transactionhistory: false,
   });
+  const [preview, setPreview] = useState(false);
   const [bookinghover, setBookinghover] = useState();
   const [booking_details, SetBookingdetails] = useState([]);
   const [wing_data, setWing_data] = useState();
@@ -58,7 +65,8 @@ export default function User_dashboard() {
   const [slot, SetSlot] = useState();
   const [percent, setPercent] = useState();
   const [datafail, setData_fail] = useState();
-
+  const [error, setError] = useState();
+  const [mailStatus, setMailStatus] = useState();
   const [carInfo, setCarInfo] = useState(false);
   const [cardata, setCarData] = useState({
     license: "not_selected",
@@ -71,6 +79,20 @@ export default function User_dashboard() {
     valid: "nil",
   });
 
+  const [booking, setbooking] = useState({
+    userId: "not_selected",
+    bookingId: "not_selected",
+    date: new Date(),
+    startFrom: "not_selected",
+    endTo: "not_selected",
+    slotid: "",
+    plan: "not_selected",
+    name: "not_selected",
+    charge: "",
+  });
+
+  let history = useHistory();
+ 
   function Validate_carData() {
     let val = false;
     var value = { ...cardata };
@@ -109,8 +131,6 @@ export default function User_dashboard() {
     return val;
   }
 
-
-
   function reset() {
     setbooking({
       userId: "not_selected",
@@ -135,19 +155,9 @@ export default function User_dashboard() {
       permitYear: moment(new Date()).format("YYYY"),
       valid: "nil",
     });
+    setstep(1);
   }
 
-  const [booking, setbooking] = useState({
-    userId: "not_selected",
-    bookingId: "not_selected",
-    date: new Date(),
-    startFrom: "not_selected",
-    endTo: "not_selected",
-    slotid: "",
-    plan: "not_selected",
-    name: "not_selected",
-    charge: "",
-  });
 
   function GetWingDetails(id) {
     axios_call("GET", "CreateWing/").then((response) => {
@@ -268,6 +278,8 @@ export default function User_dashboard() {
       );
     }
   }
+
+
   useEffect(() => {
     GetWingDetails();
     setTimeout(() => {
@@ -275,8 +287,7 @@ export default function User_dashboard() {
     }, 1000);
   }, []);
 
-  let history = useHistory();
-
+ 
   function Balance(payment, booking) {
     var payment_total = 0;
     var booking_total = 0;
@@ -340,13 +351,21 @@ export default function User_dashboard() {
           axios_call("GET", "UserLogin").then((response) => {
             console.log(response[0]);
             console.log(response);
-            setbooking({...booking,name:response[0].userName,userId:response[0].id})
+            setbooking({
+              ...booking,
+              name: response[0].userName,
+              userId: response[0].id,
+            });
             setUser(response[0]);
             Balance(response[0].payment_partner, response[0].booking_partner);
           });
         });
       } else {
-        setbooking({...booking,name:response[0].userName,userId:response[0].id})
+        setbooking({
+          ...booking,
+          name: response[0].userName,
+          userId: response[0].id,
+        });
         setUser(response[0]);
         Balance(response[0].payment_partner, response[0].booking_partner);
       }
@@ -371,12 +390,14 @@ export default function User_dashboard() {
   }
 
   function CallPayment(val) {
-    if (amount > 10) {
+    console.log(user)
+    console.log(val)
+    if (val > 10) {
       var body = {
         fname: user.userName,
         lname: user.userName,
         email: user.email,
-        amount: amount,
+        amount: val,
         transfee: 1.5,
         muni_code: "1122",
         dept: "pkng",
@@ -393,24 +414,25 @@ export default function User_dashboard() {
         paymentId: generateUUID(),
         paymentType: "online",
         paymentDate: new Date(),
-        amount: amount,
+        amount: val,
       };
 
       console.log(data);
-      //   axios_call_unauthenticated(
-      //     "POST",
-      //     "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
-      //     data
-      //   ).then((response) => {
-      //     console.log(response);
-      //     let userDate = user;
-      //     userDate.payment_partner.push(response);
-      //     setUser(user);
-      //     setGetAmount(false);
-      //     setAmount();
-      //   });
+        axios_call(
+          "POST",
+          "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+          data
+        ).then((response) => {
+          console.log(response);
+          let userDate = user;
+          userDate.payment_partner.push(response);
+          setUser(user);
 
-      window.location.replace("https://taxdev.munidex.info/pbs2/pbs/");
+          FormSumbit()
+         
+        });
+
+    //   window.location.replace("https://taxdev.munidex.info/pbs2/pbs/");
 
       // axios({
       //   method: "POST",
@@ -433,6 +455,50 @@ export default function User_dashboard() {
       // });
     }
   }
+
+
+
+ 
+
+  function nextStep(val) {
+    console.log(booking);
+
+    if (val == 1) {
+      setstep(1);
+      setCarInfo(false);
+    }
+
+    if (val == 2) {
+      if (
+        booking.date &&
+        booking.slotid &&
+        booking.slot_connect &&
+        booking.wing_name
+      ) {
+        setstep(2);
+        setCarInfo(true);
+      }
+      else{
+          setError('Please select a slot to continue')
+      }
+    }
+
+    if (val == 3) {
+      if (Validate_carData()) {
+        setstep(3);
+        setCarInfo(false);
+        setError()
+      }
+    }
+
+    if (step == 4) {
+      if (booking.plan) {
+        setstep(4);
+      }
+    }
+  }
+
+
 
   function FormSumbit() {
     var startFrom = moment(booking.date, "YYYY-MM-DD").format("YYYY-MM-DD");
@@ -479,10 +545,10 @@ export default function User_dashboard() {
     if (
       Validate_carData() &&
       booking_finalized.slotid &&
-    //   booking_finalized.name != "not_selected" &&
-    //   booking_finalized.userId != "not_selected" &&
-    //   booking_finalized.name &&
-    //   booking_finalized.userId &&
+      //   booking_finalized.name != "not_selected" &&
+      //   booking_finalized.userId != "not_selected" &&
+      //   booking_finalized.name &&
+      //   booking_finalized.userId &&
       booking_finalized.plan &&
       booking_finalized.endTo &&
       booking_finalized.startFrom &&
@@ -492,22 +558,23 @@ export default function User_dashboard() {
       axios_call("POST", "CreateBooking/", booking_finalized)
         .then((response) => {
           console.log(response);
+          console.log('response');
           console.log({ ...carDetails, bookingId: response.id });
           axios_call("POST", "CreateCarInfo/", {
-            ...carDetails,
-            bookingId: response.id,
+            ...carDetails,bookingId: response.id,
           }).then((response) => {
             reset();
           });
           setSuccess(response);
+          SendMail()
         })
         .catch((response) => {
-          axios_call("POST", "CreateBooking/", booking_finalized).then(
-            (response) => {
-              console.log(response);
-              reset();
-            }
-          );
+        //   axios_call("POST", "CreateBooking/", booking_finalized).then(
+        //     (response) => {
+        //       console.log(response);
+        //       reset();
+        //     }
+        //   );
         });
     } else {
       if (
@@ -522,11 +589,43 @@ export default function User_dashboard() {
     }
   }
 
+  
+  function SendMail() {
+    var data = {
+      to: success.User.email,
+      invoiceDate: moment(success.date).format("DD/MM/YYYY"),
+      user: success.User.userName,
+      accountNumber: success.User.accountNumber,
+      bookingId: success.bookingId,
+      amount: success.charge,
+      startFrom: moment(success.startFrom).format("DD/MM/YYYY"),
+      endTo: moment(success.endTo).format("DD/MM/YYYY"),
+      wing: success.slots.wing.wingName,
+      plan: success.plan,
+      id: success.id,
+      slot: success.slot_connect,
+    };
+    console.log(data);
+    setMailStatus({
+      status: "Sending",
+      to: success.User.email,
+    });
+
+    axios_call("POST", "send_mail_booking/", data).then((response) => {
+      console.log(response);
+      setMailStatus({
+        status: "Successful",
+        to: success.User.email,
+      });
+    });
+  }
+
   return (
     <>
       <Helmet>
         <title>Munidex Parking - User Dashboard</title>
       </Helmet>
+      
 
       {loader ? (
         <div style={{ height: "100vh" }}>
@@ -537,146 +636,231 @@ export default function User_dashboard() {
       ) : (
         <>
 
-{carInfo && (
-        <div className="overlay_carInfo shadow">
-          <div className="row">
-            <div className="text-center h3" style={{ marginTop: "20px" }}>
-              Car Info
+        
+      {success && (
+        <div className="overlay">
+          <div className="bookingspopup_container">
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div> </div>
+              <div className="pt-2 pe-3">
+                <img onClick={() => setSuccess(false)} src={close} />
+              </div>
             </div>
-            <div className="col-5 text-center">
-              <div className="d-flex flex-column" style={{ marginTop: "45px" }}>
-                <div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <div> </div>
+              <div className="mt-2 ps-3">
+                <img src={tick} />
+              </div>
+            </div>
+            <div className="bookingspopup_title mt-3 mb-3">Booking success</div>
+            <hr className="bookingspopup_hr" />
+            <div className="bookingspopup_details">
+              <div className="bookingspopup_details_flex mb-3">
+                <div className="bookingspopup_head">
                   {" "}
-                  {booking.wing_name &&
-                    booking.wing_name + " [" + booking.slot_connect + "]"}
+                  From:{" "}
+                  <span className="bookingspopup_body">
+                    {" "}
+                    {moment(success.startFrom).format("DD/MM/YYYY")}
+                  </span>
                 </div>
-                <img
-                  src={Car}
-                  style={{ marginLeft: "25%", marginTop: "20px" }}
-                  className="w-50"
-                  alt="Munidex_parking_Booking_slots"
-                />
+                <div className="bookingspopup_head">
+                  To:{" "}
+                  <span className="bookingspopup_body">
+                    {moment(success.endTo).format("DD/MM/YYYY")}
+                  </span>
+                </div>
+              </div>
+              <div className="bookingspopup_details_flex mb-3">
+                <div className="bookingspopup_head">
+                  Name:{" "}
+                  <span className="bookingspopup_body">
+                    {success.User.userName}
+                  </span>
+                </div>
+                <div className="bookingspopup_head">
+                  Plan:{" "}
+                  <span className="bookingspopup_body">{success.plan}</span>
+                </div>
+              </div>
+              <div className="bookingspopup_details_flex mb-4">
+                <div className="bookingspopup_head">
+                  Wing:{" "}
+                  <span className="bookingspopup_body">
+                    {success.slots.wing.wingName}
+                  </span>
+                </div>
+                <div className="bookingspopup_head">
+                  Slot:{" "}
+                  <span className="bookingspopup_body">
+                    {success.slot_connect}
+                  </span>
+                </div>
               </div>
             </div>
-
-            <div className="col-7" style={{ marginTop: "20px" }}>
-              <div className="row">
-                <div className="col-6" style={{ marginTop: "1%" }}>
-                  <InputBox
-                    label="License Plate"
-                    type="text"
-                    state={cardata}
-                    setState={setCarData}
-                    value={cardata.license}
-                    keyValue={"license"}
-                    validate={validation_char}
-                  />
-                </div>
-                <div className="col-6" style={{ marginTop: "1%" }}>
-                  <InputBox
-                    label="Make"
-                    type="text"
-                    state={cardata}
-                    setState={setCarData}
-                    value={cardata.make}
-                    keyValue={"make"}
-                    validate={validation_char}
-                  />
-                </div>
-                <div className="col-6" style={{ marginTop: "1%" }}>
-                  <InputBox
-                    label="Model"
-                    type="number"
-                    state={cardata}
-                    setState={setCarData}
-                    value={cardata.model}
-                    keyValue={"model"}
-                    validate={validation_char}
-                  />
-                </div>
-                <div className="col-6" style={{ marginTop: "1%" }}>
-                  <InputBox
-                    label="Car Registration State"
-                    type="text"
-                    state={cardata}
-                    setState={setCarData}
-                    value={cardata.carRegistrationState}
-                    keyValue={"carRegistrationState"}
-                    validate={validation_char}
-                  />
-                </div>
-
-                <div className="col-6" style={{ marginTop: "1%" }}>
-                  <InputBox
-                    label="Insurance"
-                    type="text"
-                    state={cardata}
-                    setState={setCarData}
-                    value={cardata.insurance}
-                    keyValue={"insurance"}
-                    validate={validation_char}
-                  />
-                </div>
-                <div className="col-6" style={{ marginTop: "1%" }}>
-                  <div className="homeinputblock">
-                    <DatePicker
-                      className="homeinput full"
-                      onChange={(e) =>
-                        setCarData({
-                          ...cardata,
-                          permitYear: moment(e).format("YYYY"),
-                        })
-                      }
-                      dateFormat="yyyy"
-                      showYearPicker
-                      value={cardata.permitYear}
-                    />{" "}
-                    <label className="label_cons_1">Permit Year</label>
-                  </div>
-                </div>
-
-                <div className="col-6" style={{ marginTop: "1%" }}>
-                  <InputBox
-                    label="Color"
-                    type="color"
-                    state={cardata}
-                    setState={setCarData}
-                    value={cardata.color}
-                    keyValue={"color"}
-                    validate={validation_value}
-                    styles={{ padding: "18px", height: "48px" }}
-                  />
-                </div>
-              </div>
-              <div style={{ marginRight: "100px", marginTop: "30px" }}>
-                <div className="d-flex justify-content-end">
-                  <div
-                    className="btn btn-light mx-3"
-                    onClick={() => (
-                      setCarInfo(false),
-                      setCarData({ ...cardata, valid: "warn" })
-                    )}
-                  >
-                    Close
-                  </div>
-                  {/* <div
-                    className="btn btn-secondary mx-3"
-                    onClick={() => reset()}
-                  >
-                    Reset
+            <div style={{ textAlign: "center" }} className="mb-5">
+              <span className="bookingspopup_text_amount"> Amount </span>{" "}
+              <span className="bookingspopup_value_amount">
+                {" "}
+                {success.charge && formatUsd(parseInt(success.charge))}
+              </span>
+            </div>
+            <div className="bookingspopup_amount_flex">
+              {/* <div
+                className="bookingspopup_options m-3"
+                onClick={() => setPreview(true)}
+              >
+                {" "}
+                View <img src={view} />{" "}
+              </div> */}
+              {/* <div className="bookingspopup_options m-3">
+                {" "}
+                Send <img src={send} />{" "}
+              </div> */}
+              {/* <div className="bookingspopup_options m-3">
+                    {" "}
+                    Print <img src={print} />{" "}
                   </div> */}
-                  <div
-                    className="btn btn-primary"
-                    onClick={() => Validate_carData()}
-                  >
-                    Submit
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       )}
+
+
+          {carInfo && (
+            <div className="overlay_carInfo shadow">
+              <div className="row">
+                <div className="text-center h3" style={{ marginTop: "20px" }}>
+                  Car Info
+                </div>
+                <div className="col-5 text-center">
+                  <div
+                    className="d-flex flex-column"
+                    style={{ marginTop: "45px" }}
+                  >
+                    <div>
+                      {" "}
+                      {booking.wing_name &&
+                        booking.wing_name + " [" + booking.slot_connect + "]"}
+                    </div>
+                    <img
+                      src={Car}
+                      style={{ marginLeft: "25%", marginTop: "20px" }}
+                      className="w-50"
+                      alt="Munidex_parking_Booking_slots"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-7" style={{ marginTop: "20px" }}>
+                  <div className="row">
+                    <div className="col-6" style={{ marginTop: "1%" }}>
+                      <InputBox
+                        label="License Plate"
+                        type="text"
+                        state={cardata}
+                        setState={setCarData}
+                        value={cardata.license}
+                        keyValue={"license"}
+                        validate={validation_char}
+                      />
+                    </div>
+                    <div className="col-6" style={{ marginTop: "1%" }}>
+                      <InputBox
+                        label="Make"
+                        type="text"
+                        state={cardata}
+                        setState={setCarData}
+                        value={cardata.make}
+                        keyValue={"make"}
+                        validate={validation_char}
+                      />
+                    </div>
+                    <div className="col-6" style={{ marginTop: "1%" }}>
+                      <InputBox
+                        label="Model"
+                        type="number"
+                        state={cardata}
+                        setState={setCarData}
+                        value={cardata.model}
+                        keyValue={"model"}
+                        validate={validation_char}
+                      />
+                    </div>
+                    <div className="col-6" style={{ marginTop: "1%" }}>
+                      <InputBox
+                        label="Car Registration State"
+                        type="text"
+                        state={cardata}
+                        setState={setCarData}
+                        value={cardata.carRegistrationState}
+                        keyValue={"carRegistrationState"}
+                        validate={validation_country}
+                      />
+                    </div>
+
+                    <div className="col-6" style={{ marginTop: "1%" }}>
+                      <InputBox
+                        label="Insurance"
+                        type="text"
+                        state={cardata}
+                        setState={setCarData}
+                        value={cardata.insurance}
+                        keyValue={"insurance"}
+                        validate={validation_char}
+                      />
+                    </div>
+                    <div className="col-6" style={{ marginTop: "1%" }}>
+                      <div className="homeinputblock">
+                        <DatePicker
+                          className="homeinput full"
+                          onChange={(e) =>
+                            setCarData({
+                              ...cardata,
+                              permitYear: moment(e).format("YYYY"),
+                            })
+                          }
+                          dateFormat="yyyy"
+                          showYearPicker
+                          value={cardata.permitYear}
+                        />{" "}
+                        <label className="label_cons_1">Permit Year</label>
+                      </div>
+                    </div>
+
+                    <div className="col-6" style={{ marginTop: "1%" }}>
+                      <InputBox
+                        label="Color"
+                        type="color"
+                        state={cardata}
+                        setState={setCarData}
+                        value={cardata.color}
+                        keyValue={"color"}
+                        validate={validation_value}
+                        styles={{ padding: "18px", height: "48px" }}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ marginRight: "100px", marginTop: "30px" }}>
+                    <div className="d-flex justify-content-end">
+                      <div
+                        className="btn  btn-primary"
+                        onClick={() => step < 4 && nextStep(step + 1)}
+                      >
+                        Next
+                      </div>
+                      <div
+                        className="btn mx-2 btn-light"
+                        onClick={() => step > 1 && nextStep(step - 1)}
+                      >
+                        Back
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {logout_popup && (
             <div className="overlay">
@@ -717,7 +901,6 @@ export default function User_dashboard() {
               </div>
             </div>
           )}
-
           {user && (
             <div className="user_dashboard_container">
               <div className="udb_topsec p-2">
@@ -733,6 +916,8 @@ export default function User_dashboard() {
                   className="user_dashboard_profile_icon"
                 />
               </div>
+
+              
               <div className="row">
                 <Userprofile
                   name={user.lastName}
@@ -742,235 +927,314 @@ export default function User_dashboard() {
                   setHistory={setHistory}
                   history_report={history_report}
                 />
+
                 <div className="col-10">
                   <div className="row">
-                    
                     <div className="col-8 udb_middlescrollsection">
-                 
-               
                       {!history_report && (
                         <div>
-                           <div className="booking_colorcodes mt-3 px-2 mx-5 ">
-                  <span className="booking_undercons"> Under Construction</span>
-                  <span className="booking_lessweek"> &lt; 7 days </span>
-                  <span className="booking_moreweek"> &gt; 7 days</span>
-                </div>
+                          <SetupProcess
+                            number={step}
+                          
+                          ></SetupProcess>
 
-                          {wing_data && wing_data.length && (
-                            <div className="parking_setup_wing_title_section  ">
-                              <div style={{ flexGrow: 1 }}>
-                                <Carousel
-                                  itemsToShow={6}
-                                  itemsToScroll={1}
-                                  pagination={false}
-                                  showArrows={true}
-                                >
-                                  {wing_data.map((wing) => {
-                                    return (
-                                      <div
-                                        className={
-                                          wing.id != (slot && slot[0].wingId)
-                                            ? "btn-light btn btn-sm m-1 text-capitalize"
-                                            : "btn-primary btn btn-sm m-1 text-capitalize"
-                                        }
-                                        onClick={() => (
-                                          SetWing(wing),
-                                          setbooking({
-                                            ...booking,
-                                            plan: "",
-                                            charge: "",
-                                          }),
-                                          SetSlot(wing.slots)
-                                        )}
-                                      >
-                                        {wing.wingName}
-                                      </div>
-                                    );
-                                  })}
-                                </Carousel>
+                          {/* step1----------------------------------------------------------------- */}
+
+                          {/* <div className="booking_form_title bg-light me-5 p-2">
+                                {" "}
+                                Booking{" "}
+                              </div> */}
+                          <div className=" px-3 p-3 bg-white rounded">
+                            <div className="row ">
+                              <div className="col-4">
+                                <div className="booking_form_date_input mt-2">
+                                  <label for="date">Date</label>
+                                  <div
+                                    style={{
+                                      marginLeft: "65px",
+                                      marginTop: "-5px",
+                                    }}
+                                  >
+                                    <DatePicker
+                                      dateFormat="dd/MM/yyyy"
+                                      className="payment_date"
+                                      selected={booking.date}
+                                      onClickOutside
+                                      onSelect={(date) => (
+                                        GetBooking(date),
+                                        setbooking({
+                                          ...booking,
+                                          date: date,
+                                        })
+                                      )}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="col-4">
+                                <div className="booking_form_name_input">
+                                  <label for="name">Slot</label>
+                                  <div className="d-flex flex-column booking_form_name_input">
+                                    <input
+                                      type="text"
+                                      style={{
+                                        marginLeft: "50px",
+                                        marginTop: "10px",
+                                      }}
+                                      value={booking.slotid&&
+                                        booking.wing_name +
+                                        " [" +
+                                        booking.slot_connect +
+                                        "]"}
+                                      //   onClick={() => setCarInfo(true)}
+                                      //   className={cardata.valid}
+                                      readOnly
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-4">
+                                <div className="booking_form_name_input">
+                                  <label for="name">Plan</label>
+                                  <div className="d-flex flex-column booking_form_name_input">
+                                    <input
+                                      type="text"
+                                      style={{
+                                        marginLeft: "50px",
+                                        marginTop: "10px",
+                                      }}
+                                      value={booking.plan!='not_selected'?booking.plan:''}
+                                      //   onClick={() => setCarInfo(true)}
+                                      //   className={cardata.valid}
+                                      readOnly
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {error && <div className="alert alert-danger mt-3">{error}</div>}
+                          {step == 1 && (
+                            <div className="">
+                              <div className="booking_colorcodes mt-3 px-2 mx-5 ">
+                                <span className="booking_undercons">
+                                  {" "}
+                                  Under Construction
+                                </span>
+                                <span className="booking_lessweek">
+                                  {" "}
+                                  &lt; 7 days{" "}
+                                </span>
+                                <span className="booking_moreweek">
+                                  {" "}
+                                  &gt; 7 days
+                                </span>
+                              </div>
+
+                              {wing_data && wing_data.length && (
+                                <div className="parking_setup_wing_title_section_user  shadow">
+                                  <div style={{ flexGrow: 1 }}>
+                                    <Carousel
+                                      itemsToShow={6}
+                                      itemsToScroll={1}
+                                      pagination={false}
+                                      showArrows={true}
+                                    >
+                                      {wing_data.map((wing) => {
+                                        return (
+                                          <div
+                                            className={
+                                              wing.id !=
+                                              (slot && slot[0].wingId)
+                                                ? "btn-light btn btn-sm m-1 text-capitalize"
+                                                : "btn-primary btn btn-sm m-1 text-capitalize"
+                                            }
+                                            onClick={() => (
+                                              SetWing(wing),
+                                              setbooking({
+                                                ...booking,
+                                                plan: "",
+                                                charge: "",
+                                              }),
+                                              SetSlot(wing.slots)
+                                            )}
+                                          >
+                                            {wing.wingName}
+                                          </div>
+                                        );
+                                      })}
+                                    </Carousel>
+                                  </div>
+                                </div>
+                              )}
+
+                              <div className="parking_setup_wing_container">
+                                {slot && (
+                                  <>
+                                    {slot.map((slot, id) => {
+                                      return (
+                                        <span>
+                                          {checkslots(
+                                            slot,
+                                            id,
+                                            booking_details
+                                          )}
+                                        </span>
+                                      );
+                                    })}
+                                  </>
+                                )}
                               </div>
                             </div>
                           )}
 
-                          <div className="parking_setup_wing_container">
-                            {slot && (
-                              <>
-                                {slot.map((slot, id) => {
-                                  return (
-                                    <span>
-                                      {checkslots(slot, id, booking_details)}
-                                    </span>
-                                  );
-                                })}
-                              </>
-                            )}
-                          </div>
-                      
+                          {/* step3----------------------------------------------------------------- */}
+                          {step == 3 && (
+                            <>
+                              <div
+                                className="booking_form_title bg-light me-5 p-2"
+                                style={{ marginTop: "0px" }}
+                              >
+                                Plan
+                              </div>
+                              <div className="">
+                                <div className="booking_form_plan_input">
+                                  <div className="booking_form_plan_input_text">
+                                    {" "}
+                                  </div>
+                                  <div className="booking_form_plan_input_buttons1">
+                                    <div
+                                      className={
+                                        booking.plan == "Daily"
+                                          ? "booking_form_input_button_daily_selected"
+                                          : "booking_form_input_button_daily"
+                                      }
+                                      onClick={() =>
+                                        setbooking({
+                                          ...booking,
+                                          plan: "Daily",
+                                          charge: wing && wing.planDaily,
+                                        })
+                                      }
+                                    >
+                                     <div className="d-flex flex-column">
+                                        <div className="h6">Daily</div>
+                                        <div className="h5"> {wing && formatUsd(wing.planDaily)}</div>
+                                      </div>
+                                    </div>
 
-<>
-
-                <div className="booking_form_container">
-                  <div className="booking_form_title bg-light me-5 p-2">
-                    {" "}
-                    Booking{" "}
-                  </div>
-                  <div className="mx-3 p-2">
-                    
-
-                    <div className="booking_form_date_input mt-3">
-                      <label for="date">Date</label>
-                      <div style={{ marginLeft: "65px", marginTop: "-5px" }}>
-                        <DatePicker
-                          dateFormat="dd/MM/yyyy"
-                          className="payment_date"
-                          selected={booking.date}
-                          onClickOutside
-                          onSelect={(date) => (
-                            GetBooking(date),
-                            setbooking({ ...booking, date: date })
+                                    <div
+                                      className={
+                                        booking.plan == "Weekly"
+                                          ? "booking_form_input_button_weekly_selected"
+                                          : "booking_form_input_button_weekly"
+                                      }
+                                      onClick={() =>
+                                        setbooking({
+                                          ...booking,
+                                          plan: "Weekly",
+                                          charge: wing && wing.planWeekly,
+                                        })
+                                      }
+                                    >
+                                        <div className="d-flex flex-column">
+                                        <div className="h6"> Weekly</div>
+                                        <div className="h5"> {wing && formatUsd(wing.planWeekly)}</div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={
+                                        booking.plan == "Monthly"
+                                          ? "booking_form_input_button_monthly_selected"
+                                          : "booking_form_input_button_monthly"
+                                      }
+                                      onClick={() =>
+                                        setbooking({
+                                          ...booking,
+                                          plan: "Monthly",
+                                          charge: wing && wing.planMonthly,
+                                        })
+                                      }
+                                    >
+                                       <div className="d-flex flex-column">
+                                        <div className="h6">Monthly</div>
+                                        <div className="h5"> {wing && formatUsd(wing.planMonthly)}</div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={
+                                        booking.plan == "Quarterly"
+                                          ? "booking_form_input_button_quarterly_selected"
+                                          : "booking_form_input_button_quarterly"
+                                      }
+                                      onClick={() =>
+                                        setbooking({
+                                          ...booking,
+                                          plan: "Quarterly",
+                                          charge: wing && wing.planQuarterly,
+                                        })
+                                      }
+                                    >
+                                      <div className="d-flex flex-column">
+                                        <div className="h6">Quarterly</div>
+                                        <div className="h5"> {wing && formatUsd(wing.planQuarterly)}</div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={
+                                        booking.plan == "Yearly"
+                                          ? "booking_form_input_button_yearly_selected"
+                                          : "booking_form_input_button_yearly"
+                                      }
+                                      onClick={() =>
+                                        setbooking({
+                                          ...booking,
+                                          plan: "Yearly",
+                                          charge: wing && wing.planYearly,
+                                        })
+                                      }
+                                    >
+                                      <div className="d-flex flex-column">
+                                        <div className="h6"> Yearly</div>
+                                        <div className="h5"> {wing && formatUsd(wing.planYearly)}</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
                           )}
-                        />
-                      </div>
-                    </div>
 
-                    <div className="booking_form_name_input">
-                      <label for="name">Car Info</label>
-                      <div className="d-flex flex-column booking_form_name_input">
-                        <input
-                          type="text"
-                          style={{ marginLeft: "109px", marginTop: "20px" }}
-                          placeholder={
-                            cardata.valid == "pass"
-                              ? "Filled"
-                              : "Fill this form"
-                          }
-                          onClick={() => setCarInfo(true)}
-                          className={cardata.valid}
-                        />
-                      </div>
-                    </div>
 
-</div>
-                    <div className="booking_form_title bg-light me-5 p-2" style={{marginTop:'-10px'}}>
-                    Plan
-                  </div>
-                  <div className="mx-3 p-2">
+                          <div
+                            className="d-flex justify-content-end flex-row mt-5"
+                            style={{ marginBottom: "200px" }}
+                          > {step != 3 ?
+                            <div
+                              className="btn  btn-primary"
+                            onClick={() => step < 4 && nextStep(step + 1)}
+                            >
+                             Next
+                            </div>
+                            :
 
-                    <div className="booking_form_plan_input">
-                      <div className="booking_form_plan_input_text">  </div>
-                      <div className="booking_form_plan_input_buttons1">
-                        <div
-                          className={
-                            booking.plan == "Daily"
-                              ? "booking_form_input_button_daily_selected"
-                              : "booking_form_input_button_daily"
-                          }
-                          onClick={() =>
-                            setbooking({
-                              ...booking,
-                              plan: "Daily",
-                              charge: wing && wing.planDaily,
-                            })
-                          }
-                        >
-                          {" "}
-                          Daily{" "}
+                            <div
+                              className="btn  btn-primary"
+                            onClick={()=>CallPayment(booking.charge)}
+                            >
+                              Proceed to payment
+                            </div>}
+
+                            <div
+                              className="btn mx-2 btn-light"
+                              onClick={() => step > 1 && nextStep(step - 1)}
+                            >
+                              Back
+                            </div>
+                          </div>
                         </div>
-
-                        <div
-                          className={
-                            booking.plan == "Weekly"
-                              ? "booking_form_input_button_weekly_selected"
-                              : "booking_form_input_button_weekly"
-                          }
-                          onClick={() =>
-                            setbooking({
-                              ...booking,
-                              plan: "Weekly",
-                              charge: wing && wing.planWeekly,
-                            })
-                          }
-                        >
-                          {" "}
-                          Weekly{" "}
-                        </div>
-                        <div
-                          className={
-                            booking.plan == "Monthly"
-                              ? "booking_form_input_button_monthly_selected"
-                              : "booking_form_input_button_monthly"
-                          }
-                          onClick={() =>
-                            setbooking({
-                              ...booking,
-                              plan: "Monthly",
-                              charge: wing && wing.planMonthly,
-                            })
-                          }
-                        >
-                          {" "}
-                          Monthly{" "}
-                        </div>
-                        <div
-                          className={
-                            booking.plan == "Quarterly"
-                              ? "booking_form_input_button_quarterly_selected"
-                              : "booking_form_input_button_quarterly"
-                          }
-                          onClick={() =>
-                            setbooking({
-                              ...booking,
-                              plan: "Quarterly",
-                              charge: wing && wing.planQuarterly,
-                            })
-                          }
-                        >
-                          {" "}
-                          Quarterly{" "}
-                        </div>
-                        <div
-                          className={
-                            booking.plan == "Yearly"
-                              ? "booking_form_input_button_yearly_selected"
-                              : "booking_form_input_button_yearly"
-                          }
-                          onClick={() =>
-                            setbooking({
-                              ...booking,
-                              plan: "Yearly",
-                              charge: wing && wing.planYearly,
-                            })
-                          }
-                        >
-                        
-                          Yearly
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex justify-content-end flex-row mt-5" style={{marginBottom:'200px'}}>
-                  <div className="btn  btn-primary" onClick={FormSumbit}>
-                    Submit
-                  </div>
-                  <div className="btn mx-2 btn-light" onClick={reset}>
-                    Clear
-                  </div>
-                  
-                </div>
-
-                </>
-
-                </div>
                       )}
-
-
-                      {/* <hr></hr>
-                      <div className="px-5 mt-3 pb-3">
-                        <Addslot amount="12" />
-                        <Addslot amount="20" />
-                      </div>
-                      <hr></hr> */}
 
                       {history_report && (
                         <History
@@ -978,10 +1242,10 @@ export default function User_dashboard() {
                           payment_partner={user.payment_partner}
                         ></History>
                       )}
-                      
                     </div>
+
                     <div className="col-4">
-                      <div className="udb_bcsection mt-4 pt-4 ps-4 pe-3 me-4 mx-5">
+                      <div className="udb_bcsection mt-4 pt-4 ps-4 pe-3 mx-5 me-4">
                         <div className="udb_bctext mt-3 mb-2 ms-2">Balance</div>
                         <div className="udb_bcval ms-2">
                           {credit && formatUsd(Math.abs(credit.amount))}
@@ -1005,9 +1269,17 @@ export default function User_dashboard() {
                         </div>
                       </div>
                       <div className="udb_cartsection mt-4 pt-4 ps-3 pe-3 pb-2">
-                          {!user.booking_partner[0]&&<>
-                         <div className="row justify-content-center mt-5"> <img src={noBooking} className='w-75'/></div>
-                         <div className="h5 text-center text-muted mt-4">No active booking</div></>}
+                        {!user.booking_partner[0] && (
+                          <>
+                            <div className="row justify-content-center mt-5">
+                              {" "}
+                              <img src={noBooking} className="w-75" />
+                            </div>
+                            <div className="h5 text-center text-muted mt-4">
+                              No active booking
+                            </div>
+                          </>
+                        )}
                         {user.booking_partner.map((booking) => {
                           return (
                             <>
@@ -1049,229 +1321,10 @@ export default function User_dashboard() {
                       </div> */}
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-3"></div>
-                  </div>
                 </div>
               </div>
             </div>
           )}
-
-
-          {/* {user && (
-            <div className="user_dashboard_container">
-             
-              <img
-                src={logo}
-                alt="munidex_logo"
-                className="user_dashboard_munidex_logo"
-              />
-              <img
-                onClick={() => setlogout_popup(true)}
-                src={userprof}
-                alt="Customer_profile"
-                className="user_dashboard_profile_icon"
-              />
-
-              <div className="row">
-                <div className="col-7">
-                  <div className="user_dashboard_username">
-                    {" "}
-                    Hello {user.userName} !!
-                  </div>
-                  <div className="user_dashboard_text_booking_details">
-                    {" "}
-                    Booking Details
-                  </div>
-                  <div className="user_dashboard_down_arrow"></div>
-                  <div className="user_dashboard_booking_details_card">
-                    <table className="user_dashboard_booking_details_table">
-                      <tr className="user_dashboard_booking_details_table_heading">
-                        <th>Wing</th>
-                        <th>Start date</th>
-                        <th>End date</th>
-                        <th>Plan</th>
-                        <th>Amount</th>
-                        <th>Active for</th>
-                      </tr>
-                      {user.booking_partner.map((userdata) => {
-                        return (
-                          <tr className="user_dashboard_booking_details_table_data">
-                            <td>{userdata.slots.wing.wingName}</td>
-                            <td>
-                              {moment(userdata.startFrom).format("DD-MM-YYYY")}
-                            </td>
-                            <td>
-                              {moment(userdata.endTo).format("DD-MM-YYYY")}
-                            </td>
-                            <td>{userdata.plan}</td>
-                            <td>
-
-                              {userdata.charge}$
-                            </td>
-                            <td>
-                              {Dayleft(userdata.endTo) > 0
-                                ? Dayleft(userdata.endTo)
-                                : 0}{" "}
-                              days
-                              <span
-                                className={
-                                  "mx-1 user_dashboard_active_" +
-                                  (Dayleft(userdata.endTo) > 0
-                                    ? "green"
-                                    : "red")
-                                }
-                              ></span>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </table>
-                  </div>
-                  
-                </div>
-                <div className="col-5">
-                  <div className="user_dashboard_right_container">
-                    <div className="user_dashboard_balance_card">
-                      <div className="user_dashboard_balance_card_text mb-3">
-                        {" "}
-                        Balance{" "}
-
-                        <div className="user_dashboard_pay_container text-center">
-                          {!getAmount ? (
-                            <div
-                              className="user_dashboard_pay"
-                              onClick={() => setGetAmount(true)}
-                            >
-                              {" "}
-                              Pay Online{" "}
-                            </div>
-                          ) : (
-                            <div
-                              className="user_dashboard_pay"
-                              onClick={() => setGetAmount(false)}
-                            >
-                              {" "}
-                              Last Transaction{" "}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="d-flex">
-                        {Balance(user.payment_partner, user.booking_partner)} 
-                      </div>
-                    </div>
-
-                    {!getAmount ? (
-                      <>
-                         {true && (
-                <div className="">
-
-                  <div className="">
-                    <div className="user_dashboard_popup_history_container">
-                      <div className="user_dashboard_popup_transaction_history_flex">
-                        <div className="user_dashboard_popup_transaction_history mb-4">
-                          {" "}
-                          Transaction History{" "}
-                        </div>
-
-                      </div>
-                      <div className="user_dashboard_popup_table_container">
-                        <table className="user_dashboard_popup_table">
-                          <tr className="user_dashboard_popup_table_header">
-                            <th>Transaction id</th>
-                            <th>Date</th>
-                            <th>Payment</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                          </tr>
-                          {user.payment_partner.map((transaction) => {
-                            return (
-                              <tr className="user_dashboard_popup_table_content">
-                                <td>{transaction.paymentId}</td>
-                                <td>
-                                  {moment(transaction.paymentDate).format(
-                                    "DD-MM-YYYY"
-                                  )}
-                                </td>
-                                <td>{transaction.paymentType}</td>
-                                <td>{transaction.amount}</td>
-
-                                <td>
-                                  <span
-                                    className={
-                                      "user_dashboard_popup_status_" +
-                                      "Successful".toLowerCase()
-                                    }
-                                  >
-                                    Successful
-                                  </span>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-                      </>
-                    ) : (
-                      <div className="user_dashboard_transaction_card">
-                        <div className="user_dashboard_transaction_card_title">
-                          {" "}
-                        </div>
-                        <div className="user_dashboard_transaction_card_transaction_id mb-3">
-                          {" "}
-                        </div>
-
-                        <div
-                          className="user_dashboard_transaction_card_amount_section"
-                          style={{ paddingRight: "16px" }}
-                        >
-                          <div className="user_dashboard_transaction_card_amount_text mb-3">
-                            {" "}
-                            Amount{" "}
-                          </div>
-
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text">$</div>
-                            </div>
-                            <input
-                              type="number"
-                              class="form-control"
-                              id="inlineFormInputGroupUsername"
-                              value={amount}
-                              onChange={(e) => setAmount(e.target.value)}
-                            />
-                          </div>
-
-                          <div class="col-auto text-center my-1">
-                            <button
-                              type="submit"
-                              class="btn btn-primary btn-sm mt-3 mb-3"
-                              onClick={() => CallPayment()}
-                            >
-                              Submit
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                  
-              </div>
-              <div className="row">
-                <div className="col-7">
-                  <div style={{ display: "none" }}>Munidex Parking</div>
-                </div>
-              </div>
-            </div>
-          )} */}
         </>
       )}
     </>

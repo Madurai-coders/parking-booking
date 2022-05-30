@@ -53,7 +53,6 @@ export  function InputBox({
         <div className="homeinputblock">
           <input
           style={styles}
-            id="box"
             className={className}
             type={type}
             placeholder=" "

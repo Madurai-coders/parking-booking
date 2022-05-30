@@ -740,7 +740,7 @@ export default function Booking() {
                     setState={setCarData}
                     value={cardata.carRegistrationState}
                     keyValue={"carRegistrationState"}
-                    validate={validation_char}
+                    validate={validation_country}
                   />
                 </div>
 
