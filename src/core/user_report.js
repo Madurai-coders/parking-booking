@@ -20,7 +20,7 @@ import Loader from "../components/loader/loader";
 export default function User_report() {
   const [filter, setFilter] = useState(false);
   const [flag, setFlag] = useState("none");
-  const [usr_suggestion, set_usr_suggestion] = useState([]);
+  const [usr_suggestion, set_usr_suggestion] = useState(false);
   const [usr_suggestion_all, set_usr_suggestion_all] = useState([]);
   const [paymentStatus, setpaymentStatus] = useState(false);
   const [checked_pending, setChecked_pending] = useState(false);
@@ -136,7 +136,8 @@ export default function User_report() {
 
 
   function CallFliter(val) {
-    if (!val) {
+    if (usr_suggestion) {
+        if (!val&&usr_suggestion) {
       var usr = usr_suggestion;
     } else {
       var usr = val;
@@ -175,6 +176,7 @@ export default function User_report() {
       set_usr_suggestion(usr_suggestion_all);
     }
   }
+}
 
   useEffect(() => {
     CallFliter();
@@ -197,7 +199,7 @@ export default function User_report() {
           <User user={user} set_up_flag={set_up_flag}></User>
         </div>
       )}
-     {!usr_suggestion[0] && <Loader></Loader>}
+     {!usr_suggestion && <Loader></Loader>}
       <motion.div
        initial={{ opacity: 0, y: 15 }}
        animate={{ opacity: [0.5, 1], y: 0 }}
@@ -227,7 +229,7 @@ export default function User_report() {
                 className="User_report_search_input"
                 onChange={(e) => checkuser(e.target.value)}
               />
-              <div className="User_report_get_button"> Get </div>
+              {/* <div className="User_report_get_button"> Get </div> */}
               <div className="User_report_filter_button" onClick={handleFilter}>
                 {" "}
                 Filter <img src={filtericon} alt="Munidex_filter" />

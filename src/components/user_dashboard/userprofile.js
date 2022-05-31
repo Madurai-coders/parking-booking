@@ -5,7 +5,7 @@ import propic from "../../assets/images/profilepic.png";
 export default function Userprofile(props) {
   return (
     <>
-      <div className="col-2 udb_prosec">
+      <div className="col-lg-2 udb_prosec">
         <div className="udb_propicsection ms-4 me-5 mt-4 mb-4 pt-3 pb-3 ps-3 pe-3">
           <div style={{ position: "relative" }}>
             <img src={propic} className="udb_propic img-fluid" />

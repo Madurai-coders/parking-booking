@@ -21,7 +21,7 @@
   overflow-y: scroll;
   height: 100vh;
   background: #f9f9f9;
-  margin-top: -30px;
+  /* margin-top: -30px; */
 }
 
 .user_dashboard_username {

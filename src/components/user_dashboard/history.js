@@ -20,6 +20,7 @@ export default function History({booking_partner,payment_partner}) {
         var b = moment(endTo, "YYYY-MM-DD");
         var a = moment(new Date(), "YYYY-MM-DD");
         var day = b.diff(a, "days");
+        if (day==0){return(1)}
         return day;
       }
     

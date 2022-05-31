@@ -341,10 +341,10 @@ export default function Parkingsetup() {
          <title>Munidex Parking - Parking Setup </title>
       </Helmet>
 
-     {slot&& <ParkingSetup slot={slot}/>
+     {false&& <ParkingSetup slot={slot}/>
 }
 
-      {false && <>
+      {true && <>
 
       {remove_wing && (
         <div className="overlay">

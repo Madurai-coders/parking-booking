@@ -152,7 +152,7 @@ const Routes = () => {
   return (
     <>
       <BrowserRouter>
-      {window.innerWidth>1280 ?
+      {window.innerWidth>1100 ?
       <div className="row justify-content-center">
         <div
           initial={{ opacity: 0 }}

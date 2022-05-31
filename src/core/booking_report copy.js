@@ -628,6 +628,7 @@ console.log(booking_validity)
 
   function Daysleft(a, b) {
     var day = b.diff(a, "days");
+    if(day==0){return '1'}
     return day;
   }
 
@@ -1785,8 +1786,8 @@ if(selected_wing){
 
             {display == "booking_status" && (
               <>
-                <div className="col-7 mb-4">
-                  <div className="p-3 shadow rounded">
+                <div className="col-6 mb-4">
+                  <div className="p-2 shadow rounded">
                     {/* {maingraph && !slotgrap && (
                       <Bar data={maingraph} options={options}></Bar>
                     )} */}
@@ -1796,13 +1797,13 @@ if(selected_wing){
                   </div>
                 </div>
 
-                <div className="col-5 mb-4">
-                  <div className="p-3 shadow rounded">
+                <div className="col-6 mb-4">
+                  <div className="p-2 shadow rounded">
                     <Bar data={maingraph} options={options}></Bar>
                   </div>
                 </div>
 
-                <div className="col-12 p-3 mt-2">
+                <div className="col-12 p-3 ">
                   {booking_validity && (
                         <Table
                           headers={[

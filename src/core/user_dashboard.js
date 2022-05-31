@@ -44,6 +44,7 @@ import SetupProcess from "../components/user_dashboard/SetupProcessProgressbar";
 export default function User_dashboard() {
   const [popup, setPopup] = useState(false);
   const [user, setUser] = useState(false);
+  const [active, setactive] = useState(false)
   const [props, setprops] = useState();
 //   const [getAmount, setGetAmount] = useState(false);
 //   const [amount, setAmount] = useState();
@@ -322,6 +323,10 @@ export default function User_dashboard() {
     var b = moment(endTo, "YYYY-MM-DD");
     var a = moment(new Date(), "YYYY-MM-DD");
     var day = b.diff(a, "days");
+    if(day==0){return '1'}
+    if(!active&&day>=0){
+        setactive(true)
+    }
     return day;
   }
 
@@ -346,10 +351,11 @@ export default function User_dashboard() {
           }).then((response) => {
             console.log("newuser created");
             console.log(response);
-          });
+         
 
           axios_call("GET", "UserLogin").then((response) => {
             console.log(response[0]);
+            console.log('response[0]');
             console.log(response);
             setbooking({
               ...booking,
@@ -360,6 +366,7 @@ export default function User_dashboard() {
             Balance(response[0].payment_partner, response[0].booking_partner);
           });
         });
+    });
       } else {
         setbooking({
           ...booking,
@@ -559,6 +566,9 @@ export default function User_dashboard() {
         .then((response) => {
           console.log(response);
           console.log('response');
+          let userDate = user;
+          userDate.booking_partner.push(response);
+          setUser(user);
           console.log({ ...carDetails, bookingId: response.id });
           axios_call("POST", "CreateCarInfo/", {
             ...carDetails,bookingId: response.id,
@@ -919,6 +929,7 @@ export default function User_dashboard() {
 
               
               <div className="row">
+                  {window.innerWidth>1300&&
                 <Userprofile
                   name={user.lastName}
                   acntnum={user.accountNumber}
@@ -926,9 +937,9 @@ export default function User_dashboard() {
                   num="--"
                   setHistory={setHistory}
                   history_report={history_report}
-                />
+                />}
 
-                <div className="col-10">
+                <div className={window.innerWidth>1300?"col-10":'col-12'}>
                   <div className="row">
                     <div className="col-8 udb_middlescrollsection">
                       {!history_report && (
@@ -947,7 +958,7 @@ export default function User_dashboard() {
                           <div className=" px-3 p-3 bg-white rounded">
                             <div className="row ">
                               <div className="col-4">
-                                <div className="booking_form_date_input mt-2">
+                                <div className="booking_form_date_input mt-3">
                                   <label for="date">Date</label>
                                   <div
                                     style={{
@@ -976,6 +987,27 @@ export default function User_dashboard() {
                                 <div className="booking_form_name_input">
                                   <label for="name">Slot</label>
                                   <div className="d-flex flex-column booking_form_name_input">
+                                      {bookinghover ?
+                                      <input
+                                      type="text"
+                                      style={{
+                                        marginLeft: "50px",
+                                        marginTop: "10px",
+                                        background:'blue',
+                                        borderRadius:'4px',
+                                        color:"white",
+                                      }}
+                                      value={bookinghover.slotid&&
+                                        bookinghover.wing_name +
+                                        " [" +
+                                        bookinghover.slot_connect +
+                                        "]"}
+                                      //   onClick={() => setCarInfo(true)}
+                                      //   className={cardata.valid}
+                                      readOnly
+                                    />
+                                    :
+                                    
                                     <input
                                       type="text"
                                       style={{
@@ -991,6 +1023,8 @@ export default function User_dashboard() {
                                       //   className={cardata.valid}
                                       readOnly
                                     />
+}
+
                                   </div>
                                 </div>
                               </div>
@@ -1269,7 +1303,7 @@ export default function User_dashboard() {
                         </div>
                       </div>
                       <div className="udb_cartsection mt-4 pt-4 ps-3 pe-3 pb-2">
-                        {!user.booking_partner[0] && (
+                        {!active && (
                           <>
                             <div className="row justify-content-center mt-5">
                               {" "}

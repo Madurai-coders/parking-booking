@@ -140,6 +140,7 @@ export default function Booking() {
         var b = moment(val[0].endTo, "YYYY-MM-DD");
         var a = moment(new Date(), "YYYY-MM-DD");
         var day = b.diff(a, "days");
+        if(day==0){day=1}
         if (day < 10) {
           var indicate = "closes_soon";
         } else indicate = "booked";
