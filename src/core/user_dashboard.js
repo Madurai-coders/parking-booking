@@ -101,7 +101,7 @@ export default function User_dashboard() {
       validation_char(cardata.license).class == "pass" &&
       validation_char(cardata.make).class == "pass" &&
       validation_char(cardata.model).class == "pass" &&
-      validation_country(cardata.carRegistrationState).class == "pass" &&
+      validation_char(cardata.carRegistrationState).class == "pass" &&
       validation_value(cardata.color).class == "pass" &&
       validation_char(cardata.insurance).class == "pass"
     ) {
@@ -299,7 +299,7 @@ export default function User_dashboard() {
       booking_total = booking_total + parseInt(element.charge);
     });
     var val = payment_total - booking_total;
-
+console.log(val)
     if (val < 0) {
       setCredit({ amount: val, type: "Delinquent" });
     } else {
@@ -567,7 +567,7 @@ export default function User_dashboard() {
           console.log(response);
           console.log('response');
           let userDate = user;
-          userDate.booking_partner.push(response);
+          userDate.booking_partner.unshift(response);
           setUser(user);
           console.log({ ...carDetails, bookingId: response.id });
           axios_call("POST", "CreateCarInfo/", {
@@ -737,7 +737,79 @@ export default function User_dashboard() {
       )}
 
 
-          {carInfo && (
+         
+          {logout_popup && (
+            <div className="overlay">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Logout
+                    </h5>
+                    <button
+                      type="button"
+                      onClick={() => setlogout_popup(false)}
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      style={{ cursor: "pointer" }}
+                    ></button>
+                  </div>
+                  <div class="modal-body">Are you sure?</div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      onClick={() => setlogout_popup(false)}
+                      class="btn btn-light btn-sm"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={logoutuser}
+                      class="btn btn-danger btn-sm"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {user && (
+            <div className="user_dashboard_container">
+              <div className="udb_topsec p-2">
+                <img
+                  src={logo}
+                  alt="munidex_logo"
+                  className="user_dashboard_munidex_logo"
+                />
+                <img
+                  onClick={() => setlogout_popup(true)}
+                  src={userprof}
+                  alt="Customer_profile"
+                  className="user_dashboard_profile_icon"
+                />
+              </div>
+
+              
+              <div className="row">
+                  {window.innerWidth>1300&&
+                <Userprofile
+                  setHistory={setHistory}
+                  history_report={history_report}
+                  data={user}
+                />}
+
+                <div className={window.innerWidth>1300?"col-10":'col-12'}>
+                  <div className="row">
+                    <div className="col-8 udb_middlescrollsection">
+                      {!history_report && (
+                        <div>
+
+
+                             {carInfo && (
             <div className="overlay_carInfo shadow">
               <div className="row">
                 <div className="text-center h3" style={{ marginTop: "20px" }}>
@@ -805,7 +877,7 @@ export default function User_dashboard() {
                         setState={setCarData}
                         value={cardata.carRegistrationState}
                         keyValue={"carRegistrationState"}
-                        validate={validation_country}
+                        validate={validation_char}
                       />
                     </div>
 
@@ -872,78 +944,9 @@ export default function User_dashboard() {
             </div>
           )}
 
-          {logout_popup && (
-            <div className="overlay">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      Logout
-                    </h5>
-                    <button
-                      type="button"
-                      onClick={() => setlogout_popup(false)}
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                      style={{ cursor: "pointer" }}
-                    ></button>
-                  </div>
-                  <div class="modal-body">Are you sure?</div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      onClick={() => setlogout_popup(false)}
-                      class="btn btn-light btn-sm"
-                      data-bs-dismiss="modal"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      onClick={logoutuser}
-                      class="btn btn-danger btn-sm"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {user && (
-            <div className="user_dashboard_container">
-              <div className="udb_topsec p-2">
-                <img
-                  src={logo}
-                  alt="munidex_logo"
-                  className="user_dashboard_munidex_logo"
-                />
-                <img
-                  onClick={() => setlogout_popup(true)}
-                  src={userprof}
-                  alt="Customer_profile"
-                  className="user_dashboard_profile_icon"
-                />
-              </div>
 
-              
-              <div className="row">
-                  {window.innerWidth>1300&&
-                <Userprofile
-                  name={user.lastName}
-                  acntnum={user.accountNumber}
-                  email={user.email}
-                  num="--"
-                  setHistory={setHistory}
-                  history_report={history_report}
-                />}
 
-                <div className={window.innerWidth>1300?"col-10":'col-12'}>
-                  <div className="row">
-                    <div className="col-8 udb_middlescrollsection">
-                      {!history_report && (
-                        <div>
+
                           <SetupProcess
                             number={step}
                           
@@ -993,7 +996,7 @@ export default function User_dashboard() {
                                       style={{
                                         marginLeft: "50px",
                                         marginTop: "10px",
-                                        background:'blue',
+                                        background:'#007ffe',
                                         borderRadius:'4px',
                                         color:"white",
                                       }}

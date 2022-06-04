@@ -277,14 +277,14 @@ input:focus {
     position: fixed; /* Sit on top of the page content */
     /* Hidden by default */
     width: 75%; /* Full width (cover the whole page) */
-    height: 75%; /* Full height (cover the whole page) */
+    height: 640px; /* Full height (cover the whole page) */
     top: 12.5%;
     left: 12.5%;
     right: 0;
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.973); /* Black background with opacity */
     z-index: 2000000; /* Specify a stack order in case you're using a different order for other elements */
-    cursor: pointer; /* Add a pointer on hover */
+    cursor: pointer; /* Add a pointer on hover */ overflow-y: scroll;
   }
 
 
