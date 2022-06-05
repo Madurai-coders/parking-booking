@@ -154,7 +154,7 @@ function Dayleft(endTo){
                   return (
                     <tr className="user_dashboard_booking_details_table_data">
                       {/* <td>{userdata.Slots.wing.wingName}+[{userdata.slotid}]</td> */}
-                      <td>{userdata.slots.wing.wingName}</td>
+                      <td>{userdata.slots.wing.wingName+'['+userdata.slots.id+']'}</td>
                       <td>{moment(userdata.startFrom).format("DD-MM-YYYY")}</td>
                       <td>{moment(userdata.endTo).format("DD-MM-YYYY")}</td>
                       <td>{userdata.plan}</td>

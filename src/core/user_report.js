@@ -365,7 +365,7 @@ export default function User_report() {
             {usr_suggestion &&
               usr_suggestion.map((userdata) => {
                 return (
-                  <tr   onClick={() => (
+                  <tr style={{cursor:'pointer'}}   onClick={() => (
                     console.log(userdata),
                     setUser(userdata),
                     setFlag(false)

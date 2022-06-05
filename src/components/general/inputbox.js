@@ -98,6 +98,7 @@ export  function InputBoxDisplay({
               placeholder=" "
               value={value}
               readOnly
+              disabled
             />
             <label className="label_cons">{label}</label>
                     </div>

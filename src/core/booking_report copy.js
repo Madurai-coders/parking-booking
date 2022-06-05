@@ -27,7 +27,7 @@ import Table from "../components/table/table";
 import Loader from "../components/loader/loader";
 import "../../src/assets/css/general.css";
 export default function Booking_report() {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [date, setDate] = useState();
   const [selected_wing, setSelected_wing] = useState();
   const [slotgrap, setSlotgraph] = useState();
@@ -81,7 +81,7 @@ const [timer, settimer] = useState(false)
 
   let count = 0;
 
-  function MainGraph(start, end, booking, wing) {
+  function MainGraph(start, end, booking, wing,booking_by_date) {
     // console.log(wing);
     console.log(booking);
     var dateOne = moment(start);
@@ -127,7 +127,7 @@ const [timer, settimer] = useState(false)
     // console.log(wing_value_holder_reserved);
 
     if (selected_wing && booking) {
-      SlotGraph(selected_wing, booking, start, end);
+      SlotGraph(selected_wing, booking, start, end,true,booking_by_date);
     }
 
     setMaingraph({
@@ -156,7 +156,7 @@ const [timer, settimer] = useState(false)
     });
   }
 
-  const SlotGraph = async (wing, booking, start, end, selected) => {
+  const SlotGraph = async (wing, booking, start, end, selected,getbooking_data) => {
     var dateOne = moment(start);
     var dateTwo = moment(end);
 
@@ -171,6 +171,7 @@ const [timer, settimer] = useState(false)
       (val) => val.slots.wing.wingName == wing.wingName
     );
     if (data) {
+
       var booked_slots_wing_alter = data.filter(
         (val) => val.slots.wing.wingName == wing.wingName
       );
@@ -190,6 +191,28 @@ const [timer, settimer] = useState(false)
           amount: amount,
         });
       }
+    }
+    console.log(getbooking_data)
+    if(getbooking_data){
+        var booked_slots_wing_alter = getbooking_data.filter(
+            (val) => val.slots.wing.wingName == wing.wingName
+          );
+    
+          var amount = 0;
+          booked_slots_wing_alter.forEach((element) => {
+            amount = amount + parseInt(element.charge);
+          });
+    
+          setWing_result(booked_slots_wing_alter);
+          if (selected_wing || selected) {
+            setSlotdata({
+              ...slotdata,
+              unreserved: wing.slots.length - booked_slots_wing.length,
+              reserved: booked_slots_wing.length,
+              total: wing.slots.length,
+              amount: amount,
+            });
+          }
     }
 
     wing.slots.forEach((slot) => {
@@ -294,12 +317,15 @@ console.log(booking_validity)
     });
     var wingdata = await axios_call("GET", "CreateWing/");
     setWingData(wingdata);
+    console.log(booking_validity)
+    console.log('booking_validity')
+    console.log(wingdata)
 
-    if (wingdata && booking_validity) {
-      SlotGraph(wingdata[0], booking_validity, start1, end1);
-    }
+    // if (wingdata && booking_validity) {
+    //   SlotGraph(wingdata[0], booking_validity, start1, end1,selected_wing,wingdata);
+    // }
 
-    MainGraph(start1, end1, booking_validity, wingdata);
+    MainGraph(start1, end1, booking_validity, wingdata,booking);
 
     return booking;
   };
@@ -754,12 +780,11 @@ console.log(booking_validity)
           },
         ],
       });
-    }, 2000);
+    }, 1000);
   }
 
   function Table_data(data, key) {
     var val = [];
-    console.log(val)
 
     if (key == "Daily_payment") {
       let count = 0;
@@ -1427,15 +1452,15 @@ if(selected_wing){
                                   : "booking_report_wing_button"
                               }
                               onClick={() => (
+                                setSelected_wing(wing), 
+                                bookingPayment(wing),
                                 SlotGraph(
                                   wing,
                                   booking_validity.booking,
                                   booking_validity.start,
                                   booking_validity.end,
                                   true
-                                ),
-                                setSelected_wing(wing),
-                                bookingPayment(wing)
+                                )
                               )}
                             >
                               {wing.wingName}
