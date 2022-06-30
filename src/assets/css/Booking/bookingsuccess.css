@@ -4,6 +4,17 @@
   filter: drop-shadow(0px 0.788254px 3.15302px rgba(0, 0, 0, 0.25));
 }
 
+@media only screen and (max-width: 600px) {
+    .bookingspopup_container {
+        margin: 0% ;
+        padding: 1px;
+        padding-bottom:50px;
+         background: #ffffff;
+         filter: drop-shadow(0px 0.788254px 3.15302px rgba(0, 0, 0, 0.25));
+       }
+  }
+
+
 .bookingspopup_title {
   color: #11930f;
   font-weight: bold;

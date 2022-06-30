@@ -84,7 +84,7 @@ export default function Userprofile(props) {
               User Info
             </div>
 
-            <div className="col-5 text-center">
+            <div className="col-lg-5 col-md-12 text-center">
               
               <div className="d-flex flex-column" style={{ marginTop: "45px" }}>
                 <img
@@ -98,7 +98,7 @@ export default function Userprofile(props) {
               {props.data.accountNumber}
             </div>
 
-            <div className="col-7" style={{ marginTop: "30px" }}>
+            <div className="col-lg-7 col-md-12" style={{ marginTop: "30px" }}>
             {updated && (
                 <div class="alert alert-success mb-5" role="alert">
                   Update Successful!
@@ -163,7 +163,8 @@ export default function Userprofile(props) {
         </div>
       )}
 
-      <div className="col-lg-2 udb_prosec">
+      <div className="col-xl-2  col-lg-3 col-md-12 udb_prosec">
+        
         <div className="udb_propicsection ms-4 me-5 mt-4 mb-4 pt-3 pb-3 ps-3 pe-3">
           <div style={{ position: "relative" }}>
             <img src={propic} className="udb_propic img-fluid" />
@@ -212,7 +213,7 @@ export default function Userprofile(props) {
           Booking
         </div>
         <div
-          onClick={() => props.setHistory(true)}
+          onClick={() => (props.setHistory(true),props.setTab('Booking'))}
           className={
             props.history_report
               ? "btn btn-primary mt-3 "

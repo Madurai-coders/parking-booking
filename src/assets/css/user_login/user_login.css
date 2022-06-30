@@ -1,8 +1,10 @@
+
+
 .user_login{
     height : 100vh;
     background-image: url('../../images/cover.jpg');
     background-repeat: no-repeat;
-    background-size: 100% 55%;
+    background-size: 100% auto;
 }
 
 .user_login_card_container{
@@ -16,6 +18,8 @@
     width: 35%;
     border-radius: 8px;
 }
+
+
 
 .user_login_signin_logo{
   width:25%;
@@ -116,3 +120,23 @@
     -ms-transition: background-color 500ms linear;
     transition: background-color 200ms linear;
 }
+
+@media only screen and (max-width: 600px) {
+    .user_login_card{
+        background-color: #fff;
+        display:inline-block;
+        width: 90%;
+        border-radius: 8px;
+    }
+
+    .user_login{
+        background-image: url('../../images/cover.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+    }
+    .user_login_card_container{
+        position: relative;
+        top:5%;
+    }
+
+  }

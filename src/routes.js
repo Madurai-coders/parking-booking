@@ -152,13 +152,13 @@ const Routes = () => {
   return (
     <>
       <BrowserRouter>
-      {window.innerWidth>1100 ?
+     
       <div className="row justify-content-center">
         <div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          style={{ overflow: "hidden", height: "100vh" ,maxWidth:'1900px'}}
+        //   initial={{ opacity: 0 }}
+        //   animate={{ opacity: 1 }}
+        //   transition={{ duration: 0.6 }}
+        //   style={{ overflowX: "hidden", height: "100vh" ,maxWidth:'1900px'}}
         >
           <Switch>
             {!is_admin && (
@@ -170,19 +170,24 @@ const Routes = () => {
                     <Admin_login login={call_login} Email_login={Email_login} is_admin={is_admin} loading={loading} />
                   )}
                 />
+                <Route
+                  path="/"
+                  exact
+                  render={() => (
+                    <User_login login={call_login} Email_login={Email_login} is_admin={is_admin} loading={loading} />
+                  )}
+                />
 
                 <Route path="/dashboard" exact component={User_dashboard} />
-                <Route path="/" exact component={User_login} />
-                <Route   render={() => (
-                    <Admin_login login={call_login} Email_login={Email_login}  is_admin={is_admin} loading={loading}/>
-                  )}/>       
-
+                
               </>
             )}
           </Switch>
           {is_admin && (
+            
             <Switch>
-              <Route path="/" exact component={User_login} />
+
+                 {window.innerWidth>1100 ?
               <div className="d-flex flex-row" >
                 <div>
                   <Navigation />
@@ -219,21 +224,25 @@ const Routes = () => {
                   <Route path="/test" exact component={test} />
                 </>
               </div>
+              :
+              <>
+              <div className="centered">
+                                    {" "}
+                                    <img src={screenwidth} className="w-100" />
+                                  
+                                  <div className="h4 text-center text-muted mt-5">
+                                   Not supported
+                                  </div>
+                                  </div>
+              </>
+                }
             </Switch>
-          )}
-        </div></div>
-        :
-        <>
-        <div className="centered">
-                              {" "}
-                              <img src={screenwidth} className="w-100" />
-                            
-                            <div className="h4 text-center text-muted mt-5">
-                             Not supported
-                            </div>
-                            </div>
-        </>
+
+
+          )
           }
+        </div></div>
+       
       </BrowserRouter>
     </>
   );

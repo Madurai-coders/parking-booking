@@ -4,13 +4,15 @@
 }
 
 .user_dashboard_munidex_logo {
-  width: 8%;
+  width: 125px;
 }
 
 .user_dashboard_profile_icon {
-  width: 2.04%;
-  margin-left: 84%;
   cursor: pointer;
+  width: 30px;
+  height: 30px;
+  margin-top: 2px;
+
 }
 
 .udb_topsec {
@@ -772,3 +774,19 @@ border-radius: 4px;
   border-bottom: 2px dashed #4F4F4F;
   background: none;
 }
+
+@media only screen and (max-width: 600px) {
+    .user_dashboard_container {
+        overflow-x: hidden;
+      }
+
+      .udb_cartsection {
+        overflow-y: scroll;
+        background: #eeeeee;
+        border-radius: 0px 0px 0px 0px;
+        height: 67vh;
+        padding-left:0px ;
+       
+        /* margin-bottom: 20px; */
+      }
+  }

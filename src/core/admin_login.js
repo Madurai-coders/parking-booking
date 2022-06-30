@@ -216,7 +216,7 @@ const EnterForgotPassword=(event)=> {
                     {validation_password(form_values.password).msg}
                   </div>
                 </div>
-                <div className="d-flex flex-row px-5 justify-content-lg-between">
+                <div className="d-flex flex-row px-lg-5 px-2 justify-content-between">
                   <div
                     className="mb-4"
                     style={{ marginLeft: "20px", marginTop: "-2px" }}
@@ -312,13 +312,13 @@ const EnterForgotPassword=(event)=> {
                     {validation_email(resetemail).msg}
                   </div>
                 </div>
-                <div className="d-flex flex-row px-5 mb-4 justify-content-lg-between">
+                <div className="d-flex flex-row px-xl-5 px-3  mb-4 justify-content-between">
                   <div
                     className="mb-4"
                     style={{ marginLeft: "20px", marginTop: "-2px" }}
                   >
                     <div
-                      className="btn btn-primary btn-sm px-4 "
+                      className="btn btn-primary btn-sm "
                       onClick={Getlink}
                     >
                       Get Link

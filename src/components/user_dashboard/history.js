@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useMemo } from "react";
 import moment from "moment";
 
-export default function History({booking_partner,payment_partner}) {
+export default function History({booking_partner,payment_partner,setHistory,isDesktopOrLaptop}) {
     const [table, setTable] = useState({
         bookingdetails: true,
         transactionhistory: false,
@@ -29,7 +29,11 @@ export default function History({booking_partner,payment_partner}) {
     return(
         <>
  <div className="row user_dashboard_bookingdetails_heading mt-5 ps-2 pe-2">
- {" "}
+{!isDesktopOrLaptop&&<div className="d-flex justify-content-end">
+<div className="btn btn-sm btn-primary" onClick={()=>setHistory(false)}>
+    close
+</div>
+ </div>}
  <div
    className="col-6 user_dashboard_bookingdetails_heading_bd p-4"
    onClick={() => toggleTable("bookingdetails")}
@@ -37,12 +41,7 @@ export default function History({booking_partner,payment_partner}) {
      cursor:'pointer',
      backgroundColor: table.bookingdetails
        ? "#f0f8ff"
-       : "#fff",
-   }}
- >
-   {" "}
-   Booking Details{" "}
- </div>
+       : "#fff"}}>Booking Details</div>
  <div
    className="col-6 user_dashboard_bookingdetails_heading_th p-4"
    onClick={() => toggleTable("transactionhistory")}
@@ -52,16 +51,14 @@ export default function History({booking_partner,payment_partner}) {
        ? "#f0f8ff"
        : "#fff",
    }}
- >
-   {" "}
-   Transaction History
+ >Transaction History
  </div>
 </div>
 
 
 
 {table.bookingdetails && (
-    <div className="user_dashboard_booking_details_card pb-5 ">
+    <div className="user_dashboard_booking_details_card pb-5 " style={{overflowX:'scroll'}}>
       <table className="user_dashboard_booking_details_table">
         <tr className="user_dashboard_booking_details_table_heading">
           <th>Wing</th>

@@ -376,6 +376,7 @@ seterror('loading')
                 }
                 placeholder="Confirm Password"
                 onKeyDown={(e) => Entercredentials(e)}
+                
               />
               <div
                 style={{
@@ -389,13 +390,13 @@ seterror('loading')
                 {validation_password(form_values.retypedPassword).msg}
               </div>
             </div>
-            <div className="d-flex flex-row px-5 justify-content-lg-between">
+            <div className="d-flex flex-row px-lg-5 px-4 justify-content-between">
               <div
                 className="mb-4"
                 style={{ marginLeft: "20px", marginTop: "-2px" }}
               >
                 <div
-                  className="btn btn-primary btn-sm px-4 "
+                  className="btn btn-primary btn-sm "
                   onClick={onSubmit}
                   disabled={error == "loading"}
                 >

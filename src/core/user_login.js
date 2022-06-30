@@ -53,8 +53,6 @@ export default function User_login(props) {
     ) {
       val = true;
     } else {
-      toastifyfail();
-
       if (form_values.email == "not_selected") {
         value = { ...value, email: "" };
       }
@@ -70,7 +68,7 @@ export default function User_login(props) {
     seterror_login(props.loading);
     const result = await form_validate();
     console.log(result);
-    email_login(false, form_values.email, form_values.password).then((log) => {
+   if(result){ email_login(false, form_values.email, form_values.password).then((log) => {
       console.log(log);
       if (log != "error") {
         axios_call("GET", "GetUserAccount").then((response) => {
@@ -82,7 +80,9 @@ export default function User_login(props) {
       } else {
         seterror_login("error");
       }
-    });
+    });}
+    else {
+        seterror_login();}
   };
 
   const Getlink = async () => {
@@ -234,7 +234,7 @@ export default function User_login(props) {
                       {validation_password(form_values.password).msg}
                     </div>
                   </div>
-                  <div className="d-flex flex-row px-5 justify-content-lg-between">
+                  <div className="d-flex flex-row px-lg-5 px-3 justify-content-between">
                     <div
                       className="mb-4"
                       style={{ marginLeft: "20px", marginTop: "-2px" }}
@@ -343,13 +343,13 @@ export default function User_login(props) {
                       {validation_email(resetemail).msg}
                     </div>
                   </div>
-                  <div className="d-flex flex-row px-5 mb-4 justify-content-lg-between">
+                  <div className="d-flex flex-row px-lg-5 px-3 mb-4 justify-content-between">
                     <div
                       className="mb-4"
                       style={{ marginLeft: "20px", marginTop: "-2px" }}
                     >
                       <div
-                        className="btn btn-primary btn-sm px-4 "
+                        className="btn btn-primary btn-sm "
                         onClick={Getlink}
                       >
                         Get Link
