@@ -30,6 +30,8 @@ import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
 import "../src/assets/css/general.css";
 import screenwidth from "./assets/images/screenwidth.svg"
+import { useMediaQuery } from 'react-responsive'
+
 const Logoplacer = (props) => {
   const logation = useLocation();
   //   var icon = Cookies.get("icon")
@@ -54,6 +56,10 @@ const Logoplacer = (props) => {
 };
 
 const Routes = () => {
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-width: 1224px)'
+      })
+      
   let history = useHistory();
   const [is_admin, setis_admin] = useState(false);
   const [user, setuser] = useState();
@@ -71,7 +77,7 @@ const Routes = () => {
       if (log != null) {
         axios({
           method: "GET",
-          url: "http://127.0.0.1:8000/admins/",
+          url: "https://munidexparking.pythonanywhere.com/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {
@@ -97,7 +103,7 @@ const Routes = () => {
       if (log != null && log != 'error') {
         axios({
           method: "GET",
-          url: "http://127.0.0.1:8000/admins/",
+          url: "https://munidexparking.pythonanywhere.com/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {
@@ -153,12 +159,12 @@ const Routes = () => {
     <>
       <BrowserRouter>
      
-      <div className="row justify-content-center">
+      <div className={isDesktopOrLaptop?"row justify-content-center":''} >
         <div
-        //   initial={{ opacity: 0 }}
-        //   animate={{ opacity: 1 }}
-        //   transition={{ duration: 0.6 }}
-        //   style={{ overflowX: "hidden", height: "100vh" ,maxWidth:'1900px'}}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          style={{ overflowX: "hidden", height: "100vh" ,maxWidth:'1900px',}}
         >
           <Switch>
             {!is_admin && (

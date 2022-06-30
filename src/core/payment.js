@@ -194,7 +194,7 @@ export default function Payment() {
             console.log(userCredential);
             axios({
                 method: "POST",
-                url: "http://127.0.0.1:8000/register/",
+                url: "https://munidexparking.pythonanywhere.com/register/",
                 data: {
                   username: userCredential.user.email,
                   password: userCredential.user.uid,
