@@ -65,13 +65,14 @@ export default function User_login(props) {
   }
 
   const onSubmit = async () => {
-    seterror_login(props.loading);
+    seterror_login('loading');
     const result = await form_validate();
     console.log(result);
    if(result){ email_login(false, form_values.email, form_values.password).then((log) => {
       console.log(log);
       if (log != "error") {
         axios_call("GET", "GetUserAccount").then((response) => {
+   seterror_login('loading');
             console.log(response[0])
           if (response[0].username) {
             history.push("/dashboard");
@@ -148,7 +149,7 @@ export default function User_login(props) {
                     </Link>
                   </div>
                   <div className="mt-4 mb-2">
-                    <input
+                   <input autocapitalize="none"
                       type="text"
                       onBlur={(e) =>
                         setForm_values({
@@ -189,7 +190,7 @@ export default function User_login(props) {
                     >
                       {validation_email(form_values.email).msg}
                     </div>
-                    <input
+                   <input autocapitalize="none"
                       onBlur={(e) =>
                         setForm_values({
                           ...form_values,
@@ -292,9 +293,9 @@ export default function User_login(props) {
                       </div>
                     </>
                   )}
-                  {props.loading && props.loading != "error" && (
+                  {error_login == "loading" && (
                     <div
-                      class="spinner-border text-danger text-center mb-3"
+                      class="spinner-border text-primary text-center mb-3"
                       role="status"
                     >
                       <span class="sr-only"></span>
@@ -314,7 +315,7 @@ export default function User_login(props) {
                     </Link>
                   </div>
                   <div className="mt-4 mb-2">
-                    <input
+                   <input autocapitalize="none"
                       type="text"
                       onBlur={(e) => setResetemail(e.target.value)}
                       onChange={(e) => (
@@ -370,7 +371,7 @@ export default function User_login(props) {
                   </div>
                   {error == "loading" && (
                     <div
-                      class="spinner-border text-danger text-center mb-3"
+                      class="spinner-border text-primary text-center mb-3"
                       role="status"
                     >
                       <span class="sr-only"></span>

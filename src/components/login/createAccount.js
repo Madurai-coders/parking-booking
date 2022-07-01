@@ -212,6 +212,7 @@ seterror('loading')
             />
             <div className="mt-4 mb-2">
               <input
+              autocapitalize="none"
                 type="text"
                 onBlur={(e) =>
                   setForm_values({
@@ -254,7 +255,7 @@ seterror('loading')
               </div>
 
               <>
-                <input
+               <input autocapitalize="none"
                   type="text"
                   onBlur={(e) =>
                     setForm_values({
@@ -298,7 +299,7 @@ seterror('loading')
               </>
 
               <>
-                <input
+               <input autocapitalize="none"
                      type={visible?"password":"text"}
                      onMouseOver={()=>setVisible(false)}
                      onMouseLeave={()=>setVisible(true)}
@@ -344,7 +345,7 @@ seterror('loading')
                 </div>
               </>
 
-              <input
+             <input autocapitalize="none"
                 type={visible?"password":"text"}
                 onMouseOver={()=>setVisible(false)}
                 onMouseLeave={()=>setVisible(true)}
