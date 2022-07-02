@@ -235,13 +235,13 @@ export default function User_login(props) {
                       {validation_password(form_values.password).msg}
                     </div>
                   </div>
-                  <div className="d-flex flex-row px-lg-5 px-3 justify-content-between">
+                  <div className="d-flex flex-row px-lg-5 px-2 justify-content-between">
                     <div
                       className="mb-4"
-                      style={{ marginLeft: "20px", marginTop: "-2px" }}
+                      style={{ marginLeft: "10px", marginTop: "-2px" }}
                     >
                       <div
-                        className="btn btn-primary btn-sm px-4 "
+                        className="btn btn-primary btn-sm "
                         onClick={onSubmit}
                       >
                         Sign In

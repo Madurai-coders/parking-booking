@@ -139,4 +139,10 @@
         top:5%;
     }
 
+    .user_login_signin_acntnumber,.user_login_signin_lastname{
+        width:90%;
+        border-width: 0 0 1px 0;
+        border-style: solid;
+        border-color: #9a9a9a
+    }
   }
