@@ -77,6 +77,7 @@ export default function User_dashboard() {
   const [mailStatus, setMailStatus] = useState();
   const [tab, setTab] = useState("Booking");
   const [carInfo, setCarInfo] = useState(false);
+  const [payment_pop, setpayment_pop] = useState({pop:true,amount:null,error:false});
   const [cardata, setCarData] = useState({
     license: "not_selected",
     make: "not_selected",
@@ -87,6 +88,7 @@ export default function User_dashboard() {
     permitYear: moment(new Date()).format("YYYY"),
     valid: "nil",
   });
+  
 
   const [booking, setbooking] = useState({
     userId: "not_selected",
@@ -431,42 +433,108 @@ export default function User_dashboard() {
       };
 
       console.log(data);
-      axios_call(
-        "POST",
-        "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
-        data
-      ).then((response) => {
-        console.log(response);
-        let userDate = user;
-        userDate.payment_partner.push(response);
-        setUser(user);
+    //   axios_call(
+    //     "POST",
+    //     "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+    //     data
+    //   ).then((response) => {
+    //     console.log(response);
+    //     let userDate = user;
+    //     userDate.payment_partner.push(response);
+    //     setUser(user);
 
-        FormSumbit();
+    //     FormSumbit();
+    //   });
+
+        // window.location.replace("https://taxdev.munidex.info/pbs2/pbs/");
+
+      axios({
+        method: "POST",
+        url: "https://taxdev.munidex.info/pbs2/pbsreq",
+        data: body,
+        port: 443,
+        headers: {
+          "Content-Type": "application/json",
+          Cookie:
+            "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
+        },
+        json: true,
+        withCredentials: true
+      }).then((response) => {
+    //   window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
+    //     console.log(response);
       });
-
-      //   window.location.replace("https://taxdev.munidex.info/pbs2/pbs/");
-
-      // axios({
-      //   method: "POST",
-      //   url: "https://taxdev.munidex.info/pbs2/pbsreq",
-      //   data: body,
-      //   port: 443,
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Cookie:
-      //       "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
-      //   },
-      //   json: true,
-      //   withCredentials: true
-      // }).then((response) => {
-
-      // window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
-
-      //   console.log(response);
-
-      // });
     }
   }
+
+  function CallPayment_pop(val) {
+    // console.log(user);
+    // console.log(val);
+    // if (val > 10) {
+      var body = {
+        fname: user.userName,
+        lname: user.userName,
+        email: user.email,
+        amount: val,
+        transfee: 1.5,
+        muni_code: "1122",
+        dept: "pkng",
+        pbsdescr: "Parking Fees",
+        clientrefnum: "abcd-12d3s4-123-121",
+        ptype: "CC",
+        pprovider: "PROC",
+        rme: false,
+      };
+
+    //   var data = {
+    //     secretKey: "9401f9e0-6596-11ec-bd15-8d09a4545895",
+    //     userId: user.id,
+    //     paymentId: generateUUID(),
+    //     paymentType: "online",
+    //     paymentDate: new Date(),
+    //     amount: val,
+    //   };
+
+    //   console.log(data);
+    //   axios_call(
+    //     "POST",
+    //     "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+    //     data
+    //   ).then((response) => {
+    //     console.log(response);
+    //     let userDate = user;
+    //     userDate.payment_partner.push(response);
+    //     setUser(user);
+
+    //     FormSumbit();
+    //   });
+
+        // window.location.replace("https://taxdev.munidex.info/pbs2/pbs/");
+        // window.location.replace("http://localhost:3000/dashboard?payment=successful");
+
+      axios({
+        method: "POST",
+        url: "https://taxdev.munidex.info/pbs2/pbsreq",
+        data: body,
+        port: 443,
+        headers: {
+          "Content-Type": "application/json",
+          Cookie:
+            "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
+        },
+        json: true,
+        withCredentials: true
+      }).then((response) => {
+      window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
+        console.log(response);
+      });
+    // }
+    // else{
+    //     setpayment_pop({...payment_pop,error:'Please enter a valid amount'})
+    // }
+  }
+
+
 
   function nextStep(val) {
     console.log(booking);
@@ -1381,8 +1449,8 @@ export default function User_dashboard() {
 
                     {(tab == "Online" || isDesktopOrLaptop)  && (
                       <>
-                        <div className="col-xl-4 col-md-12 ">
-                          <div className="udb_bcsection mt-4 pt-4 ps-4 pe-lg-3 mx-5 me-lg-4">
+                        <div className="col-xl-4 col-md-12">
+                          <div className="udb_bcsection mt-4 pt-4 ps-4 pe-lg-3 mx-lg-5 mx-1 me-lg-4" onClick={()=>setpayment_pop({...payment_pop,pop:true})}>
                             <div className="udb_bctext mt-3 mb-2 ms-2">
                               Balance
                             </div>
@@ -1399,11 +1467,11 @@ export default function User_dashboard() {
                               <span
                                 className={
                                   credit.type == "Delinquent"
-                                    ? "udb_bcdelinquent pt-2 pb-1 ps-2 pe-2"
-                                    : "udb_bccredit pt-2 pb-1 ps-2 pe-2"
+                                    ? "udb_bcdelinquent pt-2 pb-1 ps-2 pe-2 mx-lg-0 mx-3"
+                                    : "udb_bccredit pt-2 pb-1 ps-2 pe-2 mx-lg-0 mx-3"
                                 }
                               >
-                                {credit && credit.type}{" "}
+                                {credit && credit.type}
                               </span>
                             </div>
                           </div>
@@ -1437,6 +1505,41 @@ export default function User_dashboard() {
                               );
                             })}
                           </div>
+
+                          {payment_pop.pop && (
+                                <div className="overlay_carInfo shadow">
+                                    {payment_pop.error && (
+                                <div className="alert alert-danger mt-3">
+                                  {payment_pop.error}
+                                </div>
+                              )}
+                                  <div className="row">
+                                    <div
+                                      className="text-center h3"
+                                      style={{ marginTop: "20px" }}
+                                    >
+                                      Payment
+                                      </div>
+                                      </div>
+                                      <form className="mx-5">
+  <div class="form-group mt-2 mb-2">
+    <input type="number" class="form-control form-control-lg" onChange={(e)=>setpayment_pop({...payment_pop,amount:e.target.value,error:null})} placeholder="Enter amount"/>
+  </div>
+ <div className="text-center mt-4">
+  <button type="button" class="btn btn-primary mx-2 btn-block" onClick={()=>CallPayment_pop(payment_pop.amount)}>Make payment</button>
+  <button type="button" class="btn btn-light  btn-block" onClick={(e)=>setpayment_pop({...payment_pop,pop:false})}>Close</button>
+  </div>
+</form>
+                            <History
+                            setHistory={setHistory}
+                            isDesktopOrLaptop={isDesktopOrLaptop}
+                              booking_partner={user.booking_partner}
+                              payment_partner={user.payment_partner}
+                              transaction={true}
+                            ></History>
+
+                                    </div>
+                                    )}
                           {/* <div className="udb_carttotal p-4">
                         Total Amount : $46
                       </div>

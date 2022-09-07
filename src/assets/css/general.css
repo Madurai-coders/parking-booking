@@ -275,9 +275,8 @@ input:focus {
 
 .overlay_carInfo {
     position: fixed; /* Sit on top of the page content */
-    /* Hidden by default */
-    width: 70%; /* Full width (cover the whole page) */
-    height: 70%; /* Full height (cover the whole page) */
+    width: 1000px; /* Full width (cover the whole page) */
+    height: 600px; /* Full height (cover the whole page) */
     top: 15%;
     left: 15%;
     right: 0;
@@ -286,13 +285,13 @@ input:focus {
     z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
     border-radius: 16px;
-  }
+    overflow-y: scroll;
+}
 
 
-  @media only screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) {
     .overlay_carInfo {
         position: fixed; /* Sit on top of the page content */
-        /* Hidden by default */
         width: 99%; /* Full width (cover the whole page) */
         height:100%; /* Full height (cover the whole page) */
         left: 0;
@@ -301,7 +300,8 @@ input:focus {
         bottom: 0;
         background-color: rgba(255, 255, 255, 0.973); /* Black background with opacity */
         z-index: 2000000; /* Specify a stack order in case you're using a different order for other elements */
-        cursor: pointer; /* Add a pointer on hover */ overflow-y: scroll;
+        cursor: pointer; /* Add a pointer on hover */ 
+        overflow-y: scroll;
       }
   }
 

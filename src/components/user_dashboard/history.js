@@ -1,10 +1,10 @@
 import React, { useState, useEffect,useMemo } from "react";
 import moment from "moment";
 
-export default function History({booking_partner,payment_partner,setHistory,isDesktopOrLaptop}) {
+export default function History({booking_partner,payment_partner,setHistory,isDesktopOrLaptop,transaction}) {
     const [table, setTable] = useState({
-        bookingdetails: true,
-        transactionhistory: false,
+        bookingdetails:transaction?false:true,
+        transactionhistory: transaction?true:false,
       });
 
       function toggleTable(val) {
