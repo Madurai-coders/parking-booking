@@ -518,9 +518,7 @@ export default function User_dashboard() {
         data: body,
         port: 443,
         headers: {
-          "Content-Type": "application/json",
-          Cookie:
-            "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
+          "Content-Type": "application/json",       
         },
         json: true,
         withCredentials: true
