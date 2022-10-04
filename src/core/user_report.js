@@ -46,7 +46,8 @@ export default function User_report() {
     var payment_total = 0;
     var booking_total = 0;
     payment.forEach((element) => {
-      payment_total = payment_total + element.amount;
+        if(element.Status!='failed'){
+      payment_total = payment_total + element.amount;}
     });
     booking.forEach((element) => {
       booking_total = booking_total + parseInt(element.charge);

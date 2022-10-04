@@ -288,6 +288,20 @@ input:focus {
     overflow-y: scroll;
 }
 
+.pay {
+    position: fixed; /* Sit on top of the page content */
+    width: 1000px; /* Full width (cover the whole page) */
+    height: 600px; /* Full height (cover the whole page) */
+    top: 15%;
+    left: 15%;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(255, 255, 255); /* Black background with opacity */
+    z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+    border-radius: 16px;
+    overflow-y: scroll;
+}
 
 @media only screen and (max-width: 600px) {
     .overlay_carInfo {

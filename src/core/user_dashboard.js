@@ -19,7 +19,7 @@ import DatePicker from "react-datepicker";
 import tick from "../assets/images/tick.svg";
 import view from "../assets/images/view.svg";
 import close from "../assets/images/close.svg";
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from "react-responsive";
 import {
   validation_name,
   validation_value,
@@ -28,6 +28,7 @@ import {
   axios_call_unauthenticated,
   axios_call_auto,
   validation_count,
+  axios_call_error,
   logout,
   generateUUID,
   formatUsd,
@@ -41,14 +42,17 @@ import { useHistory, Redirect } from "react-router-dom";
 import { InputBox } from "../components/general/inputbox";
 import noBooking from "../assets/images/noactiveBooking.svg";
 import SetupProcess from "../components/user_dashboard/SetupProcessProgressbar";
-export default function User_dashboard() {
-    const isDesktopOrLaptop = useMediaQuery({
-        query: '(min-width: 1224px)'
-      })
+import { useParams } from "react-router-dom";
 
-      const isTabOrLaptop = useMediaQuery({
-        query: '(min-width: 1024px)'
-      })
+export default function User_dashboard() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+
+  const isTabOrLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
+  let { id, status, key } = useParams();
   const [popup, setPopup] = useState(false);
   const [user, setUser] = useState(false);
   const [active, setactive] = useState(false);
@@ -77,7 +81,11 @@ export default function User_dashboard() {
   const [mailStatus, setMailStatus] = useState();
   const [tab, setTab] = useState("Booking");
   const [carInfo, setCarInfo] = useState(false);
-  const [payment_pop, setpayment_pop] = useState({pop:true,amount:null,error:false});
+  const [payment_pop, setpayment_pop] = useState({
+    pop: false,
+    amount: null,
+    error: false,
+  });
   const [cardata, setCarData] = useState({
     license: "not_selected",
     make: "not_selected",
@@ -88,7 +96,6 @@ export default function User_dashboard() {
     permitYear: moment(new Date()).format("YYYY"),
     valid: "nil",
   });
-  
 
   const [booking, setbooking] = useState({
     userId: "not_selected",
@@ -289,18 +296,13 @@ export default function User_dashboard() {
     }
   }
 
-  useEffect(() => {
-    GetWingDetails();
-    setTimeout(() => {
-      GetBooking();
-    }, 1000);
-  }, []);
-
   function Balance(payment, booking) {
     var payment_total = 0;
     var booking_total = 0;
     payment.forEach((element) => {
-      payment_total = payment_total + element.amount;
+      if (element.status == "success") {
+        payment_total = payment_total + element.amount;
+      }
     });
     booking.forEach((element) => {
       booking_total = booking_total + parseInt(element.charge);
@@ -339,7 +341,7 @@ export default function User_dashboard() {
     return day;
   }
 
-  useEffect(() => {
+  function calluseEffect() {
     axios_call("GET", "UserLogin").then((response) => {
       console.log(response[0]);
       if (response[0] == undefined) {
@@ -386,10 +388,15 @@ export default function User_dashboard() {
       }
     });
 
+    GetWingDetails();
+    setTimeout(() => {
+      GetBooking();
+    }, 2000);
+
     setTimeout(() => {
       setloader(false);
     }, 3000);
-  }, []);
+  }
 
   function logoutuser() {
     logout().then(function (log) {
@@ -405,8 +412,6 @@ export default function User_dashboard() {
   }
 
   function CallPayment(val) {
-    console.log(user);
-    console.log(val);
     if (val > 10) {
       var body = {
         fname: user.userName,
@@ -426,51 +431,66 @@ export default function User_dashboard() {
       var data = {
         secretKey: "9401f9e0-6596-11ec-bd15-8d09a4545895",
         userId: user.id,
-        paymentId: generateUUID(),
+        paymentId: body.clientrefnum,
         paymentType: "online",
         paymentDate: new Date(),
         amount: val,
+        Status: "failed",
+        key: generateUUID(),
       };
 
       console.log(data);
-    //   axios_call(
-    //     "POST",
-    //     "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
-    //     data
-    //   ).then((response) => {
-    //     console.log(response);
-    //     let userDate = user;
-    //     userDate.payment_partner.push(response);
-    //     setUser(user);
+      axios_call(
+        "POST",
+        "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+        data
+      ).then((response_main) => {
+        console.log(response_main);
+        let userDate = user;
+        userDate.payment_partner.push(response_main);
+        setUser(user);
+        FormSubmit(body.clientrefnum);
 
-    //     FormSumbit();
-    //   });
+        axios_call("POST", "PaymentEndpoint/", {
+          status: "S",
+          transNum: body.clientrefnum,
+          serviceType: "pkg",
+        }).then((response_main) => {
+          console.log(response_main);
+        });
 
-        // window.location.replace("https://taxdev.munidex.info/pbs2/pbs/");
-
-      axios({
-        method: "POST",
-        url: "https://taxdev.munidex.info/pbs2/pbsreq",
-        data: body,
-        port: 443,
-        headers: {
-          "Content-Type": "application/json",
-          Cookie:
-            "connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0",
-        },
-        json: true,
-        withCredentials: true
-      }).then((response) => {
-    //   window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
-    //     console.log(response);
+        axios({
+          method: "POST",
+          url: "http://localhost:9000/testAPI/",
+          data: body,
+          port: 443,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          json: true,
+        }).then((response) => {
+          window.location.replace(
+            "https://taxdev.munidex.info/pbs2/pbs/" +
+              response.data +
+              "?returnUri=http://localhost:3001/dashboard/" +
+              response_main.id +
+              "/booking/" +
+              body.clientrefnum
+          );
+          console.log(response);
+        });
       });
+    } else {
+      setpayment_pop({ ...payment_pop, error: "Please enter a valid amount" });
+      console.log(generateUUID());
+      if (id) {
+        console.log(id);
+      }
     }
   }
 
   function CallPayment_pop(val) {
-    // console.log(user);
-    // console.log(val);
-    // if (val > 10) {
+    if (val > 10) {
       var body = {
         fname: user.userName,
         lname: user.userName,
@@ -480,59 +500,72 @@ export default function User_dashboard() {
         muni_code: "1122",
         dept: "pkng",
         pbsdescr: "Parking Fees",
-        clientrefnum: "abcd-12d3s4-123-121",
+        clientrefnum: generateUUID(),
         ptype: "CC",
         pprovider: "PROC",
         rme: false,
       };
 
-    //   var data = {
-    //     secretKey: "9401f9e0-6596-11ec-bd15-8d09a4545895",
-    //     userId: user.id,
-    //     paymentId: generateUUID(),
-    //     paymentType: "online",
-    //     paymentDate: new Date(),
-    //     amount: val,
-    //   };
+      var data = {
+        secretKey: "9401f9e0-6596-11ec-bd15-8d09a4545895",
+        userId: user.id,
+        paymentId: body.clientrefnum,
+        paymentType: "online",
+        paymentDate: new Date(),
+        amount: val,
+        Status: "failed",
+        key: generateUUID(),
+      };
 
-    //   console.log(data);
-    //   axios_call(
-    //     "POST",
-    //     "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
-    //     data
-    //   ).then((response) => {
-    //     console.log(response);
-    //     let userDate = user;
-    //     userDate.payment_partner.push(response);
-    //     setUser(user);
+      console.log(data);
 
-    //     FormSumbit();
-    //   });
+      axios_call(
+        "POST",
+        "CreateOnlinePayment/4ebd0208-8328-5d69-8c44-ec50939c0967/",
+        data
+      ).then((response_main) => {
+        console.log(response_main);
+        let userDate = user;
+        userDate.payment_partner.push(response_main);
+        setUser(user);
 
-        // window.location.replace("https://taxdev.munidex.info/pbs2/pbs/");
-        // window.location.replace("http://localhost:3000/dashboard?payment=successful");
+        axios_call("POST", "PaymentEndpoint/", {
+          status: "S",
+          transNum: body.clientrefnum,
+          serviceType: "pkg",
+        }).then((response_main) => {
+          console.log(response_main);
+        });
 
-      axios({
-        method: "POST",
-        url: "https://taxdev.munidex.info/pbs2/pbsreq",
-        data: body,
-        port: 443,
-        headers: {
-          "Content-Type": "application/json", 
-          'Cookie': 'connect.sid=s%3Ajn1ZAMIq3w-AOZiwO4qGDqsbFvfd6OT7.4xwH5hCrPjKBetTh6rW8NogYksb84jMRdpfzNUJibN0'
-        },
-        json: true,
-      }).then((response) => {
-    //   window.location.replace('https://taxdev.munidex.info/pbs2/pbs/' + response + '?returnUri=http://localhost:3000/dashboard')
-        console.log(response);
+        axios({
+          method: "POST",
+          url: "http://localhost:9000/testAPI/",
+          data: body,
+          port: 443,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          json: true,
+        }).then((response) => {
+          window.location.replace(
+            "https://taxdev.munidex.info/pbs2/pbs/" +
+              response.data +
+              "?returnUri=http://localhost:3001/dashboard/" +
+              response_main.id +
+              "/payment/" +
+              body.clientrefnum
+          );
+          console.log(response);
+        });
       });
-    // }
-    // else{
-    //     setpayment_pop({...payment_pop,error:'Please enter a valid amount'})
-    // }
+    } else {
+      setpayment_pop({ ...payment_pop, error: "Please enter a valid amount" });
+      console.log(generateUUID());
+      if (id) {
+        console.log(id);
+      }
+    }
   }
-
-
 
   function nextStep(val) {
     console.log(booking);
@@ -571,7 +604,7 @@ export default function User_dashboard() {
     }
   }
 
-  function FormSumbit() {
+  function FormSubmit(key) {
     var startFrom = moment(booking.date, "YYYY-MM-DD").format("YYYY-MM-DD");
     var endTo = "";
 
@@ -626,22 +659,24 @@ export default function User_dashboard() {
       booking_finalized.charge &&
       booking_finalized.bookingId
     ) {
-      axios_call("POST", "CreateBooking/", booking_finalized)
+      console.log(booking_finalized);
+      axios_call("POST", "BookingTemp/", { ...booking_finalized, key: key })
         .then((response) => {
           console.log(response);
           console.log("response");
           let userDate = user;
           userDate.booking_partner.unshift(response);
           setUser(user);
-          console.log({ ...carDetails, bookingId: response.id });
-          axios_call("POST", "CreateCarInfo/", {
+          console.log({ ...carDetails, bookingId: response.id, key: key });
+          axios_call("POST", "CarInfoTemp/", {
             ...carDetails,
             bookingId: response.id,
+            key: key,
           }).then((response) => {
-            reset();
+            // reset();
           });
-          setSuccess(response);
-          SendMail();
+          //   setSuccess(response);
+          //   SendMail();
         })
         .catch((response) => {
           //   axios_call("POST", "CreateBooking/", booking_finalized).then(
@@ -664,7 +699,7 @@ export default function User_dashboard() {
     }
   }
 
-  function SendMail() {
+  function SendMail(success) {
     var data = {
       to: success.User.email,
       invoiceDate: moment(success.date).format("DD/MM/YYYY"),
@@ -693,6 +728,74 @@ export default function User_dashboard() {
       });
     });
   }
+
+  useEffect(async () => {
+    if (key && status && id) {
+      var response_main = null;
+      response_main = await axios_call_error(
+        "GET",
+        "PaymentEndpoint/" + key + "/"
+      );
+      if (response_main.transNum == key && response_main.status == "S") {
+        console.log("hi");
+        axios_call("GET", "CreatePayment/" + id + "/").then((response) => {
+          if (response.paymentId == key) {
+            console.log("success");
+            var data = {
+              userId: response.userId,
+              paymentId: response.paymentId,
+              paymentType: response.paymentType,
+              paymentDate: response.paymentDate,
+              amount: response.amount,
+              Status: "success",
+              key: response.key,
+            };
+            axios_call("PUT", "CreatePayment/" + id + "/", data).then(
+              (response) => {
+                if (status == "booking") {
+                  axios_call("GET", "BookingTemp/" + key + "/").then(
+                    (response_main) => {
+                      delete response_main["id"];
+                      delete response_main["date_auto"];
+                      console.log(response_main);
+                      axios_call("POST", "CreateBooking/", response_main).then(
+                        (booked) => {
+                          console.log(booked.id);
+                          axios_call("GET", "CarInfoTemp/" + key + "/").then(
+                            (carinfo) => {
+                              axios_call("POST", "CreateCarInfo/", {
+                                ...carinfo,
+                                bookingId: booked.id,
+                              }).then((carinfobooked) => {
+                                axios_call(
+                                  "Delete",
+                                  "PaymentEndpoint/" + key + "/"
+                                ).then(() => {
+                                calluseEffect();
+                                });
+                                
+                              });
+                            }
+                          );
+                          SendMail(booked);
+                          setSuccess(booked)
+                        }
+                      );
+                    }
+                  );
+                }
+              }
+            );
+          }
+        });
+      }
+      if (response_main == "failed") {
+        calluseEffect();
+      }
+    } else {
+      calluseEffect();
+    }
+  }, []);
 
   return (
     <>
@@ -826,8 +929,7 @@ export default function User_dashboard() {
 
           {user && (
             <div className="user_dashboard_container">
-              
-              <div className="d-flex justify-content-between mt-3 ps-3 pe-4" >
+              <div className="d-flex justify-content-between mt-3 ps-3 pe-4">
                 <img
                   src={logo}
                   alt="munidex_logo"
@@ -843,40 +945,42 @@ export default function User_dashboard() {
               </div>
 
               <div className="row">
-                
-              {!isDesktopOrLaptop && (
-                <div className="d-flex justify-content-evenly mt-4 mb-3 px-2">
-                  {!isTabOrLaptop&&<div
-                    className={
-                      tab == "Profile"
-                        ? "btn btn-outline-primary btn-sm"
-                        : "btn btn-primary btn-sm"
-                    }
-                    onClick={() => setTab("Profile")}
-                  >
-                    Profile
-                  </div>}
-                  <div
-                    className={
-                      tab == "Booking"
-                        ? "btn btn-outline-primary btn-sm"
-                        : "btn btn-primary btn-sm"
-                    }
-                    onClick={() => setTab("Booking")}
-                  >
-                    Booking
+                {!isDesktopOrLaptop && (
+                  <div className="d-flex justify-content-evenly mt-4 mb-3 px-2">
+                    {!isTabOrLaptop && (
+                      <div
+                        className={
+                          tab == "Profile"
+                            ? "btn btn-outline-primary btn-sm"
+                            : "btn btn-primary btn-sm"
+                        }
+                        onClick={() => setTab("Profile")}
+                      >
+                        Profile
+                      </div>
+                    )}
+                    <div
+                      className={
+                        tab == "Booking"
+                          ? "btn btn-outline-primary btn-sm"
+                          : "btn btn-primary btn-sm"
+                      }
+                      onClick={() => setTab("Booking")}
+                    >
+                      Booking
+                    </div>
+                    <div
+                      className={
+                        tab == "Online"
+                          ? "btn btn-outline-primary btn-sm"
+                          : "btn btn-primary btn-sm"
+                      }
+                      onClick={() => setTab("Online")}
+                    >
+                      Online
+                    </div>
                   </div>
-                  <div
-                    className={
-                      tab == "Online"
-                        ? "btn btn-outline-primary btn-sm"
-                        : "btn btn-primary btn-sm"
-                    }
-                    onClick={() => setTab("Online")}
-                  >
-                    Online
-                  </div>
-                </div>)}
+                )}
 
                 {(tab == "Profile" || isTabOrLaptop) && (
                   <>
@@ -891,10 +995,8 @@ export default function User_dashboard() {
 
                 <div className={"col-xl-10 col-lg-9 col-12"}>
                   <div className="row">
-
-
-                    {(tab == "Booking" || isDesktopOrLaptop )&& (
-                      <> 
+                    {(tab == "Booking" || isDesktopOrLaptop) && (
+                      <>
                         <div className="col-xl-8  col-md-12 udb_middlescrollsection">
                           {!history_report && (
                             <div>
@@ -1080,9 +1182,9 @@ export default function User_dashboard() {
                                   </div>
                                 </div>
                               )}
-{isDesktopOrLaptop && (
-                              <SetupProcess number={step}></SetupProcess>
-)}
+                              {isDesktopOrLaptop && (
+                                <SetupProcess number={step}></SetupProcess>
+                              )}
                               <div className=" px-lg-3 p-lg-3 px-1 bg-white rounded">
                                 <div className="row ">
                                   <div className="col-lg-4 col-6">
@@ -1090,7 +1192,9 @@ export default function User_dashboard() {
                                       <label for="date">Date</label>
                                       <div
                                         style={{
-                                          marginLeft:isDesktopOrLaptop? "50px":"20px",
+                                          marginLeft: isDesktopOrLaptop
+                                            ? "50px"
+                                            : "20px",
                                           marginTop: "-5px",
                                         }}
                                       >
@@ -1158,28 +1262,30 @@ export default function User_dashboard() {
                                       </div>
                                     </div>
                                   </div>
-                                 {isDesktopOrLaptop&& <div className="col-4">
-                                    <div className="booking_form_name_input">
-                                      <label for="name">Plan</label>
-                                      <div className="d-flex flex-column booking_form_name_input">
-                                        <input
-                                          type="text"
-                                          style={{
-                                            marginLeft: "50px",
-                                            marginTop: "10px",
-                                          }}
-                                          value={
-                                            booking.plan != "not_selected"
-                                              ? booking.plan
-                                              : ""
-                                          }
-                                          //   onClick={() => setCarInfo(true)}
-                                          //   className={cardata.valid}
-                                          readOnly
-                                        />
+                                  {isDesktopOrLaptop && (
+                                    <div className="col-4">
+                                      <div className="booking_form_name_input">
+                                        <label for="name">Plan</label>
+                                        <div className="d-flex flex-column booking_form_name_input">
+                                          <input
+                                            type="text"
+                                            style={{
+                                              marginLeft: "50px",
+                                              marginTop: "10px",
+                                            }}
+                                            value={
+                                              booking.plan != "not_selected"
+                                                ? booking.plan
+                                                : ""
+                                            }
+                                            //   onClick={() => setCarInfo(true)}
+                                            //   className={cardata.valid}
+                                            readOnly
+                                          />
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>}
+                                  )}
                                 </div>
                               </div>
 
@@ -1204,14 +1310,16 @@ export default function User_dashboard() {
                                     <span className="booking_moreweek">
                                       {" "}
                                       &gt; 7 days
-                                    </span> 
+                                    </span>
                                   </div>
 
                                   {wing_data && wing_data.length && (
                                     <div className="parking_setup_wing_title_section_user mt-lg-0 mt-3 shadow">
                                       <div style={{ flexGrow: 1 }}>
                                         <Carousel
-                                          itemsToShow={isDesktopOrLaptop?6:3}
+                                          itemsToShow={
+                                            isDesktopOrLaptop ? 6 : 3
+                                          }
                                           itemsToScroll={1}
                                           pagination={false}
                                           showArrows={true}
@@ -1275,7 +1383,6 @@ export default function User_dashboard() {
                                   </div>
                                   <div className="">
                                     <div className="booking_form_plan_input">
-                                     
                                       <div className="booking_form_plan_input_buttons1">
                                         <div
                                           className={
@@ -1434,8 +1541,8 @@ export default function User_dashboard() {
 
                           {history_report && (
                             <History
-                            setHistory={setHistory}
-                            isDesktopOrLaptop={isDesktopOrLaptop}
+                              setHistory={setHistory}
+                              isDesktopOrLaptop={isDesktopOrLaptop}
                               booking_partner={user.booking_partner}
                               payment_partner={user.payment_partner}
                             ></History>
@@ -1444,11 +1551,15 @@ export default function User_dashboard() {
                       </>
                     )}
 
-
-                    {(tab == "Online" || isDesktopOrLaptop)  && (
+                    {(tab == "Online" || isDesktopOrLaptop) && (
                       <>
                         <div className="col-xl-4 col-md-12">
-                          <div className="udb_bcsection mt-4 pt-4 ps-4 pe-lg-3 mx-lg-5 mx-1 me-lg-4" onClick={()=>setpayment_pop({...payment_pop,pop:true})}>
+                          <div
+                            className="udb_bcsection mt-4 pt-4 ps-4 pe-lg-3 mx-lg-5 mx-1 me-lg-4"
+                            onClick={() =>
+                              setpayment_pop({ ...payment_pop, pop: true })
+                            }
+                          >
                             <div className="udb_bctext mt-3 mb-2 ms-2">
                               Balance
                             </div>
@@ -1505,39 +1616,68 @@ export default function User_dashboard() {
                           </div>
 
                           {payment_pop.pop && (
-                                <div className="overlay_carInfo shadow">
-                                    {payment_pop.error && (
+                            <div className="pay shadow">
+                              {payment_pop.error && (
                                 <div className="alert alert-danger mt-3">
                                   {payment_pop.error}
                                 </div>
                               )}
-                                  <div className="row">
-                                    <div
-                                      className="text-center h3"
-                                      style={{ marginTop: "20px" }}
-                                    >
-                                      Payment
-                                      </div>
-                                      </div>
-                                      <form className="mx-5">
-  <div class="form-group mt-2 mb-2">
-    <input type="number" class="form-control form-control-lg" onChange={(e)=>setpayment_pop({...payment_pop,amount:e.target.value,error:null})} placeholder="Enter amount"/>
-  </div>
- <div className="text-center mt-4">
-  <button type="button" class="btn btn-primary mx-2 btn-block" onClick={()=>CallPayment_pop(payment_pop.amount)}>Make payment</button>
-  <button type="button" class="btn btn-light  btn-block" onClick={(e)=>setpayment_pop({...payment_pop,pop:false})}>Close</button>
-  </div>
-</form>
-                            <History
-                            setHistory={setHistory}
-                            isDesktopOrLaptop={isDesktopOrLaptop}
-                              booking_partner={user.booking_partner}
-                              payment_partner={user.payment_partner}
-                              transaction={true}
-                            ></History>
-
-                                    </div>
-                                    )}
+                              <div className="row">
+                                <div
+                                  className="text-center h3"
+                                  style={{ marginTop: "20px" }}
+                                >
+                                  Payment
+                                </div>
+                              </div>
+                              <form className="mx-5">
+                                <div class="form-group mt-2 mb-2">
+                                  <input
+                                    type="number"
+                                    class="form-control form-control-lg"
+                                    onChange={(e) =>
+                                      setpayment_pop({
+                                        ...payment_pop,
+                                        amount: e.target.value,
+                                        error: null,
+                                      })
+                                    }
+                                    placeholder="Enter amount"
+                                  />
+                                </div>
+                                <div className="text-center mt-4">
+                                  <button
+                                    type="button"
+                                    class="btn btn-primary mx-2 btn-block"
+                                    onClick={() =>
+                                      CallPayment_pop(payment_pop.amount)
+                                    }
+                                  >
+                                    Make payment
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="btn btn-light  btn-block"
+                                    onClick={(e) =>
+                                      setpayment_pop({
+                                        ...payment_pop,
+                                        pop: false,
+                                      })
+                                    }
+                                  >
+                                    Close
+                                  </button>
+                                </div>
+                              </form>
+                              <History
+                                setHistory={setHistory}
+                                isDesktopOrLaptop={isDesktopOrLaptop}
+                                booking_partner={user.booking_partner}
+                                payment_partner={user.payment_partner}
+                                transaction={true}
+                              ></History>
+                            </div>
+                          )}
                           {/* <div className="udb_carttotal p-4">
                         Total Amount : $46
                       </div>

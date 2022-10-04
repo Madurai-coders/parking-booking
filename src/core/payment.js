@@ -114,6 +114,8 @@ export default function Payment() {
       amount: val.amount,
       id: val.id,
       userId: val.userId,
+      Status: val.Status,
+      key: val.key,
     });
   }
 
@@ -126,6 +128,8 @@ export default function Payment() {
         paymentType: form.payment_type,
         paymentDate: moment(form.date).toDate(),
         amount: form.amount,
+        Status:'success',
+        key:form.key
       };
       axios_call("PUT", "CreatePayment/" + form.id + "/", data).then(
         (response) => {
@@ -156,6 +160,8 @@ export default function Payment() {
             paymentType: form.payment_type,
             paymentDate: form.date,
             amount: form.amount,
+            Status:'success',
+            key:generateUUID()
           };
           console.log(data);
           axios_call("POST", "CreatePayment/", data).then((response) => {
@@ -194,7 +200,7 @@ export default function Payment() {
             console.log(userCredential);
             axios({
                 method: "POST",
-                url: "https://munidexparking.pythonanywhere.com/register/",
+                url: "http://127.0.0.1:8000/register/",
                 data: {
                   username: userCredential.user.email,
                   password: userCredential.user.uid,
@@ -723,6 +729,7 @@ export default function Payment() {
                   <th>Payment id</th>
                   <th>Amount</th>
                   <th>Date/Time</th>
+                  <th>Status</th>
                   <th>Controls</th>
                 </tr>
                 {payment &&
@@ -746,6 +753,9 @@ export default function Payment() {
                         <td>{formatUsd(parseInt(payment.amount))} </td>
                         <td>
                           {moment(payment.paymentDate).format("DD/MM/YYYY")}
+                        </td>
+                        <td>
+                          {payment.Status}
                         </td>
                         <td>
                           <div className="payment_table_controls_container">

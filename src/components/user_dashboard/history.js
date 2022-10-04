@@ -130,14 +130,23 @@ export default function History({booking_partner,payment_partner,setHistory,isDe
               <td>{transaction.amount}</td>
 
               <td>
+              {transaction.Status=='failed'?
                 <span
+                style={{color:'red'}}
                   className={
                     "user_dashboard_popup_status_" +
                     "Successful".toLowerCase()
                   }
                 >
-                  Successful
-                </span>
+                  {transaction.Status}
+                </span>:<span
+                  className={
+                    "user_dashboard_popup_status_" +
+                    "Successful".toLowerCase()
+                  }
+                >
+                  {transaction.Status}
+                </span>}
               </td>
             </tr>
           );

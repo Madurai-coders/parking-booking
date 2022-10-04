@@ -10,6 +10,7 @@
     "bootstrap": "^5.0.2",
     "bootstrap-daterangepicker": "^3.1.0",
     "chart.js": "^3.7.1",
+    "express": "^4.18.1",
     "firebase": "^8.10.0",
     "firebase-tools": "^9.22.0",
     "framer-motion": "^4.1.17",
@@ -60,5 +61,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "https://taxdev.munidex.info/pbs2/pbsreq/"
 }

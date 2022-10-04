@@ -416,6 +416,7 @@ console.log(booking_validity)
     var online = 0;
     var check = 0;
     payment.forEach((element) => {
+        if(element.Status == 'success'){
       amount = amount + parseInt(element.amount);
       if (element.paymentType == "cash") {
         cash = element.amount + cash;
@@ -428,7 +429,7 @@ console.log(booking_validity)
       }
       if (element.paymentType == "check") {
         check = element.amount + check;
-      }
+      }}
     });
 
     setpayment_values({ amount, cash, card, online, check });
@@ -497,16 +498,18 @@ console.log(booking_validity)
                 "YYYY-MM-DD"
               )
             ) {
+                if(element.Status=='success'){
               total_payment = total_payment + parseInt(element.amount);
               no_of_pay = no_of_pay + 1;
-            }
+            }}
           } else {
             if (
               moment(date_payment).format("YYYY-MM-DD") ==
               moment(element.paymentDate).format("YYYY-MM-DD")
             ) {
+                if(element.Status=='success'){
               total_payment = total_payment + parseInt(element.amount);
-              no_of_pay = no_of_pay + 1;
+              no_of_pay = no_of_pay + 1;}
             }
           }
         });
@@ -804,8 +807,9 @@ console.log(booking_validity)
     if (key == "payment") {
       let count = 0;
       data.forEach(
-        (element, id) => (
-          (count = count + 1),
+        (element, id) => {
+            if(element.Status=='success'){
+          (count = count + 1)
           val.push({
             data1: element.User.userName,
             data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
@@ -813,8 +817,8 @@ console.log(booking_validity)
             data4: element.User.accountNumber,
             data5: element.paymentType,
             data6: formatUsd(parseInt(element.amount)),
-          })
-        )
+          })}}
+        
       );
     }
 
