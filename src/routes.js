@@ -77,7 +77,7 @@ const Routes = () => {
       if (log != null) {
         axios({
           method: "GET",
-          url: "http://127.0.0.1:8000/admins/",
+          url: "http://parkingdev.munidex.info:8000/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {
@@ -103,7 +103,7 @@ const Routes = () => {
       if (log != null && log != 'error') {
         axios({
           method: "GET",
-          url: "http://127.0.0.1:8000/admins/",
+          url: "http://parkingdev.munidex.info:8000/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {

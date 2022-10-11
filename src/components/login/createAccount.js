@@ -103,7 +103,7 @@ seterror('loading')
         console.log(userCredential);
         axios({
           method: "POST",
-          url: "http://127.0.0.1:8000/verified_register/",
+          url: "http://parkingdev.munidex.info:8000/verified_register/",
           data: {
             username: userCredential.user.email,
             password: userCredential.user.uid,
