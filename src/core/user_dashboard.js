@@ -472,7 +472,7 @@ export default function User_dashboard() {
           window.location.replace(
             "https://taxdev.munidex.info/pbs2/pbs/" +
               response.data +
-              "?returnUri=http://localhost:3001/dashboard/" +
+              "?returnUri=https://parkingdev.munidex.info/dashboard/" +
               response_main.id +
               "/booking/" +
               body.clientrefnum
