@@ -118,7 +118,7 @@ seterror('loading')
         });
       }).catch(()=>{
           console.log('error1')
-        seterror('mail id already exist')
+        seterror('Verification mail has been send already, please login using that')
       });
     }
   };
