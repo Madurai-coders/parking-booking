@@ -200,7 +200,7 @@ export default function Payment() {
             console.log(userCredential);
             axios({
                 method: "POST",
-                url: "http://127.0.0.1:8000/register/",
+                url: "https://parkingdev1.munidex.info/register/",
                 data: {
                   username: userCredential.user.email,
                   password: userCredential.user.uid,
