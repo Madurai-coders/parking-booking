@@ -57,7 +57,7 @@ export function axios_call_unauthenticated(method, url, data) {
   return new Promise(function (resolve, reject) {
     axios({
       method: method,
-      url: "https://parkingdev1.munidex.info/" + url,
+      url: "http://127.0.0.1:8000/" + url,
       data: data,
     }).then((response) => {
       resolve(response.data);
@@ -70,7 +70,7 @@ export function axios_call(method, url, data) {
     var access_token = Cookies.get("access_token");
     axios({
       method: method,
-      url: "https://parkingdev1.munidex.info/" + url,
+      url: "http://127.0.0.1:8000/" + url,
       data: data,
       headers: { Authorization: `Bearer ${access_token}` },
     })
@@ -81,7 +81,7 @@ export function axios_call(method, url, data) {
         var refresh = Cookies.get("refresh_token");
         axios({
           method: "POST",
-          url: "https://parkingdev1.munidex.info/api/token/refresh/",
+          url: "http://127.0.0.1:8000/api/token/refresh/",
           data: { refresh: refresh },
           withCredentials: true,
         })
@@ -90,7 +90,7 @@ export function axios_call(method, url, data) {
             Cookies.set("access_token", response.data.access);
             axios({
               method: method,
-              url: "https://parkingdev1.munidex.info/" + url,
+              url: "http://127.0.0.1:8000/" + url,
               data: data,
               headers: { Authorization: `Bearer ${response.data.access}` },
               withCredentials: true,
@@ -115,7 +115,7 @@ export function axios_call_error(method, url, data) {
       var access_token = Cookies.get("access_token");
       axios({
         method: method,
-        url: "https://parkingdev1.munidex.info/" + url,
+        url: "http://127.0.0.1:8000/" + url,
         data: data,
         headers: { Authorization: `Bearer ${access_token}` },
       })
@@ -126,7 +126,7 @@ export function axios_call_error(method, url, data) {
           var refresh = Cookies.get("refresh_token");
           axios({
             method: "POST",
-            url: "https://parkingdev1.munidex.info/api/token/refresh/",
+            url: "http://127.0.0.1:8000/api/token/refresh/",
             data: { refresh: refresh },
             withCredentials: true,
           })
@@ -135,7 +135,7 @@ export function axios_call_error(method, url, data) {
               Cookies.set("access_token", response.data.access);
               axios({
                 method: method,
-                url: "https://parkingdev1.munidex.info/" + url,
+                url: "http://127.0.0.1:8000/" + url,
                 data: data,
                 headers: { Authorization: `Bearer ${response.data.access}` },
                 withCredentials: true,
@@ -169,7 +169,7 @@ export function axios_call_auto(method, url, data) {
 
         axios({
           method: "POST",
-          url: "https://parkingdev1.munidex.info/api/token/refresh/",
+          url: "http://127.0.0.1:8000/api/token/refresh/",
           data: { refresh: refresh },
           withCredentials: true,
         })
@@ -206,7 +206,7 @@ export function login(checkadmin) {
         if (data.additionalUserInfo.isNewUser) {
           axios({
             method: "POST",
-            url: "https://parkingdev1.munidex.info/register/",
+            url: "http://127.0.0.1:8000/register/",
             data: {
               username: data.user.email,
               password: data.user.uid,
@@ -218,7 +218,7 @@ export function login(checkadmin) {
             console.log('response_created')
             axios({
               method: "POST",
-              url: "https://parkingdev1.munidex.info/api/jwt_token/",
+              url: "http://127.0.0.1:8000/api/jwt_token/",
               data: {
                 username: data.user.email,
                 password: data.user.uid,
@@ -246,7 +246,7 @@ export function login(checkadmin) {
         } else {
           axios({
             method: "POST",
-            url: "https://parkingdev1.munidex.info/api/jwt_token/",
+            url: "http://127.0.0.1:8000/api/jwt_token/",
             // data: {
             //   username: 'maduraicoders@gmail.com',
             //   password: 'nTSNMkEKIhPMIpsti0HoJbOyvID3',
@@ -285,7 +285,7 @@ export function email_login(checkadmin,email,password) {
           if (data.additionalUserInfo.isNewUser) {
             axios({
               method: "POST",
-              url: "https://parkingdev1.munidex.info/register/",
+              url: "http://127.0.0.1:8000/register/",
               data: {
                 username: data.user.email,
                 password: data.user.uid,
@@ -294,7 +294,7 @@ export function email_login(checkadmin,email,password) {
             }).then((response) => {
               axios({
                 method: "POST",
-                url: "https://parkingdev1.munidex.info/api/jwt_token/",
+                url: "http://127.0.0.1:8000/api/jwt_token/",
                 data: {
                   username: data.user.email,
                   password: data.user.uid,
@@ -314,7 +314,7 @@ export function email_login(checkadmin,email,password) {
           } else {
             axios({
               method: "POST",
-              url: "https://parkingdev1.munidex.info/api/jwt_token/",
+              url: "http://127.0.0.1:8000/api/jwt_token/",
               // data: {
               //   username: 'maduraicoders@gmail.com',
               //   password: 'nTSNMkEKIhPMIpsti0HoJbOyvID3',

@@ -104,7 +104,7 @@ export default function CreateAccount(props) {
         console.log(userCredential);
         axios({
           method: "POST",
-          url: "https://parkingdev1.munidex.info/verified_register/",
+          url: "http://127.0.0.1:8000/verified_register/",
           data: {
             username: userCredential.user.email,
             password: userCredential.user.uid,

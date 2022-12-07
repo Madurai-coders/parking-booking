@@ -458,13 +458,13 @@ const [btn, setbtn] = useState(false)
         setUser(user);
         FormSubmit(body.clientrefnum);
 
-        axios_call("POST", "PaymentEndpoint/", {
-          status: "S",
-          transNum: body.clientrefnum,
-          serviceType: "pkg",
-        }).then((response_main) => {
-          console.log(response_main);
-        });
+        // axios_call("POST", "PaymentEndpoint/", {
+        //   status: "S",
+        //   transNum: body.clientrefnum,
+        //   serviceType: "pkg",
+        // }).then((response_main) => {
+        //   console.log(response_main);
+        // });
 
         axios({
           method: "POST",
@@ -476,7 +476,7 @@ const [btn, setbtn] = useState(false)
           },
           json: true,
         }).then((response) => {
-          window.location(
+          window.location.assign(
             "https://taxdev.munidex.info/pbs2/pbs/" +
               response.data +
               "?returnUri=http://localhost:3001/dashboard/" +
@@ -555,7 +555,7 @@ const [btn, setbtn] = useState(false)
           },
           json: true,
         }).then((response) => {
-          window.location(
+          window.location.assign(
             "https://taxdev.munidex.info/pbs2/pbs/" +
               response.data +
               "?returnUri=http://localhost:3001/dashboard/" +
@@ -852,9 +852,10 @@ const [btn, setbtn] = useState(false)
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <div> </div>
+                  <Link to='/dashboard'>
                   <div className="pt-2 pe-3">
                     <img onClick={() => setpayment_online()} src={close} />
-                  </div>
+                  </div></Link>
                 </div>
                 <div className="d-flex flex-column mb-3">
                   <div className=" ps-3 text-center">
@@ -875,11 +876,12 @@ const [btn, setbtn] = useState(false)
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <div> </div>
+                  <Link to='/dashboard'>
                   <div className="pt-2 pe-3">
                     <img 
                     onClick={() => setPaymentSuccessful()} 
                     src={close} />
-                  </div>
+                  </div></Link>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <div> </div>
@@ -910,9 +912,9 @@ const [btn, setbtn] = useState(false)
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <div> </div>
-                  <div className="pt-2 pe-3">
+                  <Link to='/dashboard'> <div className="pt-2 pe-3">
                     <img onClick={() => setSuccess(false)} src={close} />
-                  </div>
+                  </div></Link>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <div> </div>
