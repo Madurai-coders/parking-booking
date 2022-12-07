@@ -333,10 +333,10 @@ export default function User_report() {
           {loading && (
             <div
               style={{ marginLeft: "47%", marginTop: "-5px" }}
-              class=" spinner-grow"
+              className=" spinner-grow"
               role="status"
             >
-              <span class="sr-only"></span>
+              <span className="sr-only"></span>
             </div>
           )}
           <div style={{ display: loading ? "none" : "" }}>
@@ -387,7 +387,7 @@ export default function User_report() {
                             userdata.payment_partner[
                               userdata.payment_partner.length - 1
                             ].paymentDate
-                          ).format("DD/MM/YYYY")}
+                          ).format("MM/DD/YYYY")}
                         </>
                       ) : (
                         "Not yet paid"

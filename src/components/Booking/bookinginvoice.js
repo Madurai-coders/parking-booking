@@ -17,7 +17,7 @@ export default function Bookinginvoice(props) {
             </div>
             <div className="bookinginvoice_text_invdate">
               Invoice Date:
-              {moment(props.bookingData.date).format("DD/MM/YYYY")}
+              {moment(props.bookingData.date).format("MM/DD/YYYY")}
             </div>
           </div>
         </div>
@@ -70,14 +70,14 @@ export default function Bookinginvoice(props) {
                     {" "}
                     From:{" "}
                     <span className="bookinginvoice_dop_value">
-                      {moment(props.bookingData.startFrom).format("DD/MM/YYYY")}
+                      {moment(props.bookingData.startFrom).format("MM/DD/YYYY")}
                     </span>
                   </div>
                   <div className="col-6 bookinginvoice_dop">
                     {" "}
                     To:{" "}
                     <span className="bookinginvoice_dop_value">
-                    {moment(props.bookingData.endTo).format("DD/MM/YYYY")}
+                    {moment(props.bookingData.endTo).format("MM/DD/YYYY")}
                     </span>
                   </div>
                 </div>

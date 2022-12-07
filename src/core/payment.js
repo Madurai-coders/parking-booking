@@ -200,7 +200,7 @@ export default function Payment() {
             console.log(userCredential);
             axios({
                 method: "POST",
-                url: "https://parkingdev1.munidex.info/register/",
+                url: "http://127.0.0.1:8000/register/",
                 data: {
                   username: userCredential.user.email,
                   password: userCredential.user.uid,
@@ -332,7 +332,7 @@ export default function Payment() {
   function SendMail() {
     var data = {
       to: payment_invoice.User.email,
-      invoiceDate: moment(payment_invoice.paymentDate).format("DD/MM/YYYY"),
+      invoiceDate: moment(payment_invoice.paymentDate).format("MM/DD/YYYY"),
       user: payment_invoice.User.userName,
       accountNumber: payment_invoice.User.accountNumber,
       paymentId: payment_invoice.paymentId,
@@ -380,52 +380,52 @@ export default function Payment() {
                         {mailStatus.status == "Sending" && (
                           <div className="text-center mb-2">
                             <div
-                              class="spinner-grow mx-1 text-primary"
+                              className="spinner-grow mx-1 text-primary"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-secondary"
+                              className="spinner-grow mx-1 text-secondary"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-success"
+                              className="spinner-grow mx-1 text-success"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-danger"
+                              className="spinner-grow mx-1 text-danger"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-warning"
+                              className="spinner-grow mx-1 text-warning"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-info"
+                              className="spinner-grow mx-1 text-info"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-light"
+                              className="spinner-grow mx-1 text-light"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-dark"
+                              className="spinner-grow mx-1 text-dark"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                           </div>
                         )}
@@ -461,34 +461,34 @@ export default function Payment() {
 
       {remove_payment && (
         <div className="overlay">
-          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          {/* <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Remove Payment
                 </h5>
                 <button
                   type="button"
                   onClick={() => setRemove_payment(false)}
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">Are your sure?</div>
-              <div class="modal-footer">
+              <div className="modal-body">Are your sure?</div>
+              <div className="modal-footer">
                 <button
                   type="button"
                   onClick={() => removePayment(remove_payment)}
-                  class="btn btn-light"
+                  className="btn btn-light"
                 >
                   Remove
                 </button>
                 <button
                   type="button"
                   onClick={() => setRemove_payment(false)}
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   data-bs-dismiss="modal"
                 >
                   Cancle
@@ -512,7 +512,7 @@ export default function Payment() {
           <div className="payment_container">
             {/* {data_fail && (
             <div className="pr-5 pl-5">
-              <div class="alert alert-danger" role="alert">
+              <div className="alert alert-danger" role="alert">
                 {data_fail}
               </div>
             </div>
@@ -640,7 +640,7 @@ export default function Payment() {
                   </label>
 
                   <DatePicker
-                    dateFormat="dd/MM/yyyy"
+                    dateFormat="MM/dd/yyyy"
                     className="form-control"
                     selected={form.date}
                     onClickOutside
@@ -740,7 +740,7 @@ export default function Payment() {
                         <td>{payment.User.accountNumber}</td>
                         <td>
                           <span
-                            class={
+                            className={
                               payment.paymentType == "cash"
                                 ? "bg-primary p-1 small  text-white rounded"
                                 : "bg-danger p-1 small  text-white rounded"
@@ -752,7 +752,7 @@ export default function Payment() {
                         <td>{payment.paymentId}</td>
                         <td>{formatUsd(parseInt(payment.amount))} </td>
                         <td>
-                          {moment(payment.paymentDate).format("DD/MM/YYYY")}
+                          {moment(payment.paymentDate).format("MM/DD/YYYY")}
                         </td>
                         <td>
                           {payment.Status}

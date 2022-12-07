@@ -57,7 +57,7 @@ export function axios_call_unauthenticated(method, url, data) {
   return new Promise(function (resolve, reject) {
     axios({
       method: method,
-      url: "https://parkingdev1.munidex.info/" + url,
+      url: "http://127.0.0.1:8000/" + url,
       data: data,
     }).then((response) => {
       resolve(response.data);
@@ -70,7 +70,7 @@ export function axios_call(method, url, data) {
     var access_token = Cookies.get("access_token");
     axios({
       method: method,
-      url: "https://parkingdev1.munidex.info/" + url,
+      url: "http://127.0.0.1:8000/" + url,
       data: data,
       headers: { Authorization: `Bearer ${access_token}` },
     })
@@ -81,7 +81,7 @@ export function axios_call(method, url, data) {
         var refresh = Cookies.get("refresh_token");
         axios({
           method: "POST",
-          url: "https://parkingdev1.munidex.info/api/token/refresh/",
+          url: "http://127.0.0.1:8000/api/token/refresh/",
           data: { refresh: refresh },
           withCredentials: true,
         })
@@ -90,16 +90,20 @@ export function axios_call(method, url, data) {
             Cookies.set("access_token", response.data.access);
             axios({
               method: method,
-              url: "https://parkingdev1.munidex.info/" + url,
+              url: "http://127.0.0.1:8000/" + url,
               data: data,
               headers: { Authorization: `Bearer ${response.data.access}` },
               withCredentials: true,
             }).then((response) => {
               resolve(response.data);
-            });
+            }).catch((val)=> {
+                resolve('failed')
+            })
+
           })
           .catch((response) => {
-            logout();
+            // logout();
+            
           });
       });
   });
@@ -111,7 +115,7 @@ export function axios_call_error(method, url, data) {
       var access_token = Cookies.get("access_token");
       axios({
         method: method,
-        url: "https://parkingdev1.munidex.info/" + url,
+        url: "http://127.0.0.1:8000/" + url,
         data: data,
         headers: { Authorization: `Bearer ${access_token}` },
       })
@@ -122,7 +126,7 @@ export function axios_call_error(method, url, data) {
           var refresh = Cookies.get("refresh_token");
           axios({
             method: "POST",
-            url: "https://parkingdev1.munidex.info/api/token/refresh/",
+            url: "http://127.0.0.1:8000/api/token/refresh/",
             data: { refresh: refresh },
             withCredentials: true,
           })
@@ -131,7 +135,7 @@ export function axios_call_error(method, url, data) {
               Cookies.set("access_token", response.data.access);
               axios({
                 method: method,
-                url: "https://parkingdev1.munidex.info/" + url,
+                url: "http://127.0.0.1:8000/" + url,
                 data: data,
                 headers: { Authorization: `Bearer ${response.data.access}` },
                 withCredentials: true,
@@ -142,7 +146,7 @@ export function axios_call_error(method, url, data) {
               });
             })
             .catch((response) => {
-              logout();
+            //   logout();
             });
         });
     });
@@ -165,7 +169,7 @@ export function axios_call_auto(method, url, data) {
 
         axios({
           method: "POST",
-          url: "https://parkingdev1.munidex.info/api/token/refresh/",
+          url: "http://127.0.0.1:8000/api/token/refresh/",
           data: { refresh: refresh },
           withCredentials: true,
         })
@@ -182,33 +186,39 @@ export function axios_call_auto(method, url, data) {
             });
           })
           .catch((response) => {
-            logout();
+            // logout();
           });
       });
   });
 }
 
 export function login(checkadmin) {
+    console.log('data')
+
   return new Promise(function (resolve, reject) {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase
       .auth()
       .signInWithPopup(provider)
       .then((data) => {
+        console.log(data)
         var access_token = "";
         if (data.additionalUserInfo.isNewUser) {
           axios({
             method: "POST",
-            url: "https://parkingdev1.munidex.info/register/",
+            url: "http://127.0.0.1:8000/register/",
             data: {
               username: data.user.email,
               password: data.user.uid,
+              first_name:data.user.displayName
             },
             withCredentials: true,
-          }).then((response) => {
+          }).then((response_created) => {
+            console.log(response_created)
+            console.log('response_created')
             axios({
               method: "POST",
-              url: "https://parkingdev1.munidex.info/api/jwt_token/",
+              url: "http://127.0.0.1:8000/api/jwt_token/",
               data: {
                 username: data.user.email,
                 password: data.user.uid,
@@ -217,7 +227,15 @@ export function login(checkadmin) {
             }).then((response) => {
               Cookies.set("refresh_token", response.data.refresh);
               Cookies.set("access_token", response.data.access);
+            // axios_call('POST',"CreateBusinessPartner",{
+            //                 email:response_created.data.username,
+            //                 lastName:data.user.displayName,
+            //                 accountHolder:response_created.data.id,
+            //                 userName:data.user.displayName,
+            //                 accountNumber: Math.floor(10000000 + Math.random() * 90000),
+            //                 uId:response_created.data.id
 
+            //             })
               if (!checkadmin) {
                 resolve(data);
               } else {
@@ -228,7 +246,7 @@ export function login(checkadmin) {
         } else {
           axios({
             method: "POST",
-            url: "https://parkingdev1.munidex.info/api/jwt_token/",
+            url: "http://127.0.0.1:8000/api/jwt_token/",
             // data: {
             //   username: 'maduraicoders@gmail.com',
             //   password: 'nTSNMkEKIhPMIpsti0HoJbOyvID3',
@@ -239,6 +257,8 @@ export function login(checkadmin) {
               },
             withCredentials: true,
           }).then((response) => {
+            console.log(response)
+            console.log('token')
             Cookies.set("refresh_token", response.data.refresh);
             Cookies.set("access_token", response.data.access);
             if (!checkadmin) {
@@ -265,7 +285,7 @@ export function email_login(checkadmin,email,password) {
           if (data.additionalUserInfo.isNewUser) {
             axios({
               method: "POST",
-              url: "https://parkingdev1.munidex.info/register/",
+              url: "http://127.0.0.1:8000/register/",
               data: {
                 username: data.user.email,
                 password: data.user.uid,
@@ -274,7 +294,7 @@ export function email_login(checkadmin,email,password) {
             }).then((response) => {
               axios({
                 method: "POST",
-                url: "https://parkingdev1.munidex.info/api/jwt_token/",
+                url: "http://127.0.0.1:8000/api/jwt_token/",
                 data: {
                   username: data.user.email,
                   password: data.user.uid,
@@ -294,7 +314,7 @@ export function email_login(checkadmin,email,password) {
           } else {
             axios({
               method: "POST",
-              url: "https://parkingdev1.munidex.info/api/jwt_token/",
+              url: "http://127.0.0.1:8000/api/jwt_token/",
               // data: {
               //   username: 'maduraicoders@gmail.com',
               //   password: 'nTSNMkEKIhPMIpsti0HoJbOyvID3',
@@ -386,7 +406,7 @@ export function validation_value(value) {
               class: "warn",
               msg: (
                 <>
-                  <small class="text-danger">Min 1 tetter.</small>
+                  <small className="text-danger">Min 1 tetter.</small>
                 </>
               ),
             };
@@ -396,7 +416,7 @@ export function validation_value(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">This field is a required.</small>
+              <small className="text-danger">This field is a required.</small>
             </>
           ),
         };
@@ -423,7 +443,7 @@ export function validation_name(value) {
                   class: "warn",
                   msg: (
                     <>
-                      <small class="text-danger">
+                      <small className="text-danger">
                         Cannot end with a white space
                       </small>
                     </>
@@ -434,7 +454,7 @@ export function validation_name(value) {
                 class: "warn",
                 msg: (
                   <>
-                    <small class="text-danger">Max letter 50</small>
+                    <small className="text-danger">Max letter 50</small>
                   </>
                 ),
               };
@@ -443,7 +463,7 @@ export function validation_name(value) {
               class: "warn",
               msg: (
                 <>
-                  <small class="text-danger">
+                  <small className="text-danger">
                     Cannot contain symbol or number.
                   </small>
                 </>
@@ -454,7 +474,7 @@ export function validation_name(value) {
             class: "warn",
             msg: (
               <>
-                <small class="text-danger">Min 1 tetter.</small>
+                <small className="text-danger">Min 1 tetter.</small>
               </>
             ),
           };
@@ -463,7 +483,7 @@ export function validation_name(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Cannot start with empty space</small>
+              <small className="text-danger">Cannot start with empty space</small>
             </>
           ),
         };
@@ -472,7 +492,7 @@ export function validation_name(value) {
         class: "warn",
         msg: (
           <>
-            <small class="text-danger">This field is a required.</small>
+            <small className="text-danger">This field is a required.</small>
           </>
         ),
       };
@@ -496,7 +516,7 @@ export function validation_char(value) {
                     class: "warn",
                     msg: (
                       <>
-                        <small class="text-danger">
+                        <small className="text-danger">
                           Cannot end with a white space
                         </small>
                       </>
@@ -507,7 +527,7 @@ export function validation_char(value) {
                   class: "warn",
                   msg: (
                     <>
-                      <small class="text-danger">Max letter 50</small>
+                      <small className="text-danger">Max letter 50</small>
                     </>
                   ),
                 };
@@ -517,7 +537,7 @@ export function validation_char(value) {
               class: "warn",
               msg: (
                 <>
-                  <small class="text-danger">Min 1 tetter.</small>
+                  <small className="text-danger">Min 1 tetter.</small>
                 </>
               ),
             };
@@ -526,7 +546,7 @@ export function validation_char(value) {
             class: "warn",
             msg: (
               <>
-                <small class="text-danger">Cannot start with empty space</small>
+                <small className="text-danger">Cannot start with empty space</small>
               </>
             ),
           };
@@ -535,7 +555,7 @@ export function validation_char(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">This field is a required.</small>
+              <small className="text-danger">This field is a required.</small>
             </>
           ),
         };
@@ -560,7 +580,7 @@ export function validation_title(value) {
                 class: "warn",
                 msg: (
                   <>
-                    <small class="text-danger">
+                    <small className="text-danger">
                       Cannot end with white space
                     </small>
                   </>
@@ -571,7 +591,7 @@ export function validation_title(value) {
               class: "warn",
               msg: (
                 <>
-                  <small class="text-danger">Max length is 150</small>
+                  <small className="text-danger">Max length is 150</small>
                 </>
               ),
             };
@@ -580,7 +600,7 @@ export function validation_title(value) {
             class: "warn",
             msg: (
               <>
-                <small class="text-danger">Min length is 1</small>
+                <small className="text-danger">Min length is 1</small>
               </>
             ),
           };
@@ -589,7 +609,7 @@ export function validation_title(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Cannot start with white space</small>
+              <small className="text-danger">Cannot start with white space</small>
             </>
           ),
         };
@@ -615,7 +635,7 @@ export function validation_password(value) {
                   class: "warn",
                   msg: (
                     <>
-                      <small class="text-danger">
+                      <small className="text-danger">
                         Cannot end with white space
                       </small>
                     </>
@@ -626,7 +646,7 @@ export function validation_password(value) {
                 class: "warn",
                 msg: (
                   <>
-                    <small class="text-danger">Max length is 18</small>
+                    <small className="text-danger">Max length is 18</small>
                   </>
                 ),
               };
@@ -635,7 +655,7 @@ export function validation_password(value) {
               class: "warn",
               msg: (
                 <>
-                  <small class="text-danger">Min length is 6</small>
+                  <small className="text-danger">Min length is 6</small>
                 </>
               ),
             };
@@ -644,7 +664,7 @@ export function validation_password(value) {
             class: "warn",
             msg: (
               <>
-                <small class="text-danger">Cannot start with white space</small>
+                <small className="text-danger">Cannot start with white space</small>
               </>
             ),
           };
@@ -652,15 +672,15 @@ export function validation_password(value) {
         class: "warn",
         msg: (
           <>
-            <small class="text-danger">This field is a required</small>
+            <small className="text-danger">This field is a required</small>
           </>
         ),
       };;
     }
     if (value == "not_selected") return "";
-  }
+}
 
-//Validation for mobile number
+
 export function validation_mobile_number(value) {
   if (value == "" || value != "not_selected") {
     console.log(value);
@@ -675,7 +695,7 @@ export function validation_mobile_number(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">
+              <small className="text-danger">
                 Please Enter A Valid Phone Number
               </small>
             </>
@@ -687,7 +707,7 @@ export function validation_mobile_number(value) {
         class: "warn",
         msg: (
           <>
-            <small class="text-danger">This field is a required.</small>
+            <small className="text-danger">This field is a required.</small>
           </>
         ),
       };
@@ -712,7 +732,7 @@ export function validation_company(value) {
                 class: "warn",
                 msg: (
                   <>
-                    <small class="text-danger">
+                    <small className="text-danger">
                       Cannot end with white space
                     </small>
                   </>
@@ -723,7 +743,7 @@ export function validation_company(value) {
               class: "warn",
               msg: (
                 <>
-                  <small class="text-danger">Max length is 150</small>
+                  <small className="text-danger">Max length is 150</small>
                 </>
               ),
             };
@@ -732,7 +752,7 @@ export function validation_company(value) {
             class: "warn",
             msg: (
               <>
-                <small class="text-danger">Min length is 1</small>
+                <small className="text-danger">Min length is 1</small>
               </>
             ),
           };
@@ -741,7 +761,7 @@ export function validation_company(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Cannot start with white space</small>
+              <small className="text-danger">Cannot start with white space</small>
             </>
           ),
         };
@@ -750,7 +770,7 @@ export function validation_company(value) {
         class: "warn",
         msg: (
           <>
-            <small class="text-danger">This field is a required.</small>
+            <small className="text-danger">This field is a required.</small>
           </>
         ),
       };
@@ -772,7 +792,7 @@ export function validation_email(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Please enter a valid E-mail</small>
+              <small className="text-danger">Please enter a valid E-mail</small>
             </>
           ),
         };
@@ -782,7 +802,7 @@ export function validation_email(value) {
         class: "warn",
         msg: (
           <>
-            <small class="text-danger">This field is a required.</small>
+            <small className="text-danger">This field is a required.</small>
           </>
         ),
       };
@@ -810,7 +830,7 @@ export function validation_country(value) {
                   class: "warn",
                   msg: (
                     <>
-                      <small class="text-danger">invalid name</small>
+                      <small className="text-danger">invalid name</small>
                     </>
                   ),
                 };
@@ -819,7 +839,7 @@ export function validation_country(value) {
                 class: "warn",
                 msg: (
                   <>
-                    <small class="text-danger">
+                    <small className="text-danger">
                       Cannot end with white space
                     </small>
                   </>
@@ -830,7 +850,7 @@ export function validation_country(value) {
               class: "warn",
               msg: (
                 <>
-                  <small class="text-danger">Max length is 56</small>
+                  <small className="text-danger">Max length is 56</small>
                 </>
               ),
             };
@@ -839,7 +859,7 @@ export function validation_country(value) {
             class: "warn",
             msg: (
               <>
-                <small class="text-danger">Min length is 1</small>
+                <small className="text-danger">Min length is 1</small>
               </>
             ),
           };
@@ -848,7 +868,7 @@ export function validation_country(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Cannot start with white space</small>
+              <small className="text-danger">Cannot start with white space</small>
             </>
           ),
         };
@@ -874,7 +894,7 @@ export function validation_inquiry(value) {
                 class: "warn",
                 msg: (
                   <>
-                    <small class="text-danger">
+                    <small className="text-danger">
                       Cannot end with white space
                     </small>
                   </>
@@ -885,7 +905,7 @@ export function validation_inquiry(value) {
               class: "warn",
               msg: (
                 <>
-                  <small class="text-danger">Max length is 150</small>
+                  <small className="text-danger">Max length is 150</small>
                 </>
               ),
             };
@@ -894,7 +914,7 @@ export function validation_inquiry(value) {
             class: "warn",
             msg: (
               <>
-                <small class="text-danger">Min length is 1</small>
+                <small className="text-danger">Min length is 1</small>
               </>
             ),
           };
@@ -903,7 +923,7 @@ export function validation_inquiry(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Cannot start with white space</small>
+              <small className="text-danger">Cannot start with white space</small>
             </>
           ),
         };
@@ -929,7 +949,7 @@ export function validation_comment(value) {
                 class: "warn_text_area",
                 msg: (
                   <>
-                    <small class="text-danger">
+                    <small className="text-danger">
                       Cannot end with white space
                     </small>
                   </>
@@ -940,7 +960,7 @@ export function validation_comment(value) {
               class: "warn_text_area",
               msg: (
                 <>
-                  <small class="text-danger">Max length is 250</small>
+                  <small className="text-danger">Max length is 250</small>
                 </>
               ),
             };
@@ -949,7 +969,7 @@ export function validation_comment(value) {
             class: "warn_text_area",
             msg: (
               <>
-                <small class="text-danger">Min length is 1</small>
+                <small className="text-danger">Min length is 1</small>
               </>
             ),
           };
@@ -958,7 +978,7 @@ export function validation_comment(value) {
           class: "warn_text_area",
           msg: (
             <>
-              <small class="text-danger">Cannot start with white space</small>
+              <small className="text-danger">Cannot start with white space</small>
             </>
           ),
         };
@@ -967,7 +987,7 @@ export function validation_comment(value) {
         class: "warn_text_area",
         msg: (
           <>
-            <small class="text-danger">This field is a required.</small>
+            <small className="text-danger">This field is a required.</small>
           </>
         ),
       };
@@ -988,7 +1008,7 @@ export function validation_payment_id(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Payment id is invalid</small>
+              <small className="text-danger">Payment id is invalid</small>
             </>
           ),
         };
@@ -998,7 +1018,7 @@ export function validation_payment_id(value) {
         class: "warn",
         msg: (
           <>
-            <small class="text-danger">Payment id is a required field</small>
+            <small className="text-danger">Payment id is a required field</small>
           </>
         ),
       };
@@ -1018,7 +1038,7 @@ export function validation_amount(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Please Enter A Valid Amount</small>
+              <small className="text-danger">Please Enter A Valid Amount</small>
             </>
           ),
         };
@@ -1028,7 +1048,7 @@ export function validation_amount(value) {
         class: "warn",
         msg: (
           <>
-            <small class="text-danger">Please fill in the amount</small>
+            <small className="text-danger">Please fill in the amount</small>
           </>
         ),
       };
@@ -1048,7 +1068,7 @@ export function validation_count(value) {
           class: "warn",
           msg: (
             <>
-              <small class="text-danger">Please Enter A Valid Count</small>
+              <small className="text-danger">Please Enter A Valid Count</small>
             </>
           ),
         };
@@ -1058,7 +1078,7 @@ export function validation_count(value) {
         class: "warn",
         msg: (
           <>
-            <small class="text-danger">
+            <small className="text-danger">
               Please fill in the number of parking slots
             </small>
           </>

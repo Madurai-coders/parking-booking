@@ -100,7 +100,7 @@ export default function Userprofile(props) {
 
             <div className="col-lg-7 col-md-12" style={{ marginTop: "30px" }}>
             {updated && (
-                <div class="alert alert-success mb-5" role="alert">
+                <div className="alert alert-success mb-5" role="alert">
                   Update Successful!
                 </div>
               )}
@@ -132,7 +132,7 @@ export default function Userprofile(props) {
                 <div className="col-12" style={{ marginTop: "1%" }}>
                   <InputBox
                     label="Contact"
-                    type="number"
+                    type="text"
                     state={userdata}
                     setState={setuserdata}
                     value={userdata.contact}
@@ -240,10 +240,10 @@ export default function Userprofile(props) {
             </label>
             <input type="text" id="udb_cpassword" className="udb_cnfrmpwd" />
           </div>
-          <button type="button" class="btn btn-success btn-sm udb_savebtn me-3">
+          <button type="button" className="btn btn-success btn-sm udb_savebtn me-3">
             Save Changes
           </button>
-          <button type="button" class="btn btn-secondary btn-sm udb_backbtn">
+          <button type="button" className="btn btn-secondary btn-sm udb_backbtn">
             Back
           </button>
         </div> */}

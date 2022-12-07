@@ -148,7 +148,6 @@ export default function Booking() {
           <>
             <img
               onMouseEnter={() =>(
-                  console.log(val[0]),
                 setBookinghover({
                   name: val[0].User.userName,
                   day: day,
@@ -159,7 +158,7 @@ export default function Booking() {
                   carInfo:false
                 }))
               }
-              onClick={()=>setBookinghover({
+              onClick={()=>(console.log(val[0].booking_link),setBookinghover({
                 name: val[0].User.userName,
                 day: day,
                 slotid: slot.slotId,
@@ -167,7 +166,7 @@ export default function Booking() {
                 slot_connect: slot.id,
                 wing_name: slot.wing.wingName,
                 carInfo:val[0].booking_link
-              })}
+              }))}
               onMouseLeave={() => ((booking&&!bookinghover.carInfo) && setBookinghover())}
               key={id}
               src={Car}
@@ -1107,7 +1106,7 @@ export default function Booking() {
                       <label for="date">Date</label>
                       <div style={{ marginLeft: "65px", marginTop: "-5px" }}>
                         <DatePicker
-                          dateFormat="dd/MM/yyyy"
+                          dateFormat="MM/dd/yyyy"
                           className="payment_date"
                           selected={booking.date}
                           onClickOutside

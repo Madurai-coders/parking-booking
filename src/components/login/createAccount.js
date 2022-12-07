@@ -21,6 +21,7 @@ export default function CreateAccount(props) {
     password: "not_selected",
     retypedPassword: "not_selected",
     name: "not_selected",
+    lastName: "not_selected",
   });
   let history = useHistory();
 
@@ -88,10 +89,10 @@ export default function CreateAccount(props) {
       uId: new Date().getUTCMilliseconds(),
       accountNumber: Math.floor(100000 + Math.random() * 9000),
       userName: form_values.name,
-      lastName: form_values.name,
+      lastName: form_values.lastName,
       email: form_values.email,
     };
-seterror('loading')
+    seterror('loading')
     firebase
       .auth()
       .createUserWithEmailAndPassword(
@@ -103,18 +104,18 @@ seterror('loading')
         console.log(userCredential);
         axios({
           method: "POST",
-          url: "https://parkingdev1.munidex.info/verified_register/",
+          url: "http://127.0.0.1:8000/verified_register/",
           data: {
             username: userCredential.user.email,
             password: userCredential.user.uid,
-            first_name:form_values.name
+            first_name:form_values.name,
+            last_name :form_values.lastName
           },
           withCredentials: true,
         }).then((response_one) => {
           // history.push("/");
           setsignUp(true);
           seterror(false)
-
         });
       }).catch(()=>{
           console.log('error1')
@@ -152,6 +153,7 @@ seterror('loading')
         password: "not_selected",
         retypedPassword: "not_selected",
         name: "not_selected",
+        lastName:"not_selected"
       });  
       props.setcreatAccount(false)
       setsignUp(false)
@@ -211,6 +213,7 @@ seterror('loading')
               className="user_login_signin_logo m-4"
             />
             <div className="mt-4 mb-2">
+
               <input
               autocapitalize="none"
                 type="text"
@@ -240,8 +243,9 @@ seterror('loading')
                 id="name"
                 name="name"
                 required
-                placeholder="Name"
+                placeholder="First Name"
               />
+
               <div
                 style={{
                   marginTop: "-40px",
@@ -252,6 +256,51 @@ seterror('loading')
                 }}
               >
                 {validation_name(form_values.name).msg}
+              </div>
+
+
+              <input
+              autocapitalize="none"
+                type="text"
+                onBlur={(e) =>
+                  setForm_values({
+                    ...form_values,
+                    lastName: e.target.value,
+                  })
+                }
+                onChange={(e) => (
+                  setForm_values({
+                    ...form_values,
+                    lastName: e.target.value,
+                  }),
+                  seterror_login()
+                )}
+                value={
+                  form_values && form_values.lastName == "not_selected"
+                    ? ""
+                    : form_values.lastName
+                }
+                className={
+                  "user_login_signin_acntnumber mb-5" +
+                  " " +
+                  validation_name(form_values.lastName).class
+                }
+                id="name"
+                name="name"
+                required
+                placeholder="Last Name"
+              />
+
+              <div
+                style={{
+                  marginTop: "-40px",
+                  marginBottom: "30px",
+                  fontSize: "12px",
+                  textAlign: "right",
+                  marginRight: "80px",
+                }}
+              >
+                {validation_name(form_values.lastName).msg}
               </div>
 
               <>
@@ -377,7 +426,6 @@ seterror('loading')
                 }
                 placeholder="Confirm Password"
                 onKeyDown={(e) => Entercredentials(e)}
-                
               />
               <div
                 style={{
@@ -418,17 +466,17 @@ seterror('loading')
             
             {error&&error.length << 10 && (
                   <>
-                    <div class="alert alert-danger" role="alert">
+                    <div className="alert alert-danger" role="alert">
                    {error}
                     </div>
                   </>
                 )}
               {error == "loading" && (
                   <div
-                    class="spinner-border text-primary text-center mb-3"
+                    className="spinner-border text-primary text-center mb-3"
                     role="status"
                   >
-                    <span class="sr-only"></span>
+                    <span className="sr-only"></span>
                   </div>
                 )}
                 

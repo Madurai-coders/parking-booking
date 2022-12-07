@@ -209,32 +209,32 @@ export default function Table(props) {
   return (
     <>
       {get_mail.sent == "success" && (
-        <div class="alert alert-success" role="alert">
+        <div className="alert alert-success" role="alert">
           Mail delivered successful
         </div>
       )}
       {get_mail.sent == "failed" && (
-        <div class="alert alert-success" role="alert">
+        <div className="alert alert-success" role="alert">
           Mail delivered failed
         </div>
       )}
       {get_mail.flag && (
-        <div class="overlay1">
+        <div className="overlay1">
           {get_mail.validation && (
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               {get_mail.validation}
             </div>
           )}
 
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Enter recipient mail id</h5>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Enter recipient mail id</h5>
               </div>
-              <div class="form-group p-3">
+              <div className="form-group p-3">
                 <input
                   type="email"
-                  class="form-control mb-1"
+                  className="form-control mb-1"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   autoFocus
@@ -252,7 +252,7 @@ export default function Table(props) {
                <textarea 
                row='5'
                   type="text"
-                  class="form-control mb-1 mt-3"
+                  className="form-control mb-1 mt-3"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   onChange={(e) => (
@@ -264,13 +264,13 @@ export default function Table(props) {
                   )}
                   placeholder="Description"
                 />
-                {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
+                {/* <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small> */}
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
                   onClick={mailSubmit}
-                  class="btn btn-primary btn-sm"
+                  className="btn btn-primary btn-sm"
                   disabled={get_mail.status == "Sending" ? true : false}
                 >
                   {get_mail.status}
@@ -286,7 +286,7 @@ export default function Table(props) {
                       describe: "",
                     })
                   }
-                  class="btn btn-light btn-sm"
+                  className="btn btn-light btn-sm"
                   data-dismiss="modal"
                 >
                   Close
@@ -304,22 +304,22 @@ export default function Table(props) {
             target="/"
             data={data_excel}
             headers={headers_excel}
-            class="btn btn-light btn-sm"
+            className="btn btn-light btn-sm"
           >
-            <i class="fa fa-download" aria-hidden="true"></i>
+            <i className="fa fa-download" aria-hidden="true"></i>
           </CSVLink>
           <button
             type="button"
             onClick={() => setGetMail({ ...get_mail, flag: true })}
-            class="btn btn-light btn-sm mx-1 "
+            className="btn btn-light btn-sm mx-1 "
             data-toggle="button"
             aria-pressed="false"
             autocomplete="off"
           >
-            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <i className="fa fa-envelope" aria-hidden="true"></i>
           </button>
-          <div class="btn btn-light btn-sm" onClick={() => setSetting(true)}>
-            <i class="fa fa-cog" aria-hidden="true"></i>
+          <div className="btn btn-light btn-sm" onClick={() => setSetting(true)}>
+            <i className="fa fa-cog" aria-hidden="true"></i>
           </div>
         </div>
       )}
@@ -366,7 +366,7 @@ export default function Table(props) {
                                     props.remove(props.data[id].id)
                                   }
                                   className='text-muted'
-                                ><i si class="fa fa-trash" aria-hidden="true"></i>
+                                ><i si className="fa fa-trash" aria-hidden="true"></i>
 </div>
                                 <img
                                   style={{ cursor: "pointer" }}
@@ -393,8 +393,8 @@ export default function Table(props) {
       {setting && (
         <div className="overlay_table shadow-lg">
           <div className="text-end mx-3 mt-2">
-            <div class="btn btn-light btn-sm" onClick={() => setSetting(false)}>
-              <i class="fa fa-close"  aria-hidden="true"></i>
+            <div className="btn btn-light btn-sm" onClick={() => setSetting(false)}>
+              <i className="fa fa-close"  aria-hidden="true"></i>
             </div>
           </div>
           <div className="h3 text-center">Add/Remove Data</div>

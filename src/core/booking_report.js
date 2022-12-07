@@ -310,13 +310,13 @@ export default function Booking_report() {
   function SendMail() {
     var data = {
       to: preview.User.email,
-      invoiceDate:moment(preview.date).format("DD/MM/YYYY"),
+      invoiceDate:moment(preview.date).format("MM/DD/YYYY"),
       user: preview.User.userName,
       accountNumber: preview.User.accountNumber,
       bookingId: preview.bookingId,
       amount: preview.charge,
-      startFrom:moment(preview.startFrom).format("DD/MM/YYYY"),
-      endTo:moment(preview.endTo).format("DD/MM/YYYY"),
+      startFrom:moment(preview.startFrom).format("MM/DD/YYYY"),
+      endTo:moment(preview.endTo).format("MM/DD/YYYY"),
       wing:preview.slots.wing.wingName,
       plan:preview.plan,
       id:preview.id,
@@ -360,29 +360,29 @@ export default function Booking_report() {
                       <div className='h2 text-center'>{
                           mailStatus.status == 'Sending' && 
                           <div className='text-center mb-2'>
-                          <div class="spinner-grow mx-1 text-primary" role="status">
-  <span class="sr-only"></span>
+                          <div className="spinner-grow mx-1 text-primary" role="status">
+  <span className="sr-only"></span>
 </div>
-<div class="spinner-grow mx-1 text-secondary" role="status">
-  <span class="sr-only"></span>
+<div className="spinner-grow mx-1 text-secondary" role="status">
+  <span className="sr-only"></span>
 </div>
-<div class="spinner-grow mx-1 text-success" role="status">
-  <span class="sr-only"></span>
+<div className="spinner-grow mx-1 text-success" role="status">
+  <span className="sr-only"></span>
 </div>
-<div class="spinner-grow mx-1 text-danger" role="status">
-  <span class="sr-only"></span>
+<div className="spinner-grow mx-1 text-danger" role="status">
+  <span className="sr-only"></span>
 </div>
-<div class="spinner-grow mx-1 text-warning" role="status">
-  <span class="sr-only"></span>
+<div className="spinner-grow mx-1 text-warning" role="status">
+  <span className="sr-only"></span>
 </div>
-<div class="spinner-grow mx-1 text-info" role="status">
-  <span class="sr-only"></span>
+<div className="spinner-grow mx-1 text-info" role="status">
+  <span className="sr-only"></span>
 </div>
-<div class="spinner-grow mx-1 text-light" role="status">
-  <span class="sr-only"></span>
+<div className="spinner-grow mx-1 text-light" role="status">
+  <span className="sr-only"></span>
 </div>
-<div class="spinner-grow mx-1 text-dark" role="status">
-  <span class="sr-only"></span>
+<div className="spinner-grow mx-1 text-dark" role="status">
+  <span className="sr-only"></span>
 </div>
 
                           </div>
@@ -421,34 +421,34 @@ export default function Booking_report() {
 
       {remove_booking && (
         <div className="overlay">
-          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          {/* <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Remove Booking
                 </h5>
                 <button
                   type="button"
                   onClick={() => setRemove_booking(false)}
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">Are your sure?</div>
-              <div class="modal-footer">
+              <div className="modal-body">Are your sure?</div>
+              <div className="modal-footer">
                 <button
                   type="button"
                   onClick={() => Removebooking(remove_booking)}
-                  class="btn btn-light"
+                  className="btn btn-light"
                 >
                   Remove
                 </button>
                 <button
                   type="button"
                   onClick={() => setRemove_booking(false)}
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   data-bs-dismiss="modal"
                 >
                   Cancle

@@ -11,12 +11,14 @@ import {
   validation_email,
   email_login,
   axios_call,
+  login,
 } from "../functions/reusable_functions";
 import { ToastContainer, toast } from "react-toastify";
 import { db, firebase } from "../core/firebase/firebase";
 import { useHistory, Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
 import CreateAccount from "../components/login/createAccount";
+
 export default function User_login(props) {
   let history = useHistory();
 
@@ -65,25 +67,50 @@ export default function User_login(props) {
   }
 
   const onSubmit = async () => {
-    seterror_login('loading');
+    seterror_login("loading");
     const result = await form_validate();
     console.log(result);
-   if(result){ email_login(false, form_values.email, form_values.password).then((log) => {
-      console.log(log);
-      if (log != "error") {
-        axios_call("GET", "GetUserAccount").then((response) => {
-   seterror_login('loading');
-            console.log(response[0])
-          if (response[0].username) {
-            history.push("/dashboard");
+    if (result) {
+      email_login(false, form_values.email, form_values.password).then(
+        (log) => {
+          console.log(log);
+          if (log != "error") {
+            axios_call("GET", "GetUserAccount").then((response) => {
+              seterror_login("loading");
+              console.log(response[0]);
+              if (response[0].username) {
+                history.push("/dashboard");
+              }
+            });
+          } else {
+            seterror_login("error");
           }
-        });
-      } else {
-        seterror_login("error");
+        }
+      );
+    } else {
+      seterror_login();
+    }
+  };
+
+  const call_login = async () => {
+    login(true).then(function (log) {
+      console.log(log.data);
+      //   Cookies.set('icon',log.data.user.photoURL)
+      if (log != null) {
+        axios_call("GET", "GetUserAccount").then((response) => {
+            
+            seterror_login("loading");
+            console.log(response[0]);
+            console.log('response[0]');
+            if (response[0].username) {
+              history.push("/dashboard");
+            }
+          });
+        } else {
+          seterror_login("error");
+        }
       }
-    });}
-    else {
-        seterror_login();}
+    );
   };
 
   const Getlink = async () => {
@@ -109,11 +136,11 @@ export default function User_login(props) {
     }
   };
 
-  const Entercredentials=(event)=> {
+  const Entercredentials = (event) => {
     if (event.keyCode === 13) {
-        onSubmit()
+      onSubmit();
     }
-}
+  };
 
   useEffect(() => {
     const user = firebase.auth().currentUser;
@@ -149,7 +176,8 @@ export default function User_login(props) {
                     </Link>
                   </div>
                   <div className="mt-4 mb-2">
-                   <input autocapitalize="none"
+                    <input
+                      autocapitalize="none"
                       type="text"
                       onBlur={(e) =>
                         setForm_values({
@@ -190,17 +218,18 @@ export default function User_login(props) {
                     >
                       {validation_email(form_values.email).msg}
                     </div>
-                   <input autocapitalize="none"
+                    <input
+                      autocapitalize="none"
                       onBlur={(e) =>
                         setForm_values({
                           ...form_values,
                           password: e.target.value,
                         })
                       }
-                      type={visible?"password":"text"}
-                    onMouseOver={()=>setVisible(false)}
-                    onMouseLeave={()=>setVisible(true)}
-                       onKeyDown={(e) => Entercredentials(e)}
+                      type={visible ? "password" : "text"}
+                      onMouseOver={() => setVisible(false)}
+                      onMouseLeave={() => setVisible(true)}
+                      onKeyDown={(e) => Entercredentials(e)}
                       onChange={(e) => (
                         seterror_login(),
                         setForm_values({
@@ -259,7 +288,7 @@ export default function User_login(props) {
                   <div className="text-center mt-4">
                     <div
                       className="text-center user_login_google_button "
-                      onClick={props.login}
+                      onClick={call_login}
                     >
                       <div className="d-flex">
                         <FcGoogle size={20} />
@@ -279,7 +308,7 @@ export default function User_login(props) {
                       <div className="d-flex">
                         <div style={{ marginTop: "2px", marginLeft: "5px" }}>
                           {" "}
-                          Create a account
+                          Create an account
                         </div>
                       </div>
                     </div>
@@ -288,17 +317,17 @@ export default function User_login(props) {
                   </div>
                   {error_login == "error" && (
                     <>
-                      <div class="alert alert-danger" role="alert">
+                      <div className="alert alert-danger" role="alert">
                         Invalid email and Password
                       </div>
                     </>
                   )}
                   {error_login == "loading" && (
                     <div
-                      class="spinner-border text-primary text-center mb-3"
+                      className="spinner-border text-primary text-center mb-3"
                       role="status"
                     >
-                      <span class="sr-only"></span>
+                      <span className="sr-only"></span>
                     </div>
                   )}
                   <br></br>{" "}
@@ -315,7 +344,8 @@ export default function User_login(props) {
                     </Link>
                   </div>
                   <div className="mt-4 mb-2">
-                   <input autocapitalize="none"
+                    <input
+                      autocapitalize="none"
                       type="text"
                       onBlur={(e) => setResetemail(e.target.value)}
                       onChange={(e) => (
@@ -371,23 +401,23 @@ export default function User_login(props) {
                   </div>
                   {error == "loading" && (
                     <div
-                      class="spinner-border text-primary text-center mb-3"
+                      className="spinner-border text-primary text-center mb-3"
                       role="status"
                     >
-                      <span class="sr-only"></span>
+                      <span className="sr-only"></span>
                     </div>
                   )}
 
                   {error == "invalid email" && (
                     <>
-                      <div class="alert alert-danger" role="alert">
+                      <div className="alert alert-danger" role="alert">
                         Invalid email
                       </div>
                     </>
                   )}
 
                   {error == "sent" && (
-                    <div class="alert alert-success" role="alert">
+                    <div className="alert alert-success" role="alert">
                       Password reset link has been sent to your email...
                       <span
                         className="text-primary"

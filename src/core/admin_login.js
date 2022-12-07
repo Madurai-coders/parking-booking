@@ -255,17 +255,17 @@ const EnterForgotPassword=(event)=> {
                 </div>
                 {error_login == "error" && (
                   <>
-                    <div class="alert alert-danger" role="alert">
+                    <div className="alert alert-danger" role="alert">
                       Invalid email and Password
                     </div>
                   </>
                 )}
                 {props.loading && props.loading != "error" && (
                   <div
-                    class="spinner-border text-danger text-center mb-3"
+                    className="spinner-border text-danger text-center mb-3"
                     role="status"
                   >
-                    <span class="sr-only"></span>
+                    <span className="sr-only"></span>
                   </div>
                 )}
                 <br></br>{" "}
@@ -339,23 +339,23 @@ const EnterForgotPassword=(event)=> {
                 </div>
                 {error == "loading" && (
                   <div
-                    class="spinner-border text-danger text-center mb-3"
+                    className="spinner-border text-danger text-center mb-3"
                     role="status"
                   >
-                    <span class="sr-only"></span>
+                    <span className="sr-only"></span>
                   </div>
                 )}
 
                 {error == "invalid email" && (
                   <>
-                    <div class="alert alert-danger" role="alert">
+                    <div className="alert alert-danger" role="alert">
                       Invalid email
                     </div>
                   </>
                 )}
 
                 {error == "sent" && (
-                  <div class="alert alert-success" role="alert">
+                  <div className="alert alert-success" role="alert">
                     Password reset link has been sent to your email...
                     <span
                       className="text-primary"

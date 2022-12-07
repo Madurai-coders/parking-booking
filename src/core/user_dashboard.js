@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import logo from "../assets/images/logogrey.svg";
+import wrong from "../assets/images/wrong.svg";
 import userprof from "../assets/images/userprofile.png";
 import handshake from "../assets/images/handshake.png";
 import loader_video from "../assets/images/loader.mp4";
@@ -17,6 +18,7 @@ import moment from "moment";
 import "../assets/css/admin_dashboard/booking.css";
 import DatePicker from "react-datepicker";
 import tick from "../assets/images/tick.svg";
+import payment_unsuccessful from "../assets/images/payment_unsuccessful.webp";
 import view from "../assets/images/view.svg";
 import close from "../assets/images/close.svg";
 import { useMediaQuery } from "react-responsive";
@@ -43,6 +45,7 @@ import { InputBox } from "../components/general/inputbox";
 import noBooking from "../assets/images/noactiveBooking.svg";
 import SetupProcess from "../components/user_dashboard/SetupProcessProgressbar";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function User_dashboard() {
   const isDesktopOrLaptop = useMediaQuery({
@@ -65,6 +68,7 @@ export default function User_dashboard() {
   const [credit, setCredit] = useState({ amount: 0, type: "" });
   const [success, setSuccess] = useState();
   const [step, setstep] = useState(1);
+  const [payment_online, setpayment_online] = useState();
   const [table, setTable] = useState({
     bookingdetails: true,
     transactionhistory: false,
@@ -81,22 +85,23 @@ export default function User_dashboard() {
   const [mailStatus, setMailStatus] = useState();
   const [tab, setTab] = useState("Booking");
   const [carInfo, setCarInfo] = useState(false);
+  const [PaymentSuccessful, setPaymentSuccessful] = useState()
   const [payment_pop, setpayment_pop] = useState({
     pop: false,
     amount: null,
     error: false,
   });
   const [cardata, setCarData] = useState({
-    license: "not_selected",
-    make: "not_selected",
-    model: "not_selected",
-    carRegistrationState: "not_selected",
-    color: "not_selected",
-    insurance: "not_selected",
+    license: "dfv",
+    make: "dfv",
+    model: "5165",
+    carRegistrationState: "dfv",
+    color: "#ffffff",
+    insurance: "dfvfd",
     permitYear: moment(new Date()).format("YYYY"),
     valid: "nil",
   });
-
+const [btn, setbtn] = useState(false)
   const [booking, setbooking] = useState({
     userId: "not_selected",
     bookingId: "not_selected",
@@ -343,7 +348,8 @@ export default function User_dashboard() {
 
   function calluseEffect() {
     axios_call("GET", "UserLogin").then((response) => {
-      console.log(response[0]);
+      console.log('response');
+      console.log(response);
       if (response[0] == undefined) {
         console.log("user dashboard");
 
@@ -412,7 +418,8 @@ export default function User_dashboard() {
   }
 
   function CallPayment(val) {
-    if (val > 10) {
+    if (val > 1) {
+        setbtn(true)
       var body = {
         fname: user.userName,
         lname: user.userName,
@@ -469,10 +476,10 @@ export default function User_dashboard() {
           },
           json: true,
         }).then((response) => {
-          window.location.replace(
+          window.location(
             "https://taxdev.munidex.info/pbs2/pbs/" +
               response.data +
-              "?returnUri=https://parkingdev.munidex.info/dashboard/" +
+              "?returnUri=http://localhost:3001/dashboard/" +
               response_main.id +
               "/booking/" +
               body.clientrefnum
@@ -490,19 +497,20 @@ export default function User_dashboard() {
   }
 
   function CallPayment_pop(val) {
-    if (val > 10) {
+    if (val > 1) {
+        setbtn(true)
       var body = {
         fname: user.userName,
         lname: user.userName,
         email: user.email,
         amount: val,
         transfee: 1.5,
-        muni_code: "1122",
-        dept: "pkng",
-        pbsdescr: "Parking Fees",
+        muni_code: "9999",
+        dept: "marina",
+        pbsdescr: "pet license",
         clientrefnum: generateUUID(),
         ptype: "CC",
-        pprovider: "PROC",
+        pprovider: "MSBP",
         rme: false,
       };
 
@@ -529,17 +537,17 @@ export default function User_dashboard() {
         userDate.payment_partner.push(response_main);
         setUser(user);
 
-        axios_call("POST", "PaymentEndpoint/", {
+        axios_call_unauthenticated("POST", "PaymentEndpoint/", {
           status: "S",
           transNum: body.clientrefnum,
           serviceType: "pkg",
         }).then((response_main) => {
           console.log(response_main);
         });
-
+        console.log('hi')
         axios({
           method: "POST",
-          url: "http://localhost:9000/testAPI/",
+          url: "http://3.223.15.134:9000/testapi/",
           data: body,
           port: 443,
           headers: {
@@ -547,7 +555,7 @@ export default function User_dashboard() {
           },
           json: true,
         }).then((response) => {
-          window.location.replace(
+          window.location(
             "https://taxdev.munidex.info/pbs2/pbs/" +
               response.data +
               "?returnUri=http://localhost:3001/dashboard/" +
@@ -616,7 +624,7 @@ export default function User_dashboard() {
 
     if (booking.plan == "Monthly") {
       endTo = moment(booking.date, "YYYY-MM-DD")
-        .add(31, "days")
+        .add(1, "M")
         .format("YYYY-MM-DD");
     }
 
@@ -702,13 +710,13 @@ export default function User_dashboard() {
   function SendMail(success) {
     var data = {
       to: success.User.email,
-      invoiceDate: moment(success.date).format("DD/MM/YYYY"),
+      invoiceDate: moment(success.date).format("MM/DD/YYYY"),
       user: success.User.userName,
       accountNumber: success.User.accountNumber,
       bookingId: success.bookingId,
       amount: success.charge,
-      startFrom: moment(success.startFrom).format("DD/MM/YYYY"),
-      endTo: moment(success.endTo).format("DD/MM/YYYY"),
+      startFrom: moment(success.startFrom).format("MM/DD/YYYY"),
+      endTo: moment(success.endTo).format("MM/DD/YYYY"),
       wing: success.slots.wing.wingName,
       plan: success.plan,
       id: success.id,
@@ -752,6 +760,10 @@ export default function User_dashboard() {
             };
             axios_call("PUT", "CreatePayment/" + id + "/", data).then(
               (response) => {
+                axios_call(
+                    "Delete",
+                    "PaymentEndpoint/" + key + "/"
+                  )
                 if (status == "booking") {
                   axios_call("GET", "BookingTemp/" + key + "/").then(
                     (response_main) => {
@@ -768,12 +780,14 @@ export default function User_dashboard() {
                                 bookingId: booked.id,
                               }).then((carinfobooked) => {
                                 axios_call(
-                                  "Delete",
-                                  "PaymentEndpoint/" + key + "/"
-                                ).then(() => {
+                                    "Delete",
+                                    "BookingTemp/" + key + "/"
+                                  )
+                                  axios_call(
+                                    "Delete",
+                                    "CarInfoTemp/" + key + "/"
+                                  )
                                 calluseEffect();
-                                });
-                                
                               });
                             }
                           );
@@ -784,13 +798,31 @@ export default function User_dashboard() {
                     }
                   );
                 }
+                if(status=='payment'){
+                    calluseEffect();
+                    setPaymentSuccessful({...data,success:true})
+                }
               }
             );
           }
         });
       }
-      if (response_main == "failed") {
+      if (response_main == "failed"||response_main.status == "F") {
         calluseEffect();
+        setpayment_online('failed')
+        if (status == "booking"){
+        axios_call(
+            "Delete",
+            "BookingTemp/" + key + "/"
+          )
+          axios_call(
+            "Delete",
+            "CarInfoTemp/" + key + "/"
+          )}
+          axios_call(
+            "Delete",
+            "PaymentEndpoint/" + key + "/"
+          )
       }
     } else {
       calluseEffect();
@@ -811,6 +843,66 @@ export default function User_dashboard() {
         </div>
       ) : (
         <>
+
+{payment_online=='failed' && (
+            <div className="overlay">
+              <div className="bookingspopup_container">
+                <div
+                onClick={() => setpayment_online()} 
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div> </div>
+                  <div className="pt-2 pe-3">
+                    <img onClick={() => setpayment_online()} src={close} />
+                  </div>
+                </div>
+                <div className="d-flex flex-column mb-3">
+                  <div className=" ps-3 text-center">
+                    <img src={payment_unsuccessful} style={{width:'70%'}} />
+                  </div>
+                   <div style={{color:'gray',fontSize:'30px'}} className="mt-2 mb-5  ps-3 text-center" >
+                  Payment Failed
+                </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+{PaymentSuccessful && (
+            <div className="overlay">
+              <div className="bookingspopup_container">
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div> </div>
+                  <div className="pt-2 pe-3">
+                    <img 
+                    onClick={() => setPaymentSuccessful()} 
+                    src={close} />
+                  </div>
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <div> </div>
+                  <div className="mt-2 ps-3">
+                    <img src={tick} />
+                  </div>
+                </div>
+                <div className="bookingspopup_title mt-3 mb-5">
+                Payment Successful
+                </div>
+                
+                <div style={{ textAlign: "center" }} className="mb-5">
+                  <span className="bookingspopup_text_amount"> Amount </span>{" "}
+                  <span className="bookingspopup_value_amount">
+                    {" "}
+                    {true && formatUsd(parseInt(PaymentSuccessful.amount))}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+
           {success && (
             <div className="overlay">
               <div className="bookingspopup_container">
@@ -839,13 +931,13 @@ export default function User_dashboard() {
                       From:{" "}
                       <span className="bookingspopup_body">
                         {" "}
-                        {moment(success.startFrom).format("DD/MM/YYYY")}
+                        {moment(success.startFrom).format("MM/DD/YYYY")}
                       </span>
                     </div>
                     <div className="bookingspopup_head">
                       To:{" "}
                       <span className="bookingspopup_body">
-                        {moment(success.endTo).format("DD/MM/YYYY")}
+                        {moment(success.endTo).format("MM/DD/YYYY")}
                       </span>
                     </div>
                   </div>
@@ -887,29 +979,31 @@ export default function User_dashboard() {
             </div>
           )}
 
+
+
           {logout_popup && (
             <div className="overlay">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">
                       Logout
                     </h5>
                     <button
                       type="button"
                       onClick={() => setlogout_popup(false)}
-                      class="btn-close"
+                      className="btn-close"
                       data-bs-dismiss="modal"
                       aria-label="Close"
                       style={{ cursor: "pointer" }}
                     ></button>
                   </div>
-                  <div class="modal-body">Are you sure?</div>
-                  <div class="modal-footer">
+                  <div className="modal-body">Are you sure?</div>
+                  <div className="modal-footer">
                     <button
                       type="button"
                       onClick={() => setlogout_popup(false)}
-                      class="btn btn-light btn-sm"
+                      className="btn btn-light btn-sm"
                       data-bs-dismiss="modal"
                     >
                       Cancel
@@ -917,7 +1011,7 @@ export default function User_dashboard() {
                     <button
                       type="button"
                       onClick={logoutuser}
-                      class="btn btn-danger btn-sm"
+                      className="btn btn-danger btn-sm"
                     >
                       Logout
                     </button>
@@ -1199,7 +1293,7 @@ export default function User_dashboard() {
                                         }}
                                       >
                                         <DatePicker
-                                          dateFormat="dd/MM/yyyy"
+                                          dateFormat="MM/dd/yyyy"
                                           className="payment_date"
                                           selected={booking.date}
                                           onClickOutside
@@ -1324,9 +1418,10 @@ export default function User_dashboard() {
                                           pagination={false}
                                           showArrows={true}
                                         >
-                                          {wing_data.map((wing) => {
+                                          {wing_data.map((wing,id) => {
                                             return (
                                               <div
+                                              key={id}
                                                 className={
                                                   wing.id !=
                                                   (slot && slot[0].wingId)
@@ -1357,7 +1452,7 @@ export default function User_dashboard() {
                                       <>
                                         {slot.map((slot, id) => {
                                           return (
-                                            <span>
+                                            <span key={id}>
                                               {checkslots(
                                                 slot,
                                                 id,
@@ -1522,12 +1617,13 @@ export default function User_dashboard() {
                                     Next
                                   </div>
                                 ) : (
-                                  <div
+                                  <button
+                                  disabled={btn}
                                     className="btn  btn-primary"
                                     onClick={() => CallPayment(booking.charge)}
                                   >
                                     Proceed to payment
-                                  </div>
+                                  </button>
                                 )}
                                 <div
                                   className="btn mx-2 btn-light"
@@ -1596,9 +1692,9 @@ export default function User_dashboard() {
                                 </div>
                               </>
                             )}
-                            {user.booking_partner.map((booking) => {
+                            {user.booking_partner.map((booking,id) => {
                               return (
-                                <>
+                                <div key={id}>
                                   {Dayleft(booking.endTo) > 0 && (
                                     <Activebooking
                                       entry={booking.startFrom}
@@ -1610,7 +1706,7 @@ export default function User_dashboard() {
                                       plan={booking.plan}
                                     />
                                   )}
-                                </>
+                                </div>
                               );
                             })}
                           </div>
@@ -1631,10 +1727,10 @@ export default function User_dashboard() {
                                 </div>
                               </div>
                               <form className="mx-5">
-                                <div class="form-group mt-2 mb-2">
+                                <div className="form-group mt-2 mb-2">
                                   <input
                                     type="number"
-                                    class="form-control form-control-lg"
+                                    className="form-control form-control-lg"
                                     onChange={(e) =>
                                       setpayment_pop({
                                         ...payment_pop,
@@ -1648,7 +1744,8 @@ export default function User_dashboard() {
                                 <div className="text-center mt-4">
                                   <button
                                     type="button"
-                                    class="btn btn-primary mx-2 btn-block"
+                                    disabled={btn}
+                                    className="btn btn-primary mx-2 btn-block"
                                     onClick={() =>
                                       CallPayment_pop(payment_pop.amount)
                                     }
@@ -1657,7 +1754,7 @@ export default function User_dashboard() {
                                   </button>
                                   <button
                                     type="button"
-                                    class="btn btn-light  btn-block"
+                                    className="btn btn-light  btn-block"
                                     onClick={(e) =>
                                       setpayment_pop({
                                         ...payment_pop,
@@ -1685,7 +1782,7 @@ export default function User_dashboard() {
                         <div className="col-6" style={{ paddingRight: "0" }}>
                           <button
                             type="button"
-                            class="btn btn-secondary btn-md w-75 udb_cart_clrbutton"
+                            className="btn btn-secondary btn-md w-75 udb_cart_clrbutton"
                           >
                             Clear
                           </button>
@@ -1693,7 +1790,7 @@ export default function User_dashboard() {
                         <div className="col-6" style={{ paddingLeft: "0" }}>
                           <button
                             type="button"
-                            class="btn btn-success btn-md w-75 udb_cart_continuebutton"
+                            className="btn btn-success btn-md w-75 udb_cart_continuebutton"
                           >
                             Continue
                           </button>
@@ -1707,6 +1804,37 @@ export default function User_dashboard() {
               </div>
             </div>
           )}
+
+          {!user&&
+           <div className="">
+           <div className="">
+             <div
+             onClick={() => setpayment_online()} 
+               style={{ display: "flex", justifyContent: "space-between" }}
+             >
+               <div> </div>
+               <div className="pt-5 pe-3">
+                 {/* <img onClick={() => setpayment_online()} src={close} /> */}
+               </div>
+             </div>
+             <div className="d-flex flex-column justify-content-center mt-5">
+               <div className=" ps-3 text-center">
+                 <img src={wrong} style={{width:'200px'}} />
+               </div>
+                <div style={{color:'gray',fontSize:'30px'}} className="mt-2 mb-5  ps-3 text-center" >
+               Somthing went wrong
+             </div>
+            
+             </div>
+             <div className="text-center">
+                <Link to='/'>
+             <div className="btn btn-primary btn-lg">
+             Get back to login
+             </div></Link></div>
+           </div>
+         </div>
+          
+          }
         </>
       )}
     </>

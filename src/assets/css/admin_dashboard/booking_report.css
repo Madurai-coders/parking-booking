@@ -118,15 +118,16 @@
     margin: 1% 2% 3% 0;
     padding: 2% 2% 1% 2%;
     border: 2px solid rgb(25, 111, 192);
-  
+
   }
   
 
 .booking_report_slot_number_text {
   font-weight: 900;
-  font-size: 28px;
+  font-size: 26px;
   line-height: 16px;
   color: #0f0f0f;
+  cursor: pointer;
 }
 
 .booking_report_bottom_flex_number {

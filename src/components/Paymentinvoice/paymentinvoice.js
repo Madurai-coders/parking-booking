@@ -18,7 +18,7 @@ export default function Bookinginvoice(props) {
 
             <div className="bookinginvoice_text_invdate">
               Invoice Date:{" "}
-              {moment(props.paymentData.paymentDate).format("DD/MM/YYYY")}
+              {moment(props.paymentData.paymentDate).format("MM/DD/YYYY")}
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function Bookinginvoice(props) {
                 <td>{props.paymentData.User.accountNumber}</td>
                 <td>{props.paymentData.paymentId}</td>
                 <td>
-                  {moment(props.paymentData.paymentDate).format("DD/MM/YYYY")}
+                  {moment(props.paymentData.paymentDate).format("MM/DD/YYYY")}
                 </td>
                 <td>{props.paymentData.amount} $</td>
               </tr>

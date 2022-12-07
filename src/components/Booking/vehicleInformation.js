@@ -35,14 +35,14 @@ export default function VehicalInformation({setBookinghover,bookinghover}) {
             <InputBoxDisplay
                     label="Make"
                     type="text"
-                    value={bookinghover.carInfo.license}
+                    value={bookinghover.carInfo.make}
                    
                   /></div>
           <div className="col-6" >
             <InputBoxDisplay
                     label="License Plate"
                     type="text"
-                    value={bookinghover.carInfo.make}
+                    value={bookinghover.carInfo.license}
                   
                   /></div>
 
@@ -59,7 +59,8 @@ export default function VehicalInformation({setBookinghover,bookinghover}) {
             <InputBoxDisplay
                     label="Registration State"
                     type="text"
-                    value={bookinghover.carInfo.make}
+                    value={bookinghover.carInfo.carRegistrationState
+                    }
                     
                   /></div>
 

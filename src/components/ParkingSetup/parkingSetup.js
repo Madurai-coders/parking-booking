@@ -15,7 +15,7 @@ function ParkingSetup({ slot }) {
 
   return (
     <div className="card-width-height1">
-      <div class="d-flex flex-wrap" style={{ height: "1000px" }}>
+      <div className="d-flex flex-wrap" style={{ height: "1000px" }}>
         {slot &&
           slot.map((wing, id) => {
             return (

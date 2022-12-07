@@ -17,11 +17,11 @@ export default function Addslot(props) {
                            </div>
                              <div className="udb_planbtncontainer">
                              <span className="udb_plantxt me-2">Plan</span>
-                             <button type="button" class="btn btn-outline-info udb_planbtn me-2">D</button>
-                             <button type="button" class="btn btn-outline-primary udb_planbtn me-2">W</button>
-                             <button type="button" class="btn btn-outline-warning udb_planbtn me-2">M</button>
-                             <button type="button" class="btn btn-outline-success udb_planbtn me-2">Q</button>
-                             <button type="button" class="btn btn-outline-danger udb_planbtn me-2">Y</button>
+                             <button type="button" className="btn btn-outline-info udb_planbtn me-2">D</button>
+                             <button type="button" className="btn btn-outline-primary udb_planbtn me-2">W</button>
+                             <button type="button" className="btn btn-outline-warning udb_planbtn me-2">M</button>
+                             <button type="button" className="btn btn-outline-success udb_planbtn me-2">Q</button>
+                             <button type="button" className="btn btn-outline-danger udb_planbtn me-2">Y</button>
                              </div>
                         </div>
                         <div className="col-2">

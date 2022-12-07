@@ -76,12 +76,12 @@ export default function History({booking_partner,payment_partner,setHistory,isDe
                 <td>{userdata.slots.wing.wingName}</td>
                 <td>
                   {moment(userdata.startFrom).format(
-                    "DD-MM-YYYY"
+                    "MM-DD-YYYY"
                   )}
                 </td>
                 <td>
                   {moment(userdata.endTo).format(
-                    "DD-MM-YYYY"
+                    "MM-DD-YYYY"
                   )}
                 </td>
                 <td>{userdata.plan}</td>
@@ -123,7 +123,7 @@ export default function History({booking_partner,payment_partner,setHistory,isDe
               <td>{transaction.paymentId}</td>
               <td>
                 {moment(transaction.paymentDate).format(
-                  "DD-MM-YYYY"
+                  "MM-DD-YYYY"
                 )}
               </td>
               <td>{transaction.paymentType}</td>

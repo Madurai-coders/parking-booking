@@ -630,13 +630,13 @@ console.log(booking_validity)
   function SendMail() {
     var data = {
       to: preview.User.email,
-      invoiceDate: moment(preview.date).format("DD/MM/YYYY"),
+      invoiceDate: moment(preview.date).format("MM/DD/YYYY"),
       user: preview.User.userName,
       accountNumber: preview.User.accountNumber,
       bookingId: preview.bookingId,
       amount: preview.charge,
-      startFrom: moment(preview.startFrom).format("DD/MM/YYYY"),
-      endTo: moment(preview.endTo).format("DD/MM/YYYY"),
+      startFrom: moment(preview.startFrom).format("MM/DD/YYYY"),
+      endTo: moment(preview.endTo).format("MM/DD/YYYY"),
       wing: preview.slots.wing.wingName,
       plan: preview.plan,
       id: preview.id,
@@ -796,7 +796,7 @@ console.log(booking_validity)
           (count = count + 1),
           val.push({
             data1: count,
-            data2: moment(element.date).format("DD-MM-YYYY").toString(),
+            data2: moment(element.date).format("MM-DD-YYYY").toString(),
             data3: element.no_of_pay,
             data4: formatUsd(parseInt(element.tot_amount)),
           })
@@ -812,7 +812,7 @@ console.log(booking_validity)
           (count = count + 1)
           val.push({
             data1: element.User.userName,
-            data2: moment(element.paymentDate).format("DD-MM-YYYY").toString(),
+            data2: moment(element.paymentDate).format("MM-DD-YYYY").toString(),
             data3: element.User.email,
             data4: element.User.accountNumber,
             data5: element.paymentType,
@@ -829,7 +829,7 @@ console.log(booking_validity)
           (count = count + 1),
           val.push({
             data1: count,
-            data2: moment(element.date).format("DD-MM-YYYY").toString(),
+            data2: moment(element.date).format("MM-DD-YYYY").toString(),
             data3: element.no_of_booking,
             data4:   formatUsd(parseInt(element.total_amount_booking)),
           })
@@ -850,8 +850,8 @@ console.log(booking_validity)
             data4: element.User.accountNumber,
             data5: element.plan,
             data6: element.bookingId,
-            data7: moment(element.startFrom).format("DD-MM-YYYY"),
-            data8: moment(element.endTo).format("DD-MM-YYYY"),
+            data7: moment(element.startFrom).format("MM-DD-YYYY"),
+            data8: moment(element.endTo).format("MM-DD-YYYY"),
             data9: element.slots.wing.wingName + " [" + element.slots.id + "]",
             data10: formatUsd(parseInt(element.charge)),
           })
@@ -892,8 +892,8 @@ if(selected_wing){
             data4: element.User.email,
             data5: element.bookingId,
             data6: element.plan,
-            data7: moment(element.startFrom).format("DD-MM-YYYY"),
-            data8: moment(element.endTo).format("DD-MM-YYYY"),
+            data7: moment(element.startFrom).format("MM-DD-YYYY"),
+            data8: moment(element.endTo).format("MM-DD-YYYY"),
             data9:element.day_left,
             data10: element.slots.wing.wingName,
             data11:  formatUsd(parseInt(element.charge)),
@@ -941,9 +941,9 @@ if(selected_wing){
                       <td>{bookingdata.plan}</td>
 
                       <td>
-                        {moment(bookingdata.startFrom).format("DD-MM-YYYY")}
+                        {moment(bookingdata.startFrom).format("MM-DD-YYYY")}
                       </td>
-                      <td>{moment(bookingdata.endTo).format("DD-MM-YYYY")}</td>
+                      <td>{moment(bookingdata.endTo).format("MM-DD-YYYY")}</td>
                       <td>
                         <div
                           className={
@@ -973,9 +973,9 @@ if(selected_wing){
                     <td>{bookingdata.plan}</td>
 
                     <td>
-                      {moment(bookingdata.startFrom).format("DD-MM-YYYY")}
+                      {moment(bookingdata.startFrom).format("MM-DD-YYYY")}
                     </td>
-                    <td>{moment(bookingdata.endTo).format("DD-MM-YYYY")}</td>
+                    <td>{moment(bookingdata.endTo).format("MM-DD-YYYY")}</td>
                     <td>
                       <div
                         className={
@@ -1044,52 +1044,52 @@ if(selected_wing){
                         {mailStatus.status == "Sending" && (
                           <div className="text-center mb-2">
                             <div
-                              class="spinner-grow mx-1 text-primary"
+                              className="spinner-grow mx-1 text-primary"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-secondary"
+                              className="spinner-grow mx-1 text-secondary"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-success"
+                              className="spinner-grow mx-1 text-success"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-danger"
+                              className="spinner-grow mx-1 text-danger"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-warning"
+                              className="spinner-grow mx-1 text-warning"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-info"
+                              className="spinner-grow mx-1 text-info"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-light"
+                              className="spinner-grow mx-1 text-light"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                             <div
-                              class="spinner-grow mx-1 text-dark"
+                              className="spinner-grow mx-1 text-dark"
                               role="status"
                             >
-                              <span class="sr-only"></span>
+                              <span className="sr-only"></span>
                             </div>
                           </div>
                         )}
@@ -1125,34 +1125,34 @@ if(selected_wing){
 
       {remove_booking && (
         <div className="overlay">
-          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          {/* <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Remove Booking
                 </h5>
                 <button
                   type="button"
                   onClick={() => setRemove_booking(false)}
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">Are your sure?</div>
-              <div class="modal-footer">
+              <div className="modal-body">Are your sure?</div>
+              <div className="modal-footer">
                 <button
                   type="button"
                   onClick={() => Removebooking(remove_booking)}
-                  class="btn btn-light"
+                  className="btn btn-light"
                 >
                   Remove
                 </button>
                 <button
                   type="button"
                   onClick={() => setRemove_booking(false)}
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   data-bs-dismiss="modal"
                 >
                   Cancle
@@ -1550,12 +1550,12 @@ if(selected_wing){
                                 <>
                                   <td>
                                     {moment(bookingdata.startFrom).format(
-                                      "DD-MM-YYYY"
+                                      "MM-DD-YYYY"
                                     )}
                                   </td>
                                   <td>
                                     {moment(bookingdata.endTo).format(
-                                      "DD-MM-YYYY"
+                                      "MM-DD-YYYY"
                                     )}
                                   </td>
                                 </>
@@ -1603,12 +1603,12 @@ if(selected_wing){
                                 <>
                                   <td>
                                     {moment(bookingdata.startFrom).format(
-                                      "DD-MM-YYYY"
+                                      "MM-DD-YYYY"
                                     )}
                                   </td>
                                   <td>
                                     {moment(bookingdata.endTo).format(
-                                      "DD-MM-YYYY"
+                                      "MM-DD-YYYY"
                                     )}
                                   </td>
                                 </>
@@ -1678,7 +1678,7 @@ if(selected_wing){
                                       <td>{id + 1}</td>
                                       <td>
                                         {moment(bookingdata.date).format(
-                                          "DD-MM-YYYY"
+                                          "MM-DD-YYYY"
                                         )}
                                       </td>
                                       <td>{bookingdata.no_of_booking}</td>
@@ -1730,7 +1730,7 @@ if(selected_wing){
                                   <td>{id + 1}</td>
                                   <td>
                                     {moment(bookingdata.date).format(
-                                      "DD-MM-YYYY"
+                                      "MM-DD-YYYY"
                                     )}
                                   </td>
                                   <td>{bookingdata.no_of_pay}</td>

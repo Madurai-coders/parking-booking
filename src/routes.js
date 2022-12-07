@@ -70,16 +70,17 @@ const Routes = () => {
   const call_login = async () => {
 
     login(true).then(function (log) {
-    //   console.log(log.data.user.photoURL);
+      console.log(log.data);
     //   Cookies.set('icon',log.data.user.photoURL)
     setloading(true)
 
       if (log != null) {
         axios({
           method: "GET",
-          url: "https://parkingdev1.munidex.info/admins/",
+          url: "http://127.0.0.1:8000/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
+            console.log(response)
           if (response.data[0].is_staff) {
             setis_admin(response.data[0].is_staff);
             setloading(false)
@@ -103,7 +104,7 @@ const Routes = () => {
       if (log != null && log != 'error') {
         axios({
           method: "GET",
-          url: "https://parkingdev1.munidex.info/admins/",
+          url: "http://127.0.0.1:8000/admins/",
           headers: { Authorization: `Bearer ${log.access}` },
         }).then((response) => {
           if (response.data[0].is_staff) {

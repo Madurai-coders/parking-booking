@@ -7,12 +7,14 @@ import payment from "../../assets/images/Accountreport.svg";
 import Parkingsetup from "../../assets/images/Parkingsetup.svg";
 import Logout from "../../assets/images/Logout.svg";
 import logo from "../../assets/images/navlogo.svg";
+import { useHistory, Redirect } from "react-router-dom";
 
 import User_report from "../../assets/images/userreport.svg";
 import { useEffect } from "react";
 function Respons_nav(props) {
   const [current_page, setCurrentpage] = useState();
   const [logout_popup, setlogout_popup] = useState();
+  let history = useHistory();
 
   const addclass = () => {
     document.querySelector("#btn").classList.toggle("inactive");
@@ -46,35 +48,35 @@ function Respons_nav(props) {
     <>
       {logout_popup && (
         <div className="overlay">
-          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          {/* <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Logout
                 </h5>
                 <button
                   type="button"
                   onClick={() => setlogout_popup(false)}
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">Are your sure?</div>
-              <div class="modal-footer">
+              <div className="modal-body">Are your sure?</div>
+              <div className="modal-footer">
                 <button
                   type="button"
                   onClick={() => setlogout_popup(false)}
-                  class="btn btn-light btn-sm"
+                  className="btn btn-light btn-sm"
                   data-bs-dismiss="modal"
                 >
                   Cancle
                 </button>
                 <button
                   type="button"
-                  onClick={props.logout}
-                  class="btn btn-primary btn-sm"
+                    onClick={()=>(props.logout(),history.push("/admin"))}
+                  className="btn btn-primary btn-sm"
                 >
                   Logout
                 </button>
@@ -99,7 +101,7 @@ function Respons_nav(props) {
             </div> */}
             <div>
               <i
-                class="fa fa-power-off"
+                className="fa fa-power-off"
                 onClick={() => setlogout_popup(true)}
                 style={{ fontSize: "20px", color: "grey", marginRight:'60px',marginTop:'7px',cursor:'pointer'}}
               ></i>
@@ -110,7 +112,7 @@ function Respons_nav(props) {
         <ul className="nav_list">
           {/* <li className="sh">
             <a href="#">
-              <i onClick={addfnt} id="bar" class=" search fa fa-search"></i>
+              <i onClick={addfnt} id="bar" className=" search fa fa-search"></i>
               <input type="text" placeholder="Search..."></input>
             </a>
             <span className="tooltips">Search</span>
@@ -122,7 +124,7 @@ function Respons_nav(props) {
                 onClick={() => setCurrentpage("Booking")}
                 className={current_page == "Booking" && "sl"}
               >
-                <i class="fa fa-bookmark"></i>
+                <i className="fa fa-bookmark"></i>
                 <span className="link_name" id="link_name_close">
                   Booking
                 </span>
@@ -150,7 +152,7 @@ function Respons_nav(props) {
                 onClick={() => setCurrentpage("Report")}
                 className={current_page == "Report" && "sl"}
               >
-                <i class="fa fa-pie-chart"></i>
+                <i className="fa fa-pie-chart"></i>
                 <span className="link_name" id="link_name_close">
                   Report
                 </span>
@@ -165,7 +167,7 @@ function Respons_nav(props) {
                 onClick={() => setCurrentpage("Payment")}
                 className={current_page == "Payment" && "sl"}
               >
-                <i class="fa fa-credit-card"></i>
+                <i className="fa fa-credit-card"></i>
                 <span className="link_name">Payment</span>
               </a>
               <span className="tooltips">Analytics</span>
@@ -181,7 +183,7 @@ function Respons_nav(props) {
                 onClick={() => setCurrentpage("User")}
                 className={current_page == "User" && "sl"}
               >
-                <i class="fa fa-user"></i>
+                <i className="fa fa-user"></i>
                 <span className="link_name">User</span>
                 {/* <i
                   id="arrow_1"
@@ -199,7 +201,7 @@ function Respons_nav(props) {
           {/* <Link to="/saved" style={{ textDecoration: "none" }}>
             <li>
               <a href="#">
-                <i class="fa fa-heart"></i>
+                <i className="fa fa-heart"></i>
                 <span className="link_name">Saved</span>
               </a>
               <span className="tooltips">Saved</span>
@@ -216,7 +218,7 @@ function Respons_nav(props) {
                 onClick={() => setCurrentpage("Settings")}
                 className={current_page == "Settings" && "sl"}
               >
-                <i class="fa fa-cog"></i>
+                <i className="fa fa-cog"></i>
                 <span className="link_name">Settings</span>
               </a>
               <span className="tooltips">Settings</span>
@@ -244,7 +246,7 @@ function Respons_nav(props) {
               <i
                 onClick={closefnt}
                 id="logout"
-                class=" logout fa fa-arrow-left"
+                className=" logout fa fa-arrow-left"
               ></i>
             </div>
           </div> */}

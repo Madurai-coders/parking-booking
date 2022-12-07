@@ -130,7 +130,7 @@ export default function User_dashboard(props) {
                           <td>{transaction.paymentId}</td>
                           <td>
                             {moment(transaction.paymentDate).format(
-                              "DD-MM-YYYY"
+                              "MM-DD-YYYY"
                             )}
                           </td>
                           <td>{transaction.paymentType}</td>
@@ -197,8 +197,8 @@ export default function User_dashboard(props) {
                           userdata.slots.id +
                           "]"}
                       </td>
-                      <td>{moment(userdata.startFrom).format("DD-MM-YYYY")}</td>
-                      <td>{moment(userdata.endTo).format("DD-MM-YYYY")}</td>
+                      <td>{moment(userdata.startFrom).format("MM-DD-YYYY")}</td>
+                      <td>{moment(userdata.endTo).format("MM-DD-YYYY")}</td>
                       <td>{userdata.plan}</td>
                       <td>
                         {/* <span
@@ -287,7 +287,7 @@ export default function User_dashboard(props) {
                                 <td>{transaction.paymentId}</td>
                                 <td>
                                   {moment(transaction.paymentDate).format(
-                                    "DD-MM-YYYY"
+                                    "MM-DD-YYYY"
                                   )}
                                 </td>
                                 <td>{transaction.paymentType}</td>

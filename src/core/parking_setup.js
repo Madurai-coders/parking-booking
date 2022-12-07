@@ -348,34 +348,34 @@ export default function Parkingsetup() {
 
       {remove_wing && (
         <div className="overlay">
-          {/* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          {/* <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> */}
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Remove Wing
                 </h5>
                 <button
                   type="button"
                   onClick={() => setRemove_wing(false)}
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">Are your sure?</div>
-              <div class="modal-footer">
+              <div className="modal-body">Are your sure?</div>
+              <div className="modal-footer">
                 <button
                   type="button"
                   onClick={removeWing}
-                  class="btn btn-light"
+                  className="btn btn-light"
                 >
                   Remove
                 </button>
                 <button
                   type="button"
                   onClick={() => (removeWing,setRemove_wing(false))}
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   data-bs-dismiss="modal"
                 >
                   Cancle
@@ -617,9 +617,9 @@ export default function Parkingsetup() {
                 <div className="parking_setup_inactive_percentage_text">
                   {percent && percent.active}%
                 </div>
-                <div class="progress parking_setup_active_progress">
+                <div className="progress parking_setup_active_progress">
                   <div
-                    class="progress-bar"
+                    className="progress-bar"
                     role="progressbar"
                     aria-valuenow="25"
                     aria-valuemin="0"
@@ -636,9 +636,9 @@ export default function Parkingsetup() {
                 <div className="parking_setup_active_percentage_text">
                   {percent && percent.inactive}%
                 </div>
-                <div class="progress parking_setup_inactive_progress">
+                <div className="progress parking_setup_inactive_progress">
                   <div
-                    class="progress-bar"
+                    className="progress-bar"
                     role="progressbar"
                     aria-valuenow="25"
                     aria-valuemin="0"
@@ -815,8 +815,8 @@ export default function Parkingsetup() {
                   {slot.map((slot, id) => {
                     return (
                       <span>
-                          {loading == slot.id ? <span className="ps-3 pe-3"> <div  key={id} class=" spinner-border spinner-border-sm text-primary" role="status">
-  <span class="visually-hidden">Loading...</span>
+                          {loading == slot.id ? <span className="ps-3 pe-3"> <div  key={id} className=" spinner-border spinner-border-sm text-primary" role="status">
+  <span className="visually-hidden">Loading...</span>
 </div></span>:
   <img
   key={id}
