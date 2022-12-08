@@ -468,7 +468,7 @@ const [btn, setbtn] = useState(false)
 
         axios({
           method: "POST",
-          url: "http://3.223.15.134:9000/testapi/",
+          url: "https://3.223.15.134:9000/testapi/",
           data: body,
           port: 443,
           headers: {
@@ -479,7 +479,7 @@ const [btn, setbtn] = useState(false)
           window.location.assign(
             "https://taxdev.munidex.info/pbs2/pbs/" +
               response.data +
-              "?returnUri=http://localhost:3001/dashboard/" +
+              "?returnUri=https://parkingdev.munidex.info/dashboard/" +
               response_main.id +
               "/booking/" +
               body.clientrefnum
@@ -547,7 +547,7 @@ const [btn, setbtn] = useState(false)
         console.log('hi')
         axios({
           method: "POST",
-          url: "http://3.223.15.134:9000/testapi/",
+          url: "https://3.223.15.134:9000/testapi/",
           data: body,
           port: 443,
           headers: {
@@ -558,7 +558,7 @@ const [btn, setbtn] = useState(false)
           window.location.assign(
             "https://taxdev.munidex.info/pbs2/pbs/" +
               response.data +
-              "?returnUri=http://localhost:3001/dashboard/" +
+              "?returnUri=https://parkingdev.munidex.info/dashboard/" +
               response_main.id +
               "/payment/" +
               body.clientrefnum
@@ -848,7 +848,6 @@ const [btn, setbtn] = useState(false)
             <div className="overlay">
               <div className="bookingspopup_container">
                 <div
-                onClick={() => setpayment_online()} 
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <div> </div>
@@ -1478,6 +1477,11 @@ const [btn, setbtn] = useState(false)
                                   >
                                     Plan
                                   </div>
+                                  {payment_pop.error && (
+                                <div className="alert alert-danger mt-3">
+                                  {payment_pop.error}
+                                </div>
+                              )}
                                   <div className="">
                                     <div className="booking_form_plan_input">
                                       <div className="booking_form_plan_input_buttons1">
