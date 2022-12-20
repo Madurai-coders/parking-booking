@@ -684,7 +684,7 @@ export function validation_password(value) {
 export function validation_mobile_number(value) {
   if (value == "" || value != "not_selected") {
     console.log(value);
-    var phoneno = /^\d{10}$/;
+    var phoneno = /^([0-9].{9}|[0-9].{11})$/;
     if (value) {
       if (phoneno.test(value)) {
         return {

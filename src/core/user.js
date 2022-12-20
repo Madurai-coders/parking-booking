@@ -172,6 +172,9 @@ export default function User_dashboard(props) {
               {" "}
               {props.user.userName}'s Report
             </div>
+            <div className="mt-1 mb-3 mx-2">
+              {props.user.email}
+            </div>
             <div className="user_dashboard_text_booking_details">
               {" "}
               Booking Details

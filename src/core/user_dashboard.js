@@ -18,7 +18,7 @@ import moment from "moment";
 import "../assets/css/admin_dashboard/booking.css";
 import DatePicker from "react-datepicker";
 import tick from "../assets/images/tick.svg";
-import payment_unsuccessful from "../assets/images/payment_unsuccessful.webp";
+import payment_unsuccessful from "../assets/images/wrong.svg";
 import view from "../assets/images/view.svg";
 import close from "../assets/images/close.svg";
 import { useMediaQuery } from "react-responsive";
@@ -92,12 +92,12 @@ export default function User_dashboard() {
     error: false,
   });
   const [cardata, setCarData] = useState({
-    license: "dfv",
-    make: "dfv",
-    model: "5165",
-    carRegistrationState: "dfv",
+    license: "not_selected",
+    make: "not_selected",
+    model: "not_selected",
+    carRegistrationState: "not_selected",
     color: "#ffffff",
-    insurance: "dfvfd",
+    insurance: "not_selected",
     permitYear: moment(new Date()).format("YYYY"),
     valid: "nil",
   });
@@ -305,15 +305,18 @@ const [btn, setbtn] = useState(false)
     var payment_total = 0;
     var booking_total = 0;
     payment.forEach((element) => {
-      if (element.status == "success") {
+    console.log('status: '+element.Status);
+
+      if (element.Status == "success") {
         payment_total = payment_total + element.amount;
       }
     });
+
     booking.forEach((element) => {
       booking_total = booking_total + parseInt(element.charge);
     });
     var val = payment_total - booking_total;
-    console.log(val);
+    console.log('payment_total: '+payment_total );
     if (val < 0) {
       setCredit({ amount: val, type: "Delinquent" });
     } else {
@@ -334,15 +337,16 @@ const [btn, setbtn] = useState(false)
   }
 
   function Dayleft(endTo) {
+
     var b = moment(endTo, "YYYY-MM-DD");
     var a = moment(new Date(), "YYYY-MM-DD");
     var day = b.diff(a, "days");
     if (day == 0) {
-      return "1";
-    }
-    if (!active && day >= 0) {
-      setactive(true);
-    }
+        day=day+1
+      }
+    if (!active&&day > 0) {
+        setactive(true)
+        }
     return day;
   }
 
@@ -537,17 +541,17 @@ const [btn, setbtn] = useState(false)
         userDate.payment_partner.push(response_main);
         setUser(user);
 
-        axios_call_unauthenticated("POST", "PaymentEndpoint/", {
-          status: "S",
-          transNum: body.clientrefnum,
-          serviceType: "pkg",
-        }).then((response_main) => {
-          console.log(response_main);
-        });
-        console.log('hi')
+        // axios_call_unauthenticated("POST", "PaymentEndpoint/", {
+        //   status: "S",
+        //   transNum: body.clientrefnum,
+        //   serviceType: "pkg",
+        // }).then((response_main) => {
+        //   console.log(response_main);
+        // });
+        // console.log('hi')
         axios({
           method: "POST",
-          url: "https://3.223.15.134:9000/testapi/",
+          url: "https://parkingdev2.munidex.info/testapi/",
           data: body,
           port: 443,
           headers: {
@@ -858,10 +862,10 @@ const [btn, setbtn] = useState(false)
                 </div>
                 <div className="d-flex flex-column mb-3">
                   <div className=" ps-3 text-center">
-                    <img src={payment_unsuccessful} style={{width:'70%'}} />
+                    <img src={payment_unsuccessful} style={{width:'30%'}} />
                   </div>
                    <div style={{color:'gray',fontSize:'30px'}} className="mt-2 mb-5  ps-3 text-center" >
-                  Payment Failed
+                  Payment failed...try again
                 </div>
                 </div>
               </div>
@@ -1662,10 +1666,11 @@ const [btn, setbtn] = useState(false)
                               setpayment_pop({ ...payment_pop, pop: true })
                             }
                           >
-                            <div className="udb_bctext mt-3 mb-2 ms-2">
+                            <div className="udb_bctext mt-3 mb-1 ms-2">
                               Balance
                             </div>
-                            <div className="udb_bcval ms-2">
+                            <div className="text-white small mx-2">click me to make a payment</div> 
+                            <div className="udb_bcval ms-2 mt-2">
                               {credit && formatUsd(Math.abs(credit.amount))}
                             </div>
                             <div

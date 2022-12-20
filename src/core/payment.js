@@ -27,6 +27,7 @@ import axios from "axios";
 
 export default function Payment() {
   const [payment, setPayment] = useState();
+  const [payment_initiated, setPayment_initiated] = useState();
   const [payment_invoice, setPayment_invoice] = useState();
   const [remove_payment, setRemove_payment] = useState();
   const [mailStatus, setMailStatus] = useState();
@@ -149,6 +150,7 @@ export default function Payment() {
     const result = await form_validate();
     if (result && !data_fail) {
       if (usr_suggestion[0]) {
+        setPayment_initiated(true)
         console.log("starting existing user");
         if (
           usr_suggestion[0].userName === form.name &&
@@ -173,6 +175,8 @@ export default function Payment() {
               }
             );
             console.log("payment added to existing user");
+        setPayment_initiated(false)
+
           });
         }
 
@@ -184,6 +188,7 @@ export default function Payment() {
         }
       } else {
         console.log("initiate newUser");
+        setPayment_initiated(true)
         var newbookingpartner = {
           uId: new Date().getUTCMilliseconds(),
           accountNumber: Math.floor(100000 + Math.random() * 9000),
@@ -236,6 +241,7 @@ export default function Payment() {
                       }
                     );
                     console.log("payment added to created existing user");
+                    setPayment_initiated(false)
                   });
                 }
               );
@@ -671,18 +677,19 @@ export default function Payment() {
                 </div>
               </div>
               {!edit ? (
-                <div className="payment_submit_reset_container">
-                  <div
-                    className="payment_submit_button"
+                <div className="mt-3">
+                  <button
+                  disabled={payment_initiated}
+                    className="btn-success btn btn-sm"
                     style={{ cursor: "pointer" }}
                     onClick={form_submit}
                   >
-                    {" "}
+                    { payment_initiated&&<span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
                     Submit{" "}
-                  </div>
+                  </button>
 
                   <div
-                    className="payment_reset_button"
+                    className="btn-light btn btn-sm mx-3 "
                     style={{ cursor: "pointer" }}
                     onClick={reset}
                   >

@@ -27,7 +27,7 @@
 }
 
 .user_dashboard_username {
-  margin: 6% 0 3% 0;
+  margin: 6% 0 0% 0;
   font-weight: 600;
   font-size: 28px;
   text-transform: capitalize;
@@ -474,6 +474,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 20px;
+  cursor: pointer;
 }
 
 .udb_bctext {
