@@ -79,7 +79,6 @@ const [timer, settimer] = useState(false)
 
   const [wingdata, setWingData] = useState();
 
-  let count = 0;
 
   function MainGraph(start, end, booking, wing,booking_by_date) {
     // console.log(wing);
@@ -401,13 +400,14 @@ console.log(booking_validity)
         "GetPaymentbyDate/?from=" + start + "&to=" + end
       );
     } else {
+
       var payment = await axios_call(
         "GET",
         "GetPaymentbyDate/?from=" + start + "&to=" + end
       );
       booking = await GetBooking(start, end, true);
     }
-
+console.log(payment)
     setpayment(payment);
 
     var amount = 0;
@@ -560,10 +560,10 @@ console.log(booking_validity)
         });
       });
     }
+    console.log(payment_table_value)
 
     setDaily_payment(payment_table_value);
     setDaily_booking(booking_table_value);
-
     setTimeout(() => {
       if (amount_by_fliter && date_of_lable && booking_amount_by_fliter) {
         setpayment_graph({
@@ -615,6 +615,10 @@ console.log(booking_validity)
   }
 
   const handleCallback = (start, end) => {
+    if(start.format("YYYY-MM-DD")==end.format("YYYY-MM-DD")){
+        end=end.add(1, "day")
+        settimeline('Daily')
+       }
     GetPayment(false, start.format("YYYY-MM-DD"), end.format("YYYY-MM-DD"));
     setDate({
       start: start.format("YYYY-MM-DD"),
