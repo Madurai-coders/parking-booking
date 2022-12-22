@@ -87,11 +87,20 @@ export default function Payment() {
       axios_call("GET", "Check_BusinessPartner?search=" + val).then(
         (response) => {
           set_usr_suggestion(response);
-          console.log(response);
+          //console.log(response);
         }
       );
     }
   };
+
+ function call_email_entry(){
+    if(usr_suggestion[0]){
+    usr_suggestion.forEach((element) => {
+        if (form.name == element.userName) {
+          setForm({ ...form, email: element.email });
+        } 
+      })}
+  }
 
   function removePayment(id) {
     axios_call("DELETE", "CreatePayment/" + id + "/", "").then((response) => {
@@ -103,8 +112,8 @@ export default function Payment() {
   }
 
   function call_edit(val) {
-    console.log(val);
-    console.log(val.paymentId);
+    //console.log(val);
+    //console.log(val.paymentId);
     setedit(true);
     setForm({
       name: val.User.userName,
@@ -129,8 +138,8 @@ export default function Payment() {
         paymentType: form.payment_type,
         paymentDate: moment(form.date).toDate(),
         amount: form.amount,
-        Status:'success',
-        key:form.key
+        Status: "success",
+        key: form.key,
       };
       axios_call("PUT", "CreatePayment/" + form.id + "/", data).then(
         (response) => {
@@ -150,8 +159,8 @@ export default function Payment() {
     const result = await form_validate();
     if (result && !data_fail) {
       if (usr_suggestion[0]) {
-        setPayment_initiated(true)
-        console.log("starting existing user");
+        setPayment_initiated(true);
+        //console.log("starting existing user");
         if (
           usr_suggestion[0].userName === form.name &&
           usr_suggestion[0].email === form.email
@@ -162,21 +171,20 @@ export default function Payment() {
             paymentType: form.payment_type,
             paymentDate: form.date,
             amount: form.amount,
-            Status:'success',
-            key:generateUUID()
+            Status: "success",
+            key: generateUUID(),
           };
-          console.log(data);
+          //console.log(data);
           axios_call("POST", "CreatePayment/", data).then((response) => {
             axios_call("GET", "GetPayment?search=" + form.name).then(
               (response) => {
-                console.log(response);
+                //console.log(response);
                 setPayment(response);
                 reset();
               }
             );
-            console.log("payment added to existing user");
-        setPayment_initiated(false)
-
+            //console.log("payment added to existing user");
+            setPayment_initiated(false);
           });
         }
 
@@ -187,8 +195,8 @@ export default function Payment() {
           setData_fail("username dose not match with email provided");
         }
       } else {
-        console.log("initiate newUser");
-        setPayment_initiated(true)
+        //console.log("initiate newUser");
+        setPayment_initiated(true);
         var newbookingpartner = {
           uId: new Date().getUTCMilliseconds(),
           accountNumber: Math.floor(100000 + Math.random() * 9000),
@@ -199,53 +207,58 @@ export default function Payment() {
 
         firebase
           .auth()
-          .createUserWithEmailAndPassword(newbookingpartner.email,newbookingpartner.accountNumber.toString())
+          .createUserWithEmailAndPassword(
+            newbookingpartner.email,
+            newbookingpartner.accountNumber.toString()
+          )
           .then((userCredential) => {
-            console.log("initiated firebase");
-            console.log(userCredential);
+            //console.log("initiated firebase");
+            //console.log(userCredential);
             axios({
-                method: "POST",
-                url: "https://parkingdev1.munidex.info/register/",
-                data: {
-                  username: userCredential.user.email,
-                  password: userCredential.user.uid,
-                },
-                withCredentials: true,
-              }).then((response_one) => {
-                console.log("initiated database");
-                console.log(response_one);
+              method: "POST",
+              url: "https://parkingdev1.munidex.info/register/",
+              data: {
+                username: userCredential.user.email,
+                password: userCredential.user.uid,
+              },
+              withCredentials: true,
+            }).then((response_one) => {
+              //console.log("initiated database");
+              //console.log(response_one);
 
-                
-            // Signed in
-            console.log(response_one.data.id)
-            axios_call("POST", "CreateBusinessPartner/", {...newbookingpartner,accountHolder:response_one.data.id}).then(
-                (response) => {
-                  console.log("newuser created");
-                  console.log(response);
+              // Signed in
+              //console.log(response_one.data.id)
+              axios_call("POST", "CreateBusinessPartner/", {
+                ...newbookingpartner,
+                accountHolder: response_one.data.id,
+              }).then((response) => {
+                //console.log("newuser created");
+                //console.log(response);
 
-                  var data = {
-                    userId: response.id,
-                    paymentId: form.payment_id,
-                    paymentType: form.payment_type,
-                    paymentDate: form.date,
-                    amount: form.amount,
-                  };
+                var data = {
+                  userId: response.id,
+                  paymentId: form.payment_id,
+                  paymentType: form.payment_type,
+                  paymentDate: form.date,
+                  amount: form.amount,
+                  Status: "success",
+                  key: generateUUID(),
+                };
                 // })
-      
-                  axios_call("POST", "CreatePayment/", data).then((response) => {
-                    axios_call("GET", "GetPayment?search=" + form.name).then(
-                      (response) => {
-                        console.log(response);
-                        setPayment(response);
-                        reset();
-                      }
-                    );
-                    console.log("payment added to created existing user");
-                    setPayment_initiated(false)
-                  });
-                }
-              );
-            })
+
+                axios_call("POST", "CreatePayment/", data).then((response) => {
+                  axios_call("GET", "GetPayment?search=" + form.name).then(
+                    (response) => {
+                      //console.log(response);
+                      setPayment(response);
+                      reset();
+                    }
+                  );
+                  //console.log("payment added to created existing user");
+                  setPayment_initiated(false);
+                });
+              });
+            });
           })
 
           .catch((error) => {
@@ -253,8 +266,6 @@ export default function Payment() {
             var errorMessage = error.message;
             // ..
           });
-
-       
       }
 
       setData_fail(false);
@@ -271,23 +282,14 @@ export default function Payment() {
   useEffect(() => {
     if (form.name == "not_selected" || !form.name) {
       axios_call("GET", "CreatePayment/").then((response) => {
-        console.log(response);
+        //console.log(response);
         setPayment(response.results);
       });
     } else {
       axios_call("GET", "GetPayment?search=" + form.name).then((response) => {
         setPayment(response);
-        console.log(response);
-        console.log("search");
-      });
-    }
-    if (usr_suggestion) {
-      console.log(form.name);
-
-      usr_suggestion.forEach((element) => {
-        if (form.name == element.userName) {
-          setForm({ ...form, email: element.email });
-        }
+        //console.log(response);
+        //console.log("search");
       });
     }
   }, [form.name]);
@@ -296,8 +298,8 @@ export default function Payment() {
     if (form.payment_id) {
       axios_call("GET", "GetPayment?search=" + form.payment_id).then(
         (response) => {
-          console.log(form.payment_id);
-          console.log(response);
+          //console.log(form.payment_id);
+          //console.log(response);
           if (response[0]) {
             setData_fail("payment id exist");
           } else {
@@ -344,14 +346,14 @@ export default function Payment() {
       paymentId: payment_invoice.paymentId,
       amount: payment_invoice.amount,
     };
-    console.log(data);
+    //console.log(data);
     setMailStatus({
       status: "Sending",
       to: payment_invoice.User.email,
     });
 
     axios_call("POST", "send_mail/", data).then((response) => {
-      console.log(response);
+      //console.log(response);
       setMailStatus({
         status: "Successful",
         to: payment_invoice.User.email,
@@ -559,6 +561,7 @@ export default function Payment() {
                     Email
                   </label>
                   <input
+                  onClick={call_email_entry}
                     autocomplete="off"
                     onChange={(e) =>
                       setForm({ ...form, email: e.target.value })
@@ -679,12 +682,18 @@ export default function Payment() {
               {!edit ? (
                 <div className="mt-3">
                   <button
-                  disabled={payment_initiated}
+                    disabled={payment_initiated}
                     className="btn-success btn btn-sm"
                     style={{ cursor: "pointer" }}
                     onClick={form_submit}
                   >
-                    { payment_initiated&&<span class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>}
+                    {payment_initiated && (
+                      <span
+                        class="spinner-border spinner-border-sm mx-1"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                    )}
                     Submit{" "}
                   </button>
 
@@ -761,9 +770,7 @@ export default function Payment() {
                         <td>
                           {moment(payment.paymentDate).format("MM/DD/YYYY")}
                         </td>
-                        <td>
-                          {payment.Status}
-                        </td>
+                        <td>{payment.Status}</td>
                         <td>
                           <div className="payment_table_controls_container">
                             <span
