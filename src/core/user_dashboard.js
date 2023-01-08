@@ -450,6 +450,21 @@ const [btn, setbtn] = useState(false)
         key: generateUUID(),
       };
 
+    //   {
+    //     "fname": "Munidex",
+    //     "lname": "Mail",
+    //     "email": "munidexmail@gmail.com",
+    //     "amount": 18.50,
+    //     "transfee": 1.50,
+    //     "muni_code": "9999",
+    //     "dept": "marina",
+    //     "pbsdescr": "pet license",
+    //     "clientrefnum": "abcd-1234-123-121",
+    //     "ptype": "CC",
+    //     "pprovider": "MSBP",
+    //     "rme": false
+    // }
+
       console.log(data);
       axios_call(
         "POST",
@@ -743,12 +758,15 @@ const [btn, setbtn] = useState(false)
 
   useEffect(async () => {
     if (key && status && id) {
+        console.log("hi");
       var response_main = null;
       response_main = await axios_call_error(
         "GET",
         "PaymentEndpoint/" + key + "/"
       );
-      if (response_main.transNum == key && response_main.status == "S") {
+      console.log(response_main);
+      console.log(key);
+      if (response_main.transNum == key && response_main.status == "s") {
         console.log("hi");
         axios_call("GET", "CreatePayment/" + id + "/").then((response) => {
           if (response.paymentId == key) {
@@ -811,7 +829,7 @@ const [btn, setbtn] = useState(false)
           }
         });
       }
-      if (response_main == "failed"||response_main.status == "F") {
+      if (response_main == "failed"||response_main.status == "f") {
         calluseEffect();
         setpayment_online('failed')
         if (status == "booking"){
